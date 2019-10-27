@@ -35,12 +35,17 @@ def test_config(config):
 
 ################################################################################
 # EXECUTION, IN CPYTHON 3 AND PYPY VM
-def execution_in_subprocess(*args):
+def execution_in_subprocess(python, configuration_path):
     """
     Execute a command in a subprocess and print both standard and error out.
-       :param args: List of command and arguments.
+       Execution with cProfile module to profile python performance.
+       :param configuration_path: JSON object of the application configuration.
+       :param python: Path to an executable that can run python code.
+       :return: Return code of the subprocess.
     """
-    process = Popen(args, cwd='.', stdout=PIPE, stderr=PIPE)
+    process = Popen([python, "-m", "cProfile", "-s", "tottime",
+                     "./enthic/extract_bundle.py", "-c",
+                     configuration_path], cwd='.', stdout=PIPE, stderr=PIPE)
     try:
         outs, errs = process.communicate(timeout=3600)
     except TimeoutExpired:
@@ -52,6 +57,7 @@ def execution_in_subprocess(*args):
         info(outs.decode())
     if errs != b'':
         error(errs.decode())
+    return process.returncode
 
 
 def test_execution_python(configuration_path, python_executable):
@@ -60,9 +66,8 @@ def test_execution_python(configuration_path, python_executable):
        :param configuration_path: Fixture of the application configuration.
        :param python_executable: Fixture, path of the python3 executable.
     """
-    execution_in_subprocess(python_executable, "-m", "cProfile", "-s", "tottime",
-                            "./enthic/extract_bundle.py", "-c",
-                            configuration_path)
+    rc = execution_in_subprocess(python_executable, configuration_path)
+    assert rc == 0, "RETURN CODE NOT 0"
 
 
 def test_execution_pypy(configuration_path, pypy_executable):
@@ -71,9 +76,8 @@ def test_execution_pypy(configuration_path, pypy_executable):
        :param configuration_path: Fixture of the application configuration.
        :param pypy_executable: Fixture, path of the pypy3 executable..
     """
-    execution_in_subprocess(pypy_executable, "-m", "cProfile", "-s", "tottime",
-                            "./enthic/extract_bundle.py", "-c",
-                            configuration_path)
+    rc = execution_in_subprocess(pypy_executable, configuration_path)
+    assert rc == 0, "RETURN CODE NOT 0"
 
 
 ################################################################################

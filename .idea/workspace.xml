@@ -1,7 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="e4431101-f1b4-4bd4-bc3b-43d785750f7d" name="Default Changelist" comment="" />
+    <list default="true" id="e4431101-f1b4-4bd4-bc3b-43d785750f7d" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/python" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/python3" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib64" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/py/enthic/extract_bundle.py" beforeDir="false" afterPath="$PROJECT_DIR$/py/enthic/extract_bundle.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/py/enthic/test_extract_bundle.py" beforeDir="false" afterPath="$PROJECT_DIR$/py/enthic/test_extract_bundle.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyvenv.cfg" beforeDir="false" />
+    </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -10,14 +20,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/py/enthic/extract_bundle.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="238">
-              <caret line="22" column="75" selection-start-line="22" selection-start-column="75" selection-end-line="22" selection-end-column="75" />
-              <folding>
-                <element signature="e#325#368#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="272">
+              <caret line="16" column="33" lean-forward="true" selection-start-line="16" selection-start-column="33" selection-end-line="16" selection-end-column="33" />
             </state>
           </provider>
         </entry>
@@ -40,11 +47,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/py/enthic/test_extract_bundle.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="160">
-              <caret line="50" column="19" selection-start-line="50" selection-start-column="19" selection-end-line="50" selection-end-column="19" />
+            <state relative-caret-position="1156">
+              <caret line="68" column="70" selection-start-line="68" selection-start-column="70" selection-end-line="68" selection-end-column="70" />
               <folding>
                 <element signature="e#280#311#0" expanded="true" />
               </folding>
@@ -76,7 +83,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/output/bundle-result.tmp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="170">
+            <state relative-caret-position="-493">
               <caret line="10" column="6" selection-start-line="10" selection-start-column="6" selection-end-line="10" selection-end-column="9" />
             </state>
           </provider>
@@ -89,11 +96,6 @@
               <caret line="6" column="4" selection-start-line="6" selection-start-column="4" selection-end-line="6" selection-end-column="16" />
             </state>
           </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/sh/check-data.sh">
-          <provider selected="true" editor-type-id="text-editor" />
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
@@ -134,6 +136,9 @@
       <replace>&quot;</replace>
     </replaceStrings>
   </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
@@ -144,17 +149,18 @@
         <option value="$PROJECT_DIR$/py/enthic/extract_code.py" />
         <option value="$PROJECT_DIR$/configuration.json" />
         <option value="$PROJECT_DIR$/output/identity.tmp" />
-        <option value="$PROJECT_DIR$/py/enthic/extract_bundle.py" />
         <option value="$PROJECT_DIR$/py/enthic/conftest.py" />
         <option value="$PROJECT_DIR$/py/enthic/test_extract_bundle.py" />
+        <option value="$PROJECT_DIR$/py/enthic/extract_bundle.py" />
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds" extendedState="1">
+  <component name="ProjectFrameBounds">
     <option name="y" value="31" />
     <option name="width" value="1922" />
     <option name="height" value="981" />
   </component>
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
     <navigator proportions="" version="1">
       <foldersAlwaysOnTop value="true" />
@@ -198,6 +204,7 @@
     </panes>
   </component>
   <component name="PropertiesComponent">
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/py/enthic/test_extract_bundle.py" />
     <property name="settings.editor.selected.configurable" value="preferences.sourceCode" />
   </component>
@@ -312,21 +319,6 @@
     <servers />
   </component>
   <component name="TestHistory">
-    <history-entry file="pytest_in_test_extract_bundle_py - 2019.10.27 at 20h 09m 58s.xml">
-      <configuration name="pytest in test_extract_bundle.py" configurationId="tests" />
-    </history-entry>
-    <history-entry file="pytest_in_test_extract_bundle_py - 2019.10.27 at 20h 11m 44s.xml">
-      <configuration name="pytest in test_extract_bundle.py" configurationId="tests" />
-    </history-entry>
-    <history-entry file="pytest_in_test_extract_bundle_py - 2019.10.27 at 20h 12m 43s.xml">
-      <configuration name="pytest in test_extract_bundle.py" configurationId="tests" />
-    </history-entry>
-    <history-entry file="pytest_in_test_extract_bundle_py - 2019.10.27 at 20h 14m 18s.xml">
-      <configuration name="pytest in test_extract_bundle.py" configurationId="tests" />
-    </history-entry>
-    <history-entry file="pytest_in_test_extract_bundle_py - 2019.10.27 at 20h 15m 19s.xml">
-      <configuration name="pytest in test_extract_bundle.py" configurationId="tests" />
-    </history-entry>
     <history-entry file="pytest_in_test_extract_bundle_py - 2019.10.27 at 20h 16m 23s.xml">
       <configuration name="pytest in test_extract_bundle.py" configurationId="tests" />
     </history-entry>
@@ -342,6 +334,21 @@
     <history-entry file="pytest_in_test_extract_bundle_py - 2019.10.27 at 20h 23m 02s.xml">
       <configuration name="pytest in test_extract_bundle.py" configurationId="tests" />
     </history-entry>
+    <history-entry file="pytest_in_test_extract_bundle_py - 2019.10.27 at 20h 25m 03s.xml">
+      <configuration name="pytest in test_extract_bundle.py" configurationId="tests" />
+    </history-entry>
+    <history-entry file="pytest_in_test_extract_bundle_py - 2019.10.27 at 20h 47m 57s.xml">
+      <configuration name="pytest in test_extract_bundle.py" configurationId="tests" />
+    </history-entry>
+    <history-entry file="pytest_in_test_extract_bundle_py - 2019.10.27 at 20h 54m 46s.xml">
+      <configuration name="pytest in test_extract_bundle.py" configurationId="tests" />
+    </history-entry>
+    <history-entry file="pytest_in_test_extract_bundle_py - 2019.10.27 at 20h 54m 50s.xml">
+      <configuration name="pytest in test_extract_bundle.py" configurationId="tests" />
+    </history-entry>
+    <history-entry file="pytest_in_test_extract_bundle_py - 2019.10.27 at 20h 55m 05s.xml">
+      <configuration name="pytest in test_extract_bundle.py" configurationId="tests" />
+    </history-entry>
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="31" width="1922" height="981" extended-state="0" />
@@ -353,8 +360,8 @@
       <window_info id="DB Browser" order="3" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.44976637" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.3995327" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.44912282" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.3988304" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
@@ -443,30 +450,6 @@
         <state showInfoPanel="true" rowLines="3" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/py/enthic/extract_bundle.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="238">
-          <caret line="22" column="75" selection-start-line="22" selection-start-column="75" selection-end-line="22" selection-end-column="75" />
-          <folding>
-            <element signature="e#325#368#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/py/enthic/utils/configuration.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="255">
-          <caret line="16" selection-start-line="16" selection-end-line="16" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/py/setup.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="187">
-          <caret line="11" column="36" selection-start-line="11" selection-start-column="36" selection-end-line="11" selection-end-column="36" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/py/enthic/conftest.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="357">
@@ -484,9 +467,36 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/sh/clear-data.sh">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/py/enthic/test_extract_bundle.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1156">
+          <caret line="68" column="70" selection-start-line="68" selection-start-column="70" selection-end-line="68" selection-end-column="70" />
+          <folding>
+            <element signature="e#280#311#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/py/setup.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="187">
+          <caret line="11" column="36" selection-start-line="11" selection-start-column="36" selection-end-line="11" selection-end-column="36" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/py/enthic/utils/configuration.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="255">
+          <caret line="16" selection-start-line="16" selection-end-line="16" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/output/bundle-result.tmp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="170">
+        <state relative-caret-position="-493">
           <caret line="10" column="6" selection-start-line="10" selection-start-column="6" selection-end-line="10" selection-end-column="9" />
         </state>
       </provider>
@@ -499,18 +509,16 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/sh/check-data.sh">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/sh/clear-data.sh">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/py/enthic/test_extract_bundle.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="160">
-          <caret line="50" column="19" selection-start-line="50" selection-start-column="19" selection-end-line="50" selection-end-column="19" />
-          <folding>
-            <element signature="e#280#311#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="34">
+          <caret line="2" column="3" lean-forward="true" selection-start-line="2" selection-start-column="2" selection-end-line="2" selection-end-column="23" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/py/enthic/extract_bundle.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="272">
+          <caret line="16" column="33" lean-forward="true" selection-start-line="16" selection-start-column="33" selection-end-line="16" selection-end-column="33" />
         </state>
       </provider>
     </entry>

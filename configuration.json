@@ -1,8 +1,10 @@
 {
-    "inputPath": "../input/",
-    "outputPath": "../output/",
-    "accountOntologyCSV": "../account-ontology.csv",
-    "resultFile": "bundle-result.tmp",
-    "identityFile": "identity.tmp",
-    "debugLevel": "ERROR"
+  "inputPath": "../input/qualification/",
+  "outputPath": "../output/",
+  "accountOntologyCSV": "../account-ontology.csv",
+  "bundleFile": "bundle.tmp",
+  "sortBundleFile": "sort-bundle.tmp",
+  "yearlyBundleFile": "bundle.csv",
+  "identityFile": "identity.tmp",
+  "debugLevel": "ERROR"
 }

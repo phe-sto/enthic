@@ -27,7 +27,7 @@ def test_config(config):
     assert config.__class__ is dict, "CONFIGURATION NOT A VALID DICTIONARY"
     assert config['inputPath'].__class__ is str, "INPUT PATH CONF NOT A STRING"
     assert config['outputPath'].__class__ is str, "OUTPUT PATH CONF NOT A STRING"
-    assert config['resultFile'].__class__ is str, "RESULT FILENAME CONF NOT A STRING"
+    assert config['bundleFile'].__class__ is str, "RESULT FILENAME CONF NOT A STRING"
     assert config['identityFile'].__class__ is str, "IDENTITY FILENAME CONF NOT A STRING"
     assert config['accountOntologyCSV'].__class__ is str, "ONTOLOGY FILENAME CONF NOT A STRING"
     assert config["debugLevel"].__class__ is str, "DEBUG LEVEL NOT A STRING"
@@ -89,7 +89,7 @@ def result_file(config):
        :param config: Fixture of the JSON configuration file.
        :return: The file object.
     """
-    return open(join(config['outputPath'], config['resultFile']), "r")
+    return open(join(config['outputPath'], config['bundleFile']), "r")
 
 
 @pytest.fixture()

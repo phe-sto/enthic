@@ -16,8 +16,7 @@ import xml.etree.ElementTree as ElementTree
 from csv import reader
 from logging import debug, basicConfig
 from os import listdir
-from os.path import isdir
-from os.path import isfile, join
+from os.path import isdir, isfile, join
 from re import sub, compile
 
 from enthic.utils.configuration import config
@@ -31,18 +30,18 @@ def main():
     read to list the bundle code
     """
     ############################################################################
-    # CHECKING THE INPUT PATH INCLUDING THE XML TO PARSE
+    # CHECKING THE INPUT AND OUTPUT AND DIRECTORY PATH
+    # INPUT
     if isdir(config['inputPath']) is False:
         raise NotADirectoryError(
             "Configuration input path {} does not exist".format(
                 config['inputPath'])
         )
-    # CHECKING THE RESULT FILE PARAMETER
-    if config['resultFile'].__class__ is not str:
-        raise TypeError(
-            "resultFile parameter must be a string, not {}".format(
-                config['resultFile'].__class__
-            )
+    # OUTPUT
+    if isdir(config['outputPath']) is False:
+        raise NotADirectoryError(
+            "Configuration output path {} does not exist".format(
+                config['inputPath'])
         )
     ############################################################################
     # SET LOG LEVEL
@@ -66,7 +65,7 @@ def main():
                  isfile(join(config['inputPath'], f))]
     ############################################################################
     # CREATING THE OUTPUT FILES FOR RESULT AND IDENTITY
-    result_file = open(join(config['outputPath'], config['resultFile']), "w")
+    bundle_file = open(join(config['outputPath'], config['bundleFile']), "w")
     identity_file = open(join(config['outputPath'], config['identityFile']), "w")
     ############################################################################
     # ITERATE ALL XML FILES
@@ -116,7 +115,7 @@ def main():
                                         amount_code = "m{0}".format(amount_code)
                                         ########################################
                                         # WRITE RESULTS FILE
-                                        result_file.write(";".join([siren, year,
+                                        bundle_file.write(";".join([siren, year,
                                                                     bundle.attrib["code"],
                                                                     str(int(bundle.attrib[amount_code])),
                                                                     "\n"]))
@@ -124,7 +123,7 @@ def main():
                             debug(key_error)
     ############################################################################
     # CLOSES RESULTS AND IDENTITY FILES
-    result_file.close()
+    bundle_file.close()
     identity_file.close()
 
 

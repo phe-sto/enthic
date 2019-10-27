@@ -1,0 +1,8 @@
+{
+    "inputPath": "../input/",
+    "outputPath": "../output/",
+    "accountOntologyCSV": "../account-ontology.csv",
+    "resultFile": "bundle-result.tmp",
+    "identityFile": "identity.tmp",
+    "debugLevel": "ERROR"
+}

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<bilans version="1.0" xmlns="fr:inpi:odrncs:bilansSaisisXML">
+<bilan>
+<identite>
+<siren>829392778</siren>
+<date_cloture_exercice>20180630</date_cloture_exercice>
+<code_greffe>1801</code_greffe>
+<num_depot>1067</num_depot>
+<num_gestion>2017D00139</num_gestion>
+<code_activite>4773Z</code_activite>
+<date_cloture_exercice_n-1>00000000</date_cloture_exercice_n-1>
+<duree_exercice_n>12</duree_exercice_n>
+<duree_exercice_n-1>00</duree_exercice_n-1>
+<date_depot>20190322</date_depot>
+<code_motif>00</code_motif>
+<code_type_bilan>C</code_type_bilan>
+<code_devise>EUR</code_devise>
+<code_origine_devise>O</code_origine_devise>
+<code_confidentialite>2</code_confidentialite>
+<info_traitement/>
+<denomination><![CDATA[SELURL PHARMACIE GIRARD]]></denomination>
+<adresse><![CDATA[18000 BOURGES]]></adresse>
+</identite>
+<detail>
+<page numero="01">
+<liasse code="AB" m1="000000000090305" m2="000000000030102" m3="000000000060204"/>
+<liasse code="AH" m1="000000001103658" m3="000000001103658"/>
+<liasse code="AR" m1="000000000006034" m2="000000000000603" m3="000000000005431"/>
+<liasse code="AT" m1="000000000120308" m2="000000000012031" m3="000000000108277"/>
+<liasse code="BJ" m1="000000001320305" m2="000000000042736" m3="000000001277569"/>
+<liasse code="BT" m1="000000000321744" m2="000000000003710" m3="000000000318034"/>
+<liasse code="BX" m1="000000000040944" m3="000000000040944"/>
+<liasse code="BZ" m1="000000000009951" m3="000000000009951"/>
+<liasse code="CF" m1="000000000185453" m3="000000000185453"/>
+<liasse code="CJ" m1="000000000558092" m2="000000000003710" m3="000000000554382"/>
+<liasse code="CO" m1="000000001878398" m2="000000000046446" m3="000000001831951"/>
+</page>
+<page numero="02">
+<liasse code="DA" m1="000000000010000"/>
+<liasse code="DI" m1="000000000091660"/>
+<liasse code="DL" m1="000000000101660"/>
+<liasse code="DS" m1="000000001334803"/>
+<liasse code="DX" m1="000000000287814"/>
+<liasse code="DY" m1="000000000084612"/>
+<liasse code="EA" m1="000000000023062"/>
+<liasse code="EC" m1="000000001730291"/>
+<liasse code="EE" m1="000000001831951"/>
+<liasse code="EG" m1="000000001730291"/>
+</page>
+</detail>
+</bilan>
+</bilans>

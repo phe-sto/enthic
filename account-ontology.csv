@@ -1,0 +1,15 @@
+label;code;column;accountability
+Salaires et traitements;FY;3,4;C
+Résultat de l’exercice (bénéfice ou perte);DI;1,2;C
+Résultat exceptionnel;HI;1,2;C
+Participation des salariés aux résultats de l’entreprise;HJ;1,2;C
+Impôts sur les bénéfices;HK;1,2;C
+Total des charges;HM;1,2;C
+Chiffre d’affaires nets;FJ;1,2,3,4;C
+Salaires et traitements;FY;3,4;S
+Produits exceptionnels;290;1,2;S
+Impôts sur les bénéfices;306;1,2;S
+Bénéfice ou perte;310;1,2;S
+Résultat exceptionnel;HI;1,2;S
+Participation des salariés aux résultats de l’entreprise;HJ;1,2;S
+Chiffre d’affaires nets;FJ;1,2,3,4;S

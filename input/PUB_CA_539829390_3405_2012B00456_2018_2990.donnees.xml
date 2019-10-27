@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<bilans version="1.0" xmlns="fr:inpi:odrncs:bilansSaisisXML">
+<bilan>
+<identite>
+<siren>539829390</siren>
+<date_cloture_exercice>20180228</date_cloture_exercice>
+<code_greffe>3405</code_greffe>
+<num_depot>2990</num_depot>
+<num_gestion>2012B00456</num_gestion>
+<code_activite>6430Z</code_activite>
+<date_cloture_exercice_n-1>00000000</date_cloture_exercice_n-1>
+<duree_exercice_n>12</duree_exercice_n>
+<duree_exercice_n-1>12</duree_exercice_n-1>
+<date_depot>20190227</date_depot>
+<code_motif>00</code_motif>
+<code_type_bilan>S</code_type_bilan>
+<code_devise>EUR</code_devise>
+<code_origine_devise>O</code_origine_devise>
+<code_confidentialite>0</code_confidentialite>
+<info_traitement/>
+<denomination><![CDATA[ALIZE INSTITUT DE DIAGNOSTICS IMMOBILIERS ASSOCIES]]></denomination>
+<adresse><![CDATA[34070 MONTPELLIER]]></adresse>
+</identite>
+<detail>
+<page numero="01">
+<liasse code="028" m1="000000000001625" m2="000000000000436" m3="000000000001190"/>
+<liasse code="040" m1="000000000072600" m2="000000000066000" m3="000000000006600"/>
+<liasse code="044" m1="000000000074225" m2="000000000066436" m3="000000000007790"/>
+<liasse code="068" m1="000000000012525" m3="000000000012525"/>
+<liasse code="072" m1="000000000000140" m3="000000000000140"/>
+<liasse code="084" m1="000000000000051" m3="000000000000051"/>
+<liasse code="096" m1="000000000012716" m3="000000000012716"/>
+<liasse code="110" m1="000000000086942" m2="000000000066436" m3="000000000020506"/>
+<liasse code="120" m3="000000000007000"/>
+<liasse code="134" m3="-000000000014428"/>
+<liasse code="136" m3="000000000012013"/>
+<liasse code="142" m3="000000000004585"/>
+<liasse code="156" m3="000000000012272"/>
+<liasse code="166" m3="000000000000840"/>
+<liasse code="169" m2="000000000000001"/>
+<liasse code="172" m3="000000000002809"/>
+<liasse code="176" m3="000000000015921"/>
+<liasse code="180" m3="000000000020506"/>
+<liasse code="182" m3="000000000001250"/>
+</page>
+<page numero="02">
+<liasse code="218" m1="000000000034027"/>
+<liasse code="232" m1="000000000034027"/>
+<liasse code="242" m1="000000000001118"/>
+<liasse code="243" m1="000000000000395"/>
+<liasse code="244" m1="000000000002852"/>
+<liasse code="250" m1="000000000003030"/>
+<liasse code="252" m1="000000000013889"/>
+<liasse code="254" m1="000000000000060"/>
+<liasse code="264" m1="000000000020949"/>
+<liasse code="270" m1="000000000013078"/>
+<liasse code="294" m1="000000000001065"/>
+<liasse code="310" m1="000000000012013"/>
+</page>
+</detail>
+</bilan>
+</bilans>

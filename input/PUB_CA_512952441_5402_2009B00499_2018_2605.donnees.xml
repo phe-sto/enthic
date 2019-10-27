@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<bilans version="1.0" xmlns="fr:inpi:odrncs:bilansSaisisXML">
+<bilan>
+<identite>
+<siren>512952441</siren>
+<date_cloture_exercice>20180930</date_cloture_exercice>
+<code_greffe>5402</code_greffe>
+<num_depot>2605</num_depot>
+<num_gestion>2009B00499</num_gestion>
+<code_activite>6619B</code_activite>
+<date_cloture_exercice_n-1>20170930</date_cloture_exercice_n-1>
+<duree_exercice_n>12</duree_exercice_n>
+<duree_exercice_n-1>12</duree_exercice_n-1>
+<date_depot>20190322</date_depot>
+<code_motif>00</code_motif>
+<code_type_bilan>C</code_type_bilan>
+<code_devise>EUR</code_devise>
+<code_origine_devise>O</code_origine_devise>
+<code_confidentialite>1</code_confidentialite>
+<info_traitement/>
+<denomination><![CDATA[BD CONSEILS ET GESTION DE PATRIMOINE PRIVE]]></denomination>
+<adresse><![CDATA[54230 NEUVES MAISONS]]></adresse>
+</identite>
+</bilan>
+</bilans>

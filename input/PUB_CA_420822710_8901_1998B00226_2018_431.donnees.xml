@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<bilans version="1.0" xmlns="fr:inpi:odrncs:bilansSaisisXML">
+<bilan>
+<identite>
+<siren>420822710</siren>
+<date_cloture_exercice>20181031</date_cloture_exercice>
+<code_greffe>8901</code_greffe>
+<num_depot>431</num_depot>
+<num_gestion>1998B00226</num_gestion>
+<code_activite>4332B</code_activite>
+<date_cloture_exercice_n-1>20171031</date_cloture_exercice_n-1>
+<duree_exercice_n>12</duree_exercice_n>
+<duree_exercice_n-1>12</duree_exercice_n-1>
+<date_depot>20190301</date_depot>
+<code_motif>1A</code_motif>
+<code_type_bilan>C</code_type_bilan>
+<code_devise>EUR</code_devise>
+<code_origine_devise>O</code_origine_devise>
+<code_confidentialite>1</code_confidentialite>
+<info_traitement/>
+<denomination><![CDATA[EURL SERRURERIE DUBOIS]]></denomination>
+<adresse><![CDATA[89290 CHAMPS SUR YONNE]]></adresse>
+</identite>
+</bilan>
+</bilans>

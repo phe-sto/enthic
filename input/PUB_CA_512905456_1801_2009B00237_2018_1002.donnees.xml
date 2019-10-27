@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<bilans version="1.0" xmlns="fr:inpi:odrncs:bilansSaisisXML">
+<bilan>
+<identite>
+<siren>512905456</siren>
+<date_cloture_exercice>20180531</date_cloture_exercice>
+<code_greffe>1801</code_greffe>
+<num_depot>1002</num_depot>
+<num_gestion>2009B00237</num_gestion>
+<code_activite>4663Z</code_activite>
+<date_cloture_exercice_n-1>20170531</date_cloture_exercice_n-1>
+<duree_exercice_n>12</duree_exercice_n>
+<duree_exercice_n-1>12</duree_exercice_n-1>
+<date_depot>20190320</date_depot>
+<code_motif>00</code_motif>
+<code_type_bilan>S</code_type_bilan>
+<code_devise>EUR</code_devise>
+<code_origine_devise>O</code_origine_devise>
+<code_confidentialite>0</code_confidentialite>
+<info_traitement/>
+<denomination><![CDATA[SARL NEGOCE TP ET CONSEIL]]></denomination>
+<adresse><![CDATA[18310 DAMPIERRE EN GRACAY]]></adresse>
+</identite>
+<detail>
+<page numero="01">
+<liasse code="028" m1="000000000083730" m2="000000000036579" m3="000000000047150"/>
+<liasse code="040" m1="000000000001567" m3="000000000001567"/>
+<liasse code="044" m1="000000000085297" m2="000000000036579" m3="000000000048717"/>
+<liasse code="060" m1="000000000091600" m3="000000000091600"/>
+<liasse code="064" m1="000000000000800" m3="000000000000800"/>
+<liasse code="068" m1="000000000008237" m3="000000000008237"/>
+<liasse code="072" m1="000000000008090" m3="000000000008090"/>
+<liasse code="084" m1="000000000004378" m3="000000000004378"/>
+<liasse code="096" m1="000000000113105" m3="000000000113105"/>
+<liasse code="110" m1="000000000198402" m2="000000000036579" m3="000000000161823"/>
+<liasse code="120" m3="000000000065000"/>
+<liasse code="126" m3="000000000000116"/>
+<liasse code="132" m3="000000000001851"/>
+<liasse code="134" m3="-000000000069545"/>
+<liasse code="136" m3="000000000005168"/>
+<liasse code="142" m3="000000000002591"/>
+<liasse code="156" m3="000000000088312"/>
+<liasse code="166" m3="000000000018304"/>
+<liasse code="169" m2="000000000046944"/>
+<liasse code="172" m3="000000000052614"/>
+<liasse code="176" m3="000000000159231"/>
+<liasse code="180" m3="000000000161823"/>
+<liasse code="195" m3="000000000027952"/>
+</page>
+<page numero="02">
+<liasse code="209" m1="000000000021500"/>
+<liasse code="210" m1="000000000118202"/>
+<liasse code="230" m1="000000000000101"/>
+<liasse code="232" m1="000000000118303"/>
+<liasse code="234" m1="000000000060754"/>
+<liasse code="236" m1="000000000010950"/>
+<liasse code="242" m1="000000000013194"/>
+<liasse code="243" m1="000000000000470"/>
+<liasse code="244" m1="000000000000898"/>
+<liasse code="250" m1="000000000010534"/>
+<liasse code="252" m1="000000000003777"/>
+<liasse code="254" m1="000000000010075"/>
+<liasse code="262" m1="000000000000019"/>
+<liasse code="264" m1="000000000110203"/>
+<liasse code="270" m1="000000000008100"/>
+<liasse code="290" m1="000000000000250"/>
+<liasse code="294" m1="000000000002830"/>
+<liasse code="300" m1="000000000000351"/>
+<liasse code="310" m1="000000000005168"/>
+</page>
+<page numero="03">
+<liasse code="490" m1="000000000085297"/>
+</page>
+<page numero="04">
+<liasse code="374" m1="000000000023004"/>
+<liasse code="378" m1="000000000016821"/>
+</page>
+<page numero="05">
+<liasse code="376" m1="000000000000002"/>
+</page>
+</detail>
+</bilan>
+</bilans>

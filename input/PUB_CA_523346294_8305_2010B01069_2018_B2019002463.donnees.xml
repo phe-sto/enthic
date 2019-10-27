@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<bilans version="1.0" xmlns="fr:inpi:odrncs:bilansSaisisXML">
+<bilan>
+<identite>
+<siren>523346294</siren>
+<date_cloture_exercice>20180930</date_cloture_exercice>
+<code_greffe>8305</code_greffe>
+<num_depot>B2019/002463</num_depot>
+<num_gestion>2010B01069</num_gestion>
+<code_activite>7490B</code_activite>
+<date_cloture_exercice_n-1>20170930</date_cloture_exercice_n-1>
+<duree_exercice_n>12</duree_exercice_n>
+<duree_exercice_n-1>12</duree_exercice_n-1>
+<date_depot>20190321</date_depot>
+<code_motif>00</code_motif>
+<code_type_bilan>S</code_type_bilan>
+<code_devise>EUR</code_devise>
+<code_origine_devise>O</code_origine_devise>
+<code_confidentialite>0</code_confidentialite>
+<info_traitement/>
+<denomination><![CDATA[KERIDEAS]]></denomination>
+<adresse><![CDATA[83270 SAINT CYR SUR MER]]></adresse>
+</identite>
+<detail>
+<page numero="01">
+<liasse code="014" m1="000000000000624" m2="000000000000624"/>
+<liasse code="028" m1="000000000003578" m2="000000000002154" m3="000000000001424" m4="000000000002023"/>
+<liasse code="044" m1="000000000004202" m2="000000000002778" m3="000000000001424" m4="000000000002023"/>
+<liasse code="068" m1="000000000009270" m3="000000000009270"/>
+<liasse code="072" m1="000000000000991" m3="000000000000991" m4="000000000012129"/>
+<liasse code="084" m1="000000000042945" m3="000000000042945" m4="000000000056639"/>
+<liasse code="092" m1="000000000000506" m3="000000000000506"/>
+<liasse code="096" m1="000000000053712" m3="000000000053712" m4="000000000068768"/>
+<liasse code="110" m1="000000000057914" m2="000000000002778" m3="000000000055136" m4="000000000070791"/>
+<liasse code="120" m3="000000000015000" m4="000000000015000"/>
+<liasse code="126" m3="000000000001500" m4="000000000001500"/>
+<liasse code="134" m3="000000000037486" m4="000000000055706"/>
+<liasse code="136" m3="-000000000003787" m4="-000000000003220"/>
+<liasse code="142" m3="000000000050199" m4="000000000068986"/>
+<liasse code="166" m3="000000000000306" m4="000000000000030"/>
+<liasse code="172" m3="000000000004631" m4="000000000001775"/>
+<liasse code="176" m3="000000000004937" m4="000000000001804"/>
+<liasse code="180" m3="000000000055136" m4="000000000070791"/>
+</page>
+<page numero="02">
+<liasse code="218" m1="000000000009270" m2="000000000010500"/>
+<liasse code="232" m1="000000000009270" m2="000000000010500"/>
+<liasse code="242" m1="000000000012260" m2="000000000012622"/>
+<liasse code="243" m1="000000000000198"/>
+<liasse code="244" m1="000000000000198" m2="000000000000339"/>
+<liasse code="254" m1="000000000000599" m2="000000000000759"/>
+<liasse code="264" m1="000000000013057" m2="000000000013720"/>
+<liasse code="270" m1="-000000000003787" m2="-000000000003220"/>
+<liasse code="310" m1="-000000000003787" m2="-000000000003220"/>
+</page>
+<page numero="03">
+<liasse code="490" m1="000000000004202"/>
+</page>
+<page numero="04">
+<liasse code="378" m1="000000000000836"/>
+</page>
+</detail>
+</bilan>
+</bilans>

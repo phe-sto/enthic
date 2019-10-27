@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<bilans version="1.0" xmlns="fr:inpi:odrncs:bilansSaisisXML">
+<bilan>
+<identite>
+<siren>811165448</siren>
+<date_cloture_exercice>20180930</date_cloture_exercice>
+<code_greffe>6201</code_greffe>
+<num_depot>1966</num_depot>
+<num_gestion>2015B00551</num_gestion>
+<code_activite>7112B</code_activite>
+<date_cloture_exercice_n-1>20170930</date_cloture_exercice_n-1>
+<duree_exercice_n>12</duree_exercice_n>
+<duree_exercice_n-1>12</duree_exercice_n-1>
+<date_depot>20190320</date_depot>
+<code_motif>00</code_motif>
+<code_type_bilan>S</code_type_bilan>
+<code_devise>EUR</code_devise>
+<code_origine_devise>O</code_origine_devise>
+<code_confidentialite>2</code_confidentialite>
+<info_traitement/>
+<denomination><![CDATA[PRESTABIM]]></denomination>
+<adresse><![CDATA[62770 BLANGY SUR TERNOISE]]></adresse>
+</identite>
+<detail>
+<page numero="01">
+<liasse code="028" m1="000000000006278" m2="000000000002145" m3="000000000004133" m4="000000000006226"/>
+<liasse code="044" m1="000000000006278" m2="000000000002145" m3="000000000004133" m4="000000000006226"/>
+<liasse code="068" m1="000000000035424" m3="000000000035424" m4="000000000022464"/>
+<liasse code="072" m1="000000000000503" m3="000000000000503" m4="000000000001644"/>
+<liasse code="084" m1="000000000078724" m3="000000000078724" m4="000000000069775"/>
+<liasse code="092" m1="000000000002096" m3="000000000002096" m4="000000000000375"/>
+<liasse code="096" m1="000000000116746" m3="000000000116746" m4="000000000094258"/>
+<liasse code="110" m1="000000000123024" m2="000000000002145" m3="000000000120879" m4="000000000100483"/>
+<liasse code="120" m3="000000000008000" m4="000000000008000"/>
+<liasse code="126" m3="000000000000800" m4="000000000000800"/>
+<liasse code="132" m3="000000000003784"/>
+<liasse code="134" m3="000000000022209" m4="000000000022209"/>
+<liasse code="136" m3="000000000036576" m4="000000000033784"/>
+<liasse code="142" m3="000000000071369" m4="000000000064793"/>
+<liasse code="166" m3="000000000000462" m4="000000000001422"/>
+<liasse code="169" m2="000000000034397"/>
+<liasse code="172" m3="000000000049048" m4="000000000034268"/>
+<liasse code="176" m3="000000000049510" m4="000000000035690"/>
+<liasse code="180" m3="000000000120879" m4="000000000100483"/>
+</page>
+</detail>
+</bilan>
+</bilans>

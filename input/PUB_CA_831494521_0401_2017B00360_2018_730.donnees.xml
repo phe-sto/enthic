@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<bilans version="1.0" xmlns="fr:inpi:odrncs:bilansSaisisXML">
+<bilan>
+<identite>
+<siren>831494521</siren>
+<date_cloture_exercice>20181231</date_cloture_exercice>
+<code_greffe>0401</code_greffe>
+<num_depot>730</num_depot>
+<num_gestion>2017B00360</num_gestion>
+<code_activite>6619B</code_activite>
+<date_cloture_exercice_n-1>00000000</date_cloture_exercice_n-1>
+<duree_exercice_n>17</duree_exercice_n>
+<duree_exercice_n-1>00</duree_exercice_n-1>
+<date_depot>20190321</date_depot>
+<code_motif>00</code_motif>
+<code_type_bilan>S</code_type_bilan>
+<code_devise>EUR</code_devise>
+<code_origine_devise>O</code_origine_devise>
+<code_confidentialite>2</code_confidentialite>
+<info_traitement/>
+<denomination><![CDATA[ORA]]></denomination>
+<adresse><![CDATA[04860 PIERREVERT]]></adresse>
+</identite>
+<detail>
+<page numero="01">
+<liasse code="028" m1="000000000009490" m2="000000000000975" m3="000000000008515"/>
+<liasse code="040" m1="000000000000300" m3="000000000000300"/>
+<liasse code="044" m1="000000000009790" m2="000000000000975" m3="000000000008815"/>
+<liasse code="068" m1="000000000012650" m3="000000000012650"/>
+<liasse code="072" m1="000000000000121" m3="000000000000121"/>
+<liasse code="096" m1="000000000012771" m3="000000000012771"/>
+<liasse code="110" m1="000000000022561" m2="000000000000975" m3="000000000021586"/>
+<liasse code="120" m3="000000000002000"/>
+<liasse code="136" m3="000000000002285"/>
+<liasse code="142" m3="000000000004285"/>
+<liasse code="156" m3="000000000002500"/>
+<liasse code="166" m3="000000000001202"/>
+<liasse code="169" m2="000000000008643"/>
+<liasse code="172" m3="000000000013599"/>
+<liasse code="176" m3="000000000017301"/>
+<liasse code="180" m3="000000000021586"/>
+</page>
+<page numero="03">
+<liasse code="452" m1="000000000003333"/>
+<liasse code="462" m1="000000000004663"/>
+<liasse code="472" m1="000000000001494"/>
+<liasse code="482" m1="000000000000300"/>
+<liasse code="492" m1="000000000009790"/>
+</page>
+<page numero="04">
+<liasse code="374" m1="000000000006363"/>
+<liasse code="378" m1="000000000002995"/>
+</page>
+</detail>
+</bilan>
+</bilans>

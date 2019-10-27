@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<bilans version="1.0" xmlns="fr:inpi:odrncs:bilansSaisisXML">
+<bilan>
+<identite>
+<siren>323945626</siren>
+<date_cloture_exercice>20170131</date_cloture_exercice>
+<code_greffe>5602</code_greffe>
+<num_depot>1669</num_depot>
+<num_gestion>1982B00036</num_gestion>
+<code_activite>4752B</code_activite>
+<date_cloture_exercice_n-1>20160131</date_cloture_exercice_n-1>
+<duree_exercice_n>12</duree_exercice_n>
+<duree_exercice_n-1>12</duree_exercice_n-1>
+<date_depot>20190322</date_depot>
+<code_motif>00</code_motif>
+<code_type_bilan>C</code_type_bilan>
+<code_devise>EUR</code_devise>
+<code_origine_devise>O</code_origine_devise>
+<code_confidentialite>2</code_confidentialite>
+<info_traitement/>
+<denomination><![CDATA[CODIEMA]]></denomination>
+<adresse><![CDATA[56800 PLOERMEL]]></adresse>
+</identite>
+<detail>
+<page numero="01">
+<liasse code="AF" m1="000000000013176" m2="000000000013000" m3="000000000000176" m4="000000000001892"/>
+<liasse code="AN" m1="000000000145547" m2="000000000145547"/>
+<liasse code="AP" m1="000000000015901" m2="000000000010715" m3="000000000005186" m4="000000000006445"/>
+<liasse code="AR" m1="000000000080027" m2="000000000071139" m3="000000000008889" m4="000000000010675"/>
+<liasse code="AT" m1="000000000412331" m2="000000000358184" m3="000000000054146" m4="000000000059151"/>
+<liasse code="BD" m1="000000000032622" m3="000000000032622" m4="000000000024595"/>
+<liasse code="BH" m1="000000000002287" m3="000000000002287" m4="000000000002287"/>
+<liasse code="BJ" m1="000000000701890" m2="000000000598585" m3="000000000103305" m4="000000000105046"/>
+<liasse code="BT" m1="000000001102674" m3="000000001102674" m4="000000001015644"/>
+<liasse code="BX" m1="000000000022234" m2="000000000002862" m3="000000000019372" m4="000000000026795"/>
+<liasse code="BZ" m1="000000000409054" m3="000000000409054" m4="000000000420142"/>
+<liasse code="CF" m1="000000000018761" m3="000000000018761" m4="000000000114108"/>
+<liasse code="CH" m1="000000000024172" m3="000000000024172" m4="000000000013068"/>
+<liasse code="CJ" m1="000000001576897" m2="000000000002862" m3="000000001574035" m4="000000001589757"/>
+<liasse code="CO" m1="000000002278787" m2="000000000601447" m3="000000001677340" m4="000000001694803"/>
+</page>
+<page numero="02">
+<liasse code="DA" m1="000000000300000" m2="000000000300000"/>
+<liasse code="DD" m1="000000000030000" m2="000000000030000"/>
+<liasse code="DG" m1="000000000341725" m2="000000000341725"/>
+<liasse code="DH" m1="-000000000297532" m2="-000000000379028"/>
+<liasse code="DI" m1="000000000049645" m2="000000000081496"/>
+<liasse code="DL" m1="000000000423837" m2="000000000374192"/>
+<liasse code="DU" m1="000000000604623" m2="000000000495353"/>
+<liasse code="DW" m1="000000000008430" m2="000000000005596"/>
+<liasse code="DX" m1="000000000474708" m2="000000000562305"/>
+<liasse code="DY" m1="000000000122457" m2="000000000154983"/>
+<liasse code="EA" m1="000000000043285" m2="000000000102331"/>
+<liasse code="EB" m2="000000000000042"/>
+<liasse code="EC" m1="000000001253503" m2="000000001320610"/>
+<liasse code="EE" m1="000000001677340" m2="000000001694803"/>
+<liasse code="EG" m1="000000001042365" m2="000000001080989"/>
+<liasse code="EH" m1="000000000140503"/>
+</page>
+<page numero="05">
+<liasse code="KD" m1="000000000013176"/>
+<liasse code="LN" m1="000000000744174" m3="000000000019193"/>
+<liasse code="LQ" m1="000000000026882" m3="000000000008034"/>
+<liasse code="0G" m1="000000000784232" m3="000000000027227"/>
+<liasse code="IO" m3="000000000013176"/>
+<liasse code="IY" m2="000000000109561" m3="000000000653805"/>
+<liasse code="I3" m2="000000000000008" m3="000000000034909"/>
+<liasse code="I4" m2="000000000109569" m3="000000000701890"/>
+</page>
+<page numero="06">
+<liasse code="PE" m1="000000000011284" m2="000000000001716" m4="000000000013000"/>
+<liasse code="QU" m1="000000000667902" m2="000000000027244" m3="000000000109561" m4="000000000585585"/>
+<liasse code="0N" m1="000000000679186" m2="000000000028960" m3="000000000109561" m4="000000000598585"/>
+</page>
+<page numero="08">
+<liasse code="UT" m1="000000000002287" m3="000000000002287"/>
+<liasse code="VA" m1="000000000003434" m3="000000000003434"/>
+<liasse code="UX" m1="000000000018800" m2="000000000018800"/>
+<liasse code="UY" m1="000000000000512" m2="000000000000512"/>
+<liasse code="VM" m1="000000000013297" m2="000000000013297"/>
+<liasse code="VB" m1="000000000013547" m2="000000000013547"/>
+<liasse code="VN" m1="000000000002503" m2="000000000002503"/>
+<liasse code="VC" m1="000000000265782" m2="000000000265782"/>
+<liasse code="VR" m1="000000000113412" m2="000000000113412"/>
+<liasse code="VS" m1="000000000024172" m2="000000000024172"/>
+<liasse code="VT" m1="000000000457748" m2="000000000452027" m3="000000000005721"/>
+<liasse code="VK" m1="000000000030651"/>
+</page>
+</detail>
+</bilan>
+</bilans>

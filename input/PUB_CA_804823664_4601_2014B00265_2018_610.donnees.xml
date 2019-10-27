@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<bilans version="1.0" xmlns="fr:inpi:odrncs:bilansSaisisXML">
+<bilan>
+<identite>
+<siren>804823664</siren>
+<date_cloture_exercice>20180930</date_cloture_exercice>
+<code_greffe>4601</code_greffe>
+<num_depot>610</num_depot>
+<num_gestion>2014B00265</num_gestion>
+<code_activite>4520A</code_activite>
+<date_cloture_exercice_n-1>20170930</date_cloture_exercice_n-1>
+<duree_exercice_n>12</duree_exercice_n>
+<duree_exercice_n-1>12</duree_exercice_n-1>
+<date_depot>20190322</date_depot>
+<code_motif>00</code_motif>
+<code_type_bilan>C</code_type_bilan>
+<code_devise>EUR</code_devise>
+<code_origine_devise>O</code_origine_devise>
+<code_confidentialite>2</code_confidentialite>
+<info_traitement/>
+<denomination><![CDATA[Espace Autos GOURDON 46]]></denomination>
+<adresse><![CDATA[46300 GOURDON]]></adresse>
+</identite>
+<detail>
+<page numero="01">
+<liasse code="AF" m1="000000000001280" m2="000000000001280"/>
+<liasse code="AH" m1="000000000080000" m3="000000000080000"/>
+<liasse code="AR" m1="000000000066494" m2="000000000042812" m3="000000000023682"/>
+<liasse code="AT" m1="000000000012635" m2="000000000009136" m3="000000000003498"/>
+<liasse code="BH" m1="000000000003400" m3="000000000003400"/>
+<liasse code="BJ" m1="000000000163810" m2="000000000053228" m3="000000000110581"/>
+<liasse code="BT" m1="000000000192057" m3="000000000192057"/>
+<liasse code="BX" m1="000000000076066" m3="000000000076066"/>
+<liasse code="BZ" m1="000000000020400" m3="000000000020400"/>
+<liasse code="CF" m1="000000000200329" m3="000000000200329"/>
+<liasse code="CH" m1="000000000003090" m3="000000000003090"/>
+<liasse code="CJ" m1="000000000491945" m3="000000000491945"/>
+<liasse code="CO" m1="000000000655755" m2="000000000053228" m3="000000000602527"/>
+</page>
+<page numero="02">
+<liasse code="DA" m1="000000000010000"/>
+<liasse code="DD" m1="000000000001000"/>
+<liasse code="DG" m1="000000000227125"/>
+<liasse code="DI" m1="000000000063488"/>
+<liasse code="DL" m1="000000000301613"/>
+<liasse code="DU" m1="000000000079129"/>
+<liasse code="DV" m1="000000000020025"/>
+<liasse code="DW" m1="000000000019990"/>
+<liasse code="DX" m1="000000000136233"/>
+<liasse code="DY" m1="000000000045350"/>
+<liasse code="EA" m1="000000000000184"/>
+<liasse code="EC" m1="000000000300913"/>
+<liasse code="EE" m1="000000000602527"/>
+<liasse code="EG" m1="000000000237086"/>
+</page>
+</detail>
+</bilan>
+</bilans>

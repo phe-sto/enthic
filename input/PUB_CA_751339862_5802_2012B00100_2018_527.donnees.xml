@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<bilans version="1.0" xmlns="fr:inpi:odrncs:bilansSaisisXML">
+<bilan>
+<identite>
+<siren>751339862</siren>
+<date_cloture_exercice>20180331</date_cloture_exercice>
+<code_greffe>5802</code_greffe>
+<num_depot>527</num_depot>
+<num_gestion>2012B00100</num_gestion>
+<code_activite>5530Z</code_activite>
+<date_cloture_exercice_n-1>20170331</date_cloture_exercice_n-1>
+<duree_exercice_n>12</duree_exercice_n>
+<duree_exercice_n-1>12</duree_exercice_n-1>
+<date_depot>20190320</date_depot>
+<code_motif>01</code_motif>
+<code_type_bilan>S</code_type_bilan>
+<code_devise>EUR</code_devise>
+<code_origine_devise>O</code_origine_devise>
+<code_confidentialite>0</code_confidentialite>
+<info_traitement/>
+<denomination><![CDATA[CAMPING ET GÎTES DES BAINS SAINT-HONORÉ]]></denomination>
+<adresse><![CDATA[58360 SAINT HONORE LES BAINS]]></adresse>
+</identite>
+<detail>
+<page numero="01">
+<liasse code="010" m1="000000000270000" m3="000000000270000"/>
+<liasse code="014" m1="000000000006390" m2="000000000006390"/>
+<liasse code="028" m1="000000000072956" m2="000000000055987" m3="000000000016969"/>
+<liasse code="040" m1="000000000015260" m3="000000000015260"/>
+<liasse code="044" m1="000000000364606" m2="000000000062377" m3="000000000302229"/>
+<liasse code="050" m1="000000000000060" m3="000000000000060"/>
+<liasse code="060" m1="000000000000861" m3="000000000000861"/>
+<liasse code="064" m1="000000000009306" m3="000000000009306"/>
+<liasse code="072" m1="000000000011995" m3="000000000011995"/>
+<liasse code="084" m1="000000000029511" m3="000000000029511"/>
+<liasse code="092" m1="000000000004376" m3="000000000004376"/>
+<liasse code="096" m1="000000000056110" m3="000000000056110"/>
+<liasse code="110" m1="000000000420717" m2="000000000062377" m3="000000000358339"/>
+<liasse code="120" m3="000000000020000"/>
+<liasse code="126" m3="000000000001246"/>
+<liasse code="136" m3="000000000023808"/>
+<liasse code="142" m3="000000000045054"/>
+<liasse code="156" m3="000000000017419"/>
+<liasse code="164" m3="000000000024451"/>
+<liasse code="166" m3="000000000027270"/>
+<liasse code="169" m2="000000000231627"/>
+<liasse code="172" m3="000000000244143"/>
+<liasse code="176" m3="000000000313285"/>
+<liasse code="180" m3="000000000358339"/>
+<liasse code="182" m3="000000000014014"/>
+</page>
+<page numero="02">
+<liasse code="210" m1="000000000036147"/>
+<liasse code="218" m1="000000000174768"/>
+<liasse code="226" m1="000000000000695"/>
+<liasse code="230" m1="000000000005745"/>
+<liasse code="232" m1="000000000217357"/>
+<liasse code="234" m1="000000000016898"/>
+<liasse code="236" m1="-000000000000374"/>
+<liasse code="238" m1="000000000000178"/>
+<liasse code="240" m1="-000000000000060"/>
+<liasse code="242" m1="000000000126043"/>
+<liasse code="243" m1="000000000003195"/>
+<liasse code="244" m1="000000000004196"/>
+<liasse code="250" m1="000000000038640"/>
+<liasse code="252" m1="000000000005291"/>
+<liasse code="254" m1="000000000006489"/>
+<liasse code="262" m1="000000000002723"/>
+<liasse code="264" m1="000000000200029"/>
+<liasse code="270" m1="000000000017327"/>
+<liasse code="280" m1="000000000000001"/>
+<liasse code="290" m1="000000000008495"/>
+<liasse code="294" m1="000000000001150"/>
+<liasse code="300" m1="000000000000865"/>
+<liasse code="310" m1="000000000023808"/>
+<liasse code="316" m1="000000000000596"/>
+</page>
+<page numero="03">
+<liasse code="432" m1="000000000001239"/>
+<liasse code="442" m1="000000000013899"/>
+<liasse code="472" m1="-000000000001384"/>
+<liasse code="482" m1="000000000000260"/>
+<liasse code="490" m1="000000000350791"/>
+<liasse code="492" m1="000000000014014"/>
+<liasse code="494" m1="000000000001584"/>
+</page>
+<page numero="04">
+<liasse code="374" m1="000000000022362"/>
+<liasse code="378" m1="000000000009498"/>
+</page>
+<page numero="05">
+<liasse code="376" m1="000000000000002"/>
+</page>
+</detail>
+</bilan>
+</bilans>

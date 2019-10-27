@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<bilans version="1.0" xmlns="fr:inpi:odrncs:bilansSaisisXML">
+<bilan>
+<identite>
+<siren>819963398</siren>
+<date_cloture_exercice>20180630</date_cloture_exercice>
+<code_greffe>6201</code_greffe>
+<num_depot>1965</num_depot>
+<num_gestion>2016B00522</num_gestion>
+<code_activite>1071C</code_activite>
+<date_cloture_exercice_n-1>20170630</date_cloture_exercice_n-1>
+<duree_exercice_n>12</duree_exercice_n>
+<duree_exercice_n-1>00</duree_exercice_n-1>
+<date_depot>20190320</date_depot>
+<code_motif>00</code_motif>
+<code_type_bilan>S</code_type_bilan>
+<code_devise>EUR</code_devise>
+<code_origine_devise>O</code_origine_devise>
+<code_confidentialite>2</code_confidentialite>
+<info_traitement/>
+<denomination><![CDATA[LE RUBAN DORE]]></denomination>
+<adresse><![CDATA[62218 LOISON SOUS LENS]]></adresse>
+</identite>
+<detail>
+<page numero="01">
+<liasse code="072" m1="000000000030245" m3="000000000030245"/>
+<liasse code="084" m1="000000000004255" m3="000000000004255"/>
+<liasse code="096" m1="000000000034500" m3="000000000034500"/>
+<liasse code="110" m1="000000000034500" m3="000000000034500"/>
+<liasse code="120" m3="000000000003000"/>
+<liasse code="134" m3="-000000000000790"/>
+<liasse code="136" m3="-000000000000359"/>
+<liasse code="142" m3="000000000001851"/>
+<liasse code="156" m3="000000000032649"/>
+<liasse code="176" m3="000000000032649"/>
+<liasse code="180" m3="000000000034500"/>
+</page>
+</detail>
+</bilan>
+</bilans>

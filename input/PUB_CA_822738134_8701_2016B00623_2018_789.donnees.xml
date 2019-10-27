@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<bilans version="1.0" xmlns="fr:inpi:odrncs:bilansSaisisXML">
+<bilan>
+<identite>
+<siren>822738134</siren>
+<date_cloture_exercice>20180930</date_cloture_exercice>
+<code_greffe>8701</code_greffe>
+<num_depot>789</num_depot>
+<num_gestion>2016B00623</num_gestion>
+<code_activite>4120A</code_activite>
+<date_cloture_exercice_n-1>20170930</date_cloture_exercice_n-1>
+<duree_exercice_n>12</duree_exercice_n>
+<duree_exercice_n-1>13</duree_exercice_n-1>
+<date_depot>20190322</date_depot>
+<code_motif>00</code_motif>
+<code_type_bilan>S</code_type_bilan>
+<code_devise>EUR</code_devise>
+<code_origine_devise>O</code_origine_devise>
+<code_confidentialite>0</code_confidentialite>
+<info_traitement/>
+<denomination><![CDATA[LEFEBVRE EMERIC]]></denomination>
+<adresse><![CDATA[87310 COGNAC LA FORET]]></adresse>
+</identite>
+<detail>
+<page numero="01">
+<liasse code="014" m1="000000000001000" m2="000000000000643" m3="000000000000357"/>
+<liasse code="028" m1="000000000016816" m2="000000000004484" m3="000000000012332"/>
+<liasse code="044" m1="000000000017816" m2="000000000005127" m3="000000000012690"/>
+<liasse code="050" m1="000000000093128" m3="000000000093128"/>
+<liasse code="064" m1="000000000000549" m3="000000000000549"/>
+<liasse code="068" m1="000000000019097" m3="000000000019097"/>
+<liasse code="072" m1="000000000012286" m3="000000000012286"/>
+<liasse code="084" m1="000000000001568" m3="000000000001568"/>
+<liasse code="096" m1="000000000126628" m3="000000000126628"/>
+<liasse code="110" m1="000000000144444" m2="000000000005127" m3="000000000139318"/>
+<liasse code="120" m3="000000000002000"/>
+<liasse code="126" m3="000000000000200"/>
+<liasse code="134" m3="000000000003967"/>
+<liasse code="136" m3="000000000003607"/>
+<liasse code="142" m3="000000000009774"/>
+<liasse code="164" m3="000000000072607"/>
+<liasse code="166" m3="000000000013165"/>
+<liasse code="169" m2="000000000001359"/>
+<liasse code="172" m3="000000000043771"/>
+<liasse code="176" m3="000000000129544"/>
+<liasse code="180" m3="000000000139318"/>
+<liasse code="182" m3="000000000007320"/>
+</page>
+<page numero="02">
+<liasse code="218" m1="000000000310723"/>
+<liasse code="222" m1="-000000000057372"/>
+<liasse code="226" m1="000000000002000"/>
+<liasse code="230" m1="000000000000014"/>
+<liasse code="232" m1="000000000255365"/>
+<liasse code="238" m1="000000000120567"/>
+<liasse code="240" m1="-000000000007000"/>
+<liasse code="242" m1="000000000080175"/>
+<liasse code="243" m1="000000000000482"/>
+<liasse code="244" m1="000000000003164"/>
+<liasse code="250" m1="000000000035394"/>
+<liasse code="252" m1="000000000012394"/>
+<liasse code="254" m1="000000000003491"/>
+<liasse code="262" m1="000000000002926"/>
+<liasse code="264" m1="000000000251110"/>
+<liasse code="270" m1="000000000004255"/>
+<liasse code="294" m1="000000000000006"/>
+<liasse code="300" m1="000000000000046"/>
+<liasse code="306" m1="000000000000596"/>
+<liasse code="310" m1="000000000003607"/>
+</page>
+<page numero="03">
+<liasse code="442" m1="000000000006687"/>
+<liasse code="472" m1="000000000000632"/>
+<liasse code="490" m1="000000000010497"/>
+<liasse code="492" m1="000000000007320"/>
+</page>
+<page numero="04">
+<liasse code="374" m1="000000000036896"/>
+<liasse code="378" m1="000000000027115"/>
+</page>
+<page numero="05">
+<liasse code="376" m1="000000000000001"/>
+</page>
+</detail>
+</bilan>
+</bilans>

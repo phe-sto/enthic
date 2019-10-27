@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<bilans version="1.0" xmlns="fr:inpi:odrncs:bilansSaisisXML">
+<bilan>
+<identite>
+<siren>830677969</siren>
+<date_cloture_exercice>20181231</date_cloture_exercice>
+<code_greffe>6303</code_greffe>
+<num_depot>2246</num_depot>
+<num_gestion>2017B00909</num_gestion>
+<code_activite>6920Z</code_activite>
+<date_cloture_exercice_n-1>00000000</date_cloture_exercice_n-1>
+<duree_exercice_n>15</duree_exercice_n>
+<duree_exercice_n-1>00</duree_exercice_n-1>
+<date_depot>20190322</date_depot>
+<code_motif>00</code_motif>
+<code_type_bilan>C</code_type_bilan>
+<code_devise>EUR</code_devise>
+<code_origine_devise>O</code_origine_devise>
+<code_confidentialite>0</code_confidentialite>
+<info_traitement/>
+<denomination><![CDATA[VIEMARSI CONSEIL]]></denomination>
+<adresse><![CDATA[63000 CLERMONT FERRAND]]></adresse>
+</identite>
+<detail>
+<page numero="01">
+<liasse code="CU" m1="000000000256700" m3="000000000256700"/>
+<liasse code="BJ" m1="000000000256700" m3="000000000256700"/>
+<liasse code="CF" m1="000000000002018" m3="000000000002018"/>
+<liasse code="CJ" m1="000000000002018" m3="000000000002018"/>
+<liasse code="CO" m1="000000000258718" m3="000000000258718"/>
+</page>
+<page numero="02">
+<liasse code="DA" m1="000000000001000"/>
+<liasse code="DI" m1="000000000032212"/>
+<liasse code="DL" m1="000000000033212"/>
+<liasse code="DU" m1="000000000217852"/>
+<liasse code="DV" m1="000000000005715"/>
+<liasse code="DY" m1="000000000001939"/>
+<liasse code="EC" m1="000000000225506"/>
+<liasse code="EE" m1="000000000258718"/>
+<liasse code="EG" m1="000000000225506"/>
+</page>
+<page numero="03">
+<liasse code="FG" m1="000000000032500" m3="000000000032500"/>
+<liasse code="FJ" m1="000000000032500" m3="000000000032500"/>
+<liasse code="FR" m3="000000000032500"/>
+<liasse code="FW" m3="000000000002464"/>
+<liasse code="FX" m3="000000000007557"/>
+<liasse code="GF" m3="000000000010021"/>
+<liasse code="GG" m3="000000000022478"/>
+<liasse code="GJ" m3="000000000014000"/>
+<liasse code="GP" m3="000000000014000"/>
+<liasse code="GR" m3="000000000002327"/>
+<liasse code="GU" m3="000000000002327"/>
+<liasse code="GV" m3="000000000011672"/>
+<liasse code="GW" m3="000000000034151"/>
+</page>
+<page numero="04">
+<liasse code="HK" m1="000000000001939"/>
+<liasse code="HL" m1="000000000046500"/>
+<liasse code="HM" m1="000000000014287"/>
+<liasse code="HN" m1="000000000032212"/>
+</page>
+</detail>
+</bilan>
+</bilans>

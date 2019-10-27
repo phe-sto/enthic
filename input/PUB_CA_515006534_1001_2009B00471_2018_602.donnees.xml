@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<bilans version="1.0" xmlns="fr:inpi:odrncs:bilansSaisisXML">
+<bilan>
+<identite>
+<siren>515006534</siren>
+<date_cloture_exercice>20180630</date_cloture_exercice>
+<code_greffe>1001</code_greffe>
+<num_depot>602</num_depot>
+<num_gestion>2009B00471</num_gestion>
+<code_activite>4618Z</code_activite>
+<date_cloture_exercice_n-1>20170630</date_cloture_exercice_n-1>
+<duree_exercice_n>12</duree_exercice_n>
+<duree_exercice_n-1>12</duree_exercice_n-1>
+<date_depot>20190213</date_depot>
+<code_motif>1A</code_motif>
+<code_type_bilan>S</code_type_bilan>
+<code_devise>EUR</code_devise>
+<code_origine_devise>O</code_origine_devise>
+<code_confidentialite>0</code_confidentialite>
+<info_traitement>A1</info_traitement>
+<denomination><![CDATA[TERRE NEGOCE]]></denomination>
+<adresse><![CDATA[10500 CRESPY LE NEUF]]></adresse>
+</identite>
+<detail>
+<page numero="01">
+<liasse code="028" m1="000000000159021" m2="000000000105186" m3="000000000053835"/>
+<liasse code="040" m1="000000000000015" m3="000000000000015"/>
+<liasse code="044" m1="000000000159036" m2="000000000105186" m3="000000000053850"/>
+<liasse code="068" m1="000000000315009" m3="000000000315009"/>
+<liasse code="072" m1="000000000132420" m3="000000000132420"/>
+<liasse code="084" m1="000000000015883" m3="000000000015883"/>
+<liasse code="092" m1="000000000001109" m3="000000000001109"/>
+<liasse code="096" m1="000000000464421" m3="000000000464421"/>
+<liasse code="110" m1="000000000623457" m2="000000000105186" m3="000000000518271"/>
+<liasse code="120" m3="000000000001000"/>
+<liasse code="126" m3="000000000000100"/>
+<liasse code="132" m3="000000000089457"/>
+<liasse code="136" m3="000000000054137"/>
+<liasse code="142" m3="000000000144693"/>
+<liasse code="156" m3="000000000190460"/>
+<liasse code="166" m3="000000000119428"/>
+<liasse code="169" m2="000000000002505"/>
+<liasse code="172" m3="000000000063690"/>
+<liasse code="176" m3="000000000373578"/>
+<liasse code="180" m3="000000000518271"/>
+</page>
+<page numero="02">
+<liasse code="210" m1="000000000029614"/>
+<liasse code="214" m1="000000000131182"/>
+<liasse code="218" m1="000000000062067"/>
+<liasse code="226" m1="000000000000423"/>
+<liasse code="230" m1="000000000000001"/>
+<liasse code="232" m1="000000000223286"/>
+<liasse code="234" m1="000000000059032"/>
+<liasse code="238" m1="000000000029614"/>
+<liasse code="242" m1="000000000048150"/>
+<liasse code="244" m1="000000000000450"/>
+<liasse code="250" m1="000000000020407"/>
+<liasse code="252" m1="000000000005252"/>
+<liasse code="254" m1="000000000042080"/>
+<liasse code="262" m1="000000000000001"/>
+<liasse code="264" m1="000000000204987"/>
+<liasse code="270" m1="000000000018300"/>
+<liasse code="290" m1="000000000142212"/>
+<liasse code="294" m1="000000000003894"/>
+<liasse code="300" m1="000000000088421"/>
+<liasse code="306" m1="000000000014060"/>
+<liasse code="310" m1="000000000054137"/>
+</page>
+</detail>
+</bilan>
+</bilans>

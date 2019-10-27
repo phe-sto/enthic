@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<bilans version="1.0" xmlns="fr:inpi:odrncs:bilansSaisisXML">
+<bilan>
+<identite>
+<siren>450320304</siren>
+<date_cloture_exercice>20180930</date_cloture_exercice>
+<code_greffe>7901</code_greffe>
+<num_depot>873</num_depot>
+<num_gestion>2003B00243</num_gestion>
+<code_activite>9603Z</code_activite>
+<date_cloture_exercice_n-1>20170930</date_cloture_exercice_n-1>
+<duree_exercice_n>12</duree_exercice_n>
+<duree_exercice_n-1>12</duree_exercice_n-1>
+<date_depot>20190319</date_depot>
+<code_motif>00</code_motif>
+<code_type_bilan>C</code_type_bilan>
+<code_devise>EUR</code_devise>
+<code_origine_devise>O</code_origine_devise>
+<code_confidentialite>2</code_confidentialite>
+<info_traitement/>
+<denomination><![CDATA[SOCIETE MARTIN MICHEL]]></denomination>
+<adresse><![CDATA[79160 COULONGES SUR L'AUTIZE]]></adresse>
+</identite>
+<detail>
+<page numero="01">
+<liasse code="AF" m1="000000000002730" m2="000000000001967" m3="000000000000763"/>
+<liasse code="AH" m1="000000000189650" m3="000000000189650"/>
+<liasse code="AP" m1="000000000012612" m2="000000000004420" m3="000000000008192"/>
+<liasse code="AR" m1="000000000066449" m2="000000000050734" m3="000000000015715"/>
+<liasse code="AT" m1="000000000178168" m2="000000000113878" m3="000000000064290"/>
+<liasse code="CU" m1="000000000000150" m3="000000000000150"/>
+<liasse code="BJ" m1="000000000449759" m2="000000000170998" m3="000000000278761"/>
+<liasse code="BT" m1="000000000083796" m3="000000000083796"/>
+<liasse code="BX" m1="000000000102612" m2="000000000010273" m3="000000000092338"/>
+<liasse code="BZ" m1="000000000012654" m3="000000000012654"/>
+<liasse code="CF" m1="000000000085389" m3="000000000085389"/>
+<liasse code="CH" m1="000000000004722" m3="000000000004722"/>
+<liasse code="CJ" m1="000000000289173" m2="000000000010273" m3="000000000278899"/>
+<liasse code="CO" m1="000000000738932" m2="000000000181272" m3="000000000557660"/>
+</page>
+<page numero="02">
+<liasse code="DA" m1="000000000008000"/>
+<liasse code="DD" m1="000000000000800"/>
+<liasse code="DG" m1="000000000344492"/>
+<liasse code="DI" m1="000000000041377"/>
+<liasse code="DL" m1="000000000394669"/>
+<liasse code="DU" m1="000000000035129"/>
+<liasse code="DV" m1="000000000029899"/>
+<liasse code="DX" m1="000000000063066"/>
+<liasse code="DY" m1="000000000034897"/>
+<liasse code="EC" m1="000000000162991"/>
+<liasse code="EE" m1="000000000557660"/>
+<liasse code="EG" m1="000000000142063"/>
+</page>
+</detail>
+</bilan>
+</bilans>

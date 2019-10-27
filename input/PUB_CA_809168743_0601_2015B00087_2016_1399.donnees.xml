@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<bilans version="1.0" xmlns="fr:inpi:odrncs:bilansSaisisXML">
+<bilan>
+<identite>
+<siren>809168743</siren>
+<date_cloture_exercice>20161231</date_cloture_exercice>
+<code_greffe>0601</code_greffe>
+<num_depot>1399</num_depot>
+<num_gestion>2015B00087</num_gestion>
+<code_activite>4399C</code_activite>
+<date_cloture_exercice_n-1>20151231</date_cloture_exercice_n-1>
+<duree_exercice_n>12</duree_exercice_n>
+<duree_exercice_n-1>12</duree_exercice_n-1>
+<date_depot>20190314</date_depot>
+<code_motif>00</code_motif>
+<code_type_bilan>S</code_type_bilan>
+<code_devise>EUR</code_devise>
+<code_origine_devise>O</code_origine_devise>
+<code_confidentialite>0</code_confidentialite>
+<info_traitement/>
+<denomination><![CDATA[ENTREPRISE MODERNE DE BATIMENT]]></denomination>
+<adresse><![CDATA[06700 SAINT LAURENT DU VAR]]></adresse>
+</identite>
+<detail>
+<page numero="01">
+<liasse code="014" m1="000000000001480" m2="000000000001132" m3="000000000000348"/>
+<liasse code="040" m1="000000000000400" m3="000000000000400"/>
+<liasse code="044" m1="000000000001880" m2="000000000001132" m3="000000000000748"/>
+<liasse code="050" m1="000000000028040" m3="000000000028040"/>
+<liasse code="068" m1="000000000053391" m3="000000000053391"/>
+<liasse code="072" m1="000000000000240" m3="000000000000240"/>
+<liasse code="084" m1="000000000007798" m3="000000000007798"/>
+<liasse code="096" m1="000000000089470" m3="000000000089470"/>
+<liasse code="110" m1="000000000091350" m2="000000000001132" m3="000000000090217"/>
+<liasse code="120" m3="000000000001000"/>
+<liasse code="134" m3="-000000000001954"/>
+<liasse code="136" m3="000000000029860"/>
+<liasse code="142" m3="000000000028905"/>
+<liasse code="166" m3="000000000030363"/>
+<liasse code="169" m2="000000000011481"/>
+<liasse code="172" m3="000000000030949"/>
+<liasse code="176" m3="000000000061312"/>
+<liasse code="180" m3="000000000090217"/>
+</page>
+<page numero="02">
+<liasse code="218" m1="000000000075047"/>
+<liasse code="222" m1="000000000028040"/>
+<liasse code="232" m1="000000000103087"/>
+<liasse code="238" m1="000000000008406"/>
+<liasse code="242" m1="000000000059233"/>
+<liasse code="244" m1="000000000000170"/>
+<liasse code="250" m1="000000000000493"/>
+<liasse code="264" m1="000000000068302"/>
+<liasse code="270" m1="000000000034785"/>
+<liasse code="306" m1="000000000004925"/>
+<liasse code="310" m1="000000000029860"/>
+</page>
+</detail>
+</bilan>
+</bilans>

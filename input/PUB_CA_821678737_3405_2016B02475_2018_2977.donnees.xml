@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<bilans version="1.0" xmlns="fr:inpi:odrncs:bilansSaisisXML">
+<bilan>
+<identite>
+<siren>821678737</siren>
+<date_cloture_exercice>20180430</date_cloture_exercice>
+<code_greffe>3405</code_greffe>
+<num_depot>2977</num_depot>
+<num_gestion>2016B02475</num_gestion>
+<code_activite>5819Z</code_activite>
+<date_cloture_exercice_n-1>20170430</date_cloture_exercice_n-1>
+<duree_exercice_n>12</duree_exercice_n>
+<duree_exercice_n-1>09</duree_exercice_n-1>
+<date_depot>20190322</date_depot>
+<code_motif>00</code_motif>
+<code_type_bilan>S</code_type_bilan>
+<code_devise>EUR</code_devise>
+<code_origine_devise>O</code_origine_devise>
+<code_confidentialite>0</code_confidentialite>
+<info_traitement/>
+<denomination><![CDATA[FANTASTIC LOMBRIC]]></denomination>
+<adresse><![CDATA[34400 LUNEL]]></adresse>
+</identite>
+<detail>
+<page numero="01">
+<liasse code="068" m1="000000000010159" m3="000000000010159"/>
+<liasse code="072" m1="000000000004823" m3="000000000004823"/>
+<liasse code="084" m1="000000000022411" m3="000000000022411"/>
+<liasse code="096" m1="000000000037393" m3="000000000037393"/>
+<liasse code="110" m1="000000000037393" m3="000000000037393"/>
+<liasse code="120" m3="000000000012000"/>
+<liasse code="126" m3="000000000001200"/>
+<liasse code="134" m3="000000000005934"/>
+<liasse code="136" m3="000000000006525"/>
+<liasse code="142" m3="000000000025660"/>
+<liasse code="166" m3="000000000000922"/>
+<liasse code="169" m2="000000000000048"/>
+<liasse code="172" m3="000000000010812"/>
+<liasse code="176" m3="000000000011733"/>
+<liasse code="180" m3="000000000037393"/>
+</page>
+<page numero="02">
+<liasse code="210" m1="000000000059878"/>
+<liasse code="218" m1="000000000000849"/>
+<liasse code="230" m1="000000000000002"/>
+<liasse code="232" m1="000000000060729"/>
+<liasse code="234" m1="000000000036457"/>
+<liasse code="236" m1="000000000002310"/>
+<liasse code="242" m1="000000000014070"/>
+<liasse code="243" m1="000000000000215"/>
+<liasse code="244" m1="000000000000215"/>
+<liasse code="264" m1="000000000053052"/>
+<liasse code="270" m1="000000000007677"/>
+<liasse code="306" m1="000000000001152"/>
+<liasse code="310" m1="000000000006525"/>
+</page>
+</detail>
+</bilan>
+</bilans>

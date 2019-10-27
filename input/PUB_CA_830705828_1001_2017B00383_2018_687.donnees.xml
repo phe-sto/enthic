@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<bilans version="1.0" xmlns="fr:inpi:odrncs:bilansSaisisXML">
+<bilan>
+<identite>
+<siren>830705828</siren>
+<date_cloture_exercice>20180331</date_cloture_exercice>
+<code_greffe>1001</code_greffe>
+<num_depot>687</num_depot>
+<num_gestion>2017B00383</num_gestion>
+<code_activite>6820B</code_activite>
+<date_cloture_exercice_n-1>00000000</date_cloture_exercice_n-1>
+<duree_exercice_n>10</duree_exercice_n>
+<duree_exercice_n-1>00</duree_exercice_n-1>
+<date_depot>20190218</date_depot>
+<code_motif>00</code_motif>
+<code_type_bilan>C</code_type_bilan>
+<code_devise>EUR</code_devise>
+<code_origine_devise>O</code_origine_devise>
+<code_confidentialite>0</code_confidentialite>
+<info_traitement/>
+<denomination><![CDATA[MIYANA GROUP]]></denomination>
+<adresse><![CDATA[10600 LA CHAPELLE ST LUC]]></adresse>
+</identite>
+<detail>
+<page numero="01">
+<liasse code="CU" m1="000000000059419" m3="000000000059419"/>
+<liasse code="BJ" m1="000000000059419" m3="000000000059419"/>
+<liasse code="CF" m1="000000000001133" m3="000000000001133"/>
+<liasse code="CJ" m1="000000000001133" m3="000000000001133"/>
+<liasse code="CO" m1="000000000060552" m3="000000000060552"/>
+</page>
+<page numero="02">
+<liasse code="DA" m1="000000000001500"/>
+<liasse code="DI" m1="-000000000005924"/>
+<liasse code="DL" m1="-000000000004424"/>
+<liasse code="DU" m1="000000000059419"/>
+<liasse code="DV" m1="000000000001597"/>
+<liasse code="DX" m1="000000000003960"/>
+<liasse code="EC" m1="000000000064976"/>
+<liasse code="EE" m1="000000000060552"/>
+<liasse code="EG" m1="000000000064976"/>
+<liasse code="EI" m1="000000000001597"/>
+</page>
+<page numero="03">
+<liasse code="FW" m3="000000000004371"/>
+<liasse code="FX" m3="000000000001553"/>
+<liasse code="GF" m3="000000000005924"/>
+<liasse code="GG" m3="-000000000005924"/>
+<liasse code="GW" m3="-000000000005924"/>
+</page>
+<page numero="04">
+<liasse code="HM" m1="000000000005924"/>
+<liasse code="HN" m1="-000000000005924"/>
+</page>
+<page numero="05">
+<liasse code="LQ" m3="000000000059419"/>
+<liasse code="0G" m3="000000000059419"/>
+<liasse code="I3" m3="000000000059419"/>
+<liasse code="I4" m3="000000000059419"/>
+</page>
+</detail>
+</bilan>
+</bilans>

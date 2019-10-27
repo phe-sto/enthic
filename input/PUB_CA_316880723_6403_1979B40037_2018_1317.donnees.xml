@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<bilans version="1.0" xmlns="fr:inpi:odrncs:bilansSaisisXML">
+<bilan>
+<identite>
+<siren>316880723</siren>
+<date_cloture_exercice>20180930</date_cloture_exercice>
+<code_greffe>6403</code_greffe>
+<num_depot>1317</num_depot>
+<num_gestion>1979B40037</num_gestion>
+<code_activite>4722Z</code_activite>
+<date_cloture_exercice_n-1>20170930</date_cloture_exercice_n-1>
+<duree_exercice_n>12</duree_exercice_n>
+<duree_exercice_n-1>12</duree_exercice_n-1>
+<date_depot>20190319</date_depot>
+<code_motif>00</code_motif>
+<code_type_bilan>C</code_type_bilan>
+<code_devise>EUR</code_devise>
+<code_origine_devise>O</code_origine_devise>
+<code_confidentialite>2</code_confidentialite>
+<info_traitement/>
+<denomination><![CDATA[BOUCHERIE BASCO BEARNAISE]]></denomination>
+<adresse><![CDATA[64570 ARETTE]]></adresse>
+</identite>
+<detail>
+<page numero="01">
+<liasse code="AF" m1="000000000003080" m2="000000000001756" m3="000000000001324"/>
+<liasse code="AH" m1="000000000107168" m3="000000000107168" m4="000000000107168"/>
+<liasse code="AR" m1="000000000152763" m2="000000000083712" m3="000000000069051" m4="000000000080530"/>
+<liasse code="AT" m1="000000000143152" m2="000000000088262" m3="000000000054890" m4="000000000033265"/>
+<liasse code="CU" m1="000000000000224" m3="000000000000224" m4="000000000000213"/>
+<liasse code="BH" m1="000000000000305" m3="000000000000305" m4="000000000000305"/>
+<liasse code="BJ" m1="000000000406692" m2="000000000173730" m3="000000000232962" m4="000000000221481"/>
+<liasse code="BL" m1="000000000002093" m3="000000000002093" m4="000000000002833"/>
+<liasse code="BT" m1="000000000015093" m3="000000000015093" m4="000000000016898"/>
+<liasse code="BV" m1="000000000000168" m3="000000000000168" m4="000000000000132"/>
+<liasse code="BX" m1="000000000007270" m3="000000000007270" m4="000000000005193"/>
+<liasse code="BZ" m1="000000000024010" m3="000000000024010" m4="000000000023847"/>
+<liasse code="CF" m1="000000000117606" m3="000000000117606" m4="000000000110221"/>
+<liasse code="CH" m1="000000000003849" m3="000000000003849" m4="000000000001937"/>
+<liasse code="CJ" m1="000000000170089" m3="000000000170089" m4="000000000161062"/>
+<liasse code="CO" m1="000000000576781" m2="000000000173730" m3="000000000403051" m4="000000000382543"/>
+<liasse code="CP" m1="000000000000305"/>
+</page>
+<page numero="02">
+<liasse code="DA" m1="000000000007622" m2="000000000007622"/>
+<liasse code="DD" m1="000000000000762" m2="000000000000762"/>
+<liasse code="DG" m1="000000000159870"/>
+<liasse code="DH" m1="000000000005000" m2="000000000156253"/>
+<liasse code="DI" m1="000000000009980" m2="000000000008617"/>
+<liasse code="DJ" m1="000000000006489" m2="000000000007989"/>
+<liasse code="DL" m1="000000000189723" m2="000000000181244"/>
+<liasse code="DU" m1="000000000087188" m2="000000000075485"/>
+<liasse code="DV" m1="000000000002313" m2="000000000002162"/>
+<liasse code="DX" m1="000000000076446" m2="000000000061856"/>
+<liasse code="DY" m1="000000000047232" m2="000000000061606"/>
+<liasse code="EA" m1="000000000000148" m2="000000000000191"/>
+<liasse code="EC" m1="000000000213328" m2="000000000201299"/>
+<liasse code="EE" m1="000000000403051" m2="000000000382543"/>
+<liasse code="EG" m1="000000000143285" m2="000000000138536"/>
+</page>
+<page numero="05">
+<liasse code="KD" m1="000000000108872" m3="000000000001956"/>
+<liasse code="LN" m1="000000000267657" m3="000000000033992"/>
+<liasse code="LQ" m1="000000000000518" m3="000000000000011"/>
+<liasse code="0G" m1="000000000377047" m3="000000000035958"/>
+<liasse code="IO" m2="000000000000579" m3="000000000110248"/>
+<liasse code="IY" m2="000000000005734" m3="000000000295915"/>
+<liasse code="I3" m3="000000000000529"/>
+<liasse code="I4" m2="000000000006313" m3="000000000406692"/>
+</page>
+<page numero="06">
+<liasse code="PE" m1="000000000001704" m2="000000000000632" m3="000000000000579" m4="000000000001756"/>
+<liasse code="QU" m1="000000000153862" m2="000000000023806" m3="000000000005695" m4="000000000171974"/>
+<liasse code="0N" m1="000000000155566" m2="000000000024438" m3="000000000006274" m4="000000000173730"/>
+</page>
+</detail>
+</bilan>
+</bilans>

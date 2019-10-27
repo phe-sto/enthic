@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<bilans version="1.0" xmlns="fr:inpi:odrncs:bilansSaisisXML">
+<bilan>
+<identite>
+<siren>828431320</siren>
+<date_cloture_exercice>20180930</date_cloture_exercice>
+<code_greffe>5103</code_greffe>
+<num_depot>1368</num_depot>
+<num_gestion>2017D00176</num_gestion>
+<code_activite>6910Z</code_activite>
+<date_cloture_exercice_n-1>20171231</date_cloture_exercice_n-1>
+<duree_exercice_n>09</duree_exercice_n>
+<duree_exercice_n-1>09</duree_exercice_n-1>
+<date_depot>20190322</date_depot>
+<code_motif>00</code_motif>
+<code_type_bilan>C</code_type_bilan>
+<code_devise>EUR</code_devise>
+<code_origine_devise>O</code_origine_devise>
+<code_confidentialite>2</code_confidentialite>
+<info_traitement/>
+<denomination><![CDATA[LAURENCE REBOUL-DELLOYE ET BAPTISTE DELLOYE NOTAIRES ASSOCIE]]></denomination>
+<adresse><![CDATA[51100 REIMS]]></adresse>
+</identite>
+<detail>
+<page numero="01">
+<liasse code="AH" m1="000000001019837" m3="000000001019837" m4="000000001019837"/>
+<liasse code="AT" m1="000000000083529" m2="000000000020611" m3="000000000062918" m4="000000000072521"/>
+<liasse code="BH" m1="000000000015720" m3="000000000015720" m4="000000000015720"/>
+<liasse code="BJ" m1="000000001119086" m2="000000000020611" m3="000000001098475" m4="000000001108078"/>
+<liasse code="BP" m1="000000000054346" m3="000000000054346"/>
+<liasse code="BZ" m1="000000000018169" m3="000000000018169" m4="000000000042251"/>
+<liasse code="CF" m1="000000007271348" m3="000000007271348" m4="000000006474787"/>
+<liasse code="CH" m1="000000000012912" m3="000000000012912" m4="000000000008974"/>
+<liasse code="CJ" m1="000000007356775" m3="000000007356775" m4="000000006526012"/>
+<liasse code="CO" m1="000000008475861" m2="000000000020611" m3="000000008455250" m4="000000007634090"/>
+<liasse code="CP" m1="000000000015720"/>
+</page>
+<page numero="02">
+<liasse code="DA" m1="000000001100000" m2="000000001100000"/>
+<liasse code="DD" m1="000000000110000"/>
+<liasse code="DI" m1="000000000260802" m2="000000000262738"/>
+<liasse code="DL" m1="000000001470802" m2="000000001362738"/>
+<liasse code="DV" m1="000000000122915" m2="000000000176184"/>
+<liasse code="DX" m1="000000000021370" m2="000000000014623"/>
+<liasse code="DY" m1="000000000368709" m2="000000000205996"/>
+<liasse code="EA" m1="000000006471454" m2="000000005874548"/>
+<liasse code="EC" m1="000000006984448" m2="000000006271352"/>
+<liasse code="EE" m1="000000008455250" m2="000000007634090"/>
+<liasse code="EG" m1="000000006984448" m2="000000006271352"/>
+<liasse code="EI" m1="000000000122915"/>
+</page>
+<page numero="05">
+<liasse code="KD" m1="000000001019837"/>
+<liasse code="LN" m1="000000000082660" m3="000000000000869"/>
+<liasse code="LQ" m1="000000000015720"/>
+<liasse code="0G" m1="000000001118217" m3="000000000000869"/>
+<liasse code="IO" m3="000000001019837"/>
+<liasse code="IY" m3="000000000083529"/>
+<liasse code="I3" m3="000000000015720"/>
+<liasse code="I4" m3="000000001119086"/>
+</page>
+<page numero="06">
+<liasse code="QU" m1="000000000010139" m2="000000000010472" m4="000000000020611"/>
+<liasse code="0N" m1="000000000010139" m2="000000000010472" m4="000000000020611"/>
+</page>
+<page numero="08">
+<liasse code="UT" m1="000000000015720"/>
+<liasse code="VB" m1="000000000011954"/>
+<liasse code="VP" m1="000000000001683"/>
+<liasse code="VR" m1="000000000004532"/>
+<liasse code="VS" m1="000000000012912"/>
+<liasse code="VT" m1="000000000046801" m2="000000000031081" m3="000000000015720"/>
+<liasse code="8B" m1="000000000021370" m2="000000000021370"/>
+<liasse code="8C" m1="000000000074410" m2="000000000074410"/>
+<liasse code="8D" m1="000000000076602" m2="000000000076602"/>
+<liasse code="8E" m1="000000000023627" m2="000000000023627"/>
+<liasse code="VW" m1="000000000029631" m2="000000000029631"/>
+<liasse code="VQ" m1="000000000011700" m2="000000000011700"/>
+<liasse code="VI" m1="000000000275654" m2="000000000275654"/>
+<liasse code="8K" m1="000000006471454" m2="000000006471454"/>
+<liasse code="VY" m1="000000006984448" m2="000000006984448"/>
+</page>
+</detail>
+</bilan>
+</bilans>

@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<bilans version="1.0" xmlns="fr:inpi:odrncs:bilansSaisisXML">
+<bilan>
+<identite>
+<siren>387781941</siren>
+<date_cloture_exercice>20180930</date_cloture_exercice>
+<code_greffe>2401</code_greffe>
+<num_depot>421</num_depot>
+<num_gestion>1992B30082</num_gestion>
+<code_activite>4722Z</code_activite>
+<date_cloture_exercice_n-1>20170930</date_cloture_exercice_n-1>
+<duree_exercice_n>12</duree_exercice_n>
+<duree_exercice_n-1>12</duree_exercice_n-1>
+<date_depot>20190315</date_depot>
+<code_motif>1A</code_motif>
+<code_type_bilan>C</code_type_bilan>
+<code_devise>EUR</code_devise>
+<code_origine_devise>O</code_origine_devise>
+<code_confidentialite>2</code_confidentialite>
+<info_traitement/>
+<denomination><![CDATA[BOUCHERIE CHAPOULIE]]></denomination>
+<adresse><![CDATA[24620 LES EYZIES TAYAC SIREUIL]]></adresse>
+</identite>
+<detail>
+<page numero="01">
+<liasse code="AF" m1="000000000000540" m2="000000000000540"/>
+<liasse code="AH" m1="000000000227316" m3="000000000227316"/>
+<liasse code="AN" m1="000000000001937" m2="000000000001937"/>
+<liasse code="AP" m1="000000000036026" m2="000000000036026"/>
+<liasse code="AR" m1="000000000103852" m2="000000000097551" m3="000000000006301"/>
+<liasse code="AT" m1="000000000340249" m2="000000000318241" m3="000000000022008"/>
+<liasse code="BJ" m1="000000000709920" m2="000000000454295" m3="000000000255625"/>
+<liasse code="BL" m1="000000000009413" m3="000000000009413"/>
+<liasse code="BX" m1="000000000013236" m3="000000000013236"/>
+<liasse code="BZ" m1="000000000019008" m3="000000000019008"/>
+<liasse code="CF" m1="000000000189541" m3="000000000189541"/>
+<liasse code="CH" m1="000000000005878" m3="000000000005878"/>
+<liasse code="CJ" m1="000000000237076" m3="000000000237076"/>
+<liasse code="CO" m1="000000000946995" m2="000000000454295" m3="000000000492700"/>
+</page>
+<page numero="02">
+<liasse code="DA" m1="000000000007622"/>
+<liasse code="DD" m1="000000000000762"/>
+<liasse code="DG" m1="000000000282468"/>
+<liasse code="DI" m1="000000000061963"/>
+<liasse code="DL" m1="000000000352815"/>
+<liasse code="DU" m1="000000000013718"/>
+<liasse code="DV" m1="000000000022901"/>
+<liasse code="DX" m1="000000000047107"/>
+<liasse code="DY" m1="000000000056159"/>
+<liasse code="EC" m1="000000000139885"/>
+<liasse code="EE" m1="000000000492700"/>
+<liasse code="EG" m1="000000000137128"/>
+</page>
+<page numero="08">
+<liasse code="VT" m1="000000000038122" m2="000000000038122"/>
+<liasse code="VG" m1="000000000013718" m2="000000000010960" m3="000000000002757"/>
+<liasse code="8A" m1="000000000022901" m2="000000000022901"/>
+<liasse code="8B" m1="000000000047107" m2="000000000047107"/>
+<liasse code="VQ" m1="000000000056159" m2="000000000056159"/>
+<liasse code="VY" m1="000000000139885" m2="000000000137128" m3="000000000002757"/>
+</page>
+</detail>
+</bilan>
+</bilans>

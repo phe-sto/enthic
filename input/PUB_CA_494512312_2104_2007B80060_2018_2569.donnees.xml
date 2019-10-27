@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<bilans version="1.0" xmlns="fr:inpi:odrncs:bilansSaisisXML">
+<bilan>
+<identite>
+<siren>494512312</siren>
+<date_cloture_exercice>20181130</date_cloture_exercice>
+<code_greffe>2104</code_greffe>
+<num_depot>2569</num_depot>
+<num_gestion>2007B80060</num_gestion>
+<code_activite>4690Z</code_activite>
+<date_cloture_exercice_n-1>20171130</date_cloture_exercice_n-1>
+<duree_exercice_n>12</duree_exercice_n>
+<duree_exercice_n-1>00</duree_exercice_n-1>
+<date_depot>20190322</date_depot>
+<code_motif>00</code_motif>
+<code_type_bilan>S</code_type_bilan>
+<code_devise>EUR</code_devise>
+<code_origine_devise>O</code_origine_devise>
+<code_confidentialite>0</code_confidentialite>
+<info_traitement/>
+<denomination><![CDATA[SARL VINCENT JEAN MARC]]></denomination>
+<adresse><![CDATA[21590 Santenay]]></adresse>
+</identite>
+<detail>
+<page numero="01">
+<liasse code="028" m1="000000000066961" m2="000000000046219" m3="000000000020742"/>
+<liasse code="040" m1="000000000000036" m3="000000000000036"/>
+<liasse code="044" m1="000000000066997" m2="000000000046219" m3="000000000020778"/>
+<liasse code="060" m1="000000000157928" m3="000000000157928"/>
+<liasse code="068" m1="000000000119987" m2="000000000003763" m3="000000000116224"/>
+<liasse code="072" m1="000000000015251" m3="000000000015251"/>
+<liasse code="084" m1="000000000008418" m3="000000000008418"/>
+<liasse code="096" m1="000000000301584" m2="000000000003763" m3="000000000297821"/>
+<liasse code="110" m1="000000000368581" m2="000000000049982" m3="000000000318599"/>
+<liasse code="120" m3="000000000001000"/>
+<liasse code="126" m3="000000000000100"/>
+<liasse code="132" m3="000000000137097"/>
+<liasse code="136" m3="000000000073138"/>
+<liasse code="142" m3="000000000211335"/>
+<liasse code="156" m3="000000000027093"/>
+<liasse code="166" m3="000000000077375"/>
+<liasse code="169" m2="000000000002796"/>
+<liasse code="172" m3="000000000002796"/>
+<liasse code="176" m3="000000000107264"/>
+<liasse code="180" m3="000000000318599"/>
+</page>
+<page numero="02">
+<liasse code="214" m1="000000000614340"/>
+<liasse code="230" m1="000000000004811"/>
+<liasse code="232" m1="000000000619151"/>
+<liasse code="234" m1="000000000426954"/>
+<liasse code="236" m1="-000000000027707"/>
+<liasse code="242" m1="000000000118285"/>
+<liasse code="243" m1="000000000001021"/>
+<liasse code="244" m1="000000000001699"/>
+<liasse code="254" m1="000000000002797"/>
+<liasse code="264" m1="000000000522028"/>
+<liasse code="270" m1="000000000097123"/>
+<liasse code="280" m1="000000000000001"/>
+<liasse code="290" m1="000000000000001"/>
+<liasse code="294" m1="000000000000680"/>
+<liasse code="300" m1="000000000000172"/>
+<liasse code="306" m1="000000000023135"/>
+<liasse code="310" m1="000000000073138"/>
+</page>
+<page numero="03">
+<liasse code="442" m1="000000000053667"/>
+<liasse code="462" m1="000000000013294"/>
+</page>
+<page numero="04">
+<liasse code="602" m1="000000000000006"/>
+</page>
+</detail>
+</bilan>
+</bilans>

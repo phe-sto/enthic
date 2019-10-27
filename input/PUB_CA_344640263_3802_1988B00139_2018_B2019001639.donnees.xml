@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<bilans version="1.0" xmlns="fr:inpi:odrncs:bilansSaisisXML">
+<bilan>
+<identite>
+<siren>344640263</siren>
+<date_cloture_exercice>20180630</date_cloture_exercice>
+<code_greffe>3802</code_greffe>
+<num_depot>B2019/001639</num_depot>
+<num_gestion>1988B00139</num_gestion>
+<code_activite>1071D</code_activite>
+<date_cloture_exercice_n-1>20170630</date_cloture_exercice_n-1>
+<duree_exercice_n>12</duree_exercice_n>
+<duree_exercice_n-1>12</duree_exercice_n-1>
+<date_depot>20190319</date_depot>
+<code_motif>00</code_motif>
+<code_type_bilan>C</code_type_bilan>
+<code_devise>EUR</code_devise>
+<code_origine_devise>O</code_origine_devise>
+<code_confidentialite>0</code_confidentialite>
+<info_traitement/>
+<denomination><![CDATA[S.A.R.L. PATISSERIE JOUVENAL]]></denomination>
+<adresse><![CDATA[38260 LA COTE SAINT ANDRE]]></adresse>
+</identite>
+<detail>
+<page numero="01">
+<liasse code="AF" m1="000000000001763" m2="000000000000661" m3="000000000001102"/>
+<liasse code="AH" m1="000000000440000" m3="000000000440000"/>
+<liasse code="AR" m1="000000000177315" m2="000000000153196" m3="000000000024119"/>
+<liasse code="AT" m1="000000000729274" m2="000000000406587" m3="000000000322688"/>
+<liasse code="BD" m1="000000000000101" m3="000000000000101"/>
+<liasse code="BH" m1="000000000000256" m3="000000000000256"/>
+<liasse code="BJ" m1="000000001348710" m2="000000000560443" m3="000000000788267"/>
+<liasse code="BL" m1="000000000094363" m3="000000000094363"/>
+<liasse code="BT" m1="000000000006972" m3="000000000006972"/>
+<liasse code="BV" m1="000000000013165" m3="000000000013165"/>
+<liasse code="BZ" m1="000000000021012" m3="000000000021012"/>
+<liasse code="CF" m1="000000000301145" m3="000000000301145"/>
+<liasse code="CH" m1="000000000005612" m3="000000000005612"/>
+<liasse code="CJ" m1="000000000442270" m3="000000000442270"/>
+<liasse code="CO" m1="000000001790980" m2="000000000560443" m3="000000001230536"/>
+</page>
+<page numero="02">
+<liasse code="DA" m1="000000000006000"/>
+<liasse code="DD" m1="000000000000800"/>
+<liasse code="DG" m1="000000000754056"/>
+<liasse code="DI" m1="-000000000050654"/>
+<liasse code="DL" m1="000000000710202"/>
+<liasse code="DU" m1="000000000200724"/>
+<liasse code="DV" m1="000000000127222"/>
+<liasse code="DX" m1="000000000069400"/>
+<liasse code="DY" m1="000000000122609"/>
+<liasse code="EA" m1="000000000000379"/>
+<liasse code="EC" m1="000000000520334"/>
+<liasse code="EE" m1="000000001230536"/>
+<liasse code="EG" m1="000000000363742"/>
+</page>
+<page numero="03">
+<liasse code="FA" m1="000000000038256" m3="000000000038256"/>
+<liasse code="FD" m1="000000001059899" m3="000000001059899"/>
+<liasse code="FG" m1="000000000047196" m3="000000000047196"/>
+<liasse code="FJ" m1="000000001145352" m3="000000001145352"/>
+<liasse code="FP" m3="000000000002808"/>
+<liasse code="FQ" m3="000000000000098"/>
+<liasse code="FR" m3="000000001148258"/>
+<liasse code="FS" m3="000000000024335"/>
+<liasse code="FT" m3="-000000000001235"/>
+<liasse code="FU" m3="000000000241689"/>
+<liasse code="FV" m3="000000000000987"/>
+<liasse code="FW" m3="000000000137466"/>
+<liasse code="FX" m3="000000000014729"/>
+<liasse code="FY" m3="000000000441622"/>
+<liasse code="FZ" m3="000000000114715"/>
+<liasse code="GA" m3="000000000048070"/>
+<liasse code="GE" m3="000000000000122"/>
+<liasse code="GF" m3="000000001022500"/>
+<liasse code="GG" m3="000000000125758"/>
+<liasse code="GL" m3="000000000000563"/>
+<liasse code="GP" m3="000000000000563"/>
+<liasse code="GR" m3="000000000007797"/>
+<liasse code="GU" m3="000000000007797"/>
+<liasse code="GV" m3="-000000000007234"/>
+<liasse code="GW" m3="000000000118524"/>
+</page>
+<page numero="04">
+<liasse code="HE" m1="000000000149547"/>
+<liasse code="HH" m1="000000000149547"/>
+<liasse code="HI" m1="-000000000149547"/>
+<liasse code="HK" m1="000000000019631"/>
+<liasse code="HL" m1="000000001148821"/>
+<liasse code="HM" m1="000000001199475"/>
+<liasse code="HN" m1="-000000000050654"/>
+<liasse code="A1" m1="000000000002808"/>
+<liasse code="A2" m1="000000000001760"/>
+</page>
+<page numero="05">
+<liasse code="KD" m1="000000000441013" m3="000000000000750"/>
+<liasse code="LN" m1="000000000888777" m3="000000000017813"/>
+<liasse code="LQ" m1="000000000000356" m3="000000000000001"/>
+<liasse code="0G" m1="000000001330146" m3="000000000018564"/>
+<liasse code="IO" m3="000000000441763"/>
+<liasse code="IY" m3="000000000906590"/>
+<liasse code="I3" m3="000000000000357"/>
+<liasse code="I4" m3="000000001348710"/>
+</page>
+<page numero="06">
+<liasse code="PE" m1="000000000000295" m2="000000000000366" m4="000000000000661"/>
+<liasse code="QU" m1="000000000512077" m2="000000000047704" m4="000000000559781"/>
+<liasse code="0N" m1="000000000512371" m2="000000000048070" m4="000000000560442"/>
+</page>
+<page numero="08">
+<liasse code="UT" m1="000000000000256" m3="000000000000256"/>
+<liasse code="VM" m1="000000000004130" m2="000000000004130"/>
+<liasse code="VB" m1="000000000005402" m2="000000000005402"/>
+<liasse code="VN" m1="000000000009154" m2="000000000009154"/>
+<liasse code="VR" m1="000000000002326" m2="000000000002326"/>
+<liasse code="VS" m1="000000000005612" m2="000000000005612"/>
+<liasse code="VT" m1="000000000026881" m2="000000000026625" m3="000000000000256"/>
+<liasse code="VH" m1="000000000200724" m2="000000000044132" m3="000000000123900" m4="000000000032692"/>
+<liasse code="8B" m1="000000000069400" m2="000000000069400"/>
+<liasse code="8C" m1="000000000054064" m2="000000000054064"/>
+<liasse code="8D" m1="000000000055476" m2="000000000055476"/>
+<liasse code="VW" m1="000000000007335" m2="000000000007335"/>
+<liasse code="VQ" m1="000000000005734" m2="000000000005734"/>
+<liasse code="VI" m1="000000000127222" m2="000000000127222"/>
+<liasse code="8K" m1="000000000000379" m2="000000000000379"/>
+<liasse code="VY" m1="000000000520334" m2="000000000363742" m3="000000000123900" m4="000000000032692"/>
+<liasse code="VJ" m1="000000000005000"/>
+<liasse code="VK" m1="000000000046583"/>
+</page>
+</detail>
+</bilan>
+</bilans>

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<bilans version="1.0" xmlns="fr:inpi:odrncs:bilansSaisisXML">
+<bilan>
+<identite>
+<siren>513385914</siren>
+<date_cloture_exercice>20171231</date_cloture_exercice>
+<code_greffe>3801</code_greffe>
+<num_depot>B2019/003431</num_depot>
+<num_gestion>2009B00996</num_gestion>
+<code_activite>4531Z</code_activite>
+<date_cloture_exercice_n-1>20161231</date_cloture_exercice_n-1>
+<duree_exercice_n>12</duree_exercice_n>
+<duree_exercice_n-1>12</duree_exercice_n-1>
+<date_depot>20190320</date_depot>
+<code_motif>00</code_motif>
+<code_type_bilan>S</code_type_bilan>
+<code_devise>EUR</code_devise>
+<code_origine_devise>O</code_origine_devise>
+<code_confidentialite>2</code_confidentialite>
+<info_traitement/>
+<denomination><![CDATA[AUTOMOBILES TORAN]]></denomination>
+<adresse><![CDATA[38500 COUBLEVIE]]></adresse>
+</identite>
+<detail>
+<page numero="01">
+<liasse code="028" m1="000000000100128" m2="000000000088449" m3="000000000011680" m4="000000000017690"/>
+<liasse code="044" m1="000000000100128" m2="000000000088449" m3="000000000011680" m4="000000000017690"/>
+<liasse code="060" m1="000000000028000" m3="000000000028000" m4="000000000028000"/>
+<liasse code="064" m1="000000000001163" m3="000000000001163" m4="000000000001163"/>
+<liasse code="068" m1="000000000078926" m2="000000000016382" m3="000000000062544" m4="000000000057921"/>
+<liasse code="072" m1="000000000032092" m3="000000000032092" m4="000000000021913"/>
+<liasse code="084" m1="000000000000199" m3="000000000000199" m4="000000000000955"/>
+<liasse code="092" m1="000000000001296" m3="000000000001296" m4="000000000001309"/>
+<liasse code="096" m1="000000000141676" m2="000000000016382" m3="000000000125294" m4="000000000111260"/>
+<liasse code="110" m1="000000000241804" m2="000000000104830" m3="000000000136974" m4="000000000128950"/>
+<liasse code="120" m3="000000000010000" m4="000000000010000"/>
+<liasse code="134" m3="000000000000759" m4="-000000000026094"/>
+<liasse code="136" m3="000000000012475" m4="000000000026853"/>
+<liasse code="142" m3="000000000023234" m4="000000000010759"/>
+<liasse code="156" m3="000000000008894" m4="000000000010369"/>
+<liasse code="166" m3="000000000013446" m4="000000000021170"/>
+<liasse code="169" m2="000000000033807"/>
+<liasse code="172" m3="000000000091400" m4="000000000086651"/>
+<liasse code="176" m3="000000000113740" m4="000000000118191"/>
+<liasse code="180" m3="000000000136974" m4="000000000128950"/>
+</page>
+</detail>
+</bilan>
+</bilans>

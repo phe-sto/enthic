@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<bilans version="1.0" xmlns="fr:inpi:odrncs:bilansSaisisXML">
+<bilan>
+<identite>
+<siren>799851878</siren>
+<date_cloture_exercice>20151231</date_cloture_exercice>
+<code_greffe>0601</code_greffe>
+<num_depot>1533</num_depot>
+<num_gestion>2014B00088</num_gestion>
+<code_activite>6420Z</code_activite>
+<date_cloture_exercice_n-1>20141231</date_cloture_exercice_n-1>
+<duree_exercice_n>12</duree_exercice_n>
+<duree_exercice_n-1>12</duree_exercice_n-1>
+<date_depot>20190315</date_depot>
+<code_motif>00</code_motif>
+<code_type_bilan>S</code_type_bilan>
+<code_devise>EUR</code_devise>
+<code_origine_devise>O</code_origine_devise>
+<code_confidentialite>0</code_confidentialite>
+<info_traitement/>
+<denomination><![CDATA[SOCIETE CHAINE LA ROSERAIE DES MESANGES]]></denomination>
+<adresse><![CDATA[06160 ANTIBES]]></adresse>
+</identite>
+<detail>
+<page numero="01">
+<liasse code="040" m1="000000000260000" m3="000000000260000"/>
+<liasse code="044" m1="000000000260000" m3="000000000260000"/>
+<liasse code="072" m4="000000000267020"/>
+<liasse code="084" m1="000000000010863" m3="000000000010863" m4="000000000000116"/>
+<liasse code="096" m1="000000000010863" m3="000000000010863" m4="000000000267136"/>
+<liasse code="110" m1="000000000270863" m3="000000000270863" m4="000000000267136"/>
+<liasse code="120" m3="000000000001000" m4="000000000001000"/>
+<liasse code="136" m3="-000000000017637"/>
+<liasse code="142" m3="-000000000016637" m4="000000000001000"/>
+<liasse code="156" m3="000000000228762" m4="000000000257099"/>
+<liasse code="169" m2="000000000058719"/>
+<liasse code="172" m3="000000000058739" m4="000000000009037"/>
+<liasse code="176" m3="000000000287500" m4="000000000266136"/>
+<liasse code="180" m3="000000000270863" m4="000000000267136"/>
+<liasse code="182" m3="000000000260000"/>
+</page>
+<page numero="02">
+<liasse code="242" m1="000000000001735"/>
+<liasse code="243" m1="000000000000154"/>
+<liasse code="244" m1="000000000007885"/>
+<liasse code="264" m1="000000000009620"/>
+<liasse code="270" m1="-000000000009620"/>
+<liasse code="294" m1="000000000007182"/>
+<liasse code="300" m1="000000000000835"/>
+<liasse code="310" m1="-000000000017637"/>
+</page>
+</detail>
+</bilan>
+</bilans>

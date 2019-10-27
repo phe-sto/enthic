@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<bilans version="1.0" xmlns="fr:inpi:odrncs:bilansSaisisXML">
+<bilan>
+<identite>
+<siren>819681941</siren>
+<date_cloture_exercice>20180831</date_cloture_exercice>
+<code_greffe>7202</code_greffe>
+<num_depot>1490</num_depot>
+<num_gestion>2016B00292</num_gestion>
+<code_activite>3212Z</code_activite>
+<date_cloture_exercice_n-1>20170831</date_cloture_exercice_n-1>
+<duree_exercice_n>12</duree_exercice_n>
+<duree_exercice_n-1>00</duree_exercice_n-1>
+<date_depot>20190321</date_depot>
+<code_motif>00</code_motif>
+<code_type_bilan>C</code_type_bilan>
+<code_devise>EUR</code_devise>
+<code_origine_devise>O</code_origine_devise>
+<code_confidentialite>2</code_confidentialite>
+<info_traitement/>
+<denomination><![CDATA[SOCIETE HUGEDE]]></denomination>
+<adresse><![CDATA[72000 LE MANS]]></adresse>
+</identite>
+<detail>
+<page numero="01">
+<liasse code="AH" m1="000000000004185" m3="000000000004185" m4="000000000004185"/>
+<liasse code="AJ" m1="000000000002390" m2="000000000001651" m3="000000000000739" m4="000000000001477"/>
+<liasse code="AR" m1="000000000004055" m2="000000000002060" m3="000000000001995" m4="000000000002068"/>
+<liasse code="AT" m1="000000000013558" m2="000000000003830" m3="000000000009728" m4="000000000008117"/>
+<liasse code="BH" m1="000000000001107" m3="000000000001107" m4="000000000001107"/>
+<liasse code="BJ" m1="000000000025295" m2="000000000007542" m3="000000000017753" m4="000000000016954"/>
+<liasse code="BL" m1="000000000217962" m2="000000000047307" m3="000000000170655" m4="000000000123325"/>
+<liasse code="BX" m4="000000000000695"/>
+<liasse code="BZ" m1="000000000001577" m3="000000000001577" m4="000000000005120"/>
+<liasse code="CD" m1="000000000010000" m3="000000000010000" m4="000000000010000"/>
+<liasse code="CF" m1="000000000062316" m3="000000000062316" m4="000000000053962"/>
+<liasse code="CH" m1="000000000004691" m3="000000000004691" m4="000000000000885"/>
+<liasse code="CJ" m1="000000000296546" m2="000000000047307" m3="000000000249239" m4="000000000193987"/>
+<liasse code="CO" m1="000000000321842" m2="000000000054849" m3="000000000266993" m4="000000000210942"/>
+</page>
+<page numero="02">
+<liasse code="DA" m1="000000000007500" m2="000000000007500"/>
+<liasse code="DD" m1="000000000000750"/>
+<liasse code="DH" m1="000000000056839"/>
+<liasse code="DI" m1="000000000048785" m2="000000000057589"/>
+<liasse code="DL" m1="000000000113874" m2="000000000065089"/>
+<liasse code="DU" m1="000000000077530" m2="000000000068527"/>
+<liasse code="DV" m1="000000000045463" m2="000000000035651"/>
+<liasse code="DW" m1="000000000002000" m2="000000000004740"/>
+<liasse code="DX" m1="000000000003554" m2="000000000006136"/>
+<liasse code="DY" m1="000000000018792" m2="000000000030215"/>
+<liasse code="EA" m1="000000000005780" m2="000000000000583"/>
+<liasse code="EC" m1="000000000153119" m2="000000000145852"/>
+<liasse code="EE" m1="000000000266993" m2="000000000210942"/>
+</page>
+</detail>
+</bilan>
+</bilans>

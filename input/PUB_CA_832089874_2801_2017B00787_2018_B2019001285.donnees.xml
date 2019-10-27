@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<bilans version="1.0" xmlns="fr:inpi:odrncs:bilansSaisisXML">
+<bilan>
+<identite>
+<siren>832089874</siren>
+<date_cloture_exercice>20180731</date_cloture_exercice>
+<code_greffe>2801</code_greffe>
+<num_depot>B2019/001285</num_depot>
+<num_gestion>2017B00787</num_gestion>
+<code_activite>4799B</code_activite>
+<date_cloture_exercice_n-1>00000000</date_cloture_exercice_n-1>
+<duree_exercice_n>11</duree_exercice_n>
+<duree_exercice_n-1>00</duree_exercice_n-1>
+<date_depot>20190311</date_depot>
+<code_motif>00</code_motif>
+<code_type_bilan>S</code_type_bilan>
+<code_devise>EUR</code_devise>
+<code_origine_devise>O</code_origine_devise>
+<code_confidentialite>0</code_confidentialite>
+<info_traitement/>
+<denomination><![CDATA[BOIS EURELIEN]]></denomination>
+<adresse><![CDATA[28170 FAVIERES]]></adresse>
+</identite>
+<detail>
+<page numero="01">
+<liasse code="028" m1="000000000023634" m2="000000000003212" m3="000000000020421"/>
+<liasse code="044" m1="000000000023634" m2="000000000003212" m3="000000000020421"/>
+<liasse code="050" m1="000000000004560" m3="000000000004560"/>
+<liasse code="072" m1="000000000001042" m3="000000000001042"/>
+<liasse code="084" m1="000000000005350" m3="000000000005350"/>
+<liasse code="096" m1="000000000010952" m3="000000000010952"/>
+<liasse code="110" m1="000000000034586" m2="000000000003212" m3="000000000031373"/>
+<liasse code="120" m3="000000000001000"/>
+<liasse code="136" m3="000000000015073"/>
+<liasse code="142" m3="000000000016073"/>
+<liasse code="166" m3="000000000001290"/>
+<liasse code="169" m2="000000000011342"/>
+<liasse code="172" m3="000000000014010"/>
+<liasse code="176" m3="000000000015300"/>
+<liasse code="180" m3="000000000031373"/>
+<liasse code="182" m3="000000000023634"/>
+</page>
+<page numero="02">
+<liasse code="214" m1="000000000064178"/>
+<liasse code="218" m1="000000000005045"/>
+<liasse code="222" m1="000000000004560"/>
+<liasse code="230" m1="000000000000058"/>
+<liasse code="232" m1="000000000073842"/>
+<liasse code="238" m1="000000000035139"/>
+<liasse code="242" m1="000000000017206"/>
+<liasse code="244" m1="000000000000492"/>
+<liasse code="254" m1="000000000003212"/>
+<liasse code="262" m1="000000000000005"/>
+<liasse code="264" m1="000000000056056"/>
+<liasse code="270" m1="000000000017786"/>
+<liasse code="300" m1="000000000000045"/>
+<liasse code="306" m1="000000000002668"/>
+<liasse code="310" m1="000000000015073"/>
+</page>
+</detail>
+</bilan>
+</bilans>

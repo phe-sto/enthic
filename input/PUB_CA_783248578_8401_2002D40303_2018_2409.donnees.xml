@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<bilans version="1.0" xmlns="fr:inpi:odrncs:bilansSaisisXML">
+<bilan>
+<identite>
+<siren>783248578</siren>
+<date_cloture_exercice>20180731</date_cloture_exercice>
+<code_greffe>8401</code_greffe>
+<num_depot>2409</num_depot>
+<num_gestion>2002D40303</num_gestion>
+<code_activite>1102B</code_activite>
+<date_cloture_exercice_n-1>20170731</date_cloture_exercice_n-1>
+<duree_exercice_n>12</duree_exercice_n>
+<duree_exercice_n-1>12</duree_exercice_n-1>
+<date_depot>20190322</date_depot>
+<code_motif>00</code_motif>
+<code_type_bilan>S</code_type_bilan>
+<code_devise>EUR</code_devise>
+<code_origine_devise>O</code_origine_devise>
+<code_confidentialite>0</code_confidentialite>
+<info_traitement>A4</info_traitement>
+<denomination><![CDATA[SOCIETE COOPERATIVE AGRICOLE LES VIGNERONS REUNIS DE SAINTE]]></denomination>
+<adresse><![CDATA[84290 SAINTE CECILE LES VIGNES]]></adresse>
+</identite>
+<detail>
+<page numero="01">
+<liasse code="028" m1="000000000356750" m2="000000000101935" m3="000000000254815" m4="000000000272674"/>
+<liasse code="044" m1="000000000356750" m2="000000000101935" m3="000000000254815" m4="000000000272674"/>
+<liasse code="072" m1="000000000011202" m3="000000000011202" m4="000000000011329"/>
+<liasse code="084" m1="000000000011214" m3="000000000011214" m4="000000000012508"/>
+<liasse code="092" m1="000000000000690" m3="000000000000690"/>
+<liasse code="096" m1="000000000023106" m3="000000000023106" m4="000000000023836"/>
+<liasse code="110" m1="000000000379856" m2="000000000101935" m3="000000000277921" m4="000000000296510"/>
+<liasse code="120" m3="000000000010000" m4="000000000010000"/>
+<liasse code="134" m3="-000000000072276" m4="-000000000063278"/>
+<liasse code="136" m3="-000000000006862" m4="-000000000008997"/>
+<liasse code="142" m3="-000000000069138" m4="-000000000062276"/>
+<liasse code="156" m3="000000000320253" m4="000000000342210"/>
+<liasse code="166" m3="000000000002931" m4="000000000001012"/>
+<liasse code="172" m3="000000000023874" m4="000000000015564"/>
+<liasse code="176" m3="000000000347059" m4="000000000358786"/>
+<liasse code="180" m3="000000000277921" m4="000000000296510"/>
+</page>
+<page numero="02">
+<liasse code="215" m1="000000000038267"/>
+<liasse code="214" m1="000000000038267" m2="000000000039913"/>
+<liasse code="232" m1="000000000038267" m2="000000000039913"/>
+<liasse code="242" m1="000000000014594" m2="000000000017556"/>
+<liasse code="244" m1="000000000000418" m2="000000000000437"/>
+<liasse code="254" m1="000000000017858" m2="000000000017858"/>
+<liasse code="264" m1="000000000032870" m2="000000000035851"/>
+<liasse code="270" m1="000000000005396" m2="000000000004062"/>
+<liasse code="294" m1="000000000012258" m2="000000000013059"/>
+<liasse code="310" m1="-000000000006862" m2="-000000000008997"/>
+</page>
+<page numero="03">
+<liasse code="490" m1="000000000356750"/>
+</page>
+</detail>
+</bilan>
+</bilans>

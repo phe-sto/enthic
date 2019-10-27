@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<bilans version="1.0" xmlns="fr:inpi:odrncs:bilansSaisisXML">
+<bilan>
+<identite>
+<siren>829864099</siren>
+<date_cloture_exercice>20171231</date_cloture_exercice>
+<code_greffe>3405</code_greffe>
+<num_depot>3085</num_depot>
+<num_gestion>2017B01698</num_gestion>
+<code_activite>4741Z</code_activite>
+<date_cloture_exercice_n-1>00000000</date_cloture_exercice_n-1>
+<duree_exercice_n>08</duree_exercice_n>
+<duree_exercice_n-1>00</duree_exercice_n-1>
+<date_depot>20190228</date_depot>
+<code_motif>00</code_motif>
+<code_type_bilan>S</code_type_bilan>
+<code_devise>EUR</code_devise>
+<code_origine_devise>O</code_origine_devise>
+<code_confidentialite>0</code_confidentialite>
+<info_traitement/>
+<denomination><![CDATA[API]]></denomination>
+<adresse><![CDATA[34000 MONTPELLIER]]></adresse>
+</identite>
+<detail>
+<page numero="01">
+<liasse code="060" m1="000000000007503" m3="000000000007503"/>
+<liasse code="072" m1="000000000007220" m3="000000000007220"/>
+<liasse code="096" m1="000000000014723" m3="000000000014723"/>
+<liasse code="110" m1="000000000014723" m3="000000000014723"/>
+<liasse code="120" m3="000000000001000"/>
+<liasse code="136" m3="-000000000000020"/>
+<liasse code="142" m3="000000000000980"/>
+<liasse code="156" m3="000000000002063"/>
+<liasse code="166" m3="000000000003752"/>
+<liasse code="172" m3="000000000007927"/>
+<liasse code="176" m3="000000000013742"/>
+<liasse code="180" m3="000000000014723"/>
+</page>
+<page numero="02">
+<liasse code="210" m1="000000000039635"/>
+<liasse code="232" m1="000000000039635"/>
+<liasse code="234" m1="000000000034852"/>
+<liasse code="236" m1="-000000000007503"/>
+<liasse code="242" m1="000000000012201"/>
+<liasse code="264" m1="000000000039550"/>
+<liasse code="270" m1="000000000000085"/>
+<liasse code="294" m1="000000000000105"/>
+<liasse code="310" m1="-000000000000020"/>
+</page>
+</detail>
+</bilan>
+</bilans>

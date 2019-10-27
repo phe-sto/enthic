@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<bilans version="1.0" xmlns="fr:inpi:odrncs:bilansSaisisXML">
+<bilan>
+<identite>
+<siren>429327281</siren>
+<date_cloture_exercice>20180731</date_cloture_exercice>
+<code_greffe>3801</code_greffe>
+<num_depot>B2019/003567</num_depot>
+<num_gestion>2000B00092</num_gestion>
+<code_activite>4764Z</code_activite>
+<date_cloture_exercice_n-1>20170731</date_cloture_exercice_n-1>
+<duree_exercice_n>12</duree_exercice_n>
+<duree_exercice_n-1>12</duree_exercice_n-1>
+<date_depot>20190322</date_depot>
+<code_motif>00</code_motif>
+<code_type_bilan>C</code_type_bilan>
+<code_devise>EUR</code_devise>
+<code_origine_devise>O</code_origine_devise>
+<code_confidentialite>2</code_confidentialite>
+<info_traitement/>
+<denomination><![CDATA[EURL PROMOTION ESF]]></denomination>
+<adresse><![CDATA[38240 MEYLAN]]></adresse>
+</identite>
+<detail>
+<page numero="01">
+<liasse code="AR" m1="000000000021477" m2="000000000011317" m3="000000000010159" m4="000000000007951"/>
+<liasse code="AT" m1="000000000009248" m2="000000000003446" m3="000000000005802" m4="000000000004272"/>
+<liasse code="BJ" m1="000000000030726" m2="000000000014764" m3="000000000015962" m4="000000000012223"/>
+<liasse code="BV" m1="000000000000634" m3="000000000000634" m4="000000000000622"/>
+<liasse code="BX" m1="000000000429347" m2="000000000021179" m3="000000000408167" m4="000000000566911"/>
+<liasse code="BZ" m1="000000000031539" m3="000000000031539" m4="000000000051380"/>
+<liasse code="CF" m1="000000000078585" m3="000000000078585"/>
+<liasse code="CH" m1="000000000034577" m3="000000000034577" m4="000000000039347"/>
+<liasse code="CJ" m1="000000000574684" m2="000000000021179" m3="000000000553504" m4="000000000658261"/>
+<liasse code="CO" m1="000000000605410" m2="000000000035943" m3="000000000569466" m4="000000000670484"/>
+</page>
+<page numero="02">
+<liasse code="DA" m1="000000000200000" m2="000000000200000"/>
+<liasse code="DD" m1="000000000020000" m2="000000000020000"/>
+<liasse code="DE" m1="000000000105484" m2="000000000171854"/>
+<liasse code="DI" m1="000000000023010" m2="-000000000066370"/>
+<liasse code="DL" m1="000000000348494" m2="000000000325484"/>
+<liasse code="DU" m2="000000000086097"/>
+<liasse code="DV" m2="000000000080000"/>
+<liasse code="DX" m1="000000000096220" m2="000000000042079"/>
+<liasse code="DY" m1="000000000113656" m2="000000000136823"/>
+<liasse code="EB" m1="000000000011096"/>
+<liasse code="EC" m1="000000000220972" m2="000000000345000"/>
+<liasse code="EE" m1="000000000569466" m2="000000000670484"/>
+</page>
+<page numero="05">
+<liasse code="LN" m1="000000000032409" m3="000000000010635"/>
+<liasse code="0G" m1="000000000032409" m3="000000000010635"/>
+<liasse code="IY" m2="000000000012317" m3="000000000030726"/>
+<liasse code="I4" m2="000000000012317" m3="000000000030726"/>
+</page>
+<page numero="06">
+<liasse code="QU" m1="000000000020186" m2="000000000006895" m3="000000000012317" m4="000000000014764"/>
+<liasse code="0N" m1="000000000020186" m2="000000000006895" m3="000000000012317" m4="000000000014764"/>
+</page>
+<page numero="07">
+<liasse code="6T" m1="000000000022356" m3="000000000001176" m4="000000000021179"/>
+<liasse code="7B" m1="000000000022356" m3="000000000001176" m4="000000000021179"/>
+<liasse code="7C" m1="000000000022356" m3="000000000001176" m4="000000000021179"/>
+<liasse code="UE" m3="000000000001176"/>
+</page>
+<page numero="08">
+<liasse code="UX" m1="000000000429347" m2="000000000429347"/>
+<liasse code="VM" m1="000000000011963" m2="000000000011963"/>
+<liasse code="VB" m1="000000000019576" m2="000000000019576"/>
+<liasse code="VS" m1="000000000034577" m2="000000000034577"/>
+<liasse code="VT" m1="000000000495463" m2="000000000495463"/>
+<liasse code="8B" m1="000000000096220" m2="000000000096220"/>
+<liasse code="VW" m1="000000000112613" m2="000000000112613"/>
+<liasse code="VQ" m1="000000000001043" m2="000000000001043"/>
+<liasse code="8L" m1="000000000011096" m2="000000000011096"/>
+<liasse code="VY" m1="000000000220972" m2="000000000220972"/>
+</page>
+</detail>
+</bilan>
+</bilans>

@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<bilans version="1.0" xmlns="fr:inpi:odrncs:bilansSaisisXML">
+<bilan>
+<identite>
+<siren>515351963</siren>
+<date_cloture_exercice>20180831</date_cloture_exercice>
+<code_greffe>8401</code_greffe>
+<num_depot>2408</num_depot>
+<num_gestion>2009B01647</num_gestion>
+<code_activite>4322A</code_activite>
+<date_cloture_exercice_n-1>20170831</date_cloture_exercice_n-1>
+<duree_exercice_n>12</duree_exercice_n>
+<duree_exercice_n-1>12</duree_exercice_n-1>
+<date_depot>20190322</date_depot>
+<code_motif>00</code_motif>
+<code_type_bilan>S</code_type_bilan>
+<code_devise>EUR</code_devise>
+<code_origine_devise>O</code_origine_devise>
+<code_confidentialite>0</code_confidentialite>
+<info_traitement/>
+<denomination><![CDATA[ALL EAU PLOMBERIE GABRIEL PERINI]]></denomination>
+<adresse><![CDATA[84840 LAPALUD]]></adresse>
+</identite>
+<detail>
+<page numero="01">
+<liasse code="014" m1="000000000001171" m2="000000000001171"/>
+<liasse code="028" m1="000000000129980" m2="000000000064309" m3="000000000065671" m4="000000000078702"/>
+<liasse code="044" m1="000000000131151" m2="000000000065480" m3="000000000065671" m4="000000000078702"/>
+<liasse code="050" m1="000000000017670" m3="000000000017670" m4="000000000011331"/>
+<liasse code="068" m1="000000000020790" m3="000000000020790" m4="000000000008180"/>
+<liasse code="072" m1="000000000003557" m3="000000000003557" m4="000000000003209"/>
+<liasse code="084" m4="000000000001145"/>
+<liasse code="092" m1="000000000006287" m3="000000000006287" m4="000000000004041"/>
+<liasse code="096" m1="000000000048304" m3="000000000048304" m4="000000000027905"/>
+<liasse code="110" m1="000000000179455" m2="000000000065480" m3="000000000113975" m4="000000000106607"/>
+<liasse code="120" m3="000000000007600" m4="000000000007600"/>
+<liasse code="132" m3="000000000000625"/>
+<liasse code="134" m3="-000000000000383" m4="-000000000000383"/>
+<liasse code="136" m3="000000000002930" m4="000000000000625"/>
+<liasse code="142" m3="000000000010773" m4="000000000007843"/>
+<liasse code="154" m4="000000000003725"/>
+<liasse code="156" m3="000000000067186" m4="000000000069792"/>
+<liasse code="164" m4="000000000000775"/>
+<liasse code="166" m3="000000000016254" m4="000000000012739"/>
+<liasse code="169" m2="000000000001887"/>
+<liasse code="172" m3="000000000019763" m4="000000000011733"/>
+<liasse code="176" m3="000000000103203" m4="000000000095039"/>
+<liasse code="180" m3="000000000113975" m4="000000000106607"/>
+<liasse code="195" m3="000000000036630"/>
+</page>
+<page numero="02">
+<liasse code="218" m1="000000000114037" m2="000000000101406"/>
+<liasse code="222" m1="000000000001704" m2="-000000000000554"/>
+<liasse code="230" m1="000000000005305" m2="000000000003525"/>
+<liasse code="232" m1="000000000121046" m2="000000000104377"/>
+<liasse code="238" m1="000000000027819" m2="000000000020756"/>
+<liasse code="240" m1="-000000000004635" m2="-000000000001445"/>
+<liasse code="242" m1="000000000048621" m2="000000000036793"/>
+<liasse code="243" m1="000000000000280"/>
+<liasse code="244" m1="000000000011455" m2="000000000006110"/>
+<liasse code="250" m1="000000000017284" m2="000000000022535"/>
+<liasse code="252" m1="000000000000524" m2="000000000000524"/>
+<liasse code="254" m1="000000000013030" m2="000000000011474"/>
+<liasse code="256" m2="000000000003725"/>
+<liasse code="262" m1="000000000000113" m2="000000000000003"/>
+<liasse code="264" m1="000000000114212" m2="000000000100475"/>
+<liasse code="270" m1="000000000006834" m2="000000000003902"/>
+<liasse code="290" m2="000000000000075"/>
+<liasse code="294" m1="000000000003904" m2="000000000003351"/>
+<liasse code="310" m1="000000000002930" m2="000000000000625"/>
+</page>
+<page numero="03">
+<liasse code="490" m1="000000000131151"/>
+</page>
+<page numero="04">
+<liasse code="374" m1="000000000015612"/>
+<liasse code="378" m1="000000000011536"/>
+</page>
+</detail>
+</bilan>
+</bilans>

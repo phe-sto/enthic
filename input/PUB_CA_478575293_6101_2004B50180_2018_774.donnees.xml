@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<bilans version="1.0" xmlns="fr:inpi:odrncs:bilansSaisisXML">
+<bilan>
+<identite>
+<siren>478575293</siren>
+<date_cloture_exercice>20180731</date_cloture_exercice>
+<code_greffe>6101</code_greffe>
+<num_depot>774</num_depot>
+<num_gestion>2004B50180</num_gestion>
+<code_activite>4722Z</code_activite>
+<date_cloture_exercice_n-1>20170731</date_cloture_exercice_n-1>
+<duree_exercice_n>12</duree_exercice_n>
+<duree_exercice_n-1>12</duree_exercice_n-1>
+<date_depot>20190323</date_depot>
+<code_motif>01</code_motif>
+<code_type_bilan>C</code_type_bilan>
+<code_devise>EUR</code_devise>
+<code_origine_devise>O</code_origine_devise>
+<code_confidentialite>2</code_confidentialite>
+<info_traitement/>
+<denomination><![CDATA[SOCIETE LEPRINCE]]></denomination>
+<adresse><![CDATA[61430 ATHIS DE L'ORNE]]></adresse>
+</identite>
+<detail>
+<page numero="01">
+<liasse code="AF" m1="000000000002705" m2="000000000002705"/>
+<liasse code="AR" m1="000000000298271" m2="000000000212311" m3="000000000085960"/>
+<liasse code="AT" m1="000000000087083" m2="000000000046939" m3="000000000040144"/>
+<liasse code="BH" m1="000000000000049" m3="000000000000049"/>
+<liasse code="BJ" m1="000000000388108" m2="000000000261955" m3="000000000126153"/>
+<liasse code="BL" m1="000000000003900" m3="000000000003900"/>
+<liasse code="BT" m1="000000000009980" m3="000000000009980"/>
+<liasse code="BZ" m1="000000000028979" m3="000000000028979"/>
+<liasse code="CD" m1="000000000050000" m3="000000000050000"/>
+<liasse code="CF" m1="000000000520556" m3="000000000520556"/>
+<liasse code="CH" m1="000000000001779" m3="000000000001779"/>
+<liasse code="CJ" m1="000000000615195" m3="000000000615195"/>
+<liasse code="CO" m1="000000001003303" m2="000000000261955" m3="000000000741348"/>
+</page>
+<page numero="02">
+<liasse code="DA" m1="000000000008000"/>
+<liasse code="DD" m1="000000000000800"/>
+<liasse code="DG" m1="000000000278703"/>
+<liasse code="DI" m1="000000000039007"/>
+<liasse code="DL" m1="000000000326510"/>
+<liasse code="DU" m1="000000000088051"/>
+<liasse code="DV" m1="000000000207233"/>
+<liasse code="DX" m1="000000000055003"/>
+<liasse code="DY" m1="000000000064551"/>
+<liasse code="EC" m1="000000000414838"/>
+<liasse code="EE" m1="000000000741348"/>
+<liasse code="EG" m1="000000000366978"/>
+</page>
+<page numero="08">
+<liasse code="VT" m1="000000000030807" m2="000000000030758" m3="000000000000049"/>
+<liasse code="VG" m1="000000000088051" m2="000000000040192" m3="000000000047860"/>
+<liasse code="8A" m1="000000000207233" m2="000000000207233"/>
+<liasse code="8B" m1="000000000055003" m2="000000000055003"/>
+<liasse code="VQ" m1="000000000064551" m2="000000000064551"/>
+<liasse code="VY" m1="000000000414838" m2="000000000366978" m3="000000000047860"/>
+</page>
+</detail>
+</bilan>
+</bilans>

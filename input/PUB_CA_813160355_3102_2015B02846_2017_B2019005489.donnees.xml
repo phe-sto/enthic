@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<bilans version="1.0" xmlns="fr:inpi:odrncs:bilansSaisisXML">
+<bilan>
+<identite>
+<siren>813160355</siren>
+<date_cloture_exercice>20171231</date_cloture_exercice>
+<code_greffe>3102</code_greffe>
+<num_depot>B2019/005489</num_depot>
+<num_gestion>2015B02846</num_gestion>
+<code_activite>5610C</code_activite>
+<date_cloture_exercice_n-1>20161231</date_cloture_exercice_n-1>
+<duree_exercice_n>12</duree_exercice_n>
+<duree_exercice_n-1>16</duree_exercice_n-1>
+<date_depot>20190318</date_depot>
+<code_motif>00</code_motif>
+<code_type_bilan>S</code_type_bilan>
+<code_devise>EUR</code_devise>
+<code_origine_devise>O</code_origine_devise>
+<code_confidentialite>0</code_confidentialite>
+<info_traitement/>
+<denomination><![CDATA[B F CHICKEN]]></denomination>
+<adresse><![CDATA[31600 MURET]]></adresse>
+</identite>
+<detail>
+<page numero="01">
+<liasse code="010" m1="000000000013000" m3="000000000013000" m4="000000000013000"/>
+<liasse code="028" m1="000000000002233" m2="000000000000526" m3="000000000001707" m4="000000000000739"/>
+<liasse code="044" m1="000000000015233" m2="000000000000526" m3="000000000014707" m4="000000000013739"/>
+<liasse code="050" m1="000000000000500" m3="000000000000500" m4="000000000000769"/>
+<liasse code="072" m1="000000000001363" m3="000000000001363" m4="000000000001145"/>
+<liasse code="084" m1="000000000004248" m3="000000000004248" m4="000000000002894"/>
+<liasse code="096" m1="000000000006111" m3="000000000006111" m4="000000000004807"/>
+<liasse code="110" m1="000000000021344" m2="000000000000526" m3="000000000020818" m4="000000000018546"/>
+<liasse code="120" m3="000000000001000" m4="000000000001000"/>
+<liasse code="134" m3="-000000000001194"/>
+<liasse code="136" m3="000000000002298" m4="-000000000001194"/>
+<liasse code="142" m3="000000000002103" m4="-000000000000194"/>
+<liasse code="166" m3="000000000001870" m4="000000000001103"/>
+<liasse code="169" m2="000000000016650"/>
+<liasse code="172" m3="000000000016845" m4="000000000017638"/>
+<liasse code="176" m3="000000000018715" m4="000000000018741"/>
+<liasse code="180" m3="000000000020818" m4="000000000018546"/>
+<liasse code="182" m3="000000000001347"/>
+</page>
+<page numero="02">
+<liasse code="214" m1="000000000042114" m2="000000000047315"/>
+<liasse code="230" m1="000000000000002"/>
+<liasse code="232" m1="000000000042116" m2="000000000047315"/>
+<liasse code="238" m1="000000000021004" m2="000000000025355"/>
+<liasse code="240" m1="000000000000269" m2="-000000000000769"/>
+<liasse code="242" m1="000000000017072" m2="000000000023191"/>
+<liasse code="243" m1="000000000000900"/>
+<liasse code="244" m1="000000000000900" m2="000000000000585"/>
+<liasse code="254" m1="000000000000379" m2="000000000000147"/>
+<liasse code="262" m2="000000000000006"/>
+<liasse code="264" m1="000000000039623" m2="000000000048509"/>
+<liasse code="270" m1="000000000002493" m2="-000000000001194"/>
+<liasse code="306" m1="000000000000195"/>
+<liasse code="310" m1="000000000002298" m2="-000000000001194"/>
+</page>
+</detail>
+</bilan>
+</bilans>

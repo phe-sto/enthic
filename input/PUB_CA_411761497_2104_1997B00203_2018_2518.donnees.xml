@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<bilans version="1.0" xmlns="fr:inpi:odrncs:bilansSaisisXML">
+<bilan>
+<identite>
+<siren>411761497</siren>
+<date_cloture_exercice>20180930</date_cloture_exercice>
+<code_greffe>2104</code_greffe>
+<num_depot>2518</num_depot>
+<num_gestion>1997B00203</num_gestion>
+<code_activite>6202A</code_activite>
+<date_cloture_exercice_n-1>20170930</date_cloture_exercice_n-1>
+<duree_exercice_n>12</duree_exercice_n>
+<duree_exercice_n-1>12</duree_exercice_n-1>
+<date_depot>20190321</date_depot>
+<code_motif>1A</code_motif>
+<code_type_bilan>C</code_type_bilan>
+<code_devise>EUR</code_devise>
+<code_origine_devise>O</code_origine_devise>
+<code_confidentialite>2</code_confidentialite>
+<info_traitement/>
+<denomination><![CDATA[INFOPROJECT]]></denomination>
+<adresse><![CDATA[21850 SAINT APOLLINAIRE]]></adresse>
+</identite>
+<detail>
+<page numero="01">
+<liasse code="AF" m1="000000000028959" m2="000000000028632" m3="000000000000327" m4="000000000001737"/>
+<liasse code="AH" m1="000000000011434" m3="000000000011434" m4="000000000011434"/>
+<liasse code="AT" m1="000000000069895" m2="000000000062230" m3="000000000007665" m4="000000000012898"/>
+<liasse code="BH" m1="000000000000060" m3="000000000000060" m4="000000000000060"/>
+<liasse code="BJ" m1="000000000110348" m2="000000000090862" m3="000000000019486" m4="000000000026129"/>
+<liasse code="BT" m1="000000000006736" m3="000000000006736" m4="000000000003488"/>
+<liasse code="BV" m1="000000000002281" m3="000000000002281" m4="000000000001798"/>
+<liasse code="BX" m1="000000000669745" m2="000000000011162" m3="000000000658583" m4="000000000557114"/>
+<liasse code="BZ" m1="000000000034512" m3="000000000034512" m4="000000000027683"/>
+<liasse code="CF" m1="000000000113286" m3="000000000113286" m4="000000000079604"/>
+<liasse code="CH" m1="000000000013480" m3="000000000013480" m4="000000000008168"/>
+<liasse code="CJ" m1="000000000840040" m2="000000000011162" m3="000000000828878" m4="000000000677854"/>
+<liasse code="CO" m1="000000000950388" m2="000000000102024" m3="000000000848364" m4="000000000703983"/>
+</page>
+<page numero="02">
+<liasse code="DA" m1="000000000041557" m2="000000000041557"/>
+<liasse code="DD" m1="000000000004160" m2="000000000004160"/>
+<liasse code="DG" m1="000000000249006" m2="000000000216934"/>
+<liasse code="DI" m1="000000000084114" m2="000000000037072"/>
+<liasse code="DL" m1="000000000378838" m2="000000000299724"/>
+<liasse code="DV" m2="000000000000660"/>
+<liasse code="DW" m2="000000000014762"/>
+<liasse code="DX" m1="000000000286811" m2="000000000218942"/>
+<liasse code="DY" m1="000000000178175" m2="000000000165189"/>
+<liasse code="EB" m1="000000000004540" m2="000000000004706"/>
+<liasse code="EC" m1="000000000469526" m2="000000000404259"/>
+<liasse code="EE" m1="000000000848364" m2="000000000703983"/>
+</page>
+<page numero="05">
+<liasse code="KD" m1="000000000028959"/>
+<liasse code="LN" m1="000000000081594"/>
+<liasse code="LQ" m1="000000000000060"/>
+<liasse code="0G" m1="000000000122047"/>
+<liasse code="IO" m3="000000000028959"/>
+<liasse code="IY" m3="000000000069895"/>
+<liasse code="I3" m3="000000000000060"/>
+<liasse code="I4" m3="000000000110348"/>
+</page>
+<page numero="06">
+<liasse code="PE" m1="000000000027222" m2="000000000001410" m4="000000000028632"/>
+<liasse code="QU" m1="000000000068696" m2="000000000008672" m3="000000000015138" m4="000000000062230"/>
+<liasse code="0N" m1="000000000095918" m2="000000000010082" m3="000000000015138" m4="000000000090862"/>
+</page>
+<page numero="08">
+<liasse code="UT" m1="000000000000060" m3="000000000000060"/>
+<liasse code="UX" m1="000000000669745" m2="000000000656357" m3="000000000013389"/>
+<liasse code="VP" m1="000000000034512" m2="000000000034512"/>
+<liasse code="VS" m1="000000000013480" m2="000000000013480"/>
+<liasse code="VT" m1="000000000717798" m2="000000000704349" m3="000000000013449"/>
+<liasse code="8B" m1="000000000286811" m2="000000000286811"/>
+<liasse code="VQ" m1="000000000178175" m2="000000000178175"/>
+</page>
+</detail>
+</bilan>
+</bilans>

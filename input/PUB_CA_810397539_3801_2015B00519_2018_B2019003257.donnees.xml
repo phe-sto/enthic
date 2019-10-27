@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<bilans version="1.0" xmlns="fr:inpi:odrncs:bilansSaisisXML">
+<bilan>
+<identite>
+<siren>810397539</siren>
+<date_cloture_exercice>20180331</date_cloture_exercice>
+<code_greffe>3801</code_greffe>
+<num_depot>B2019/003257</num_depot>
+<num_gestion>2015B00519</num_gestion>
+<code_activite>4729Z</code_activite>
+<date_cloture_exercice_n-1>20161231</date_cloture_exercice_n-1>
+<duree_exercice_n>15</duree_exercice_n>
+<duree_exercice_n-1>12</duree_exercice_n-1>
+<date_depot>20190318</date_depot>
+<code_motif>00</code_motif>
+<code_type_bilan>S</code_type_bilan>
+<code_devise>EUR</code_devise>
+<code_origine_devise>O</code_origine_devise>
+<code_confidentialite>0</code_confidentialite>
+<info_traitement/>
+<denomination><![CDATA[La Crèmerie AA]]></denomination>
+<adresse><![CDATA[38610 GIERES]]></adresse>
+</identite>
+<detail>
+<page numero="01">
+<liasse code="028" m1="000000000084269" m2="000000000025681" m3="000000000058588" m4="000000000045912"/>
+<liasse code="040" m1="000000000000610" m3="000000000000610" m4="000000000001260"/>
+<liasse code="044" m1="000000000084879" m2="000000000025681" m3="000000000059198" m4="000000000047172"/>
+<liasse code="060" m1="000000000019411" m3="000000000019411" m4="000000000014350"/>
+<liasse code="072" m1="000000000005678" m3="000000000005678" m4="000000000001831"/>
+<liasse code="084" m1="000000000017185" m3="000000000017185" m4="000000000035905"/>
+<liasse code="092" m1="000000000000012" m3="000000000000012" m4="000000000000028"/>
+<liasse code="096" m1="000000000042285" m3="000000000042285" m4="000000000052114"/>
+<liasse code="110" m1="000000000127164" m2="000000000025681" m3="000000000101483" m4="000000000099286"/>
+<liasse code="120" m3="000000000010000" m4="000000000010000"/>
+<liasse code="126" m3="000000000001000"/>
+<liasse code="132" m3="000000000005560"/>
+<liasse code="134" m4="-000000000002964"/>
+<liasse code="136" m3="000000000014926" m4="000000000009524"/>
+<liasse code="142" m3="000000000031486" m4="000000000016560"/>
+<liasse code="156" m3="000000000040521" m4="000000000050346"/>
+<liasse code="166" m3="000000000020237" m4="000000000025667"/>
+<liasse code="169" m2="000000000003040"/>
+<liasse code="172" m3="000000000009239" m4="000000000006713"/>
+<liasse code="176" m3="000000000069997" m4="000000000082726"/>
+<liasse code="180" m3="000000000101483" m4="000000000099286"/>
+<liasse code="195" m3="000000000031121"/>
+<liasse code="182" m3="000000000026510"/>
+</page>
+<page numero="02">
+<liasse code="210" m1="000000000388070" m2="000000000222054"/>
+<liasse code="226" m1="000000000003472"/>
+<liasse code="230" m1="000000000008087" m2="000000000000013"/>
+<liasse code="232" m1="000000000399629" m2="000000000222067"/>
+<liasse code="234" m1="000000000241012" m2="000000000145756"/>
+<liasse code="236" m1="-000000000005061" m2="-000000000008194"/>
+<liasse code="238" m1="000000000001794" m2="000000000004084"/>
+<liasse code="242" m1="000000000045495" m2="000000000031285"/>
+<liasse code="243" m1="000000000001399"/>
+<liasse code="244" m1="000000000003533" m2="000000000000639"/>
+<liasse code="250" m1="000000000060595" m2="000000000020121"/>
+<liasse code="252" m1="000000000020124" m2="000000000008234"/>
+<liasse code="254" m1="000000000013260" m2="000000000008375"/>
+<liasse code="262" m1="000000000000187" m2="000000000000010"/>
+<liasse code="264" m1="000000000380937" m2="000000000210309"/>
+<liasse code="270" m1="000000000018692" m2="000000000011758"/>
+<liasse code="294" m1="000000000000675" m2="000000000000990"/>
+<liasse code="300" m1="000000000001372" m2="000000000000629"/>
+<liasse code="306" m1="000000000001720" m2="000000000000615"/>
+<liasse code="310" m1="000000000014926" m2="000000000009524"/>
+</page>
+<page numero="03">
+<liasse code="442" m1="000000000004687"/>
+<liasse code="452" m1="000000000019169"/>
+<liasse code="462" m1="000000000002654"/>
+<liasse code="484" m1="000000000000650"/>
+<liasse code="490" m1="000000000059892"/>
+<liasse code="492" m1="000000000026510"/>
+<liasse code="494" m1="000000000001523"/>
+<liasse code="582" m1="000000000001224"/>
+<liasse code="596" m1="-000000000001224"/>
+</page>
+<page numero="04">
+<liasse code="374" m1="000000000024672"/>
+<liasse code="378" m1="000000000022051"/>
+</page>
+<page numero="05">
+<liasse code="376" m1="000000000000001"/>
+</page>
+</detail>
+</bilan>
+</bilans>

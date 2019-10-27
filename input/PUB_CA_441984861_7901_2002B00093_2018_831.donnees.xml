@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<bilans version="1.0" xmlns="fr:inpi:odrncs:bilansSaisisXML">
+<bilan>
+<identite>
+<siren>441984861</siren>
+<date_cloture_exercice>20181130</date_cloture_exercice>
+<code_greffe>7901</code_greffe>
+<num_depot>831</num_depot>
+<num_gestion>2002B00093</num_gestion>
+<code_activite>6820B</code_activite>
+<date_cloture_exercice_n-1>20171130</date_cloture_exercice_n-1>
+<duree_exercice_n>12</duree_exercice_n>
+<duree_exercice_n-1>12</duree_exercice_n-1>
+<date_depot>20190318</date_depot>
+<code_motif>00</code_motif>
+<code_type_bilan>C</code_type_bilan>
+<code_devise>EUR</code_devise>
+<code_origine_devise>O</code_origine_devise>
+<code_confidentialite>2</code_confidentialite>
+<info_traitement/>
+<denomination><![CDATA[ATLANTIC TUBES]]></denomination>
+<adresse><![CDATA[79270 EPANNES]]></adresse>
+</identite>
+<detail>
+<page numero="01">
+<liasse code="AP" m1="000000000000001" m3="000000000000001"/>
+<liasse code="AT" m1="000000000008883" m2="000000000008883"/>
+<liasse code="BD" m4="000000000001876"/>
+<liasse code="BH" m4="000000000000658"/>
+<liasse code="BJ" m1="000000000008884" m2="000000000008883" m3="000000000000001" m4="000000000002534"/>
+<liasse code="BX" m1="000000000051771" m3="000000000051771" m4="000000000042072"/>
+<liasse code="BZ" m1="000000000061884" m3="000000000061884" m4="000000000054238"/>
+<liasse code="CF" m1="000000000001324" m3="000000000001324" m4="000000000000578"/>
+<liasse code="CH" m1="000000000001292" m3="000000000001292" m4="000000000006007"/>
+<liasse code="CJ" m1="000000000116271" m3="000000000116271" m4="000000000102896"/>
+<liasse code="CO" m1="000000000125156" m2="000000000008883" m3="000000000116272" m4="000000000105430"/>
+</page>
+<page numero="02">
+<liasse code="DA" m1="000000000045000" m2="000000000045000"/>
+<liasse code="DD" m1="000000000004500" m2="000000000004500"/>
+<liasse code="DG" m1="000000000035286" m2="000000000036167"/>
+<liasse code="DI" m1="-000000000062940" m2="-000000000000880"/>
+<liasse code="DK" m1="000000000015535"/>
+<liasse code="DL" m1="000000000037381" m2="000000000084786"/>
+<liasse code="DU" m1="000000000000034"/>
+<liasse code="DX" m1="000000000028708" m2="000000000019820"/>
+<liasse code="DY" m1="000000000050149" m2="000000000000823"/>
+<liasse code="EC" m1="000000000078891" m2="000000000020643"/>
+<liasse code="EE" m1="000000000116272" m2="000000000105429"/>
+</page>
+</detail>
+</bilan>
+</bilans>

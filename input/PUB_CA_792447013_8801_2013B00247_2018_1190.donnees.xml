@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<bilans version="1.0" xmlns="fr:inpi:odrncs:bilansSaisisXML">
+<bilan>
+<identite>
+<siren>792447013</siren>
+<date_cloture_exercice>20181231</date_cloture_exercice>
+<code_greffe>8801</code_greffe>
+<num_depot>1190</num_depot>
+<num_gestion>2013B00247</num_gestion>
+<code_activite>4391A</code_activite>
+<date_cloture_exercice_n-1>20171231</date_cloture_exercice_n-1>
+<duree_exercice_n>12</duree_exercice_n>
+<duree_exercice_n-1>00</duree_exercice_n-1>
+<date_depot>20190322</date_depot>
+<code_motif>00</code_motif>
+<code_type_bilan>C</code_type_bilan>
+<code_devise>EUR</code_devise>
+<code_origine_devise>O</code_origine_devise>
+<code_confidentialite>2</code_confidentialite>
+<info_traitement/>
+<denomination><![CDATA[LE BOIS A COEUR]]></denomination>
+<adresse><![CDATA[88640 GRANGES AUMONTZEY]]></adresse>
+</identite>
+<detail>
+<page numero="01">
+<liasse code="AJ" m1="000000000004860" m2="000000000001292" m3="000000000003569"/>
+<liasse code="AR" m1="000000000107855" m2="000000000032974" m3="000000000074881" m4="000000000012725"/>
+<liasse code="AT" m1="000000000057934" m2="000000000017361" m3="000000000040572" m4="000000000047886"/>
+<liasse code="BJ" m1="000000000170649" m2="000000000051627" m3="000000000119021" m4="000000000060611"/>
+<liasse code="BL" m1="000000000011195" m3="000000000011195" m4="000000000005381"/>
+<liasse code="BV" m4="000000000002066"/>
+<liasse code="BX" m1="000000000074584" m3="000000000074584" m4="000000000097191"/>
+<liasse code="BZ" m1="000000000024899" m3="000000000024899" m4="000000000013862"/>
+<liasse code="CF" m1="000000000100904" m3="000000000100904" m4="000000000070494"/>
+<liasse code="CH" m1="000000000004073" m3="000000000004073" m4="000000000003868"/>
+<liasse code="CJ" m1="000000000215655" m3="000000000215655" m4="000000000192863"/>
+<liasse code="CO" m1="000000000386303" m2="000000000051627" m3="000000000334676" m4="000000000253474"/>
+</page>
+<page numero="02">
+<liasse code="DA" m1="000000000005000" m2="000000000005000"/>
+<liasse code="DD" m1="000000000000500" m2="000000000000500"/>
+<liasse code="DH" m1="000000000072178" m2="000000000016193"/>
+<liasse code="DI" m1="-000000000012664" m2="000000000055984"/>
+<liasse code="DJ" m1="000000000010507"/>
+<liasse code="DL" m1="000000000075521" m2="000000000077678"/>
+<liasse code="DU" m1="000000000093172" m2="000000000048340"/>
+<liasse code="DV" m1="000000000000017" m2="000000000005798"/>
+<liasse code="DX" m1="000000000081404" m2="000000000055117"/>
+<liasse code="DY" m1="000000000054648" m2="000000000037385"/>
+<liasse code="EA" m1="000000000029915" m2="000000000029156"/>
+<liasse code="EC" m1="000000000259155" m2="000000000175796"/>
+<liasse code="EE" m1="000000000334676" m2="000000000253474"/>
+</page>
+</detail>
+</bilan>
+</bilans>

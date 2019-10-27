@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<bilans version="1.0" xmlns="fr:inpi:odrncs:bilansSaisisXML">
+<bilan>
+<identite>
+<siren>497892604</siren>
+<date_cloture_exercice>20171231</date_cloture_exercice>
+<code_greffe>1301</code_greffe>
+<num_depot>936</num_depot>
+<num_gestion>2016B00774</num_gestion>
+<code_activite>7490B</code_activite>
+<date_cloture_exercice_n-1>00000000</date_cloture_exercice_n-1>
+<duree_exercice_n>12</duree_exercice_n>
+<duree_exercice_n-1>12</duree_exercice_n-1>
+<date_depot>20190214</date_depot>
+<code_motif>1A</code_motif>
+<code_type_bilan>C</code_type_bilan>
+<code_devise>EUR</code_devise>
+<code_origine_devise>O</code_origine_devise>
+<code_confidentialite>0</code_confidentialite>
+<info_traitement>A1</info_traitement>
+<denomination><![CDATA[DYANERGIE]]></denomination>
+<adresse><![CDATA[13100 AIX EN PROVENCE]]></adresse>
+</identite>
+<detail>
+<page numero="01">
+<liasse code="AJ" m1="000000000046751" m2="000000000046751"/>
+<liasse code="BJ" m1="000000000046751" m2="000000000046751"/>
+<liasse code="BZ" m1="000000001578514" m3="000000001578514"/>
+<liasse code="CJ" m1="000000001578514" m3="000000001578514"/>
+<liasse code="CO" m1="000000001625265" m2="000000000046751" m3="000000001578514"/>
+</page>
+<page numero="02">
+<liasse code="DA" m1="000000000010000"/>
+<liasse code="DD" m1="000000000001000"/>
+<liasse code="DG" m1="000000001394500"/>
+<liasse code="DH" m1="000000000173382"/>
+<liasse code="DI" m1="-000000000000735"/>
+<liasse code="DL" m1="000000001578147"/>
+<liasse code="EA" m1="000000000000367"/>
+<liasse code="EC" m1="000000000000367"/>
+<liasse code="EE" m1="000000001578514"/>
+</page>
+<page numero="03">
+<liasse code="FX" m3="000000000000735"/>
+<liasse code="GF" m3="000000000000735"/>
+<liasse code="GG" m3="-000000000000735"/>
+<liasse code="GL" m4="000000000000001"/>
+<liasse code="GW" m3="-000000000000735"/>
+</page>
+<page numero="04">
+<liasse code="HM" m1="000000000000735"/>
+<liasse code="HN" m1="-000000000000735"/>
+</page>
+</detail>
+</bilan>
+</bilans>

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="fr:inpi:odrncs:bilansSaisisXML" xmlns="fr:inpi:odrncs:bilansSaisisXML" elementFormDefault="qualified">
+    <xs:element name="bilans">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="bilan" maxOccurs="unbounded">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="identite">
+                                <xs:complexType>
+                                    <xs:sequence>
+                                        <xs:element name="siren" type="xs:string" minOccurs="0" />
+                                        <xs:element name="date_cloture_exercice" type="xs:string" minOccurs="0" />
+                                        <xs:element name="code_greffe" type="xs:string" minOccurs="0" />
+                                        <xs:element name="num_depot" type="xs:string" minOccurs="0" />
+                                        <xs:element name="num_gestion" type="xs:string" minOccurs="0" />
+                                        <xs:element name="code_activite" type="xs:string" minOccurs="0" />
+                                        <xs:element name="date_cloture_exercice_n-1" type="xs:string" minOccurs="0" />
+                                        <xs:element name="duree_exercice_n" type="xs:string" minOccurs="0" />
+                                        <xs:element name="duree_exercice_n-1" type="xs:string" minOccurs="0" />
+                                        <xs:element name="date_depot" type="xs:string" minOccurs="0" />
+                                        <xs:element name="code_motif" type="xs:string" minOccurs="0" />
+                                        <xs:element name="code_type_bilan" type="xs:string" minOccurs="0" />
+                                        <xs:element name="code_devise" type="xs:string" minOccurs="0" />
+                                        <xs:element name="code_origine_devise" type="xs:string" minOccurs="0" />
+                                        <xs:element name="code_confidentialite" type="xs:string" minOccurs="0" />
+                                        <xs:element name="info_traitement" type="xs:string" minOccurs="0" />
+                                        <xs:element name="denomination" type="xs:string" minOccurs="0" />
+                                        <xs:element name="adresse" type="xs:string" minOccurs="0" />
+                                    </xs:sequence>
+                                </xs:complexType>
+                            </xs:element>
+                            <xs:element name="detail" minOccurs="0">
+                                <xs:complexType>
+                                    <xs:sequence>
+                                        <xs:element name="page" minOccurs="0" maxOccurs="unbounded">
+                                            <xs:complexType>
+                                                <xs:sequence>
+                                                    <xs:element name="liasse" maxOccurs="unbounded">
+                                                        <xs:complexType>
+                                                            <xs:attribute name="code" type="xs:string" use="required" />
+                                                            <xs:attribute name="m1" type="xs:string" />
+                                                            <xs:attribute name="m2" type="xs:string" />
+                                                            <xs:attribute name="m3" type="xs:string" />
+                                                            <xs:attribute name="m4" type="xs:string" />
+                                                        </xs:complexType>
+                                                    </xs:element>
+                                                </xs:sequence>
+                                                <xs:attribute name="numero" type="xs:string" use="required" />
+                                            </xs:complexType>
+                                        </xs:element>
+                                    </xs:sequence>
+                                </xs:complexType>
+                            </xs:element>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+            <xs:attribute name="version" type="xs:string" use="required" />
+        </xs:complexType>
+    </xs:element>
+</xs:schema>

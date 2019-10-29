@@ -16,4 +16,4 @@ sort ${OUPUT_DIR}identity.tmp > ${OUPUT_DIR}identity.csv
 sort ${OUPUT_DIR}bundle.tmp > ${OUPUT_DIR}sort-bundle.tmp
 ################################################################################
 # 5) PYTHON STEP SUM A BUNDLE OF A COMPANY FOR A GIVEN YEAR
-../python3_venv/bin/python3 enthic/sum_bundle.py -c ../configuration.json > bundle.csv
+../python3_venv/bin/python3 enthic/sum_bundle.py -c ../configuration.json > ${OUPUT_DIR}bundle.csv

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
 ========================================
-Test the data extracted form bundle code
+Test the data extracted from bundle code
 ========================================
 
 Coding Rules:
@@ -10,11 +10,10 @@ Coding Rules:
 - Only argument is configuration file.
 - No output or print, just log and files.
 """
-from logging import error, info
 from os.path import join
-from subprocess import Popen, TimeoutExpired, PIPE
 
 import pytest
+from enthic.conftest import execution_in_subprocess
 
 
 ################################################################################
@@ -35,48 +34,36 @@ def test_config(config):
 
 ################################################################################
 # EXECUTION, IN CPYTHON 3 AND PYPY VM
-def execution_in_subprocess(python, configuration_path):
+@pytest.fixture()
+def extract_bundle_script():
     """
-    Execute a command in a subprocess and print both standard and error out.
-       Execution with cProfile module to profile python performance.
-       :param configuration_path: JSON object of the application configuration.
-       :param python: Path to an executable that can run python code.
-       :return: Return code of the subprocess.
+    Fixture of the Python script extracting bundle.
+       :return: A string made of the script path.
     """
-    process = Popen([python, "-m", "cProfile", "-s", "tottime",
-                     "./enthic/extract_bundle.py", "-c",
-                     configuration_path], cwd='.', stdout=PIPE, stderr=PIPE)
-    try:
-        outs, errs = process.communicate(timeout=3600)
-    except TimeoutExpired:
-        process.kill()
-        outs, errs = process.communicate()
-    ############################################################################
-    # PRINT ONLY IF NOT EMPTY
-    if outs != b'':
-        info(outs.decode())
-    if errs != b'':
-        error(errs.decode())
-    return process.returncode
+    return "./enthic/extract_bundle.py"
 
 
-def test_execution_python(configuration_path, python_executable):
+def test_execution_python(configuration_path, python_executable,
+                          extract_bundle_script):
     """
     Test the execution with the CPython 3 implementation.
        :param configuration_path: Fixture of the application configuration.
        :param python_executable: Fixture, path of the python3 executable.
     """
-    rc = execution_in_subprocess(python_executable, configuration_path)
+    rc = execution_in_subprocess(python_executable, configuration_path,
+                                 extract_bundle_script)
     assert rc == 0, "RETURN CODE NOT 0"
 
 
-def test_execution_pypy(configuration_path, pypy_executable):
+def test_execution_pypy(configuration_path, pypy_executable,
+                        extract_bundle_script):
     """
     Test the execution with the Pypy VM 3 implementation.
        :param configuration_path: Fixture of the application configuration.
        :param pypy_executable: Fixture, path of the pypy3 executable..
     """
-    rc = execution_in_subprocess(pypy_executable, configuration_path)
+    rc = execution_in_subprocess(pypy_executable, configuration_path,
+                                 extract_bundle_script)
     assert rc == 0, "RETURN CODE NOT 0"
 
 

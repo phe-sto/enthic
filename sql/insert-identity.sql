@@ -1,0 +1,4 @@
+LOAD DATA LOCAL INFILE "../output/identity.csv"
+INTO TABLE identity
+COLUMNS TERMINATED BY ';'
+LINES TERMINATED BY '\n';

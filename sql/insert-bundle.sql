@@ -1,0 +1,4 @@
+LOAD DATA LOCAL INFILE "../output/bundle.csv"
+INTO TABLE bundle
+COLUMNS TERMINATED BY ';'
+LINES TERMINATED BY '\n';

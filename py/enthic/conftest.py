@@ -11,8 +11,36 @@ Coding Rules:
 - No output or print, just log and files.
 """
 from json import load
+from logging import error, info
+from subprocess import Popen, TimeoutExpired, PIPE
 
 import pytest
+
+
+def execution_in_subprocess(python, configuration_path, python_script):
+    """
+    Execute a command in a subprocess and print both standard and error out.
+       Execution with cProfile module to profile python performance.
+       :param configuration_path: JSON object of the application configuration.
+       :param python: Path to an executable that can run python code.
+       :param python_script: Python script to run.
+       :return: Return code of the subprocess.
+    """
+    process = Popen([python, "-m", "cProfile", "-s", "tottime",
+                     python_script, "-c", configuration_path], cwd='.',
+                    stdout=PIPE, stderr=PIPE)
+    try:
+        outs, errs = process.communicate(timeout=3600)
+    except TimeoutExpired:
+        process.kill()
+        outs, errs = process.communicate()
+    ############################################################################
+    # PRINT ONLY IF NOT EMPTY
+    if outs != b'':
+        info(outs.decode())
+    if errs != b'':
+        error(errs.decode())
+    return process.returncode
 
 
 @pytest.fixture()

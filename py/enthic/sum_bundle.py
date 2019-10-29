@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 """
-==============================================
-Sum all the bundle of the year for one company
-==============================================
+=================================================================
+Sum all the bundle of the year for one company from a sorted file
+=================================================================
 
 PROGRAM BY PAPIT SASU, 2019
 

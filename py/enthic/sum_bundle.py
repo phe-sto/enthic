@@ -40,7 +40,7 @@ def main():
         )
     ############################################################################
     # SET LOG LEVEL
-    basicConfig(level=config['debugLevel'])
+    basicConfig(level=config['debugLevel'], format="%(asctime)s [%(levelname)8s] %(message)s (%(filename)s:%(lineno)s)")
     ############################################################################
     # READ THE INPUT FILE AND PRINT THE OUPUT
     with open(join(config['outputPath'], config['sortBundleFile']), mode='r') as infile:

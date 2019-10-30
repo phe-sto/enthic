@@ -45,7 +45,7 @@ def main():
         )
     ############################################################################
     # SET LOG LEVEL
-    basicConfig(level=config['debugLevel'])
+    basicConfig(level=config['debugLevel'], format="%(asctime)s [%(levelname)8s] %(message)s (%(filename)s:%(lineno)s)")
     ############################################################################
     # READ THE CODES TO EXTRACT
     account_ontology = {}  # EMPTY OBJECT STORING DATA TO EXTRACT

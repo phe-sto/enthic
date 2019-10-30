@@ -51,6 +51,7 @@ def test_execution_python(configuration_path, python_executable,
     assert rc == 0, "RETURN CODE NOT 0"
 
 
+@pytest.mark.skip
 def test_execution_pypy(configuration_path, pypy_executable,
                         sum_bundle_script):
     """

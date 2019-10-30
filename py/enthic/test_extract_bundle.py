@@ -10,6 +10,7 @@ Coding Rules:
 - Only argument is configuration file.
 - No output or print, just log and files.
 """
+from logging import info
 from os.path import join
 
 import pytest
@@ -55,6 +56,7 @@ def test_execution_python(configuration_path, python_executable,
     assert rc == 0, "RETURN CODE NOT 0"
 
 
+@pytest.mark.skip
 def test_execution_pypy(configuration_path, pypy_executable,
                         extract_bundle_script):
     """
@@ -101,7 +103,7 @@ def test_result_line_data(result_file):
         assert "" not in line, "EMPTY ENTRY"
         assert line[0].isnumeric() is True, "SIREN NOT NUMERIC"
         assert len(line[0]) == 9, "SIREN IS NOT 9 CHARACTERS"
-        assert line[1].isnumeric(), "YEAR NOT NUMERIC"
+        assert line[1].isnumeric() is True, "YEAR NOT NUMERIC"
         assert len(line[1]) == 4, "YEAR IS NOT 4 CHARACTERS"
         assert int(line[3]) != 0, "BUNDLE AMOUNT NOT NUMERIC"
 
@@ -111,11 +113,17 @@ def test_identity_line_data(identity_file):
     Test the line contain always 4 columns. Check it's type.
        :param identity_file: Fixture of the CSV result file.
     """
+    max_length = 0
     for line in identity_file:
         line = line.split(";")
         assert len(line) == 5, "NUMBER OF COLUMNS NOT 5"
         assert " " not in line, "BLANK ENTRY"
         assert "" not in line, "EMPTY ENTRY"
         assert line[0].isnumeric() is True, "SIREN NOT NUMERIC"
-        assert len([2]) == 1, "ACCOUNTABILITY TYPE LENGTH NOT 5"
+        assert len([2]) == 1, "ACCOUNTABILITY TYPE LENGTH NOT 1"
         assert line[3] == "EUR", "DEVISE NOT EUR"
+        # DENOMINATION LENGTH
+        denomination_length = len(line[1])
+        if max_length < denomination_length:
+            max_length = denomination_length
+    info("> MAXIMUM DENOMINATION LENGTH >{}<".format(max_length))

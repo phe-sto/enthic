@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 """
-=================================================================
-Sum all the bundle of the year for one company from a sorted file
-=================================================================
+=====================================================================
+Sum all the bundle of the year for one company from a CSV sorted file
+=====================================================================
 
 PROGRAM BY PAPIT SASU, 2019
 
@@ -16,14 +16,13 @@ from csv import reader
 from logging import basicConfig
 from os.path import isdir, join
 
-from enthic.utils.configuration import config
-
 
 def main():
     """
     Based on the configuration storing the input file path. Sum all the bundle
-       of the year for one company
+    of the year for one company.
     """
+    from enthic.utils.configuration import config
     ############################################################################
     # CHECKING THE INPUT AND OUTPUT AND DIRECTORY PATH
     # INPUT

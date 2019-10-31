@@ -19,16 +19,15 @@ from os import listdir
 from os.path import isdir, isfile, join
 from re import sub, compile
 
-from enthic.utils.configuration import config
-
 re_multiple_whitespace = compile(r"\s+")  # NOT AN OBVIOUS PERFORMANCE GAIN...
 
 
 def main():
     """
     Based on the configuration storing the input file path. All the xml are
-    read to list the bundle code
+    read to list the bundle code.
     """
+    from enthic.utils.configuration import config
     ############################################################################
     # CHECKING THE INPUT AND OUTPUT AND DIRECTORY PATH
     # INPUT

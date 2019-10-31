@@ -1,12 +1,10 @@
 #!/bin/sh
 ################################################################################
-# PROGRAM BY PAPIT SASU, INSTALL THE REQUIRED DEPENDENCIES
+# PROGRAM BY PAPIT SASU, GENERATE THE DOCUMENTION VIA SPHINX
 ################################################################################
-# 1) INSTALL DISTANT SYNAPTIC PACKAGES
-apt-get install zip libxml2-utils mysql-server tree
+# 1) CHANGE WORKING DIRECTORY TO py
 ################################################################################
-# 2) INSTALL LOCAL PYTHON PACKAGE
-python3 setup.py install
+cd ../py/
 ################################################################################
-# 3) INSTALL DISTANT PACKAGE
-python3 -m pip install pytest Sphinx==1.8.5
+# 2) BUILD HTML FULL DOCUMENTATION
+make html

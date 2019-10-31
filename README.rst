@@ -1,12 +1,13 @@
-French society accountability extraction and treatment by PapIT
-###############################################################
+French societies accountability extraction and treatment by PapIT
+#################################################################
 
 Project than treat data from opendata-rncs.inpi.fr. They contain xml
 files of the account declaration of all french societies. The overall project
 is meant to be a low-code one. Aim to provide ethical indicators on companies.
 Information media is a MySQL database, CSV files, web visualisation and a
 swagger API. Score and indicators are calculated by batch using fancy libraries.
-Scoring, AI, data scrapping for segmentation.
+Scoring, AI, data scrapping for segmentation. Shell and python are to be from
+their corresponding directory ``./sh`` and ``./py``.
 
 Developpement and Coding Rules
 ==============================
@@ -18,13 +19,13 @@ Developpement and Coding Rules
 - Pytest python and API testing.
 - Autodocumentation using Sphinx 1.8.5.
 - Benchmark of CPython and Pypy.
+- Common sens and clean code.
 
 Install dependencies
 ====================
 
-Interpreter and VM for python are embedded is the project code for benchmarking
-purpose. Synaptic packages have to be installed. Pip packages as well has to be
-installed.
+Synaptic packages have to be installed ``zip libxml2-utils mysql-server tree python3``.
+Pip packages as well has to be installed.
 
 .. code-block:: bash
 
@@ -70,6 +71,16 @@ previous CSV files.
 
    $ sh ./database-creation.sh
 
+
+Generate documentation
+======================
+
+Generate HTML documentation via Sphinx documentation framework.
+
+.. code-block:: bash
+
+   $ sh ./documentation.sh
+
 Documentation generation and testing
 ====================================
 
@@ -92,6 +103,11 @@ Library structure
    ├── .gitignore
    │
    ├── py
+   │   ├── source
+   │   │   ├── conf.py
+   │   │   ├── index.rst
+   │   │   └── papit.png
+   │   │
    │   ├── enthic
    │   │   ├── conftest.py
    │   │   ├── extract_bundle.py
@@ -114,21 +130,18 @@ Library structure
    │   ├── insert-bundle.sql
    │   └── insert-identity.sql   
    │
-   ├── python3_venv
-   │   └──...
-   │
-   ├── pypy3.6-v7.1.1-linux64
-   │   └──...
-   │
    ├── sh
    │   ├── check-data.sh   
    │   ├── clear-data.sh
    │   ├── database-creation.sh
+   │   ├── documentation.sh
    │   ├── install-dependencies.sh
    │   └── xml-csv.sh
    │
    ├── input
    │   └── qualification
+   │       └──...
+   │
    └── output
 
 

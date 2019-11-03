@@ -6,7 +6,7 @@
 readonly OUPUT_DIR="../output/";
 readonly INPUT_DIR="../input/";
 # 1) EXECUTE IT PYTHON STEP FROM py FOLDER
-cd ../py || exit;
+cd ../python || exit;
 ################################################################################
 # 2) PYTHON STEP THAT EXTRACT ALL BUNDLE AND ALL IDENTITY INFORMATION
 python3 enthic/extract_bundle.py -c ../configuration.json

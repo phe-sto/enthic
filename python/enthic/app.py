@@ -4,11 +4,11 @@ from re import compile
 
 from enthic.utils.ok_json_response import OKJSONResponse
 from enthic.utils.sql_json_response import SQLJSONResponse
-from flask import Flask
+from flask import Flask, redirect
 from flask_mysqldb import MySQL
 
 app = Flask(__name__)
-app._static_folder = "./static"
+app._static_folder = "./static/"
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
 app.config['MYSQL_PASSWORD'] = ''
@@ -17,7 +17,7 @@ mysql = MySQL(app)
 siren_re = compile(r"^\d{9}$")  # REGEX OF A SIREN
 
 
-@app.route("/company/siren/<siren>", methods=['GET'])
+@app.route("/company/siren/<siren>", methods=['GET'], strict_slashes=False)
 def company_siren(siren):
     """
     Retrieve company information by SIREN.
@@ -36,7 +36,7 @@ def company_siren(siren):
         return OKJSONResponse({"error": "SIREN for is wrong, must match ^\d{9}$."})
 
 
-@app.route("/company/denomination/<denomination>", methods=['GET'])
+@app.route("/company/denomination/<denomination>", methods=['GET'], strict_slashes=False)
 def company_denomination(denomination):
     """
     Retrieve company information by company denomination.
@@ -50,7 +50,7 @@ def company_denomination(denomination):
                            "bundle", "amount")
 
 
-@app.route("/company/search/<probe>", methods=['GET'])
+@app.route("/company/search/<probe>", methods=['GET'], strict_slashes=False)
 def search(probe):
     """
     Search companies by SIREN or denomination. Limited to 1000 results.
@@ -66,17 +66,36 @@ def search(probe):
                            "denomination", "siren")
 
 
-
-
-@app.route("/swagger")
-def swagger():
-    return app.send_static_file('swagger/index.html')
-
-
-@app.route('/<path:path>')
+@app.route('/<path:path>', strict_slashes=False)
 def static_proxy(path):
+    """
+    Serve the static files, like the Swagger definition page and the 404.
+       :param path: / Base path of the host.
+       :return: The resource present at the path.
+    """
     return app.send_static_file(path)
 
 
-if __name__ == "__main__":
+@app.errorhandler(404)
+def page_not_found(error):
+    """
+    Page not found redirection and logging.
+       :param error: Error message to be logged.
+       :return: The HTML 404 page.
+    """
+    app.logger.error(error)
+    return redirect('404.html', 404)
+
+
+def main():
+    """
+    Start app.
+    """
     app.run(debug=True)
+
+
+if __name__ == "__main__":
+    """
+    Only executed as script not at import.
+    """
+    main()

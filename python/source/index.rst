@@ -31,3 +31,21 @@ Sum bundle
 
 .. automodule:: enthic.sum_bundle
    :members:
+
+Flask API server
+================
+
+.. automodule:: enthic.app
+   :members:
+
+Flask JSON response
+===================
+
+.. automodule:: enthic.utils.ok_json_response
+   :members:
+
+Flask SQL JSON response
+=======================
+
+.. automodule:: enthic.utils.sql_json_response
+   :members:

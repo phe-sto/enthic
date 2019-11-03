@@ -58,7 +58,7 @@ def python_executable():
     Fixture, path of the python3 executable.
        :return: A string made of the python3 executable path.
     """
-    return "../python3_venv/bin/python3"
+    return "python3"
 
 
 @pytest.fixture()

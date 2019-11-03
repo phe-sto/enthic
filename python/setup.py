@@ -13,9 +13,9 @@ setup(name=NAME,
       entry_points={
           'console_scripts': ['sum-bundle = enthic.sum_bundle:main'],
           'console_scripts': ['extract-bundle = enthic.extract_bundle:main'],
+          'console_scripts': ['enthic-api = enthic.app:main'],
       },
       install_requires=[
-          'flask', 'flask-mysqldb'
+          'flask', 'flask-mysqldb', 'requests'
       ]
       )
-

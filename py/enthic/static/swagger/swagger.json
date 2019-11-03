@@ -1,0 +1,137 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "JSON API of French Company Account and Ethical Score",
+    "version": "0.1",
+    "title": "Swagger French Company Account and Ethical Score",
+    "contact": {
+      "email": "services@papit.fr"
+    }
+  },
+  "host": "api.enthic.fr",
+  "basePath": "/company",
+  "tags": [
+    {
+      "name": "Enthic",
+      "description": "Swagger French Company Account and Ethical Score",
+      "externalDocs": {
+        "description": "Enthic website",
+        "url": "https://enthic.fr/"
+      }
+    },
+    {
+      "name": "PapIT",
+      "description": "Infogestion et Conseil IT",
+      "externalDocs": {
+        "description": "PapIT website",
+        "url": "https://papit.fr/"
+      }
+    }
+  ],
+  "schemes": [
+    "http"
+  ],
+  "paths": {
+    "/siren/{siren}": {
+      "get": {
+        "tags": [
+          "SIREN"
+        ],
+        "summary": "Retrieve company information by SIREN.",
+        "description": "",
+        "operationId": "siren_siren_get",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "siren",
+            "in": "path",
+            "description": "All company SIREN. A 9 numeric characters long number",
+            "required": true,
+            "type": "string",
+            "format": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation, JSON is returned, contain a error if SIREN format is wrong."
+          }
+        },
+        "x-swagger-router-controller": "swagger_server.controllers.siren_controller"
+      }
+    },
+    "/denomination/{denomination}": {
+      "get": {
+        "tags": [
+          "Denomination"
+        ],
+        "summary": "Retrieve company information by company name.",
+        "description": "",
+        "operationId": "denomination_denomination_get",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "denomination",
+            "in": "path",
+            "description": "An official company denomination.",
+            "required": true,
+            "type": "string",
+            "format": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation, JSON is returned."
+          }
+        },
+        "x-swagger-router-controller": "swagger_server.controllers.denomination_controller"
+      }
+    },
+    "/search/{probe}": {
+      "get": {
+        "tags": [
+          "Search"
+        ],
+        "summary": "Minimal search engine, return companies based on SIREN or name.",
+        "description": "",
+        "operationId": "search_probe_get",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "probe",
+            "in": "path",
+            "description": "A partial company denomination or SIREN.",
+            "required": true,
+            "type": "string",
+            "format": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation, JSON is returned."
+          }
+        },
+        "x-swagger-router-controller": "swagger_server.controllers.search_controller"
+      }
+    }
+  },
+  "definitions": {},
+  "externalDocs": {
+    "description": "Find out more about Swagger",
+    "url": "http://swagger.io"
+  }
+}

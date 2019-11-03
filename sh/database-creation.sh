@@ -22,6 +22,3 @@ mysql enthic < ${SQL_DIR}insert-bundle.sql;
 ################################################################################
 # 6) CREATE TWO INDEXES FOR IDENTITY TABLE
 mysql enthic < ${SQL_DIR}create-index-identity.sql;
-################################################################################
-# 7) CREATE AN INDEX FOR BUNDLE TABLE
-mysql enthic < ${SQL_DIR}create-index-bundle.sql;

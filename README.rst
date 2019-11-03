@@ -109,6 +109,7 @@ Library structure
    │   │   └── papit.png
    │   │
    │   ├── enthic
+   │   │   ├── app.py
    │   │   ├── conftest.py
    │   │   ├── extract_bundle.py
    │   │   ├── __init__.py
@@ -117,6 +118,8 @@ Library structure
    │   │   ├── test_sum_bundle.py
    │   │   └── utils
    │   │       ├── configuration.py
+   │   │       ├── ok_json_response.py
+   │   │       ├── sql_json_response.py
    │   │       └── __init__.py
    │   │
    │   └── setup.py

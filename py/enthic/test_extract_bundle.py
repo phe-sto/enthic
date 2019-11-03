@@ -106,6 +106,7 @@ def test_result_line_data(result_file):
         assert line[1].isnumeric() is True, "YEAR NOT NUMERIC"
         assert len(line[1]) == 4, "YEAR IS NOT 4 CHARACTERS"
         assert int(line[3]) != 0, "BUNDLE AMOUNT NOT NUMERIC"
+        assert int(line[3]) - float(line[3]) == 0, "BUNDLE AMOUNT NOT A FLOAT"
 
 
 def test_identity_line_data(identity_file):

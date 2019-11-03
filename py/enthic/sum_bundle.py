@@ -22,7 +22,7 @@ def main():
     Based on the configuration storing the input file path. Sum all the bundle
     of the year for one company.
     """
-    from enthic.utils.configuration import config
+    from enthic.utils.configuration import config  # UGLY, FOR SPHINX IMPORT
     ############################################################################
     # CHECKING THE INPUT AND OUTPUT AND DIRECTORY PATH
     # INPUT

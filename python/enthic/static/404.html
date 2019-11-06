@@ -4,13 +4,50 @@
 
 <head>
   <meta charset="UTF-8">
-  <link rel="icon" type="image/png" href="/favicon.png"/>
-  <title>404 Page not found</title>
+  <link rel="stylesheet" type="text/css" href="/404.css">
+  <link rel="icon" type="image/png" href="/favicon.png" />
+  <title>404 URL not found</title>
 </head>
 
 <body>
-  <h1>404 Page not found</h1>
-  <p>This page does not exist, please see the <a href="/" target="_blank">API swagger documentation.</a></p>
+  <div class="box">
+    <div class="box__ghost">
+      <div class="symbol"></div>
+      <div class="symbol"></div>
+      <div class="symbol"></div>
+      <div class="symbol"></div>
+      <div class="symbol"></div>
+      <div class="symbol"></div>
+
+      <div class="box__ghost-container">
+        <div class="box__ghost-eyes">
+          <div class="box__eye-left"></div>
+          <div class="box__eye-right"></div>
+        </div>
+        <div class="box__ghost-bottom">
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+        </div>
+      </div>
+      <div class="box__ghost-shadow"></div>
+    </div>
+
+    <div class="box__description">
+      <div class="box__description-container">
+        <div class="box__description-title">Whoops!</div>
+        <div class="box__description-text">It seems like we couldn't find the URL you were looking for</div>
+      </div>
+
+      <a href="/" target="_blank" class="box__button">Documentation &#8594;</a>
+
+    </div>
+
+  </div>
+  <script src="/jquery.min.js"> </script>
+  <script src="/404.js"> </script>
 </body>
 
 </html>

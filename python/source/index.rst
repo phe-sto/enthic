@@ -11,8 +11,8 @@ Indices and tables
 * :ref:`modindex`
 * :ref:`search`
 
-Documentation of the Python Code
-================================
+**Documentation of the Python Code**
+====================================
 
 Those two python scripts are used in shell ``script xml-csv.sh``.
 
@@ -34,6 +34,8 @@ Sum bundle
 
 Flask API server
 ================
+
+Following module relates to Flask server.
 
 .. automodule:: enthic.app
    :members:

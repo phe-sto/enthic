@@ -13,7 +13,29 @@ Coding Rules:
 from json import loads
 
 import pytest
+from enthic.app import mysql
+from enthic.utils.ok_json_response import OKJSONResponse
+from enthic.utils.sql_json_response import SQLJSONResponse, SQLJSONResponseException
 from requests import get
+
+
+def test_ok_json_response():
+    """
+    Test OKJSONResponse with wrong object.
+    """
+    with pytest.raises(TypeError):
+        OKJSONResponse({2})
+
+
+@pytest.mark.parametrize("request", ("INSERT (1, 2, 3) INTO bundle;",
+                                     "UPDATE bundle SET siren = '' WHERE siren = '999';"))
+def test_sql_json_response(request):
+    """
+    Test SQLJSONResponse with wrong INSERT and UPDATE.
+       :param request: SQL requests to test.
+    """
+    with pytest.raises(SQLJSONResponseException):
+        SQLJSONResponse(mysql, request)
 
 
 @pytest.fixture()

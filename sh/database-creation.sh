@@ -20,5 +20,8 @@ mysql enthic < ${SQL_DIR}create-table-bundle.sql;
 # 5) INSERT DATA INTO BUNDLE TABLE
 mysql enthic < ${SQL_DIR}insert-bundle.sql;
 ################################################################################
-# 6) CREATE TWO INDEXES FOR IDENTITY TABLE
+# 6) CREATE AN FOR IDENTITY TABLE denomination COLUMN
 mysql enthic < ${SQL_DIR}create-index-identity.sql;
+################################################################################
+# 7) CREATE AN FOR BUNDLE TABLE siren COLUMN
+mysql enthic < ${SQL_DIR}create-index-bundle.sql;

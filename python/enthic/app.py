@@ -4,7 +4,7 @@ from re import compile
 
 from enthic.utils.ok_json_response import OKJSONResponse
 from enthic.utils.sql_json_response import SQLJSONResponse
-from flask import Flask, redirect
+from flask import Flask
 from flask_mysqldb import MySQL
 
 app = Flask(__name__)
@@ -30,8 +30,7 @@ def company_siren(siren):
         return SQLJSONResponse(mysql, """SELECT bundle, amount
                                 FROM identity INNER JOIN bundle
                                 ON bundle.siren = identity.siren
-                                WHERE identity.siren = "{0}";""".format(siren),
-                               "bundle", "amount")
+                                WHERE identity.siren = "{0}";""".format(siren))
     else:
         return OKJSONResponse({"error": "SIREN for is wrong, must match ^\d{9}$."})
 
@@ -46,8 +45,7 @@ def company_denomination(denomination):
     return SQLJSONResponse(mysql, """SELECT bundle, amount
                             FROM identity INNER JOIN bundle
                             ON bundle.siren = identity.siren
-                            WHERE identity.denomination = "{0}";""".format(denomination),
-                           "bundle", "amount")
+                            WHERE identity.denomination = "{0}";""".format(denomination))
 
 
 @app.route("/company/search/<probe>", methods=['GET'], strict_slashes=False)
@@ -62,8 +60,7 @@ def search(probe):
                             FROM identity INNER JOIN bundle
                             ON bundle.siren = identity.siren
                             WHERE identity.siren like "{0}%"
-                            OR denomination like "{0}%" LIMIT 1000;""".format(probe),
-                           "denomination", "siren")
+                            OR denomination like "{0}%" LIMIT 1000;""".format(probe))
 
 
 @app.route('/<path:path>', strict_slashes=False)
@@ -76,6 +73,15 @@ def static_proxy(path):
     return app.send_static_file(path)
 
 
+@app.route("/", strict_slashes=False)
+def index():
+    """
+    Serve the index.html at the base path.
+       :return: The static index.html and a return code 200.
+    """
+    return app.send_static_file("index.html"), 200
+
+
 @app.errorhandler(404)
 def page_not_found(error):
     """
@@ -84,7 +90,7 @@ def page_not_found(error):
        :return: The HTML 404 page.
     """
     app.logger.error(error)
-    return redirect('404.html', 404)
+    return app.send_static_file('404.html'), 404
 
 
 def main():

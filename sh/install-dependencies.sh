@@ -2,14 +2,13 @@
 ################################################################################
 # PROGRAM BY PAPIT SASU, INSTALL THE REQUIRED DEPENDENCIES
 ################################################################################
+# CONSTANTS
+readonly PYTHON="python3";
 # 1) INSTALL DISTANT SYNAPTIC PACKAGES
-apt-get install zip libxml2-utils mysql-server tree libmysqlclient-dev
+apt-get -y install zip libxml2-utils mysql-server tree libmysqlclient-dev
 ################################################################################
 # 2) INSTALL DISTANT PACKAGE
-python3 -m pip install pytest Sphinx==1.8.5
+python3 -m pip install pytest Sphinx==1.8.5 wheel setuptools sphinx_bootstrap_theme
 ################################################################################
-# 3) NAVIGATE TO PYTHON FOLDER
-cd ../python/ || exit;
-################################################################################
-# 4) INSTALL LOCAL PYTHON PACKAGE
-python3 -m pip setup.py install
+# 3) INSTALL ENTHIC PYTHON PACKAGE
+sh install-wheel.sh

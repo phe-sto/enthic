@@ -41,9 +41,21 @@ Following module relates to Flask server.
    :members:
 
 Flask JSON response
-===================
+======================
+
+.. automodule:: enthic.utils.json_response
+   :members:
+
+Flask OK JSON response
+======================
 
 .. automodule:: enthic.utils.ok_json_response
+   :members:
+
+Flask error JSON response
+=========================
+
+.. automodule:: enthic.utils.error_json_response
    :members:
 
 Flask SQL JSON response

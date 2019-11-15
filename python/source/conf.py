@@ -18,8 +18,8 @@ import sphinx_bootstrap_theme
 # -- Project information -----------------------------------------------------
 
 project = 'enthic'
-copyright = '2019, Christophe Brun'
-author = 'Christophe Brun'
+copyright = '2019, Christophe Brun, PapIT'
+author = 'Christophe Brun, PapIT'
 
 # The short X.Y version
 version = ''

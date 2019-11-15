@@ -10,7 +10,7 @@ readonly PYTHON="python3";
 cd ../python || exit;
 ################################################################################
 # 2) REMOVE dist DIRCTORY
-rm -rf $DIST
+rm -rf $DIST build
 ################################################################################
 # 3) BUILD THE wheel
 $PYTHON setup.py bdist_wheel

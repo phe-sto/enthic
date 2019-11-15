@@ -15,7 +15,7 @@ class SQLJSONResponse(OKJSONResponse):
     """
     SQL result turn into JSON response via OKJSONResponse class.
     """
-    select_re = compile(r"^.*(insert|update).*$", IGNORECASE)  # SEARCH FOR UNAUTHORIZED STATEMENT
+    select_re = compile(r"^.*(insert|update|drop).*$", IGNORECASE)  # SEARCH FOR UNAUTHORIZED STATEMENT
 
     def __init__(self, my_sql_db, sql_request):
         """
@@ -25,13 +25,19 @@ class SQLJSONResponse(OKJSONResponse):
            :raise SQLJSONResponseException: In case of Unauthorized SQL request.
         """
         if SQLJSONResponse.select_re.match(sql_request):
-            raise SQLJSONResponseException("Unauthorized INSERT or UPDATE statement")
+            raise SQLJSONResponseException(
+                "Unauthorized INSERT or UPDATE or DROP statement, SELECT only."
+            )
         else:
             cur = my_sql_db.connection.cursor()
             cur.execute(sql_request)
             sql_results = cur.fetchall()
             response_object = {}
             for sql_result in sql_results:
+                if len(sql_result) % 2 != 0:
+                    raise SQLJSONResponseException(
+                        "SELECT fields 2 by 2 in key/value style."
+                    )
                 for i in range(0x64):
                     try:
                         response_object[sql_result[i * 2]] = sql_result[i * 2 + 1]

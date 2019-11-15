@@ -1,53 +1,44 @@
-<!-- HTML 404 page -->
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8">
-  <link rel="stylesheet" type="text/css" href="/404.css">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+  <link rel="stylesheet" type="text/css" href="/bootstrap.min.css">
   <link rel="icon" type="image/png" href="/favicon.png" />
-  <title>404 URL not found</title>
+  <meta name="description" content="Server Error page of Enthic application">
+  <meta name="author" content="PapIT">
+
+  <title>Page not found</title>
+
 </head>
 
 <body>
-  <div class="box">
-    <div class="box__ghost">
-      <div class="symbol"></div>
-      <div class="symbol"></div>
-      <div class="symbol"></div>
-      <div class="symbol"></div>
-      <div class="symbol"></div>
-      <div class="symbol"></div>
 
-      <div class="box__ghost-container">
-        <div class="box__ghost-eyes">
-          <div class="box__eye-left"></div>
-          <div class="box__eye-right"></div>
-        </div>
-        <div class="box__ghost-bottom">
-          <div></div>
-          <div></div>
-          <div></div>
-          <div></div>
-          <div></div>
-        </div>
-      </div>
-      <div class="box__ghost-shadow"></div>
+  <div class="container">
+    <div class="header clearfix">
+      <h3 class="text-muted">Enthic</h3>
     </div>
 
-    <div class="box__description">
-      <div class="box__description-container">
-        <div class="box__description-title">Whoops!</div>
-        <div class="box__description-text">It seems like we couldn't find the URL you were looking for</div>
-      </div>
+    <div class="jumbotron">
+      <h1>Page not found</h1>
+      <p class="lead">
+        It seems like we could not find the URL you were looking for,
+        hence the HTTP return status code 404 and this page. Please refer to our
+        documentation to make sure of the use of this API.
+      </p>
+      <a class="btn btn-lg btn-info" href="/" role="button" target="_blank">Documentation</a>
 
-      <a href="/" target="_blank" class="box__button">Documentation &#8594;</a>
-
+      </p>
     </div>
 
-  </div>
-  <script src="/jquery.min.js"> </script>
-  <script src="/404.js"> </script>
+    <footer class="footer">
+      <p>PapIT &reg;</p>
+    </footer>
+
+  </div> <!-- /container -->
 </body>
 
 </html>

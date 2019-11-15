@@ -146,14 +146,16 @@ Library structure
    │   │   ├── test_sum_bundle.py
    │   │   └── utils
    │   │       ├── configuration.py
+   │   │       ├── json_response.py
+   │   │       ├── error_json_response.py
    │   │       ├── ok_json_response.py
    │   │       ├── sql_json_response.py
    │   │       └── __init__.py
    │   │
    │   ├── static
-   │   │   ├── 404.css
    │   │   ├── 404.html
-   │   │   ├── 404.js
+   │   │   ├── 500.html
+   │   │   ├── bootstrap.min.css
    │   │   ├── favicon.png
    │   │   ├── index.html
    │   │   ├── jquery.min.js

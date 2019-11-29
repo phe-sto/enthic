@@ -9,7 +9,7 @@ readonly INPUT_DIR="../input/";
 cd ../python || exit;
 ################################################################################
 # 2) PYTHON STEP THAT EXTRACT ALL BUNDLE AND ALL IDENTITY INFORMATION
-python3 enthic/extract_bundle.py -c ../configuration.json
+#python3 enthic/extract_bundle.py -c ../configuration.json
 ################################################################################
 # 3) SORT THE IDENTITY FILE TO A FINAL CSV FILE
 sort ${OUPUT_DIR}identity.tmp > ${OUPUT_DIR}identity.csv

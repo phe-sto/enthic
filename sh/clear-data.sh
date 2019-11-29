@@ -3,8 +3,7 @@
 # PROGRAM BY PAPIT SASU, CLEAN AND UNZIP INPI DATA
 ################################################################################
 # CONSTANTS
-readonly DATA_DIR="../input/qualification/";
-readonly STEP_SEP="#";
+readonly DATA_DIR="../input/qualification";
 ################################################################################
 # VARIABLES
 step_count=0;
@@ -18,7 +17,8 @@ step () {
 };
 ################################################################################
 step "REMOVE UNNECESSARY MD5 FILES IN ${DATA_DIR}";
-rm -rf $DATA_DIR*.md5;
+rm -rf $DATA_DIR/*.md5;
+rm -rf ../output/*.tmp;
 ################################################################################
 for unzipping_step in "DAILY" "DECLARATION";     # ZIP CONTAINS ZIP, DO IT TWICE
 do  
@@ -27,6 +27,8 @@ do
     for zip_file in "$DATA_DIR"/*.zip;            # ITERATE ALL INPUT FILES
     do
         unzip -o -qq "$zip_file" -d $DATA_DIR;   # UNZIP
-        rm "$zip_file";                          # DELETE THE UNZIPPED FILE
+        python3 ../python/enthic/extract_bundle.py -c ../configuration.json
+        rm "$zip_file">/dev/null 2>&1;           # DELETE THE UNZIPPED FILE
+        rm -rf $DATA_DIR/*.xml;   # DELETE THE UNZIPPED XML
     done;
 done;

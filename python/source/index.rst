@@ -41,7 +41,13 @@ Following module relates to Flask server.
    :members:
 
 Flask JSON response
-======================
+===================
+
+.. automodule:: enthic.decorator.check_sql_injection
+   :members:
+
+Flask JSON response
+===================
 
 .. automodule:: enthic.utils.json_response
    :members:

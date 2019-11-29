@@ -8,3 +8,6 @@ cd ../python/ || exit;
 ################################################################################
 # 2) BUILD HTML FULL DOCUMENTATION
 make html
+################################################################################
+# 3) COPY HTML BUILD TO STATIC
+cp -r build/html/. enthic/static/documentation

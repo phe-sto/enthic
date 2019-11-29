@@ -15,23 +15,29 @@ class SQLJSONResponse(OKJSONResponse):
     """
     SQL result turn into JSON response via OKJSONResponse class.
     """
-    select_re = compile(r"^.*(insert|update|drop).*$", IGNORECASE)  # SEARCH FOR UNAUTHORIZED STATEMENT
+    no_select_re = compile(r"^.*(insert|update|drop).*$", IGNORECASE)  # SEARCH FOR UNAUTHORIZED STATEMENT
 
-    def __init__(self, my_sql_db, sql_request):
+    def __init__(self, my_sql_db, sql_request, *args):
         """
         Constructor of the SQLJSONResponse class.
            :param my_sql_db: MySQL connection to database.
            :param sql_request: SQL request to execute on the base.
-           :raise SQLJSONResponseException: In case of Unauthorized SQL request.
+           :param args: Sequence A.K.A argument of the query.
+           :raise SQLJSONResponseException: In case of forbidden SQL statement.
+           :raise SQLJSONResponseExceptionInjection: In case of possible SQL
+              injection.
         """
-        if SQLJSONResponse.select_re.match(sql_request):
+        ########################################################################
+        # CHECK SELECT ONLY
+        if SQLJSONResponse.no_select_re.match(sql_request):
             raise SQLJSONResponseException(
                 "Unauthorized INSERT or UPDATE or DROP statement, SELECT only."
             )
         else:
             cur = my_sql_db.connection.cursor()
-            cur.execute(sql_request)
+            cur.execute(sql_request % args)
             sql_results = cur.fetchall()
+            cur.close()
             response_object = {}
             for sql_result in sql_results:
                 if len(sql_result) % 2 != 0:

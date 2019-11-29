@@ -60,12 +60,14 @@ def main():
                 account_ontology[rows[3]] = {"bundleCodeAtt": []}
     ############################################################################
     # CREATING A LIST OF THE BUNDLE CODES
-    xml_files = [f for f in listdir(config['inputPath']) if
-                 isfile(join(config['inputPath'], f))]
+    xml_files = []
+    for file in listdir(config['inputPath']):
+        if file.endswith(".xml"):
+            xml_files.append(file)
     ############################################################################
     # CREATING THE OUTPUT FILES FOR RESULT AND IDENTITY
-    bundle_file = open(join(config['outputPath'], config['bundleFile']), "w")
-    identity_file = open(join(config['outputPath'], config['identityFile']), "w")
+    bundle_file = open(join(config['outputPath'], config['bundleFile']), "a")
+    identity_file = open(join(config['outputPath'], config['identityFile']), "a")
     ############################################################################
     # ITERATE ALL XML FILES
     for xml_file in xml_files:

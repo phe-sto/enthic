@@ -10,7 +10,8 @@
   },
   "host": "api.enthic.fr",
   "basePath": "/company",
-  "tags": [{
+  "tags": [
+    {
       "name": "Enthic",
       "description": "Swagger French Company Account and Ethical Score",
       "externalDocs": {
@@ -24,6 +25,14 @@
       "externalDocs": {
         "description": "PapIT website",
         "url": "https://papit.fr/"
+      }
+    },
+    {
+      "name": "Enthic API code documentation",
+      "description": "Describe the development process",
+      "externalDocs": {
+        "description": "API Sphinx documentation",
+        "url": "http://api.enthic.fr/documentation/index.html"
       }
     }
   ],
@@ -45,13 +54,15 @@
         "produces": [
           "application/json"
         ],
-        "parameters": [{
-          "name": "siren",
-          "in": "path",
-          "description": "All company SIREN. A 9 numeric characters long number",
-          "required": true,
-          "type": "string"
-        }],
+        "parameters": [
+          {
+            "name": "siren",
+            "in": "path",
+            "description": "All company SIREN. A 9 numeric characters long number.",
+            "required": true,
+            "type": "string"
+          }
+        ],
         "responses": {
           "200": {
             "description": "Successful operation, company information is returned in JSON"
@@ -59,8 +70,47 @@
           "400": {
             "description": "JSON is returned, contain a error value as error message."
           }
-        },
-        "x-swagger-router-controller": "swagger_server.controllers.siren_controller"
+        }
+      }
+    },
+    "/siren/{siren}/{year}": {
+      "get": {
+        "tags": [
+          "SIREN"
+        ],
+        "summary": "Retrieve company information by SIREN for a given year.",
+        "description": "",
+        "operationId": "siren_siren_year_get",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "siren",
+            "in": "path",
+            "description": "All company SIREN. A 9 numeric characters long number.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "year",
+            "in": "path",
+            "description": "Year to return, a 4 numeric characters long number (YYYY).",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation, company information is returned in JSON"
+          },
+          "400": {
+            "description": "JSON is returned, contain a error value as error message."
+          }
+        }
       }
     },
     "/denomination/{denomination}": {
@@ -77,19 +127,57 @@
         "produces": [
           "application/json"
         ],
-        "parameters": [{
-          "name": "denomination",
-          "in": "path",
-          "description": "An official company denomination.",
-          "required": true,
-          "type": "string"
-        }],
+        "parameters": [
+          {
+            "name": "denomination",
+            "in": "path",
+            "description": "An official company denomination.",
+            "required": true,
+            "type": "string"
+          }
+        ],
         "responses": {
           "200": {
             "description": "Successful operation, company information is returned in JSON"
           }
-        },
-        "x-swagger-router-controller": "swagger_server.controllers.denomination_controller"
+        }
+      }
+    },
+    "/denomination/{denomination}/{year}": {
+      "get": {
+        "tags": [
+          "Denomination"
+        ],
+        "summary": "Retrieve company information by company name for a given year.",
+        "description": "",
+        "operationId": "denomination_denomination_year_get",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "denomination",
+            "in": "path",
+            "description": "An official company denomination.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "year",
+            "in": "path",
+            "description": "Year to return, a 4 numeric characters long number (YYYY).",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation, company information is returned in JSON"
+          }
+        }
       }
     },
     "/search": {
@@ -106,26 +194,27 @@
         "produces": [
           "application/json"
         ],
-        "parameters": [{
-          "in": "body",
-          "name": "body",
-          "description": "Search for companies based on a probe",
-          "required": true,
-          "schema": {
-            "type": "object",
-            "properties": {
-              "probe": {
-                "type": "string",
-                "example": "Mr Sylvester, The world Company"
-              },
-              "limit": {
-                "type": "integer",
-                "example": 33
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Search for companies based on a probe",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "probe": {
+                  "type": "string",
+                  "example": "Mr Sylvester, The world Company"
+                },
+                "limit": {
+                  "type": "integer",
+                  "example": 33
+                }
               }
             }
           }
-
-        }],
+        ],
         "responses": {
           "200": {
             "description": "Successful operation, JSON is returned."
@@ -133,8 +222,28 @@
           "400": {
             "description": "JSON is returned, contain a error value as error message."
           }
-        },
-        "x-swagger-router-controller": "swagger_server.controllers.search_controller"
+        }
+      }
+    },
+    "/denomination/ontology": {
+      "get": {
+        "tags": [
+          "Accountability Ontology"
+        ],
+        "summary": "Return a JSON explaining the french complicated account types and results.",
+        "description": "",
+        "operationId": "ontology",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation, company information is returned in JSON"
+          }
+        }
       }
     }
   },

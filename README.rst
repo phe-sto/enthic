@@ -135,6 +135,10 @@ Library structure
    │   │   ├── index.rst
    │   │   └── papit.png
    │   │
+   │   ├── decorator
+   │   │   ├── check_sql_injection.py
+   │   │   └── insert_request.py
+   │   │
    │   ├── enthic
    │   │   ├── app.py
    │   │   ├── conftest.py

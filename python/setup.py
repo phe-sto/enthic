@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from setuptools import setup
+from setuptools import setup, find_packages
 
 NAME = 'enthic'
 setup(name=NAME,
@@ -9,7 +9,8 @@ setup(name=NAME,
       author='Christophe Brun',
       author_email='christophe.brun@papit.fr',
       url='https://www.papit.fr/',
-      packages=[NAME, NAME + ".utils"],
+      packages=find_packages(),
+      include_package_data=True,
       entry_points={
           'console_scripts': ['sum-bundle = enthic.sum_bundle:main'],
           'console_scripts': ['extract-bundle = enthic.extract_bundle:main'],

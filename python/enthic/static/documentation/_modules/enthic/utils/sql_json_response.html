@@ -100,9 +100,9 @@
       
   <h1>Source code for enthic.utils.sql_json_response</h1><div class="highlight"><pre>
 <span></span><span class="c1"># -*- coding: utf-8 -*-</span>
-<span class="kn">from</span> <span class="nn">re</span> <span class="k">import</span> <span class="nb">compile</span><span class="p">,</span> <span class="n">IGNORECASE</span>
+<span class="kn">from</span> <span class="nn">re</span> <span class="kn">import</span> <span class="nb">compile</span><span class="p">,</span> <span class="n">IGNORECASE</span>
 
-<span class="kn">from</span> <span class="nn">enthic.utils.ok_json_response</span> <span class="k">import</span> <span class="n">OKJSONResponse</span>
+<span class="kn">from</span> <span class="nn">enthic.utils.ok_json_response</span> <span class="kn">import</span> <span class="n">OKJSONResponse</span>
 
 
 <div class="viewcode-block" id="SQLJSONResponseException"><a class="viewcode-back" href="../../../index.html#enthic.utils.sql_json_response.SQLJSONResponseException">[docs]</a><span class="k">class</span> <span class="nc">SQLJSONResponseException</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
@@ -118,7 +118,7 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">no_select_re</span> <span class="o">=</span> <span class="nb">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;^.*(insert|update|drop).*$&quot;</span><span class="p">,</span> <span class="n">IGNORECASE</span><span class="p">)</span>  <span class="c1"># SEARCH FOR UNAUTHORIZED STATEMENT</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">my_sql_db</span><span class="p">,</span> <span class="n">sql_request</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">my_sql_db</span><span class="p">,</span> <span class="n">sql_request</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Constructor of the SQLJSONResponse class.</span>
 <span class="sd">           :param my_sql_db: MySQL connection to database.</span>

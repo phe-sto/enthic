@@ -16,8 +16,10 @@ import xml.etree.ElementTree as ElementTree
 from csv import reader
 from logging import debug, basicConfig
 from os import listdir
-from os.path import isdir, isfile, join
+from os.path import isdir, join
 from re import sub, compile
+from zipfile import ZipFile, BadZipFile
+from io import BytesIO
 
 re_multiple_whitespace = compile(r"\s+")  # NOT AN OBVIOUS PERFORMANCE GAIN...
 
@@ -59,11 +61,20 @@ def main():
             except KeyError:
                 account_ontology[rows[3]] = {"bundleCodeAtt": []}
     ############################################################################
-    # CREATING A LIST OF THE BUNDLE CODES
+    # CREATING A LIST OF THE BUNDLE XML CODES, ZIP ARE READ IN BtesIO, IN ORDER
+    # TO BREAK FILE SYSTEM. TOO MUCH ZIP DISTURB THE FS.
     xml_files = []
-    for file in listdir(config['inputPath']):
-        if file.endswith(".xml"):
-            xml_files.append(file)
+    for file in listdir(config['inputPath']):  # LIST INPUT FILES
+        if file.endswith(".zip"):  # ON RETAIN ZIP FILES
+            try:
+                input_zip = ZipFile(join(config['inputPath'], file))
+                for zipped_xml in input_zip.namelist():  # LIST ARCHIVES IN ZIP
+                    zipped_xml = ZipFile(BytesIO(input_zip.read(zipped_xml)))
+                    # SUPPOSED ONLY ONE XML BUT ITERATE TO BE SURE
+                    for xml in zipped_xml.namelist():
+                        xml_files.append(BytesIO(zipped_xml.open(xml).read()))
+            except BadZipFile as error:  #  TODO REPORT ERROR TO INPI
+                debug(error)
     ############################################################################
     # CREATING THE OUTPUT FILES FOR RESULT AND IDENTITY
     bundle_file = open(join(config['outputPath'], config['bundleFile']), "a")
@@ -73,7 +84,7 @@ def main():
     for xml_file in xml_files:
         ########################################################################
         # XML PARSER
-        tree = ElementTree.parse(join(config['inputPath'], xml_file))
+        tree = ElementTree.parse(xml_file)
         root = tree.getroot()
         ########################################################################
         # XML RELATED VARIABLES

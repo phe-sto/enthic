@@ -101,16 +101,16 @@
   <h1>Source code for enthic.app</h1><div class="highlight"><pre>
 <span></span><span class="c1"># -*- coding: utf-8 -*-</span>
 
-<span class="kn">from</span> <span class="nn">json</span> <span class="k">import</span> <span class="n">loads</span>
-<span class="kn">from</span> <span class="nn">re</span> <span class="k">import</span> <span class="nb">compile</span>
+<span class="kn">from</span> <span class="nn">json</span> <span class="kn">import</span> <span class="n">loads</span>
+<span class="kn">from</span> <span class="nn">re</span> <span class="kn">import</span> <span class="nb">compile</span>
 
-<span class="kn">from</span> <span class="nn">enthic.decorator.check_sql_injection</span> <span class="k">import</span> <span class="n">check_sql_injection</span>
-<span class="kn">from</span> <span class="nn">enthic.decorator.insert_request</span> <span class="k">import</span> <span class="n">insert_request</span>
-<span class="kn">from</span> <span class="nn">enthic.utils.error_json_response</span> <span class="k">import</span> <span class="n">ErrorJSONResponse</span>
-<span class="kn">from</span> <span class="nn">enthic.utils.ok_json_response</span> <span class="k">import</span> <span class="n">OKJSONResponse</span>
-<span class="kn">from</span> <span class="nn">enthic.utils.sql_json_response</span> <span class="k">import</span> <span class="n">SQLJSONResponse</span>
-<span class="kn">from</span> <span class="nn">flask</span> <span class="k">import</span> <span class="n">Flask</span><span class="p">,</span> <span class="n">request</span>
-<span class="kn">from</span> <span class="nn">flask_mysqldb</span> <span class="k">import</span> <span class="n">MySQL</span>
+<span class="kn">from</span> <span class="nn">enthic.decorator.check_sql_injection</span> <span class="kn">import</span> <span class="n">check_sql_injection</span>
+<span class="kn">from</span> <span class="nn">enthic.decorator.insert_request</span> <span class="kn">import</span> <span class="n">insert_request</span>
+<span class="kn">from</span> <span class="nn">enthic.utils.error_json_response</span> <span class="kn">import</span> <span class="n">ErrorJSONResponse</span>
+<span class="kn">from</span> <span class="nn">enthic.utils.ok_json_response</span> <span class="kn">import</span> <span class="n">OKJSONResponse</span>
+<span class="kn">from</span> <span class="nn">enthic.utils.sql_json_response</span> <span class="kn">import</span> <span class="n">SQLJSONResponse</span>
+<span class="kn">from</span> <span class="nn">flask</span> <span class="kn">import</span> <span class="n">Flask</span><span class="p">,</span> <span class="n">request</span>
+<span class="kn">from</span> <span class="nn">flask_mysqldb</span> <span class="kn">import</span> <span class="n">MySQL</span>
 
 <span class="n">app</span> <span class="o">=</span> <span class="n">Flask</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 <span class="n">mysql</span> <span class="o">=</span> <span class="n">MySQL</span><span class="p">(</span><span class="n">app</span><span class="p">)</span>
@@ -341,7 +341,7 @@
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Start app, after configuration.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="kn">from</span> <span class="nn">enthic.utils.configuration</span> <span class="k">import</span> <span class="n">config</span>  <span class="c1"># UGLY IMPORT THAT EXECUTE</span>
+    <span class="kn">from</span> <span class="nn">enthic.utils.configuration</span> <span class="kn">import</span> <span class="n">config</span>  <span class="c1"># UGLY IMPORT THAT EXECUTE</span>
     <span class="c1">############################################################################</span>
     <span class="c1"># CONFIGURE APPLICATION</span>
     <span class="n">app</span><span class="o">.</span><span class="n">_static_folder</span> <span class="o">=</span> <span class="s2">&quot;./static/&quot;</span>

@@ -3,7 +3,7 @@
 # PROGRAM BY PAPIT SASU, CLEAN AND UNZIP INPI DATA
 ################################################################################
 # CONSTANTS
-readonly DATA_DIR="../input/qualification";
+readonly DATA_DIR="../input";
 ################################################################################
 # VARIABLES
 step_count=0;
@@ -23,12 +23,10 @@ rm -rf ../output/*.tmp;
 for unzipping_step in "DAILY" "DECLARATION";     # ZIP CONTAINS ZIP, DO IT TWICE
 do  
     # CONSIDERED AS TWO STEPS
-    step "UNZIP ${unzipping_step} ZIP IN ${DATA_DIR}";
-    for zip_file in "$DATA_DIR"/*.zip;            # ITERATE ALL INPUT FILES
+    step "UNZIP IN PYTHON ${unzipping_step} ZIP IN ${DATA_DIR}";
+    for zip_file in "$DATA_DIR"/*.zip;           # ITERATE ALL INPUT FILES
     do
-        unzip -o -qq "$zip_file" -d $DATA_DIR;   # UNZIP
         python3 ../python/enthic/extract_bundle.py -c ../configuration.json
         rm "$zip_file">/dev/null 2>&1;           # DELETE THE UNZIPPED FILE
-        rm -rf $DATA_DIR/*.xml;   # DELETE THE UNZIPPED XML
     done;
 done;

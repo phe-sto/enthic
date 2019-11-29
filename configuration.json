@@ -1,5 +1,5 @@
 {
-  "inputPath": "../input/qualification/",
+  "inputPath": "../input",
   "outputPath": "../output/",
   "accountOntologyCSV": "../account-ontology.csv",
   "bundleFile": "bundle.tmp",
@@ -10,12 +10,12 @@
   "mySQL": {
     "enthic": {
       "host": "localhost",
-      "user": "root",
-      "password": ""
+      "user": "chrichri",
+      "password": "q250685Q"
     }
   },
   "flask": {
-    "debug": true,
+    "debug": false,
     "host": "127.0.0.1",
     "port": 5000
   }

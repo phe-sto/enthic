@@ -114,11 +114,11 @@
 <span class="sd">- No output or print, just log and files.</span>
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">import</span> <span class="nn">xml.etree.ElementTree</span> <span class="k">as</span> <span class="nn">ElementTree</span>
-<span class="kn">from</span> <span class="nn">csv</span> <span class="k">import</span> <span class="n">reader</span>
-<span class="kn">from</span> <span class="nn">logging</span> <span class="k">import</span> <span class="n">debug</span><span class="p">,</span> <span class="n">basicConfig</span>
-<span class="kn">from</span> <span class="nn">os</span> <span class="k">import</span> <span class="n">listdir</span>
-<span class="kn">from</span> <span class="nn">os.path</span> <span class="k">import</span> <span class="n">isdir</span><span class="p">,</span> <span class="n">isfile</span><span class="p">,</span> <span class="n">join</span>
-<span class="kn">from</span> <span class="nn">re</span> <span class="k">import</span> <span class="n">sub</span><span class="p">,</span> <span class="nb">compile</span>
+<span class="kn">from</span> <span class="nn">csv</span> <span class="kn">import</span> <span class="n">reader</span>
+<span class="kn">from</span> <span class="nn">logging</span> <span class="kn">import</span> <span class="n">debug</span><span class="p">,</span> <span class="n">basicConfig</span>
+<span class="kn">from</span> <span class="nn">os</span> <span class="kn">import</span> <span class="n">listdir</span>
+<span class="kn">from</span> <span class="nn">os.path</span> <span class="kn">import</span> <span class="n">isdir</span><span class="p">,</span> <span class="n">isfile</span><span class="p">,</span> <span class="n">join</span>
+<span class="kn">from</span> <span class="nn">re</span> <span class="kn">import</span> <span class="n">sub</span><span class="p">,</span> <span class="nb">compile</span>
 
 <span class="n">re_multiple_whitespace</span> <span class="o">=</span> <span class="nb">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;\s+&quot;</span><span class="p">)</span>  <span class="c1"># NOT AN OBVIOUS PERFORMANCE GAIN...</span>
 
@@ -128,7 +128,7 @@
 <span class="sd">    Based on the configuration storing the input file path. All the xml are</span>
 <span class="sd">    read to list the bundle code.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="kn">from</span> <span class="nn">enthic.utils.configuration</span> <span class="k">import</span> <span class="n">config</span>  <span class="c1"># UGLY, FOR SPHINX IMPORT</span>
+    <span class="kn">from</span> <span class="nn">enthic.utils.configuration</span> <span class="kn">import</span> <span class="n">config</span>  <span class="c1"># UGLY, FOR SPHINX IMPORT</span>
     <span class="c1">############################################################################</span>
     <span class="c1"># CHECKING THE INPUT AND OUTPUT AND DIRECTORY PATH</span>
     <span class="c1"># INPUT</span>
@@ -161,12 +161,14 @@
                 <span class="n">account_ontology</span><span class="p">[</span><span class="n">rows</span><span class="p">[</span><span class="mi">3</span><span class="p">]]</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;bundleCodeAtt&quot;</span><span class="p">:</span> <span class="p">[]}</span>
     <span class="c1">############################################################################</span>
     <span class="c1"># CREATING A LIST OF THE BUNDLE CODES</span>
-    <span class="n">xml_files</span> <span class="o">=</span> <span class="p">[</span><span class="n">f</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">listdir</span><span class="p">(</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;inputPath&#39;</span><span class="p">])</span> <span class="k">if</span>
-                 <span class="n">isfile</span><span class="p">(</span><span class="n">join</span><span class="p">(</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;inputPath&#39;</span><span class="p">],</span> <span class="n">f</span><span class="p">))]</span>
+    <span class="n">xml_files</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">file</span> <span class="ow">in</span> <span class="n">listdir</span><span class="p">(</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;inputPath&#39;</span><span class="p">]):</span>
+        <span class="k">if</span> <span class="n">file</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;.xml&quot;</span><span class="p">):</span>
+            <span class="n">xml_files</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">file</span><span class="p">)</span>
     <span class="c1">############################################################################</span>
     <span class="c1"># CREATING THE OUTPUT FILES FOR RESULT AND IDENTITY</span>
-    <span class="n">bundle_file</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">join</span><span class="p">(</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;outputPath&#39;</span><span class="p">],</span> <span class="n">config</span><span class="p">[</span><span class="s1">&#39;bundleFile&#39;</span><span class="p">]),</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span>
-    <span class="n">identity_file</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">join</span><span class="p">(</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;outputPath&#39;</span><span class="p">],</span> <span class="n">config</span><span class="p">[</span><span class="s1">&#39;identityFile&#39;</span><span class="p">]),</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span>
+    <span class="n">bundle_file</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">join</span><span class="p">(</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;outputPath&#39;</span><span class="p">],</span> <span class="n">config</span><span class="p">[</span><span class="s1">&#39;bundleFile&#39;</span><span class="p">]),</span> <span class="s2">&quot;a&quot;</span><span class="p">)</span>
+    <span class="n">identity_file</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">join</span><span class="p">(</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;outputPath&#39;</span><span class="p">],</span> <span class="n">config</span><span class="p">[</span><span class="s1">&#39;identityFile&#39;</span><span class="p">]),</span> <span class="s2">&quot;a&quot;</span><span class="p">)</span>
     <span class="c1">############################################################################</span>
     <span class="c1"># ITERATE ALL XML FILES</span>
     <span class="k">for</span> <span class="n">xml_file</span> <span class="ow">in</span> <span class="n">xml_files</span><span class="p">:</span>

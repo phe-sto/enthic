@@ -1,0 +1,2 @@
+include enthic/static/*
+global-exclude *.pyc

@@ -154,6 +154,8 @@ def search():
           on that company of an error message if SIREN wrongly formatted.
     """
     json_data = loads(request.data)
+    if json_data.__class__ is not dict:
+        return ErrorJSONResponse("Request body should be a JSON.")
     try:
         ########################################################################
         # WRONG TYPE

@@ -225,7 +225,7 @@
         }
       }
     },
-    "/denomination/ontology": {
+    "/ontology": {
       "get": {
         "tags": [
           "Accountability Ontology"

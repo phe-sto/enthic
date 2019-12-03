@@ -200,6 +200,23 @@ def test_search(host, probe, limit):
     assert loads(response.text) is not None, "NOT RETURNING A JSON"
 
 
+@pytest.mark.parametrize("body", ((1),
+                                  ("toto"),
+                                  (True),
+                                  )
+                         )
+def test_search_wrong_type(host, body):
+    """
+    Test the /company/search endpoint with wrong type requets body. Should
+       return a JSON and status 400.
+       :param host: Fixture of the API host.
+       :param body: Parametrize fixture of the request body.
+    """
+    response = post("http://" + host + "/company/search/", dumps(body))
+    assert response.status_code == 400, "WRONG HTTP RETURN CODE"
+    assert loads(response.text) is not None, "NOT RETURNING A JSON"
+
+
 @pytest.mark.parametrize("sql_request_1,sql_request_2", (("drop database toto;", 100),
                                                          ("drop table enthic;", 1),
                                                          ("toto et Michel", "select * from enthic;"),
@@ -287,6 +304,7 @@ def test_wrong_key_search(host):
 
 @pytest.mark.parametrize("page", ("/404.html",
                                   "/index.html",
+                                  "/documentation/index.html",
                                   "/500.html",))
 def test_html_pages(host, page):
     """

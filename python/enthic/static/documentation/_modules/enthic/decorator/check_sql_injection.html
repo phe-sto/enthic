@@ -144,12 +144,14 @@
         <span class="c1">########################################################################</span>
         <span class="c1">#  CHECK WHEN PARAMETER IS IN JSON BODY</span>
         <span class="k">try</span><span class="p">:</span>
-            <span class="k">for</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">loads</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">data</span><span class="p">)</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
-                <span class="k">try</span><span class="p">:</span>
-                    <span class="k">if</span> <span class="n">sql_re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
-                        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;JSON body value cannot be a SQL.&quot;</span><span class="p">)</span>
-                <span class="k">except</span> <span class="ne">TypeError</span><span class="p">:</span>  <span class="c1"># IF NOT A STRING, ONLY STRING CAN BE AN INJECTION</span>
-                    <span class="k">continue</span>
+            <span class="n">json_data</span> <span class="o">=</span> <span class="n">loads</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">json_data</span><span class="o">.</span><span class="vm">__class__</span> <span class="ow">is</span> <span class="nb">dict</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">json_data</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+                    <span class="k">try</span><span class="p">:</span>
+                        <span class="k">if</span> <span class="n">sql_re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
+                            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;JSON body value cannot be a SQL.&quot;</span><span class="p">)</span>
+                    <span class="k">except</span> <span class="ne">TypeError</span><span class="p">:</span>  <span class="c1"># IF NOT A STRING, ONLY STRING CAN BE AN INJECTION</span>
+                        <span class="k">continue</span>
         <span class="k">except</span> <span class="n">JSONDecodeError</span><span class="p">:</span>  <span class="c1"># IF NOT A JSON</span>
             <span class="k">pass</span>
         <span class="k">return</span> <span class="n">func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>

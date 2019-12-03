@@ -115,10 +115,13 @@
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">import</span> <span class="nn">xml.etree.ElementTree</span> <span class="k">as</span> <span class="nn">ElementTree</span>
 <span class="kn">from</span> <span class="nn">csv</span> <span class="kn">import</span> <span class="n">reader</span>
+<span class="kn">from</span> <span class="nn">io</span> <span class="kn">import</span> <span class="n">BytesIO</span>
+<span class="kn">from</span> <span class="nn">json</span> <span class="kn">import</span> <span class="n">load</span>
 <span class="kn">from</span> <span class="nn">logging</span> <span class="kn">import</span> <span class="n">debug</span><span class="p">,</span> <span class="n">basicConfig</span>
 <span class="kn">from</span> <span class="nn">os</span> <span class="kn">import</span> <span class="n">listdir</span>
-<span class="kn">from</span> <span class="nn">os.path</span> <span class="kn">import</span> <span class="n">isdir</span><span class="p">,</span> <span class="n">isfile</span><span class="p">,</span> <span class="n">join</span>
+<span class="kn">from</span> <span class="nn">os.path</span> <span class="kn">import</span> <span class="n">dirname</span><span class="p">,</span> <span class="n">join</span><span class="p">,</span> <span class="n">isdir</span>
 <span class="kn">from</span> <span class="nn">re</span> <span class="kn">import</span> <span class="n">sub</span><span class="p">,</span> <span class="nb">compile</span>
+<span class="kn">from</span> <span class="nn">zipfile</span> <span class="kn">import</span> <span class="n">ZipFile</span><span class="p">,</span> <span class="n">BadZipFile</span>
 
 <span class="n">re_multiple_whitespace</span> <span class="o">=</span> <span class="nb">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;\s+&quot;</span><span class="p">)</span>  <span class="c1"># NOT AN OBVIOUS PERFORMANCE GAIN...</span>
 
@@ -128,7 +131,8 @@
 <span class="sd">    Based on the configuration storing the input file path. All the xml are</span>
 <span class="sd">    read to list the bundle code.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="kn">from</span> <span class="nn">enthic.utils.configuration</span> <span class="kn">import</span> <span class="n">config</span>  <span class="c1"># UGLY, FOR SPHINX IMPORT</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">join</span><span class="p">(</span><span class="n">dirname</span><span class="p">(</span><span class="vm">__file__</span><span class="p">),</span> <span class="s2">&quot;configuration.json&quot;</span><span class="p">))</span> <span class="k">as</span> <span class="n">json_configuration_file</span><span class="p">:</span>
+        <span class="n">config</span> <span class="o">=</span> <span class="n">load</span><span class="p">(</span><span class="n">json_configuration_file</span><span class="p">)</span>
     <span class="c1">############################################################################</span>
     <span class="c1"># CHECKING THE INPUT AND OUTPUT AND DIRECTORY PATH</span>
     <span class="c1"># INPUT</span>
@@ -160,69 +164,74 @@
             <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
                 <span class="n">account_ontology</span><span class="p">[</span><span class="n">rows</span><span class="p">[</span><span class="mi">3</span><span class="p">]]</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;bundleCodeAtt&quot;</span><span class="p">:</span> <span class="p">[]}</span>
     <span class="c1">############################################################################</span>
-    <span class="c1"># CREATING A LIST OF THE BUNDLE CODES</span>
-    <span class="n">xml_files</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="k">for</span> <span class="n">file</span> <span class="ow">in</span> <span class="n">listdir</span><span class="p">(</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;inputPath&#39;</span><span class="p">]):</span>
-        <span class="k">if</span> <span class="n">file</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;.xml&quot;</span><span class="p">):</span>
-            <span class="n">xml_files</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">file</span><span class="p">)</span>
-    <span class="c1">############################################################################</span>
     <span class="c1"># CREATING THE OUTPUT FILES FOR RESULT AND IDENTITY</span>
     <span class="n">bundle_file</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">join</span><span class="p">(</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;outputPath&#39;</span><span class="p">],</span> <span class="n">config</span><span class="p">[</span><span class="s1">&#39;bundleFile&#39;</span><span class="p">]),</span> <span class="s2">&quot;a&quot;</span><span class="p">)</span>
     <span class="n">identity_file</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">join</span><span class="p">(</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;outputPath&#39;</span><span class="p">],</span> <span class="n">config</span><span class="p">[</span><span class="s1">&#39;identityFile&#39;</span><span class="p">]),</span> <span class="s2">&quot;a&quot;</span><span class="p">)</span>
     <span class="c1">############################################################################</span>
-    <span class="c1"># ITERATE ALL XML FILES</span>
-    <span class="k">for</span> <span class="n">xml_file</span> <span class="ow">in</span> <span class="n">xml_files</span><span class="p">:</span>
-        <span class="c1">########################################################################</span>
-        <span class="c1"># XML PARSER</span>
-        <span class="n">tree</span> <span class="o">=</span> <span class="n">ElementTree</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">join</span><span class="p">(</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;inputPath&#39;</span><span class="p">],</span> <span class="n">xml_file</span><span class="p">))</span>
-        <span class="n">root</span> <span class="o">=</span> <span class="n">tree</span><span class="o">.</span><span class="n">getroot</span><span class="p">()</span>
-        <span class="c1">########################################################################</span>
-        <span class="c1"># XML RELATED VARIABLES</span>
-        <span class="n">accountability_type</span><span class="p">,</span> <span class="n">siren</span><span class="p">,</span> <span class="n">code_devise</span><span class="p">,</span> <span class="n">denomination</span><span class="p">,</span> <span class="n">year</span> <span class="o">=</span> <span class="p">(</span><span class="kc">None</span><span class="p">,)</span> <span class="o">*</span> <span class="mi">5</span>
-        <span class="c1">########################################################################</span>
-        <span class="c1"># ITERATE ALL TAGS</span>
-        <span class="k">for</span> <span class="n">child</span> <span class="ow">in</span> <span class="n">root</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
-            <span class="c1">####################################################################</span>
-            <span class="c1"># IDENTITY TAGS, SIREN AND TYPE OF ACCOUNTABILITY</span>
-            <span class="k">if</span> <span class="n">child</span><span class="o">.</span><span class="n">tag</span> <span class="o">==</span> <span class="s2">&quot;{fr:inpi:odrncs:bilansSaisisXML}identite&quot;</span><span class="p">:</span>
-                <span class="k">for</span> <span class="n">identity</span> <span class="ow">in</span> <span class="n">child</span><span class="p">:</span>  <span class="c1"># identite LEVEL</span>
-                    <span class="k">if</span> <span class="n">identity</span><span class="o">.</span><span class="n">tag</span> <span class="o">==</span> <span class="s1">&#39;{fr:inpi:odrncs:bilansSaisisXML}siren&#39;</span><span class="p">:</span>
-                        <span class="n">siren</span> <span class="o">=</span> <span class="n">identity</span><span class="o">.</span><span class="n">text</span>
-                    <span class="k">elif</span> <span class="n">identity</span><span class="o">.</span><span class="n">tag</span> <span class="o">==</span> <span class="s1">&#39;{fr:inpi:odrncs:bilansSaisisXML}code_type_bilan&#39;</span><span class="p">:</span>
-                        <span class="n">accountability_type</span> <span class="o">=</span> <span class="n">identity</span><span class="o">.</span><span class="n">text</span>
-                    <span class="k">elif</span> <span class="n">identity</span><span class="o">.</span><span class="n">tag</span> <span class="o">==</span> <span class="s1">&#39;{fr:inpi:odrncs:bilansSaisisXML}denomination&#39;</span><span class="p">:</span>
-                        <span class="c1"># REMOVE MULTIPLE WHITESPACES, SWITCH TO UPPER CASE, REMOVE EOF</span>
-                        <span class="n">denomination</span> <span class="o">=</span> <span class="n">sub</span><span class="p">(</span><span class="n">re_multiple_whitespace</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">,</span>
-                                           <span class="n">identity</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">)</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>
-                                           <span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">)</span>
-                    <span class="k">elif</span> <span class="n">identity</span><span class="o">.</span><span class="n">tag</span> <span class="o">==</span> <span class="s1">&#39;{fr:inpi:odrncs:bilansSaisisXML}code_devise&#39;</span><span class="p">:</span>
-                        <span class="n">code_devise</span> <span class="o">=</span> <span class="n">identity</span><span class="o">.</span><span class="n">text</span>
-                    <span class="k">elif</span> <span class="n">identity</span><span class="o">.</span><span class="n">tag</span> <span class="o">==</span> <span class="s1">&#39;{fr:inpi:odrncs:bilansSaisisXML}date_cloture_exercice&#39;</span><span class="p">:</span>
-                        <span class="n">year</span> <span class="o">=</span> <span class="n">identity</span><span class="o">.</span><span class="n">text</span><span class="p">[:</span><span class="mi">4</span><span class="p">]</span>
-                <span class="c1">################################################################</span>
-                <span class="c1"># WRITE IDENTITY FILE</span>
-                <span class="n">identity_file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">siren</span><span class="p">,</span> <span class="n">denomination</span><span class="p">,</span>
-                                              <span class="n">accountability_type</span><span class="p">,</span> <span class="n">code_devise</span><span class="p">,</span>
-                                              <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">]))</span>
-            <span class="c1">####################################################################</span>
-            <span class="c1"># BUNDLE TAGS IN PAGES TO ITERATE WITH BUNDLE CODES AND AMOUNT</span>
-            <span class="k">elif</span> <span class="n">child</span><span class="o">.</span><span class="n">tag</span> <span class="o">==</span> <span class="s2">&quot;{fr:inpi:odrncs:bilansSaisisXML}detail&quot;</span><span class="p">:</span>
-                <span class="k">for</span> <span class="n">page</span> <span class="ow">in</span> <span class="n">child</span><span class="p">:</span>
-                    <span class="k">for</span> <span class="n">bundle</span> <span class="ow">in</span> <span class="n">page</span><span class="p">:</span>
-                        <span class="k">try</span><span class="p">:</span>
-                            <span class="k">for</span> <span class="n">bundle_code</span> <span class="ow">in</span> \
-                                    <span class="n">account_ontology</span><span class="p">[</span><span class="n">accountability_type</span><span class="p">][</span><span class="s1">&#39;bundleCodeAtt&#39;</span><span class="p">]:</span>
-                                <span class="k">if</span> <span class="n">bundle</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s2">&quot;code&quot;</span><span class="p">]</span> <span class="ow">in</span> <span class="n">bundle_code</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
-                                    <span class="k">for</span> <span class="n">amount_code</span> <span class="ow">in</span> <span class="n">bundle_code</span><span class="p">[</span><span class="n">bundle</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s2">&quot;code&quot;</span><span class="p">]]:</span>
-                                        <span class="n">amount_code</span> <span class="o">=</span> <span class="s2">&quot;m</span><span class="si">{0}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">amount_code</span><span class="p">)</span>
-                                        <span class="c1">########################################</span>
-                                        <span class="c1"># WRITE RESULTS FILE</span>
-                                        <span class="n">bundle_file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">siren</span><span class="p">,</span> <span class="n">year</span><span class="p">,</span>
-                                                                    <span class="n">bundle</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s2">&quot;code&quot;</span><span class="p">],</span>
-                                                                    <span class="nb">str</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">bundle</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="n">amount_code</span><span class="p">])),</span>
-                                                                    <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">]))</span>
-                        <span class="k">except</span> <span class="ne">KeyError</span> <span class="k">as</span> <span class="n">key_error</span><span class="p">:</span>
-                            <span class="n">debug</span><span class="p">(</span><span class="n">key_error</span><span class="p">)</span>
+    <span class="c1"># CREATING A LIST OF THE BUNDLE XML CODES, ZIP ARE READ IN BtesIO, IN ORDER</span>
+    <span class="c1"># TO BREAK FILE SYSTEM. TOO MUCH ZIP DISTURB THE FS.</span>
+    <span class="k">for</span> <span class="n">file</span> <span class="ow">in</span> <span class="n">listdir</span><span class="p">(</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;inputPath&#39;</span><span class="p">]):</span>  <span class="c1"># LIST INPUT FILES</span>
+        <span class="k">if</span> <span class="n">file</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;.zip&quot;</span><span class="p">):</span>  <span class="c1"># ON RETAIN ZIP FILES</span>
+            <span class="k">try</span><span class="p">:</span>  <span class="c1"># SOME BAD ZIP FILE ARE IN HE DATASET</span>
+                <span class="n">input_zip</span> <span class="o">=</span> <span class="n">ZipFile</span><span class="p">(</span><span class="n">join</span><span class="p">(</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;inputPath&#39;</span><span class="p">],</span> <span class="n">file</span><span class="p">))</span>
+                <span class="k">for</span> <span class="n">zipped_xml</span> <span class="ow">in</span> <span class="n">input_zip</span><span class="o">.</span><span class="n">namelist</span><span class="p">():</span>  <span class="c1"># LIST ARCHIVES IN ZIP</span>
+                    <span class="n">zipped_xml</span> <span class="o">=</span> <span class="n">ZipFile</span><span class="p">(</span><span class="n">BytesIO</span><span class="p">(</span><span class="n">input_zip</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">zipped_xml</span><span class="p">)))</span>
+                    <span class="c1"># SUPPOSED ONLY ONE XML BUT ITERATE TO BE SURE</span>
+                    <span class="k">for</span> <span class="n">xml</span> <span class="ow">in</span> <span class="n">zipped_xml</span><span class="o">.</span><span class="n">namelist</span><span class="p">():</span>
+                        <span class="c1">########################################################################</span>
+                        <span class="c1"># XML PARSER</span>
+                        <span class="n">tree</span> <span class="o">=</span> <span class="n">ElementTree</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">BytesIO</span><span class="p">(</span><span class="n">zipped_xml</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">xml</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">()))</span>
+                        <span class="n">root</span> <span class="o">=</span> <span class="n">tree</span><span class="o">.</span><span class="n">getroot</span><span class="p">()</span>
+                        <span class="c1">########################################################################</span>
+                        <span class="c1"># XML RELATED VARIABLES</span>
+                        <span class="n">accountability_type</span><span class="p">,</span> <span class="n">siren</span><span class="p">,</span> <span class="n">code_devise</span><span class="p">,</span> <span class="n">denomination</span><span class="p">,</span> <span class="n">year</span> <span class="o">=</span> <span class="p">(</span><span class="kc">None</span><span class="p">,)</span> <span class="o">*</span> <span class="mi">5</span>
+                        <span class="c1">########################################################################</span>
+                        <span class="c1"># ITERATE ALL TAGS</span>
+                        <span class="k">for</span> <span class="n">child</span> <span class="ow">in</span> <span class="n">root</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+                            <span class="c1">####################################################################</span>
+                            <span class="c1"># IDENTITY TAGS, SIREN AND TYPE OF ACCOUNTABILITY</span>
+                            <span class="k">if</span> <span class="n">child</span><span class="o">.</span><span class="n">tag</span> <span class="o">==</span> <span class="s2">&quot;{fr:inpi:odrncs:bilansSaisisXML}identite&quot;</span><span class="p">:</span>
+                                <span class="k">for</span> <span class="n">identity</span> <span class="ow">in</span> <span class="n">child</span><span class="p">:</span>  <span class="c1"># identite LEVEL</span>
+                                    <span class="k">if</span> <span class="n">identity</span><span class="o">.</span><span class="n">tag</span> <span class="o">==</span> <span class="s1">&#39;{fr:inpi:odrncs:bilansSaisisXML}siren&#39;</span><span class="p">:</span>
+                                        <span class="n">siren</span> <span class="o">=</span> <span class="n">identity</span><span class="o">.</span><span class="n">text</span>
+                                    <span class="k">elif</span> <span class="n">identity</span><span class="o">.</span><span class="n">tag</span> <span class="o">==</span> <span class="s1">&#39;{fr:inpi:odrncs:bilansSaisisXML}code_type_bilan&#39;</span><span class="p">:</span>
+                                        <span class="n">accountability_type</span> <span class="o">=</span> <span class="n">identity</span><span class="o">.</span><span class="n">text</span>
+                                    <span class="k">elif</span> <span class="n">identity</span><span class="o">.</span><span class="n">tag</span> <span class="o">==</span> <span class="s1">&#39;{fr:inpi:odrncs:bilansSaisisXML}denomination&#39;</span><span class="p">:</span>
+                                        <span class="c1"># REMOVE MULTIPLE WHITESPACES, SWITCH TO UPPER CASE, REMOVE EOF</span>
+                                        <span class="n">denomination</span> <span class="o">=</span> <span class="n">sub</span><span class="p">(</span><span class="n">re_multiple_whitespace</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">,</span>
+                                                           <span class="n">identity</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">)</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>
+                                                           <span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">)</span>
+                                    <span class="k">elif</span> <span class="n">identity</span><span class="o">.</span><span class="n">tag</span> <span class="o">==</span> <span class="s1">&#39;{fr:inpi:odrncs:bilansSaisisXML}code_devise&#39;</span><span class="p">:</span>
+                                        <span class="n">code_devise</span> <span class="o">=</span> <span class="n">identity</span><span class="o">.</span><span class="n">text</span>
+                                    <span class="k">elif</span> <span class="n">identity</span><span class="o">.</span><span class="n">tag</span> <span class="o">==</span> <span class="s1">&#39;{fr:inpi:odrncs:bilansSaisisXML}date_cloture_exercice&#39;</span><span class="p">:</span>
+                                        <span class="n">year</span> <span class="o">=</span> <span class="n">identity</span><span class="o">.</span><span class="n">text</span><span class="p">[:</span><span class="mi">4</span><span class="p">]</span>
+                                <span class="c1">################################################################</span>
+                                <span class="c1"># WRITE IDENTITY FILE</span>
+                                <span class="n">identity_file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">siren</span><span class="p">,</span> <span class="n">denomination</span><span class="p">,</span>
+                                                              <span class="n">accountability_type</span><span class="p">,</span> <span class="n">code_devise</span><span class="p">,</span>
+                                                              <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">]))</span>
+                            <span class="c1">####################################################################</span>
+                            <span class="c1"># BUNDLE TAGS IN PAGES TO ITERATE WITH BUNDLE CODES AND AMOUNT</span>
+                            <span class="k">elif</span> <span class="n">child</span><span class="o">.</span><span class="n">tag</span> <span class="o">==</span> <span class="s2">&quot;{fr:inpi:odrncs:bilansSaisisXML}detail&quot;</span><span class="p">:</span>
+                                <span class="k">for</span> <span class="n">page</span> <span class="ow">in</span> <span class="n">child</span><span class="p">:</span>
+                                    <span class="k">for</span> <span class="n">bundle</span> <span class="ow">in</span> <span class="n">page</span><span class="p">:</span>
+                                        <span class="k">try</span><span class="p">:</span>
+                                            <span class="k">for</span> <span class="n">bundle_code</span> <span class="ow">in</span> \
+                                                    <span class="n">account_ontology</span><span class="p">[</span><span class="n">accountability_type</span><span class="p">][</span><span class="s1">&#39;bundleCodeAtt&#39;</span><span class="p">]:</span>
+                                                <span class="k">if</span> <span class="n">bundle</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s2">&quot;code&quot;</span><span class="p">]</span> <span class="ow">in</span> <span class="n">bundle_code</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                                                    <span class="k">for</span> <span class="n">amount_code</span> <span class="ow">in</span> <span class="n">bundle_code</span><span class="p">[</span><span class="n">bundle</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s2">&quot;code&quot;</span><span class="p">]]:</span>
+                                                        <span class="n">amount_code</span> <span class="o">=</span> <span class="s2">&quot;m</span><span class="si">{0}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">amount_code</span><span class="p">)</span>
+                                                        <span class="c1">########################################</span>
+                                                        <span class="c1"># WRITE RESULTS FILE</span>
+                                                        <span class="n">bundle_file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">siren</span><span class="p">,</span> <span class="n">year</span><span class="p">,</span>
+                                                                                    <span class="n">bundle</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s2">&quot;code&quot;</span><span class="p">],</span>
+                                                                                    <span class="nb">str</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span>
+                                                                                        <span class="n">bundle</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="n">amount_code</span><span class="p">])),</span>
+                                                                                    <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">]))</span>
+                                        <span class="k">except</span> <span class="ne">KeyError</span> <span class="k">as</span> <span class="n">key_error</span><span class="p">:</span>
+                                            <span class="n">debug</span><span class="p">(</span><span class="n">key_error</span><span class="p">)</span>
+            <span class="k">except</span> <span class="n">BadZipFile</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>  <span class="c1">#  TODO REPORT ERROR TO INPI</span>
+                <span class="n">debug</span><span class="p">(</span><span class="n">error</span><span class="p">)</span>
     <span class="c1">############################################################################</span>
     <span class="c1"># CLOSES RESULTS AND IDENTITY FILES</span>
     <span class="n">bundle_file</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>

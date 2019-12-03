@@ -100,8 +100,22 @@
       
   <h1>Source code for enthic.app</h1><div class="highlight"><pre>
 <span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">===========================================================================</span>
+<span class="sd">Flask application, compatible with Sphinx documentation and Gunicorn server</span>
+<span class="sd">===========================================================================</span>
 
-<span class="kn">from</span> <span class="nn">json</span> <span class="kn">import</span> <span class="n">loads</span>
+<span class="sd">PROGRAM BY PAPIT SASU, 2019</span>
+
+<span class="sd">Coding Rules:</span>
+
+<span class="sd">- Snake case for variables.</span>
+<span class="sd">- Only argument is configuration file.</span>
+<span class="sd">- No output or print, just log and files.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">json</span> <span class="kn">import</span> <span class="n">loads</span><span class="p">,</span> <span class="n">load</span>
+<span class="kn">from</span> <span class="nn">os.path</span> <span class="kn">import</span> <span class="n">dirname</span><span class="p">,</span> <span class="n">join</span>
 <span class="kn">from</span> <span class="nn">re</span> <span class="kn">import</span> <span class="nb">compile</span>
 
 <span class="kn">from</span> <span class="nn">enthic.decorator.check_sql_injection</span> <span class="kn">import</span> <span class="n">check_sql_injection</span>
@@ -112,21 +126,35 @@
 <span class="kn">from</span> <span class="nn">flask</span> <span class="kn">import</span> <span class="n">Flask</span><span class="p">,</span> <span class="n">request</span>
 <span class="kn">from</span> <span class="nn">flask_mysqldb</span> <span class="kn">import</span> <span class="n">MySQL</span>
 
-<span class="n">app</span> <span class="o">=</span> <span class="n">Flask</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
-<span class="n">mysql</span> <span class="o">=</span> <span class="n">MySQL</span><span class="p">(</span><span class="n">app</span><span class="p">)</span>
 <span class="n">siren_re</span> <span class="o">=</span> <span class="nb">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;^\d</span><span class="si">{9}</span><span class="s2">$&quot;</span><span class="p">)</span>  <span class="c1"># REGEX OF A SIREN</span>
 <span class="n">year_re</span> <span class="o">=</span> <span class="nb">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;^\d</span><span class="si">{4}</span><span class="s2">$&quot;</span><span class="p">)</span>  <span class="c1"># REGEX OF A YEAR</span>
 
+<span class="n">application</span> <span class="o">=</span> <span class="n">Flask</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+<span class="n">mysql</span> <span class="o">=</span> <span class="n">MySQL</span><span class="p">(</span><span class="n">application</span><span class="p">)</span>
 
-<div class="viewcode-block" id="company_siren_year"><a class="viewcode-back" href="../../index.html#enthic.app.company_siren_year">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s2">&quot;/company/siren/&lt;siren&gt;/&lt;year&gt;&quot;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;GET&#39;</span><span class="p">],</span> <span class="n">strict_slashes</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="c1">############################################################################</span>
+<span class="c1"># CONFIGURE applicationLICATION</span>
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">join</span><span class="p">(</span><span class="n">dirname</span><span class="p">(</span><span class="vm">__file__</span><span class="p">),</span> <span class="s2">&quot;configuration.json&quot;</span><span class="p">))</span> <span class="k">as</span> <span class="n">json_configuration_file</span><span class="p">:</span>
+    <span class="n">config</span> <span class="o">=</span> <span class="n">load</span><span class="p">(</span><span class="n">json_configuration_file</span><span class="p">)</span>
+<span class="n">application</span><span class="o">.</span><span class="n">_static_folder</span> <span class="o">=</span> <span class="s2">&quot;./static/&quot;</span>
+<span class="n">application</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;MYSQL_HOST&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;mySQL&quot;</span><span class="p">][</span><span class="s2">&quot;enthic&quot;</span><span class="p">][</span><span class="s2">&quot;host&quot;</span><span class="p">]</span>
+<span class="n">application</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;MYSQL_USER&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;mySQL&quot;</span><span class="p">][</span><span class="s2">&quot;enthic&quot;</span><span class="p">][</span><span class="s2">&quot;user&quot;</span><span class="p">]</span>
+<span class="n">application</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;MYSQL_PASSWORD&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;mySQL&quot;</span><span class="p">][</span><span class="s2">&quot;enthic&quot;</span><span class="p">][</span><span class="s2">&quot;password&quot;</span><span class="p">]</span>
+<span class="n">application</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;MYSQL_DB&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;enthic&#39;</span>
+
+
+<div class="viewcode-block" id="company_siren_year"><a class="viewcode-back" href="../../index.html#enthic.app.company_siren_year">[docs]</a><span class="nd">@application</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s2">&quot;/company/siren/&lt;siren&gt;/&lt;year&gt;&quot;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;GET&#39;</span><span class="p">],</span>
+                   <span class="n">strict_slashes</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 <span class="nd">@check_sql_injection</span>
 <span class="nd">@insert_request</span><span class="p">(</span><span class="n">mysql</span><span class="p">,</span> <span class="n">request</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">company_siren_year</span><span class="p">(</span><span class="n">siren</span><span class="p">,</span> <span class="n">year</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Retrieve company information by SIREN for a given year. Path is</span>
 <span class="sd">       /company/siren/&lt;siren&gt; GET method only and no strict slash.</span>
+
 <span class="sd">       :param siren: SIREN identification, must be an 9 character long,</span>
 <span class="sd">          numeric only.</span>
+
 <span class="sd">       :param year: Year of results to return, default is None.</span>
 <span class="sd">       :return: HTTP Response as application/json. Contain all known information</span>
 <span class="sd">          on that company of an error message if SIREN or YEAR wrongly formatted.</span>
@@ -136,7 +164,7 @@
             <span class="k">return</span> <span class="n">SQLJSONResponse</span><span class="p">(</span><span class="n">mysql</span><span class="p">,</span> <span class="s2">&quot;&quot;&quot;SELECT bundle, amount</span>
 <span class="s2">                                    FROM identity INNER JOIN bundle</span>
 <span class="s2">                                    ON bundle.siren = identity.siren</span>
-<span class="s2">                                    WHERE identity.siren = &quot;</span><span class="si">%s</span><span class="s2">&quot; </span>
+<span class="s2">                                    WHERE identity.siren = &#39;</span><span class="si">%s</span><span class="s2">&#39; </span>
 <span class="s2">                                    AND declaration = </span><span class="si">%s</span><span class="s2">;&quot;&quot;&quot;</span><span class="p">,</span> <span class="n">siren</span><span class="p">,</span> <span class="n">year</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">ErrorJSONResponse</span><span class="p">(</span><span class="s2">&quot;YEAR for is wrong, must match ^\d</span><span class="si">{4}</span><span class="s2">$.&quot;</span><span class="p">)</span>
@@ -144,13 +172,14 @@
         <span class="k">return</span> <span class="n">ErrorJSONResponse</span><span class="p">(</span><span class="s2">&quot;SIREN for is wrong, must match ^\d</span><span class="si">{9}</span><span class="s2">$.&quot;</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="company_siren"><a class="viewcode-back" href="../../index.html#enthic.app.company_siren">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s2">&quot;/company/siren/&lt;siren&gt;&quot;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;GET&#39;</span><span class="p">],</span> <span class="n">strict_slashes</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<div class="viewcode-block" id="company_siren"><a class="viewcode-back" href="../../index.html#enthic.app.company_siren">[docs]</a><span class="nd">@application</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s2">&quot;/company/siren/&lt;siren&gt;&quot;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;GET&#39;</span><span class="p">],</span> <span class="n">strict_slashes</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 <span class="nd">@check_sql_injection</span>
 <span class="nd">@insert_request</span><span class="p">(</span><span class="n">mysql</span><span class="p">,</span> <span class="n">request</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">company_siren</span><span class="p">(</span><span class="n">siren</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Retrieve company information by SIREN. Path is /company/siren/&lt;siren&gt; GET</span>
 <span class="sd">       method only and no strict slash.</span>
+
 <span class="sd">       :param siren: SIREN identification, must be an 9 character long,</span>
 <span class="sd">          numeric only.</span>
 <span class="sd">       :return: HTTP Response as application/json. Contain all known information</span>
@@ -160,14 +189,14 @@
         <span class="k">return</span> <span class="n">SQLJSONResponse</span><span class="p">(</span><span class="n">mysql</span><span class="p">,</span> <span class="s2">&quot;&quot;&quot;SELECT bundle, CONVERT(AVG(amount), UNSIGNED INTEGER)</span>
 <span class="s2">                                FROM identity INNER JOIN bundle</span>
 <span class="s2">                                ON bundle.siren = identity.siren</span>
-<span class="s2">                                WHERE identity.siren = &quot;</span><span class="si">%s</span><span class="s2">&quot;</span>
+<span class="s2">                                WHERE identity.siren = &#39;</span><span class="si">%s</span><span class="s2">&#39;</span>
 <span class="s2">                                GROUP BY bundle.bundle;&quot;&quot;&quot;</span><span class="p">,</span> <span class="n">siren</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">ErrorJSONResponse</span><span class="p">(</span><span class="s2">&quot;SIREN for is wrong, must match ^\d</span><span class="si">{9}</span><span class="s2">$.&quot;</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="company_denomination"><a class="viewcode-back" href="../../index.html#enthic.app.company_denomination">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s2">&quot;/company/denomination/&lt;denomination&gt;&quot;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;GET&#39;</span><span class="p">],</span>
-           <span class="n">strict_slashes</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<div class="viewcode-block" id="company_denomination"><a class="viewcode-back" href="../../index.html#enthic.app.company_denomination">[docs]</a><span class="nd">@application</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s2">&quot;/company/denomination/&lt;denomination&gt;&quot;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;GET&#39;</span><span class="p">],</span>
+                   <span class="n">strict_slashes</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 <span class="nd">@check_sql_injection</span>
 <span class="nd">@insert_request</span><span class="p">(</span><span class="n">mysql</span><span class="p">,</span> <span class="n">request</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">company_denomination</span><span class="p">(</span><span class="n">denomination</span><span class="p">):</span>
@@ -180,12 +209,12 @@
     <span class="k">return</span> <span class="n">SQLJSONResponse</span><span class="p">(</span><span class="n">mysql</span><span class="p">,</span> <span class="s2">&quot;&quot;&quot;SELECT bundle, CONVERT(AVG(amount), UNSIGNED INTEGER)</span>
 <span class="s2">                                FROM identity INNER JOIN bundle</span>
 <span class="s2">                                ON bundle.siren = identity.siren</span>
-<span class="s2">                                WHERE identity.denomination = &quot;</span><span class="si">%s</span><span class="s2">&quot;</span>
+<span class="s2">                                WHERE identity.denomination = &#39;</span><span class="si">%s</span><span class="s2">&#39;</span>
 <span class="s2">                                GROUP BY bundle.bundle;&quot;&quot;&quot;</span><span class="p">,</span> <span class="n">denomination</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="company_denomination_year"><a class="viewcode-back" href="../../index.html#enthic.app.company_denomination_year">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s2">&quot;/company/denomination/&lt;denomination&gt;/&lt;year&gt;&quot;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;GET&#39;</span><span class="p">],</span>
-           <span class="n">strict_slashes</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<div class="viewcode-block" id="company_denomination_year"><a class="viewcode-back" href="../../index.html#enthic.app.company_denomination_year">[docs]</a><span class="nd">@application</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s2">&quot;/company/denomination/&lt;denomination&gt;/&lt;year&gt;&quot;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;GET&#39;</span><span class="p">],</span>
+                   <span class="n">strict_slashes</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 <span class="nd">@check_sql_injection</span>
 <span class="nd">@insert_request</span><span class="p">(</span><span class="n">mysql</span><span class="p">,</span> <span class="n">request</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">company_denomination_year</span><span class="p">(</span><span class="n">denomination</span><span class="p">,</span> <span class="n">year</span><span class="p">):</span>
@@ -200,14 +229,14 @@
         <span class="k">return</span> <span class="n">SQLJSONResponse</span><span class="p">(</span><span class="n">mysql</span><span class="p">,</span> <span class="s2">&quot;&quot;&quot;SELECT bundle, amount</span>
 <span class="s2">                                FROM identity INNER JOIN bundle</span>
 <span class="s2">                                ON bundle.siren = identity.siren</span>
-<span class="s2">                                WHERE identity.denomination = &quot;</span><span class="si">%s</span><span class="s2">&quot;</span>
+<span class="s2">                                WHERE identity.denomination = &#39;</span><span class="si">%s</span><span class="s2">&#39;</span>
 <span class="s2">                                AND declaration = </span><span class="si">%s</span><span class="s2">;&quot;&quot;&quot;</span><span class="p">,</span>
                                <span class="n">denomination</span><span class="p">,</span> <span class="n">year</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">ErrorJSONResponse</span><span class="p">(</span><span class="s2">&quot;YEAR for is wrong, must match ^\d</span><span class="si">{4}</span><span class="s2">$.&quot;</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="ontology"><a class="viewcode-back" href="../../index.html#enthic.app.ontology">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s2">&quot;/company/ontology&quot;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;GET&#39;</span><span class="p">],</span> <span class="n">strict_slashes</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<div class="viewcode-block" id="ontology"><a class="viewcode-back" href="../../index.html#enthic.app.ontology">[docs]</a><span class="nd">@application</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s2">&quot;/company/ontology&quot;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;GET&#39;</span><span class="p">],</span> <span class="n">strict_slashes</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">ontology</span><span class="p">():</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Return the ontology used to extract accountability data.</span>
@@ -242,7 +271,7 @@
                 <span class="p">]}}]})</span></div>
 
 
-<div class="viewcode-block" id="search"><a class="viewcode-back" href="../../index.html#enthic.app.search">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s2">&quot;/company/search&quot;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;POST&#39;</span><span class="p">],</span> <span class="n">strict_slashes</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<div class="viewcode-block" id="search"><a class="viewcode-back" href="../../index.html#enthic.app.search">[docs]</a><span class="nd">@application</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s2">&quot;/company/search&quot;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;POST&#39;</span><span class="p">],</span> <span class="n">strict_slashes</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 <span class="nd">@check_sql_injection</span>
 <span class="nd">@insert_request</span><span class="p">(</span><span class="n">mysql</span><span class="p">,</span> <span class="n">request</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">search</span><span class="p">():</span>
@@ -251,10 +280,13 @@
 <span class="sd">       /company/search POST method only and no strict slash. A JSON Body is to</span>
 <span class="sd">       be post with the keys probe and limit. Key probe is the string to search,</span>
 <span class="sd">       limit is an integer, the maximum number of results to return.</span>
+
 <span class="sd">       :return: HTTP Response as application/json. Contain all known information</span>
 <span class="sd">          on that company of an error message if SIREN wrongly formatted.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">json_data</span> <span class="o">=</span> <span class="n">loads</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">json_data</span><span class="o">.</span><span class="vm">__class__</span> <span class="ow">is</span> <span class="ow">not</span> <span class="nb">dict</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">ErrorJSONResponse</span><span class="p">(</span><span class="s2">&quot;Request body should be a JSON.&quot;</span><span class="p">)</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="c1">########################################################################</span>
         <span class="c1"># WRONG TYPE</span>
@@ -274,11 +306,9 @@
         <span class="c1">########################################################################</span>
         <span class="c1"># CORRECT JSON</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">SQLJSONResponse</span><span class="p">(</span><span class="n">mysql</span><span class="p">,</span> <span class="s2">&quot;&quot;&quot;SELECT denomination, bundle.siren</span>
-<span class="s2">                                    FROM identity INNER JOIN bundle</span>
-<span class="s2">                                    ON bundle.siren = identity.siren</span>
-<span class="s2">                                    WHERE identity.siren like &quot;</span><span class="si">%s</span><span class="s2">&quot;</span>
-<span class="s2">                                    OR denomination like &quot;</span><span class="si">%s</span><span class="s2">&quot; LIMIT </span><span class="si">%s</span><span class="s2">;&quot;&quot;&quot;</span><span class="p">,</span>
+            <span class="k">return</span> <span class="n">SQLJSONResponse</span><span class="p">(</span><span class="n">mysql</span><span class="p">,</span> <span class="s2">&quot;&quot;&quot;SELECT siren, denomination</span>
+<span class="s2">                                    FROM identity WHERE siren like &#39;</span><span class="si">%s</span><span class="s2">&#39;</span>
+<span class="s2">                                    OR denomination like &#39;</span><span class="si">%s</span><span class="s2">&#39; LIMIT </span><span class="si">%s</span><span class="s2">;&quot;&quot;&quot;</span><span class="p">,</span>
                                    <span class="n">json_data</span><span class="p">[</span><span class="s2">&quot;probe&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="s2">&quot;%&quot;</span><span class="p">,</span>
                                    <span class="n">json_data</span><span class="p">[</span><span class="s2">&quot;probe&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="s2">&quot;%&quot;</span><span class="p">,</span>
                                    <span class="n">json_data</span><span class="p">[</span><span class="s2">&quot;limit&quot;</span><span class="p">])</span>
@@ -292,7 +322,7 @@
         <span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="static_proxy"><a class="viewcode-back" href="../../index.html#enthic.app.static_proxy">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/&lt;path:path&gt;&#39;</span><span class="p">,</span> <span class="n">strict_slashes</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<div class="viewcode-block" id="static_proxy"><a class="viewcode-back" href="../../index.html#enthic.app.static_proxy">[docs]</a><span class="nd">@application</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/&lt;path:path&gt;&#39;</span><span class="p">,</span> <span class="n">strict_slashes</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 <span class="nd">@insert_request</span><span class="p">(</span><span class="n">mysql</span><span class="p">,</span> <span class="n">request</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">static_proxy</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
@@ -300,20 +330,20 @@
 <span class="sd">       :param path: / Base path of the host.</span>
 <span class="sd">       :return: The resource present at the path.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="n">app</span><span class="o">.</span><span class="n">send_static_file</span><span class="p">(</span><span class="n">path</span><span class="p">)</span></div>
+    <span class="k">return</span> <span class="n">application</span><span class="o">.</span><span class="n">send_static_file</span><span class="p">(</span><span class="n">path</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="index"><a class="viewcode-back" href="../../index.html#enthic.app.index">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">,</span> <span class="n">strict_slashes</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<div class="viewcode-block" id="index"><a class="viewcode-back" href="../../index.html#enthic.app.index">[docs]</a><span class="nd">@application</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">,</span> <span class="n">strict_slashes</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 <span class="nd">@insert_request</span><span class="p">(</span><span class="n">mysql</span><span class="p">,</span> <span class="n">request</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">index</span><span class="p">():</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Serve the index.html at the base path.</span>
 <span class="sd">       :return: The static index.html and a return code 200.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="n">app</span><span class="o">.</span><span class="n">send_static_file</span><span class="p">(</span><span class="s2">&quot;index.html&quot;</span><span class="p">),</span> <span class="mi">200</span></div>
+    <span class="k">return</span> <span class="n">application</span><span class="o">.</span><span class="n">send_static_file</span><span class="p">(</span><span class="s2">&quot;index.html&quot;</span><span class="p">),</span> <span class="mi">200</span></div>
 
 
-<div class="viewcode-block" id="page_not_found"><a class="viewcode-back" href="../../index.html#enthic.app.page_not_found">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">errorhandler</span><span class="p">(</span><span class="mi">404</span><span class="p">)</span>
+<div class="viewcode-block" id="page_not_found"><a class="viewcode-back" href="../../index.html#enthic.app.page_not_found">[docs]</a><span class="nd">@application</span><span class="o">.</span><span class="n">errorhandler</span><span class="p">(</span><span class="mi">404</span><span class="p">)</span>
 <span class="nd">@insert_request</span><span class="p">(</span><span class="n">mysql</span><span class="p">,</span> <span class="n">request</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">page_not_found</span><span class="p">(</span><span class="n">error</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
@@ -321,11 +351,11 @@
 <span class="sd">       :param error: Error message to be logged.</span>
 <span class="sd">       :return: The HTML 404 page.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">app</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">error</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">app</span><span class="o">.</span><span class="n">send_static_file</span><span class="p">(</span><span class="s1">&#39;404.html&#39;</span><span class="p">),</span> <span class="mi">404</span></div>
+    <span class="n">application</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">error</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">application</span><span class="o">.</span><span class="n">send_static_file</span><span class="p">(</span><span class="s1">&#39;404.html&#39;</span><span class="p">),</span> <span class="mi">404</span></div>
 
 
-<div class="viewcode-block" id="server_error"><a class="viewcode-back" href="../../index.html#enthic.app.server_error">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">errorhandler</span><span class="p">(</span><span class="mi">500</span><span class="p">)</span>
+<div class="viewcode-block" id="server_error"><a class="viewcode-back" href="../../index.html#enthic.app.server_error">[docs]</a><span class="nd">@application</span><span class="o">.</span><span class="n">errorhandler</span><span class="p">(</span><span class="mi">500</span><span class="p">)</span>
 <span class="nd">@insert_request</span><span class="p">(</span><span class="n">mysql</span><span class="p">,</span> <span class="n">request</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">server_error</span><span class="p">(</span><span class="n">error</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
@@ -333,27 +363,19 @@
 <span class="sd">       :param error: Error message to be logged.</span>
 <span class="sd">       :return: The HTML 500 page.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">app</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">error</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">app</span><span class="o">.</span><span class="n">send_static_file</span><span class="p">(</span><span class="s1">&#39;500.html&#39;</span><span class="p">),</span> <span class="mi">500</span></div>
+    <span class="n">application</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">error</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">application</span><span class="o">.</span><span class="n">send_static_file</span><span class="p">(</span><span class="s1">&#39;500.html&#39;</span><span class="p">),</span> <span class="mi">500</span></div>
 
 
 <div class="viewcode-block" id="main"><a class="viewcode-back" href="../../index.html#enthic.app.main">[docs]</a><span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Start app, after configuration.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="kn">from</span> <span class="nn">enthic.utils.configuration</span> <span class="kn">import</span> <span class="n">config</span>  <span class="c1"># UGLY IMPORT THAT EXECUTE</span>
-    <span class="c1">############################################################################</span>
-    <span class="c1"># CONFIGURE APPLICATION</span>
-    <span class="n">app</span><span class="o">.</span><span class="n">_static_folder</span> <span class="o">=</span> <span class="s2">&quot;./static/&quot;</span>
-    <span class="n">app</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;MYSQL_HOST&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;mySQL&quot;</span><span class="p">][</span><span class="s2">&quot;enthic&quot;</span><span class="p">][</span><span class="s2">&quot;host&quot;</span><span class="p">]</span>
-    <span class="n">app</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;MYSQL_USER&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;mySQL&quot;</span><span class="p">][</span><span class="s2">&quot;enthic&quot;</span><span class="p">][</span><span class="s2">&quot;user&quot;</span><span class="p">]</span>
-    <span class="n">app</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;MYSQL_PASSWORD&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;mySQL&quot;</span><span class="p">][</span><span class="s2">&quot;enthic&quot;</span><span class="p">][</span><span class="s2">&quot;password&quot;</span><span class="p">]</span>
-    <span class="n">app</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;MYSQL_DB&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;enthic&#39;</span>
     <span class="c1">############################################################################</span>
     <span class="c1"># START APPLICATION</span>
-    <span class="n">app</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">debug</span><span class="o">=</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;flask&quot;</span><span class="p">][</span><span class="s2">&quot;debug&quot;</span><span class="p">],</span>
-            <span class="n">host</span><span class="o">=</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;flask&quot;</span><span class="p">][</span><span class="s2">&quot;host&quot;</span><span class="p">],</span>
-            <span class="n">port</span><span class="o">=</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;flask&quot;</span><span class="p">][</span><span class="s2">&quot;port&quot;</span><span class="p">])</span></div>
+    <span class="n">application</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">debug</span><span class="o">=</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;flask&quot;</span><span class="p">][</span><span class="s2">&quot;debug&quot;</span><span class="p">],</span>
+                    <span class="n">host</span><span class="o">=</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;flask&quot;</span><span class="p">][</span><span class="s2">&quot;host&quot;</span><span class="p">],</span>
+                    <span class="n">port</span><span class="o">=</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;flask&quot;</span><span class="p">][</span><span class="s2">&quot;port&quot;</span><span class="p">])</span></div>
 
 
 <span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>

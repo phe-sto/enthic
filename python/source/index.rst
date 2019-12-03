@@ -14,7 +14,7 @@ Indices and tables
 **Documentation of the Python Code**
 ====================================
 
-Those two python scripts are used in shell ``script xml-csv.sh``.
+Those two python scripts are used in shell ``script table-csv.sh``.
 
 .. toctree::
    :maxdepth: 2

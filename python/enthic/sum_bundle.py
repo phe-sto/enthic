@@ -13,7 +13,9 @@ Coding Rules:
 - No output or print, just log and files.
 """
 from csv import reader
+from json import load
 from logging import basicConfig
+from os.path import dirname
 from os.path import isdir, join
 
 
@@ -22,10 +24,11 @@ def main():
     Based on the configuration storing the input file path. Sum all the bundle
     of the year for one company.
     """
-    from enthic.utils.configuration import config  # UGLY, FOR SPHINX IMPORT
     ############################################################################
     # CHECKING THE INPUT AND OUTPUT AND DIRECTORY PATH
     # INPUT
+    with open(join(dirname(__file__), "configuration.json")) as json_configuration_file:
+        config = load(json_configuration_file)
     if isdir(config['inputPath']) is False:
         raise NotADirectoryError(
             "Configuration input path {} does not exist".format(

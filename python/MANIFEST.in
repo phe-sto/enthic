@@ -1,2 +1,3 @@
 include enthic/static/*
+include enthic/configuration.json
 global-exclude *.pyc

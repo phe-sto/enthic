@@ -92,7 +92,10 @@
 <li><a class="reference internal" href="#sum-all-the-bundle-of-the-year-for-one-company-from-a-csv-sorted-file">Sum all the bundle of the year for one company from a CSV sorted file</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#flask-api-server">Flask API server</a></li>
+<li><a class="reference internal" href="#flask-api-server">Flask API server</a><ul>
+<li><a class="reference internal" href="#flask-application-compatible-with-sphinx-documentation-and-gunicorn-server">Flask application, compatible with Sphinx documentation and Gunicorn server</a></li>
+</ul>
+</li>
 <li><a class="reference internal" href="#module-enthic.decorator.check_sql_injection">Flask JSON response</a><ul>
 <li><a class="reference internal" href="#decorator-checking-sql-injection-in-requests">Decorator checking SQL injection in requests</a></li>
 </ul>
@@ -184,7 +187,7 @@ XSD. XML not following this XSD have their filename printed out.</p>
 <h2>Format XML<a class="headerlink" href="#format-xml" title="Permalink to this headline">¶</a></h2>
 <p>Create two CSV based on XML. One for each table, the identity and the bundles of
 the company.</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ sh ./xml-csv.sh
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ sh ./table-csv.sh
 </pre></div>
 </div>
 </div>
@@ -311,7 +314,7 @@ via <code class="docutils literal notranslate"><span class="pre">pytest</span></
 │   ├── documentation.sh
 │   ├── install-dependencies.sh
 │   ├── install-wheel.sh
-│   └── xml-csv.sh
+│   └── table-csv.sh
 │
 ├── input
 │   └── qualification
@@ -340,7 +343,7 @@ via <code class="docutils literal notranslate"><span class="pre">pytest</span></
 </div>
 <div class="section" id="documentation-of-the-python-code">
 <h1><strong>Documentation of the Python Code</strong><a class="headerlink" href="#documentation-of-the-python-code" title="Permalink to this headline">¶</a></h1>
-<p>Those two python scripts are used in shell <code class="docutils literal notranslate"><span class="pre">script</span> <span class="pre">xml-csv.sh</span></code>.</p>
+<p>Those two python scripts are used in shell <code class="docutils literal notranslate"><span class="pre">script</span> <span class="pre">table-csv.sh</span></code>.</p>
 <div class="toctree-wrapper compound">
 </div>
 </div>
@@ -387,7 +390,16 @@ of the year for one company.</p>
 <div class="section" id="flask-api-server">
 <h1>Flask API server<a class="headerlink" href="#flask-api-server" title="Permalink to this headline">¶</a></h1>
 <p>Following module relates to Flask server.</p>
-<span class="target" id="module-enthic.app"></span><dl class="function">
+<span class="target" id="module-enthic.app"></span><div class="section" id="flask-application-compatible-with-sphinx-documentation-and-gunicorn-server">
+<h2>Flask application, compatible with Sphinx documentation and Gunicorn server<a class="headerlink" href="#flask-application-compatible-with-sphinx-documentation-and-gunicorn-server" title="Permalink to this headline">¶</a></h2>
+<p>PROGRAM BY PAPIT SASU, 2019</p>
+<p>Coding Rules:</p>
+<ul class="simple">
+<li>Snake case for variables.</li>
+<li>Only argument is configuration file.</li>
+<li>No output or print, just log and files.</li>
+</ul>
+<dl class="function">
 <dt id="enthic.app.company_denomination">
 <code class="descclassname">enthic.app.</code><code class="descname">company_denomination</code><span class="sig-paren">(</span><em>denomination</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/enthic/app.html#company_denomination"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#enthic.app.company_denomination" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="docutils">
@@ -415,15 +427,15 @@ of the year for one company.</p>
 <code class="descclassname">enthic.app.</code><code class="descname">company_siren</code><span class="sig-paren">(</span><em>siren</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/enthic/app.html#company_siren"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#enthic.app.company_siren" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="docutils">
 <dt>Retrieve company information by SIREN. Path is /company/siren/&lt;siren&gt; GET</dt>
-<dd><p class="first">method only and no strict slash.
-:param siren: SIREN identification, must be an 9 character long,</p>
-<blockquote>
-<div>numeric only.</div></blockquote>
+<dd><p class="first">method only and no strict slash.</p>
 <table class="last docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">return:</th><td class="field-body">HTTP Response as application/json. Contain all known information
+<tr class="field-odd field"><th class="field-name">param siren:</th><td class="field-body">SIREN identification, must be an 9 character long,
+numeric only.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">return:</th><td class="field-body">HTTP Response as application/json. Contain all known information
 on that company of an error message if SIREN wrongly formatted.</td>
 </tr>
 </tbody>
@@ -437,17 +449,17 @@ on that company of an error message if SIREN wrongly formatted.</td>
 <code class="descclassname">enthic.app.</code><code class="descname">company_siren_year</code><span class="sig-paren">(</span><em>siren</em>, <em>year</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/enthic/app.html#company_siren_year"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#enthic.app.company_siren_year" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="docutils">
 <dt>Retrieve company information by SIREN for a given year. Path is</dt>
-<dd><p class="first">/company/siren/&lt;siren&gt; GET method only and no strict slash.
-:param siren: SIREN identification, must be an 9 character long,</p>
-<blockquote>
-<div>numeric only.</div></blockquote>
+<dd><p class="first">/company/siren/&lt;siren&gt; GET method only and no strict slash.</p>
 <table class="last docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">param year:</th><td class="field-body">Year of results to return, default is None.</td>
+<tr class="field-odd field"><th class="field-name">param siren:</th><td class="field-body">SIREN identification, must be an 9 character long,
+numeric only.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">return:</th><td class="field-body">HTTP Response as application/json. Contain all known information
+<tr class="field-even field"><th class="field-name">param year:</th><td class="field-body">Year of results to return, default is None.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">return:</th><td class="field-body">HTTP Response as application/json. Contain all known information
 on that company of an error message if SIREN or YEAR wrongly formatted.</td>
 </tr>
 </tbody>
@@ -522,10 +534,16 @@ on that company of an error message if SIREN or YEAR wrongly formatted.</td>
 <dt>Search companies by SIREN or denomination. Limited to 1000 results. Path is</dt>
 <dd><p class="first">/company/search POST method only and no strict slash. A JSON Body is to
 be post with the keys probe and limit. Key probe is the string to search,
-limit is an integer, the maximum number of results to return.
-:return: HTTP Response as application/json. Contain all known information</p>
-<blockquote class="last">
-<div>on that company of an error message if SIREN wrongly formatted.</div></blockquote>
+limit is an integer, the maximum number of results to return.</p>
+<table class="last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">return:</th><td class="field-body">HTTP Response as application/json. Contain all known information
+on that company of an error message if SIREN wrongly formatted.</td>
+</tr>
+</tbody>
+</table>
 </dd>
 </dl>
 </dd></dl>
@@ -568,6 +586,7 @@ limit is an integer, the maximum number of results to return.
 </dl>
 </dd></dl>
 
+</div>
 </div>
 <div class="section" id="module-enthic.decorator.check_sql_injection">
 <span id="flask-json-response"></span><h1>Flask JSON response<a class="headerlink" href="#module-enthic.decorator.check_sql_injection" title="Permalink to this headline">¶</a></h1>

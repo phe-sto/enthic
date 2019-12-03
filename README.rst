@@ -56,7 +56,7 @@ the company.
 
 .. code-block:: bash
 
-   $ sh ./xml-csv.sh
+   $ sh ./table-csv.sh
 
 Create MySQL database
 ---------------------
@@ -192,7 +192,7 @@ Library structure
    │   ├── documentation.sh
    │   ├── install-dependencies.sh
    │   ├── install-wheel.sh
-   │   └── xml-csv.sh
+   │   └── table-csv.sh
    │
    ├── input
    │   └── qualification

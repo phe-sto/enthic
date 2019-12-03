@@ -43,12 +43,14 @@ def check_sql_injection(func):
         ########################################################################
         #  CHECK WHEN PARAMETER IS IN JSON BODY
         try:
-            for value in loads(request.data).values():
-                try:
-                    if sql_re.match(value):
-                        raise ValueError("JSON body value cannot be a SQL.")
-                except TypeError:  # IF NOT A STRING, ONLY STRING CAN BE AN INJECTION
-                    continue
+            json_data = loads(request.data)
+            if json_data.__class__ is dict:
+                for value in json_data.values():
+                    try:
+                        if sql_re.match(value):
+                            raise ValueError("JSON body value cannot be a SQL.")
+                    except TypeError:  # IF NOT A STRING, ONLY STRING CAN BE AN INJECTION
+                        continue
         except JSONDecodeError:  # IF NOT A JSON
             pass
         return func(*args, **kwargs)

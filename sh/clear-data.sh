@@ -17,16 +17,10 @@ step () {
 };
 ################################################################################
 step "REMOVE UNNECESSARY MD5 FILES IN ${DATA_DIR}";
-rm -rf $DATA_DIR/*.md5;
-rm -rf ../output/*.tmp;
+rm -rf $DATA_DIR/*.md5>/dev/null 2>&1;
+rm -rf ../output/*.tmp>/dev/null 2>&1;
 ################################################################################
-for unzipping_step in "DAILY" "DECLARATION";     # ZIP CONTAINS ZIP, DO IT TWICE
-do  
-    # CONSIDERED AS TWO STEPS
-    step "UNZIP IN PYTHON ${unzipping_step} ZIP IN ${DATA_DIR}";
-    for zip_file in "$DATA_DIR"/*.zip;           # ITERATE ALL INPUT FILES
-    do
-        python3 ../python/enthic/extract_bundle.py -c ../configuration.json
-        rm "$zip_file">/dev/null 2>&1;           # DELETE THE UNZIPPED FILE
-    done;
-done;
+# CONSIDERED AS TWO STEPS
+step "UNZIP IN PYTHON ${unzipping_step} ZIP IN ${DATA_DIR}";
+python3 ../python/enthic/extract_bundle.py -c ../configuration.json
+rm -rf $DATA_DIR/*.zip>/dev/null 2>&1;         # DELETE THE UNZIPPED FILE

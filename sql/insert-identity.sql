@@ -1,4 +1,4 @@
-LOAD DATA LOCAL INFILE "../output/identity.csv"
+LOAD DATA INFILE "/var/lib/mysql/identity.csv"
 IGNORE INTO TABLE identity
 COLUMNS TERMINATED BY ';'
 LINES TERMINATED BY '\n';

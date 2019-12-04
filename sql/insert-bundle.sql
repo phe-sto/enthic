@@ -1,4 +1,4 @@
-LOAD DATA LOCAL INFILE "../output/bundle.csv"
+LOAD DATA INFILE "/var/lib/mysql/bundle.csv"
 INTO TABLE bundle
 COLUMNS TERMINATED BY ';'
 LINES TERMINATED BY '\n';

@@ -1,13 +1,14 @@
 # -*- coding: utf-8 -*-
 
 from setuptools import setup, find_packages
+import enthic
 
 NAME = 'enthic'
 setup(name=NAME,
-      version='0.1',
+      version=enthic.__version__,
       description='Extract INPI result account data',
-      author='Christophe Brun',
-      author_email='christophe.brun@papit.fr',
+      author=enthic.__author__,
+      author_email=enthic.__email__,
       url='https://www.papit.fr/',
       packages=find_packages(),
       include_package_data=True,
@@ -17,6 +18,6 @@ setup(name=NAME,
           'console_scripts': ['enthic-api = enthic.app:main'],
       },
       install_requires=[
-          'flask', 'flask-mysqldb', 'requests'
+          'flask', 'flask-mysqldb', 'requests', 'pytest'
       ]
       )

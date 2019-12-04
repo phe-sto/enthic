@@ -6,7 +6,7 @@
   <meta charset="UTF-8">
   <title>Swagger Doc</title>
   <link rel="stylesheet" type="text/css" href="/swagger-ui.css">
-  <link rel="icon" type="image/png" href="/favicon.png" />
+  <link rel="icon" type="image/png" href="/favicon.ico" />
   <style>
     html {
       box-sizing: border-box;
@@ -36,7 +36,7 @@
     window.onload = function () {
       // Begin Swagger UI call region
       const ui = SwaggerUIBundle({
-        url: "/swagger.json",
+        url: "http://api.enthic.fr/swagger.json",
         dom_id: '#swagger-ui',
         deepLinking: true,
         presets: [

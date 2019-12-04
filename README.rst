@@ -122,7 +122,6 @@ Library structure
 
    .
    │
-   ├── configuration.json
    ├── bilans-saisis-v1.1.xsd
    ├── sonar-project.properties
    ├── README.rst
@@ -136,6 +135,7 @@ Library structure
    │   │   └── papit.png
    │   │
    │   ├── decorator
+   │   │   ├── __init__.py
    │   │   ├── check_sql_injection.py
    │   │   └── insert_request.py
    │   │
@@ -144,6 +144,7 @@ Library structure
    │   │   ├── conftest.py
    │   │   ├── extract_bundle.py
    │   │   ├── __init__.py
+   │   │   ├── configuration.json
    │   │   ├── sum_bundle.py
    │   │   ├── test_extract_bundle.py
    │   │   ├── test_app.py
@@ -160,7 +161,7 @@ Library structure
    │   │   ├── 404.html
    │   │   ├── 500.html
    │   │   ├── bootstrap.min.css
-   │   │   ├── favicon.png
+   │   │   ├── favicon.ico
    │   │   ├── index.html
    │   │   ├── jquery.min.js
    │   │   ├── swagger.json
@@ -174,6 +175,8 @@ Library structure
    │   │   └── swagger-ui-standalone-preset.js.map
    │   │
    │   ├── setup.py
+   │   ├── __init__.py
+   │   ├── MANIFEST.in
    │   └── Makefile
    │
    ├── sql
@@ -192,7 +195,7 @@ Library structure
    │   ├── documentation.sh
    │   ├── install-dependencies.sh
    │   ├── install-wheel.sh
-   │   └── table-csv.sh
+   │   └── csv-table.sh
    │
    ├── input
    │   └── qualification

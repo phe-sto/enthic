@@ -6,6 +6,10 @@
     "title": "Swagger French Company Account and Ethical Score",
     "contact": {
       "email": "services@papit.fr"
+    },
+    "license": {
+      "name": "wtfpl",
+      "url": "http://www.wtfpl.net/"
     }
   },
   "host": "api.enthic.fr",
@@ -47,7 +51,7 @@
         ],
         "summary": "Retrieve company information by SIREN.",
         "description": "",
-        "operationId": "siren_siren_get",
+        "operationId": "siren_get",
         "consumes": [
           "application/json"
         ],
@@ -80,7 +84,7 @@
         ],
         "summary": "Retrieve company information by SIREN for a given year.",
         "description": "",
-        "operationId": "siren_siren_year_get",
+        "operationId": "siren_year_get",
         "consumes": [
           "application/json"
         ],
@@ -120,7 +124,7 @@
         ],
         "summary": "Retrieve company information by company name.",
         "description": "",
-        "operationId": "denomination_denomination_get",
+        "operationId": "denomination_get",
         "consumes": [
           "application/json"
         ],
@@ -150,7 +154,7 @@
         ],
         "summary": "Retrieve company information by company name for a given year.",
         "description": "",
-        "operationId": "denomination_denomination_year_get",
+        "operationId": "denomination_year_get",
         "consumes": [
           "application/json"
         ],

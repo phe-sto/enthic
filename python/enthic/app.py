@@ -32,7 +32,7 @@ application = Flask(__name__)
 mysql = MySQL(application)
 
 ############################################################################
-# CONFIGURE applicationLICATION
+# CONFIGURE APPLICATION
 with open(join(dirname(__file__), "configuration.json")) as json_configuration_file:
     config = load(json_configuration_file)
 application._static_folder = "./static/"

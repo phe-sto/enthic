@@ -244,7 +244,6 @@ via <code class="docutils literal notranslate"><span class="pre">pytest</span></
 <h2>Library structure<a class="headerlink" href="#library-structure" title="Permalink to this headline">¶</a></h2>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>.
 │
-├── configuration.json
 ├── bilans-saisis-v1.1.xsd
 ├── sonar-project.properties
 ├── README.rst
@@ -258,6 +257,7 @@ via <code class="docutils literal notranslate"><span class="pre">pytest</span></
 │   │   └── papit.png
 │   │
 │   ├── decorator
+│   │   ├── __init__.py
 │   │   ├── check_sql_injection.py
 │   │   └── insert_request.py
 │   │
@@ -266,6 +266,7 @@ via <code class="docutils literal notranslate"><span class="pre">pytest</span></
 │   │   ├── conftest.py
 │   │   ├── extract_bundle.py
 │   │   ├── __init__.py
+│   │   ├── configuration.json
 │   │   ├── sum_bundle.py
 │   │   ├── test_extract_bundle.py
 │   │   ├── test_app.py
@@ -282,7 +283,7 @@ via <code class="docutils literal notranslate"><span class="pre">pytest</span></
 │   │   ├── <span class="m">404</span>.html
 │   │   ├── <span class="m">500</span>.html
 │   │   ├── bootstrap.min.css
-│   │   ├── favicon.png
+│   │   ├── favicon.ico
 │   │   ├── index.html
 │   │   ├── jquery.min.js
 │   │   ├── swagger.json
@@ -296,6 +297,8 @@ via <code class="docutils literal notranslate"><span class="pre">pytest</span></
 │   │   └── swagger-ui-standalone-preset.js.map
 │   │
 │   ├── setup.py
+│   ├── __init__.py
+│   ├── MANIFEST.in
 │   └── Makefile
 │
 ├── sql
@@ -314,7 +317,7 @@ via <code class="docutils literal notranslate"><span class="pre">pytest</span></
 │   ├── documentation.sh
 │   ├── install-dependencies.sh
 │   ├── install-wheel.sh
-│   └── table-csv.sh
+│   └── csv-table.sh
 │
 ├── input
 │   └── qualification

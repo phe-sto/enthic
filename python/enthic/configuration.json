@@ -9,9 +9,9 @@
   "debugLevel": "ERROR",
   "mySQL": {
     "enthic": {
-      "host": "",
-      "user": "",
-      "password": ""
+      "host": "localhost",
+      "user": "chrichri",
+      "password": "q250685Q"
     }
   },
   "flask": {

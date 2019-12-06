@@ -12,6 +12,7 @@ from threading import Thread
 def insert(*args):
     """
     Insert data from the request in the request table.
+
        :param args: A tuple, first element is the database, second is the
           request data.
     """
@@ -37,7 +38,8 @@ def insert(*args):
 def insert_request(my_sql_db, request):
     """
     Decorator insert request data in database for further analysis using
-       arguments objects of the function.
+    arguments objects of the function.
+
        :param my_sql_db: The database where the request data is to be inserted.
        :param request: The request object.
        :return: The function decorated.
@@ -46,6 +48,7 @@ def insert_request(my_sql_db, request):
     def insert_request_func(func):
         """
         Decorator inserting relevant request data timestamped.
+
            :param func: Function decorated.
            :return: The function decorated.
         """
@@ -54,6 +57,7 @@ def insert_request(my_sql_db, request):
         def wrapper(*args, **kwargs):
             """
             Wrapper to the insert in another thread to save time.
+
                :param args: Possible arguments.
                :param kwargs: Possible keyword argument.
                :return: The function decorated.

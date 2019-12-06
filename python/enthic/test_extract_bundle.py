@@ -22,6 +22,7 @@ from enthic.conftest import execution_in_subprocess
 def test_config(config):
     """
     Test the configuration file.
+
         :param config: Fixture of the JSON configuration file.
     """
     assert config.__class__ is dict, "CONFIGURATION NOT A VALID DICTIONARY"
@@ -39,6 +40,7 @@ def test_config(config):
 def extract_bundle_script():
     """
     Fixture of the Python script extracting bundle.
+
        :return: A string made of the script path.
     """
     return "./enthic/extract_bundle.py"
@@ -48,6 +50,7 @@ def test_execution_python(configuration_path, python_executable,
                           extract_bundle_script):
     """
     Test the execution with the CPython 3 implementation.
+
        :param configuration_path: Fixture of the application configuration.
        :param python_executable: Fixture, path of the python3 executable.
     """
@@ -61,6 +64,7 @@ def test_execution_pypy(configuration_path, pypy_executable,
                         extract_bundle_script):
     """
     Test the execution with the Pypy VM 3 implementation.
+
        :param configuration_path: Fixture of the application configuration.
        :param pypy_executable: Fixture, path of the pypy3 executable..
     """
@@ -75,6 +79,7 @@ def test_execution_pypy(configuration_path, pypy_executable,
 def result_file(config):
     """
     Fixture of the CSV result file.
+
        :param config: Fixture of the JSON configuration file.
        :return: The file object.
     """
@@ -85,6 +90,7 @@ def result_file(config):
 def identity_file(config):
     """
     Fixture of the CSV identity file.
+
        :param config: Fixture of the JSON configuration file.
        :return: The file object.
     """
@@ -94,6 +100,7 @@ def identity_file(config):
 def test_result_line_data(result_file):
     """
     Test the line contain always 4 columns. Check it's type.
+
        :param result_file: Fixture of the CSV result file.
     """
     for line in result_file:
@@ -112,6 +119,7 @@ def test_result_line_data(result_file):
 def test_identity_line_data(identity_file):
     """
     Test the line contain always 4 columns. Check it's type.
+
        :param identity_file: Fixture of the CSV result file.
     """
     max_length = 0

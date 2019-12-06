@@ -20,6 +20,7 @@ sql_re = compile(
 def check_sql_injection(func):
     """
     Decorator checking SQL injection.
+
        :param func: Function decorated.
        :return: The function decorated.
     """
@@ -28,6 +29,7 @@ def check_sql_injection(func):
     def wrapper(*args, **kwargs):
         """
         Wrapper checking SQL injection.
+
            :param args: Possible arguments.
            :param kwargs: Possible keyword argument.
            :return: The function decorated.

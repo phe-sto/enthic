@@ -20,7 +20,8 @@ import pytest
 def execution_in_subprocess(python, configuration_path, python_script):
     """
     Execute a command in a subprocess and print both standard and error out.
-       Execution with cProfile module to profile python performance.
+    Execution with cProfile module to profile python performance.
+
        :param configuration_path: JSON object of the application configuration.
        :param python: Path to an executable that can run python code.
        :param python_script: Python script to run.
@@ -47,6 +48,7 @@ def execution_in_subprocess(python, configuration_path, python_script):
 def configuration_path():
     """
     Fixture, path of the configuration path.
+
        :return: A string of the configuration path.
     """
     return "../configuration.json"
@@ -56,6 +58,7 @@ def configuration_path():
 def python_executable():
     """
     Fixture, path of the python3 executable.
+
        :return: A string made of the python3 executable path.
     """
     return "python3"
@@ -65,6 +68,7 @@ def python_executable():
 def pypy_executable():
     """
     Fixture, path of the pypy3 executable.
+
        :return: A string made of the pypy3 executable path.
     """
     return "../pypy3.6-v7.1.1-linux64/bin/pypy3"
@@ -74,6 +78,7 @@ def pypy_executable():
 def config(configuration_path):
     """
     Fixture of the application configuration.
+
        :param configuration_path: Fixture, path of the configuration path.
        :return: The configuration object.
     """

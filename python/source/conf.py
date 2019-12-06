@@ -12,7 +12,7 @@
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 #
-
+import enthic
 import sphinx_bootstrap_theme
 
 # -- Project information -----------------------------------------------------
@@ -22,9 +22,9 @@ copyright = '2019, Christophe Brun, PapIT'
 author = 'Christophe Brun, PapIT'
 
 # The short X.Y version
-version = ''
+version = enthic.__version__
 # The full version, including alpha/beta/rc tags
-release = '0.1'
+release = enthic.__version__
 
 # -- General configuration ---------------------------------------------------
 

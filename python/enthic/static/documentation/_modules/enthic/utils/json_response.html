@@ -4,7 +4,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>enthic.utils.json_response &#8212; enthic 0.1 documentation</title>
+    <title>enthic.utils.json_response &#8212; enthic 2019.12.0 documentation</title>
     <link rel="stylesheet" href="../../../_static/bootstrap-sphinx.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -36,7 +36,7 @@
         </button>
         <a class="navbar-brand" href="../../../index.html"><span><img src="../../../_static/papit.png"></span>
           enthic</a>
-        <span class="navbar-text navbar-version pull-left"><b></b></span>
+        <span class="navbar-text navbar-version pull-left"><b>2019.12.0</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -108,12 +108,13 @@
 <div class="viewcode-block" id="JSONResponse"><a class="viewcode-back" href="../../../index.html#enthic.utils.json_response.JSONResponse">[docs]</a><span class="k">class</span> <span class="nc">JSONResponse</span><span class="p">(</span><span class="n">Response</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Abstraction on top of the flask Response class, as most Response will be</span>
-<span class="sd">       application/json and HTTP default return code 200, but can be changed.</span>
+<span class="sd">    application/json and HTTP default return code 200, but can be changed.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">object_response</span><span class="p">,</span> <span class="n">status</span><span class="o">=</span><span class="mi">200</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Constructor of the OKJSONResponse class.</span>
+
 <span class="sd">           :param object_response: Dictionary to convert to JSON.</span>
 <span class="sd">           :param status: Default is 200.</span>
 <span class="sd">           :raise TypeError: If argument not a dict, list or tuple.</span>

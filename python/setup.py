@@ -1,8 +1,28 @@
 # -*- coding: utf-8 -*-
 
-from setuptools import setup, find_packages
-import enthic
+from os.path import join
 
+import enthic
+from setuptools import setup, find_packages
+try:
+    from sphinx.application import Sphinx
+
+    ################################################################################
+    # BUILD THE DOCUMENTATION WITH SPHINX FRAMEWORK
+    builder = "html"
+    srcdir = "source"
+    builddir = join("./enthic/static/documentation")
+    doctreedir = join(builddir, "doctrees")
+
+    # Create the Sphinx application object
+    app = Sphinx(srcdir, srcdir, builddir, doctreedir, builder)
+
+    # Run the build
+    app.build()
+except ModuleNotFoundError as error:
+    print("Run the setup.py again to have sphinx documentation.")
+################################################################################
+# BUILD OR INSTALL THE PACKAGE
 NAME = 'enthic'
 setup(name=NAME,
       version=enthic.__version__,
@@ -18,6 +38,7 @@ setup(name=NAME,
           'console_scripts': ['enthic-api = enthic.app:main'],
       },
       install_requires=[
-          'flask', 'flask-mysqldb', 'requests', 'pytest'
+          'flask', 'flask-mysqldb', 'requests', 'pytest',
+          'sphinx_bootstrap_theme', 'sphinx'
       ]
       )

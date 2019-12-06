@@ -109,11 +109,9 @@ via ``pytest`` in the ``python/enthic/`` directory.
 Generate documentation
 ----------------------
 
-Generate HTML documentation via Sphinx documentation framework.
-
-.. code-block:: bash
-
-   $ sh ./documentation.sh
+Generate HTML documentation via Sphinx documentation framework. Sphinx is called
+programmatically at the beginning of setup.py. Therefore the above installation
+build the doc at the same time.
 
 Library structure
 -----------------
@@ -192,7 +190,6 @@ Library structure
    │   ├── check-data.sh   
    │   ├── clear-data.sh
    │   ├── database-creation.sh
-   │   ├── documentation.sh
    │   ├── install-dependencies.sh
    │   ├── install-wheel.sh
    │   └── csv-table.sh

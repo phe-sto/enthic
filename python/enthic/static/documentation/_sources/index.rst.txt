@@ -40,10 +40,16 @@ Following module relates to Flask server.
 .. automodule:: enthic.app
    :members:
 
-Flask JSON response
-===================
+SQL injection decorator
+=======================
 
 .. automodule:: enthic.decorator.check_sql_injection
+   :members:
+
+Insert incoming request decorator
+=================================
+
+.. automodule:: enthic.decorator.insert_request
    :members:
 
 Flask JSON response

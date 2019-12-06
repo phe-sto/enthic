@@ -20,6 +20,7 @@ class SQLJSONResponse(OKJSONResponse):
     def __init__(self, my_sql_db, sql_request, *args):
         """
         Constructor of the SQLJSONResponse class.
+
            :param my_sql_db: MySQL connection to database.
            :param sql_request: SQL request to execute on the base.
            :param args: Sequence A.K.A argument of the query.

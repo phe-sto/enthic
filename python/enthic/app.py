@@ -49,7 +49,7 @@ application.config['MYSQL_DB'] = 'enthic'
 def company_siren_year(siren, year):
     """
     Retrieve company information by SIREN for a given year. Path is
-       /company/siren/<siren> GET method only and no strict slash.
+    /company/siren/<siren> GET method only and no strict slash.
 
        :param siren: SIREN identification, must be an 9 character long,
           numeric only.
@@ -77,7 +77,7 @@ def company_siren_year(siren, year):
 def company_siren(siren):
     """
     Retrieve company information by SIREN. Path is /company/siren/<siren> GET
-       method only and no strict slash.
+    method only and no strict slash.
 
        :param siren: SIREN identification, must be an 9 character long,
           numeric only.
@@ -101,7 +101,8 @@ def company_siren(siren):
 def company_denomination(denomination):
     """
     Retrieve company information by company denomination. Path is
-       /company/denomination/<denomination> GET method only and no strict slash.
+    /company/denomination/<denomination> GET method only and no strict slash.
+
        :param denomination: String, denomination of the company.
        :return: HTTP Response as application/json. Contain all known information.
     """
@@ -119,7 +120,8 @@ def company_denomination(denomination):
 def company_denomination_year(denomination, year):
     """
     Retrieve company information for a given year by company denomination. Path
-       is /company/denomination/<denomination> GET method only and no strict slash.
+    is /company/denomination/<denomination> GET method only and no strict slash.
+
        :param denomination: String, denomination of the company.
        :param year: Year of results to return, default is None.
        :return: HTTP Response as application/json. Contain all known information.
@@ -139,6 +141,7 @@ def company_denomination_year(denomination, year):
 def ontology():
     """
     Return the ontology used to extract accountability data.
+
        :return: HTTP Response as application/json. the ontology as JSON.
     """
     return OKJSONResponse({"accounting": [{"C":
@@ -148,8 +151,7 @@ def ontology():
                 {"FY": "Salaires et traitements"},
                 {"DI": "Résultat de l’exercice (bénéfice ou perte)"},
                 {"HI": "Résultat exceptionnel"},
-                {
-                    "HJ": "Participation des salariés aux résultats de l’entreprise"},
+                {"HJ": "Participation des salariés aux résultats de l’entreprise"},
                 {"HK": "Impôts sur les bénéfices"},
                 {"HM": "Total des charges"},
                 {"FJ": "Chiffre d’affaires nets"}
@@ -162,8 +164,7 @@ def ontology():
                     {"FY": "Salaires et traitements"},
                     {"HI": "Résultat exceptionnel"},
                     {"290": "Produits exceptionnels"},
-                    {
-                        "HJ": "Participation des salariés aux résultats de l’entreprise"},
+                    {"HJ": "Participation des salariés aux résultats de l’entreprise"},
                     {"HK": "Impôts sur les bénéfices"},
                     {"310": "Bénéfice ou perte"},
                     {"FJ": "Chiffre d’affaires nets"}
@@ -176,9 +177,9 @@ def ontology():
 def search():
     """
     Search companies by SIREN or denomination. Limited to 1000 results. Path is
-       /company/search POST method only and no strict slash. A JSON Body is to
-       be post with the keys probe and limit. Key probe is the string to search,
-       limit is an integer, the maximum number of results to return.
+    /company/search POST method only and no strict slash. A JSON Body is to
+    be post with the keys probe and limit. Key probe is the string to search,
+    limit is an integer, the maximum number of results to return.
 
        :return: HTTP Response as application/json. Contain all known information
           on that company of an error message if SIREN wrongly formatted.
@@ -201,7 +202,7 @@ def search():
         ########################################################################
         # WRONG LIMIT
         elif int(json_data["limit"]) > 1000:
-            return ErrorJSONResponse("Value limit must 1000 maximum.")
+            return ErrorJSONResponse("Value limit is 1000 maximum.")
         ########################################################################
         # CORRECT JSON
         else:
@@ -226,6 +227,7 @@ def search():
 def static_proxy(path):
     """
     Serve the static files, like the Swagger definition page and the 404.
+
        :param path: / Base path of the host.
        :return: The resource present at the path.
     """
@@ -237,6 +239,7 @@ def static_proxy(path):
 def index():
     """
     Serve the index.html at the base path.
+
        :return: The static index.html and a return code 200.
     """
     return application.send_static_file("index.html"), 200
@@ -247,6 +250,7 @@ def index():
 def page_not_found(error):
     """
     Page not found and logging.
+
        :param error: Error message to be logged.
        :return: The HTML 404 page.
     """
@@ -259,6 +263,7 @@ def page_not_found(error):
 def server_error(error):
     """
     Server error page and logging.
+
        :param error: Error message to be logged.
        :return: The HTML 500 page.
     """

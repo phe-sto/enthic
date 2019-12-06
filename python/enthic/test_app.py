@@ -19,7 +19,7 @@ from enthic.utils.json_response import JSONResponse
 from enthic.utils.ok_json_response import OKJSONResponse
 from enthic.utils.sql_json_response import SQLJSONResponse, \
     SQLJSONResponseException
-from requests import get, post
+from requests import get, post, delete, put
 
 
 def test_ok_json_response():
@@ -52,6 +52,7 @@ def test_json_response():
 def test_sql_json_response_wrong_statement(sql_request):
     """
     Test SQLJSONResponse with wrong INSERT and UPDATE.
+
        :param sql_request: SQL requests to test.
     """
     with pytest.raises(SQLJSONResponseException):
@@ -73,6 +74,7 @@ def host():
 def test_siren(host, siren):
     """
     Test the /company/siren endpoint. Should return a JSON.
+
        :param host: Fixture of the API host.
        :param siren: Parametrise fixture of a SIREN.
     """
@@ -81,13 +83,28 @@ def test_siren(host, siren):
     assert loads(response.text) is not None, "NOT RETURNING A JSON"
 
 
+@pytest.mark.parametrize("method", (put,
+                                    delete,
+                                    post))  # DOES NOT EXIST
+def test_siren_wrong_method(host, method):
+    """
+    Test the /company/siren endpoint with the wrong method. Should return a JSON
+    and a 404 status.
+
+       :param host: Fixture of the API host.the wrong method to test.
+    """
+    response = method("http://" + host + "/company/siren/" + "410660492")
+    assert response.status_code == 405, "WRONG HTTP RETURN CODE"
+
+
 @pytest.mark.parametrize("siren,year", (("389718115", 2019),
                                         ("410660492", 2019),
                                         ("999999999", 2019)))  # DOES NOT EXIST
 def test_siren_year(host, siren, year):
     """
     Test the /company/siren/year endpoint. Should return a JSON with
-       information for a given year.
+    information for a given year.
+
        :param host: Fixture of the API host.
        :param siren: Parametrise fixture of a SIREN.
     """
@@ -96,13 +113,28 @@ def test_siren_year(host, siren, year):
     assert loads(response.text) is not None, "NOT RETURNING A JSON"
 
 
+@pytest.mark.parametrize("method", (put,
+                                    delete,
+                                    post))  # DOES NOT EXIST
+def test_siren_year_wrong_method(host, method):
+    """
+    Test the /company/siren/year endpoint with the wrong method. Should return a
+    JSON and a 404 status.
+
+       :param host: Fixture of the API host.the wrong method to test.
+    """
+    response = method("http://" + host + "/company/siren/" + "410660492/2016")
+    assert response.status_code == 405, "WRONG HTTP RETURN CODE"
+
+
 @pytest.mark.parametrize("siren,year", (("389718115", 20199),
                                         ("410660492", "2019f"),
                                         ("999999999", 201)))  # DOES NOT EXIST
 def test_siren_wrong_year(host, siren, year):
     """
     Test the /company/siren/year endpoint. Should return a JSON with
-       information a wrong year.
+    information a wrong year.
+
        :param host: Fixture of the API host.
        :param siren: Parametrise fixture of a SIREN.
     """
@@ -118,6 +150,7 @@ def test_siren_wrong_year(host, siren, year):
 def test_wrong_siren(host, siren):
     """
     Test the /company/siren endpoint with wrong SIREN. Should return a JSON.
+
        :param host: Fixture of the API host.
        :param siren: Parametrise fixture of a SIREN.
     """
@@ -131,8 +164,8 @@ def test_wrong_siren(host, siren):
                                           "TOTO SASU"))  # DOES NOT EXIST
 def test_denomination(host, denomination):
     """
-    Test the /company/denomination endpoint. Should return a
-       JSON.
+    Test the /company/denomination endpoint. Should return a JSON.
+
        :param host: Fixture of the API host.
        :param denomination: Parametrise fixture of a company official name.
     """
@@ -141,13 +174,27 @@ def test_denomination(host, denomination):
     assert loads(response.text) is not None, "NOT RETURNING A JSON"
 
 
+@pytest.mark.parametrize("method", (put,
+                                    delete,
+                                    post))  # DOES NOT EXIST
+def test_denomination_wrong_method(host, method):
+    """
+    Test the /company/denomination endpoint with the wrong method. Should return a
+    JSON and a 404 status.
+
+       :param host: Fixture of the API host.the wrong method to test.
+    """
+    response = method("http://" + host + "/company/denomination/" + "410660492")
+    assert response.status_code == 405, "WRONG HTTP RETURN CODE"
+
+
 @pytest.mark.parametrize("denomination,year", (("RCV PEINTURE", 2019),
                                                ("RESEAUX ELECTRIQUE & INFORMATIQUE", 2019),
                                                ("TOTO SASU", 2019)))  # DOES NOT EXIST
 def test_denomination_year(host, denomination, year):
     """
-    Test the /company/denomination/year endpoint. Should return a
-       JSON.
+    Test the /company/denomination/year endpoint. Should return a JSON.
+
        :param host: Fixture of the API host.
        :param denomination: Parametrise fixture of a company official name.
        :param year: Parametrise fixture of the year to return.
@@ -157,13 +204,28 @@ def test_denomination_year(host, denomination, year):
     assert loads(response.text) is not None, "NOT RETURNING A JSON"
 
 
+@pytest.mark.parametrize("method", (put,
+                                    delete,
+                                    post))  # DOES NOT EXIST
+def test_denomination_year_wrong_method(host, method):
+    """
+    Test the /company/denomination/year endpoint with the wrong method. Should return a
+    JSON and a 404 status.
+
+       :param host: Fixture of the API host.the wrong method to test.
+    """
+    response = method("http://" + host + "/company/denomination/" + "410660492/2016")
+    assert response.status_code == 405, "WRONG HTTP RETURN CODE"
+
+
 @pytest.mark.parametrize("denomination,year", (("RCV PEINTURE", 209),
                                                ("RESEAUX ELECTRIQUE & INFORMATIQUE", '201s9'),
                                                ("TOTO SASU", 20189)))  # DOES NOT EXIST
 def test_denomination_wrong_year(host, denomination, year):
     """
-    Test the /company/denomination/year endpoint. Should return a
-       JSON. Tested with a wrong year.
+    Test the /company/denomination/year endpoint. Should return a JSON. Tested
+    with a wrong year.
+
        :param host: Fixture of the API host.
        :param denomination: Parametrise fixture of a company official name.
        :param year: Parametrise fixture of the year to return.
@@ -176,11 +238,26 @@ def test_denomination_wrong_year(host, denomination, year):
 def test_ontology(host):
     """
     Test the GET of the ontology on the URL /company/ontology.
+
        :param host: Fixture of the API host.
     """
     response = get("http://" + host + "/company/ontology")
     assert response.status_code == 200, "WRONG HTTP RETURN CODE"
     assert loads(response.text) is not None, "NOT RETURNING A JSON"
+
+
+@pytest.mark.parametrize("method", (put,
+                                    delete,
+                                    post))  # DOES NOT EXIST
+def test_ontology_wrong_method(host, method):
+    """
+    Test the ontology on the URL /company/ontology endpoint with the wrong
+    method. Should return a JSON and a 405 status.
+
+       :param host: Fixture of the API host.the wrong method to test.
+    """
+    response = method("http://" + host + "/company/ontology")
+    assert response.status_code == 405, "WRONG HTTP RETURN CODE"
 
 
 @pytest.mark.parametrize("probe,limit", (("toto", 100),
@@ -191,12 +268,49 @@ def test_ontology(host):
 def test_search(host, probe, limit):
     """
     Test the /company/search endpoint. Should return a JSON.
+
        :param host: Fixture of the API host.
        :param probe: Parametrize fixture of the string to search.
        :param limit: Parametrize fixture of limit of result to return.
     """
     response = post("http://" + host + "/company/search/", dumps({"probe": probe, "limit": limit}))
     assert response.status_code == 200, "WRONG HTTP RETURN CODE"
+    assert loads(response.text) is not None, "NOT RETURNING A JSON"
+
+
+from random import randint, choice
+from string import ascii_letters, punctuation, digits
+
+
+@pytest.mark.parametrize("hack", ((0,) * 100)
+                         )
+def test_search_random_letter(host, hack):
+    """
+    Test the /company/search endpoint with a random letter. Should return a JSON.
+
+       :param hack: Parametrize fixture to replay the test.
+       :param host: Fixture of the API host.
+    """
+    letter = choice(ascii_letters)
+    response = post("http://" + host + "/company/search/", dumps({"probe": letter,
+                                                                  "limit": randint(0, 1000)}))
+    assert response.status_code == 200, "WRONG HTTP RETURN CODE WITH PUN {}".format(letter)
+    assert loads(response.text) is not None, "NOT RETURNING A JSON"
+
+
+@pytest.mark.parametrize("hack", ((0,) * 100)
+                         )
+def test_search_random_digit(host, hack):
+    """
+    Test the /company/search endpoint with a random letter. Should return a JSON.
+
+       :param hack: Parametrize fixture to replay the test.
+       :param host: Fixture of the API host.
+    """
+    digit = choice(digits)
+    response = post("http://" + host + "/company/search/", dumps({"probe": digit,
+                                                                  "limit": randint(0, 1000)}))
+    assert response.status_code == 200, "WRONG HTTP RETURN CODE WITH PUN {}".format(digit)
     assert loads(response.text) is not None, "NOT RETURNING A JSON"
 
 
@@ -208,7 +322,8 @@ def test_search(host, probe, limit):
 def test_search_wrong_type(host, body):
     """
     Test the /company/search endpoint with wrong type requets body. Should
-       return a JSON and status 400.
+    return a JSON and status 400.
+
        :param host: Fixture of the API host.
        :param body: Parametrize fixture of the request body.
     """
@@ -235,7 +350,8 @@ def test_search_wrong_type(host, body):
 def test_check_sql_injection_body(host, sql_request_1, sql_request_2):
     """
     Test the check_sql_injection decorator, avoiding SQL injection from request
-       body.
+    body.
+
        :param host: Fixture of the API host.
        :param sql_request_1: Parametrize fixture of a possible SQL request.
        :param sql_request_2: Parametrize fixture of a possible SQL request.
@@ -262,7 +378,8 @@ def test_check_sql_injection_body(host, sql_request_1, sql_request_2):
 def test_check_sql_injection_path(host, sql_request):
     """
     Test the check_sql_injection decorator, avoiding SQL injection from request
-       path.
+    path.
+
        :param host: Fixture of the API host.
        :param sql_request_1: Parametrize fixture of a possible SQL request.
     """
@@ -279,7 +396,8 @@ def test_check_sql_injection_path(host, sql_request):
 def test_wrong_value_search(host, probe, limit):
     """
     Test the /company/search endpoint posting a wrong JSON values. Should return
-       a JSON.
+    a JSON.
+
        :param host: Fixture of the API host.
        :param probe: Parametrize fixture of the string to search.
        :param limit: Parametrize fixture of limit of result to return.
@@ -292,7 +410,8 @@ def test_wrong_value_search(host, probe, limit):
 def test_wrong_key_search(host):
     """
     Test the /company/search endpoint posting a wrong JSON keys. Should return a
-       JSON.
+    JSON.
+
        :param host: Fixture of the API host.
        :param probe: Parametrize fixture of the string to search.
        :param limit: Parametrize fixture of limit of result to return.
@@ -309,6 +428,7 @@ def test_wrong_key_search(host):
 def test_html_pages(host, page):
     """
     Test static html page, such as swagger description page 500 and 404.
+
        :param host: Fixture of the API host.
        :param page: Parametrise fixture of a page to get.
     """
@@ -322,6 +442,7 @@ def test_html_pages(host, page):
 def test_404(host, page):
     """
     Test unknown URL.
+
        :param host: Fixture of the API host.
        :param page: Parametrise fixture of a page to get.
     """
@@ -332,6 +453,7 @@ def test_404(host, page):
 def test_swagger_json(host):
     """
     Test static swagger.json.
+
        :param host: Fixture of the API host.
     """
     response = get("http://" + host + "/swagger.json")

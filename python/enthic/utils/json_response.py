@@ -7,12 +7,13 @@ from flask import Response
 class JSONResponse(Response):
     """
     Abstraction on top of the flask Response class, as most Response will be
-       application/json and HTTP default return code 200, but can be changed.
+    application/json and HTTP default return code 200, but can be changed.
     """
 
     def __init__(self, object_response, status=200):
         """
         Constructor of the OKJSONResponse class.
+
            :param object_response: Dictionary to convert to JSON.
            :param status: Default is 200.
            :raise TypeError: If argument not a dict, list or tuple.

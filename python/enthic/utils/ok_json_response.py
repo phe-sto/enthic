@@ -6,12 +6,13 @@ from enthic.utils.json_response import JSONResponse
 class OKJSONResponse(JSONResponse):
     """
     Abstraction on top of the Enthic JSONResponse class, as most Response will be
-       application/json and HTTP return code 200.
+    application/json and HTTP return code 200.
     """
 
     def __init__(self, object_response):
         """
         Constructor of the OKJSONResponse class.
+
            :param object_response: Dictionary to convert to JSON.
            :raise TypeError: If argument not a dict, list or tuple.
         """

@@ -1,7 +1,7 @@
 .. include:: ../../README.rst
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 3
    :caption: Contents:
 
 Indices and tables
@@ -15,10 +15,6 @@ Indices and tables
 ====================================
 
 Those two python scripts are used in shell ``script table-csv.sh``.
-
-.. toctree::
-   :maxdepth: 2
-   :caption: Contents:
 
 Extract bundle
 ==============

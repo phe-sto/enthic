@@ -77,17 +77,17 @@ def main():
                     zipped_xml = ZipFile(BytesIO(input_zip.read(zipped_xml)))
                     # SUPPOSED ONLY ONE XML BUT ITERATE TO BE SURE
                     for xml in zipped_xml.namelist():
-                        ########################################################################
+                        ########################################################
                         # XML PARSER
                         tree = ElementTree.parse(BytesIO(zipped_xml.open(xml).read()))
                         root = tree.getroot()
-                        ########################################################################
+                        ########################################################
                         # XML RELATED VARIABLES
                         accountability_type, siren, code_devise, denomination, year = (None,) * 5
-                        ########################################################################
+                        ########################################################
                         # ITERATE ALL TAGS
                         for child in root[0]:
-                            ####################################################################
+                            ####################################################
                             # IDENTITY TAGS, SIREN AND TYPE OF ACCOUNTABILITY
                             if child.tag == "{fr:inpi:odrncs:bilansSaisisXML}identite":
                                 for identity in child:  # identite LEVEL
@@ -104,13 +104,14 @@ def main():
                                         code_devise = identity.text
                                     elif identity.tag == '{fr:inpi:odrncs:bilansSaisisXML}date_cloture_exercice':
                                         year = identity.text[:4]
-                                ################################################################
+                                ################################################
                                 # WRITE IDENTITY FILE
                                 identity_file.write(";".join([siren, denomination,
                                                               accountability_type, code_devise,
                                                               "\n"]))
-                            ####################################################################
-                            # BUNDLE TAGS IN PAGES TO ITERATE WITH BUNDLE CODES AND AMOUNT
+                            ####################################################
+                            # BUNDLE TAGS IN PAGES TO ITERATE WITH BUNDLE CODES
+                            # AND AMOUNT
                             elif child.tag == "{fr:inpi:odrncs:bilansSaisisXML}detail":
                                 for page in child:
                                     for bundle in page:
@@ -120,7 +121,7 @@ def main():
                                                 if bundle.attrib["code"] in bundle_code.keys():
                                                     for amount_code in bundle_code[bundle.attrib["code"]]:
                                                         amount_code = "m{0}".format(amount_code)
-                                                        ########################################
+                                                        ########################
                                                         # WRITE RESULTS FILE
                                                         bundle_file.write(";".join([siren, year,
                                                                                     bundle.attrib["code"],

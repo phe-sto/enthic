@@ -1,15 +1,21 @@
 label;code;column;accountability
-Salaires et traitements;FY;3,4;C
-Résultat de l’exercice (bénéfice ou perte);DI;1,2;C
+Salaires et traitements;FY;3;C
+Résultat de l’exercice (bénéfice ou perte);DI;1;C
 Résultat exceptionnel;HI;1,2;C
-Participation des salariés aux résultats de l’entreprise;HJ;1,2;C
-Impôts sur les bénéfices;HK;1,2;C
-Total des charges;HM;1,2;C
-Chiffre d’affaires nets;FJ;1,2,3,4;C
-Salaires et traitements;FY;3,4;S
-Total des charges d’exploitation;264;1,2;S
-Impôts sur les bénéfices;306;1,2;S
-Bénéfice ou perte;310;1,2;S
-Résultat exceptionnel;HI;1,2;S
-Participation des salariés aux résultats de l’entreprise;HJ;1,2;S
-Chiffre d’affaires nets;FJ;1,2,3,4;S
+Participation des salariés aux résultats de l’entreprise;HJ;1;C
+Impôts sur les bénéfices;HK;1;C
+Total des charges;HM;1;C
+Chiffre d’affaires nets;FJ;1,2,3;C
+Subventions d’exploitation;FO;3;C
+Effectif moyen du personnel;YP;1;C
+Impôts, taxes et versements assimilés;VN;3;C
+Salaires et traitements;FY;3;S
+Total des charges d’exploitation;264;1;S
+Impôts sur les bénéfices;306;1;S
+Bénéfice ou perte;310;1;S
+Résultat exceptionnel;HI;1;S
+Participation des salariés aux résultats de l’entreprise;HJ;1;S
+Chiffre d’affaires nets;FJ;1,2,3;S
+Subventions d’exploitation reçues;226;1;S
+Effectif moyen du personnel;376;1;S
+Impôts, taxes et versements assimilés;244;1;S

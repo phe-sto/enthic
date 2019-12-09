@@ -4,6 +4,7 @@ from os.path import join
 
 import enthic
 from setuptools import setup, find_packages
+
 try:
     from sphinx.application import Sphinx
 
@@ -38,7 +39,6 @@ setup(name=NAME,
           'console_scripts': ['enthic-api = enthic.app:main'],
       },
       install_requires=[
-          'flask', 'flask-mysqldb', 'requests', 'pytest',
-          'sphinx_bootstrap_theme', 'sphinx'
+          'flask', 'flask-mysqldb', 'requests', 'pytest', 'sphinx'
       ]
       )

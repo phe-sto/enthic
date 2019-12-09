@@ -22,6 +22,7 @@ from enthic.decorator.insert_request import insert_request
 from enthic.utils.error_json_response import ErrorJSONResponse
 from enthic.utils.ok_json_response import OKJSONResponse
 from enthic.utils.sql_json_response import SQLJSONResponse
+from enthic.ontology import ONTOLOGY
 from flask import Flask, request
 from flask_mysqldb import MySQL
 
@@ -144,31 +145,7 @@ def ontology():
 
        :return: HTTP Response as application/json. the ontology as JSON.
     """
-    return OKJSONResponse({"accounting": [{"C":
-        {
-            "description": "Comptes individuels clients et fournisseurs. A tout moment, vous pouvez ainsi connaître les soldes des comptes souhaités, vos créances client par client et/ou vos dettes fournisseur par fournisseur. En terme de gestion de l’entreprise, la comptabilité complète donne des informations importantes.",
-            "code": [
-                {"FY": "Salaires et traitements"},
-                {"DI": "Résultat de l’exercice (bénéfice ou perte)"},
-                {"HI": "Résultat exceptionnel"},
-                {"HJ": "Participation des salariés aux résultats de l’entreprise"},
-                {"HK": "Impôts sur les bénéfices"},
-                {"HM": "Total des charges"},
-                {"FJ": "Chiffre d’affaires nets"}
-
-            ]}},
-        {"S":
-            {
-                "description": "Pour permettre aux petites entreprises de se développer, un régime de comptabilité simplifiée a été mis en place afin d'alléger leurs obligations comptables et le coût qu'elles impliquent",
-                "code": [
-                    {"FY": "Salaires et traitements"},
-                    {"HI": "Résultat exceptionnel"},
-                    {"290": "Produits exceptionnels"},
-                    {"HJ": "Participation des salariés aux résultats de l’entreprise"},
-                    {"HK": "Impôts sur les bénéfices"},
-                    {"310": "Bénéfice ou perte"},
-                    {"FJ": "Chiffre d’affaires nets"}
-                ]}}]})
+    return OKJSONResponse(ONTOLOGY)
 
 
 @application.route("/company/search", methods=['POST'], strict_slashes=False)

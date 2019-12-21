@@ -25,7 +25,7 @@ Extract bundle
 Sum bundle
 ==========
 
-.. automodule:: enthic.sum_bundle
+.. automodule:: enthic.treat_bundle
    :members:
 
 Flask API server

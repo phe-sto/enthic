@@ -143,10 +143,10 @@ Library structure
    │   │   ├── extract_bundle.py
    │   │   ├── __init__.py
    │   │   ├── configuration.json
-   │   │   ├── sum_bundle.py
+   │   │   ├── treat_bundle.py
    │   │   ├── test_extract_bundle.py
    │   │   ├── test_app.py
-   │   │   ├── test_sum_bundle.py
+   │   │   ├── test_treat_bundle.py
    │   │   └── utils
    │   │       ├── configuration.py
    │   │       ├── json_response.py

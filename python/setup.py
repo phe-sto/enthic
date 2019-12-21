@@ -34,7 +34,7 @@ setup(name=NAME,
       packages=find_packages(),
       include_package_data=True,
       entry_points={
-          'console_scripts': ['sum-bundle = enthic.sum_bundle:main'],
+          'console_scripts': ['sum-bundle = enthic.treat_bundle:main'],
           'console_scripts': ['extract-bundle = enthic.extract_bundle:main'],
           'console_scripts': ['enthic-api = enthic.app:main'],
       },

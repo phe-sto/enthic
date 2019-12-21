@@ -32,17 +32,17 @@ def test_config(config):
 ################################################################################
 # EXECUTION, IN CPYTHON 3 AND PYPY VM
 @pytest.fixture()
-def sum_bundle_script():
+def treat_bundle_script():
     """
     Fixture of the Python script that sum bundle for a year and a company.
 
        :return: A string made of the script path.
     """
-    return "./enthic/sum_bundle.py"
+    return "./enthic/treat_bundle.py"
 
 
 def test_execution_python(configuration_path, python_executable,
-                          sum_bundle_script):
+                          treat_bundle_script):
     """
     Test the execution with the CPython 3 implementation.
 
@@ -50,13 +50,13 @@ def test_execution_python(configuration_path, python_executable,
        :param python_executable: Fixture, path of the python3 executable.
     """
     rc = execution_in_subprocess(python_executable, configuration_path,
-                                 sum_bundle_script)
+                                 treat_bundle_script)
     assert rc == 0, "RETURN CODE NOT 0"
 
 
 @pytest.mark.skip
 def test_execution_pypy(configuration_path, pypy_executable,
-                        sum_bundle_script):
+                        treat_bundle_script):
     """
     Test the execution with the Pypy VM 3 implementation.
 
@@ -64,5 +64,5 @@ def test_execution_pypy(configuration_path, pypy_executable,
        :param pypy_executable: Fixture, path of the pypy3 executable..
     """
     rc = execution_in_subprocess(pypy_executable, configuration_path,
-                                 sum_bundle_script)
+                                 treat_bundle_script)
     assert rc == 0, "RETURN CODE NOT 0"

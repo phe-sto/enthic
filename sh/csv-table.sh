@@ -15,10 +15,10 @@ sort ${OUPUT_DIR}identity.tmp -uk1,1 -t";" > ${OUPUT_DIR}identity.csv
 sort ${OUPUT_DIR}bundle.tmp > ${OUPUT_DIR}sort-bundle.tmp
 ################################################################################
 # 4) PYTHON STEP SUM A BUNDLE OF A COMPANY FOR A GIVEN YEAR
-python3 enthic/sum_bundle.py -c ../configuration.json > ${OUPUT_DIR}bundle.csv
+python3 enthic/treat_bundle.py -c ../configuration.json > ${OUPUT_DIR}bundle.csv
 ################################################################################
 # 5) MOVE TO LOAD DIRECTORY FOR MYSQL 8 COMPATIBILITY
-mv ${OUPUT_DIR}/*.csv /var/lib/mysql
+# mv ${OUPUT_DIR}/*.csv /var/lib/mysql
 ################################################################################
 # 6) CLEAN UP OUTPUT DIRECTY
 #rm -rf ${OUPUT_DIR}*.tmp;

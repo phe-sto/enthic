@@ -10,13 +10,12 @@ Coding Rules:
 
 - Snake case for variables.
 - Only argument is configuration file.
-- No output or print, just log and files.
+- No output or bundle_file.write, just log and files.
 """
 from csv import reader
 from json import load
 from logging import basicConfig
-from os.path import dirname
-from os.path import isdir, join
+from os.path import isdir, join, dirname
 
 
 def main():
@@ -29,11 +28,6 @@ def main():
     # INPUT
     with open(join(dirname(__file__), "configuration.json")) as json_configuration_file:
         config = load(json_configuration_file)
-    if isdir(config['inputPath']) is False:
-        raise NotADirectoryError(
-            "Configuration input path {} does not exist".format(
-                config['inputPath'])
-        )
     # OUTPUT
     if isdir(config['outputPath']) is False:
         raise NotADirectoryError(
@@ -44,18 +38,39 @@ def main():
     # SET LOG LEVEL
     basicConfig(level=config['debugLevel'], format="%(asctime)s [%(levelname)8s] %(message)s (%(filename)s:%(lineno)s)")
     ############################################################################
-    # READ THE INPUT FILE AND PRINT THE OUPUT
+    # RESULT FILE
+    bundle_file = open(join(config['outputPath'], config['scoreBundleFile']), "w")
+    ############################################################################
+    # READ THE INPUT FILE AND bundle_file.write THE OUTPUT
     with open(join(config['outputPath'], config['sortBundleFile']), mode='r') as infile:
         _reader = reader(infile, delimiter=';')  # READER OF THE INPUT CSV FILE
-        key, bundle_sum = (None,) * 2
+        key, bundle_sum, gain, distribution = (None,) * 4
         for rows in _reader:  # ITERATE EACH LINE
-            if key is not None and key < rows[0:3]:  # KEY BREAK
-                print(key[0] + ";" + key[1] + ";" + key[2] + ";" + str(bundle_file) + ";")
+            if key is not None and key < rows[0:3]:  # KEY BREAK ON BUNDLE CODE
+                bundle_file.write(key[0] + ";" + key[1] + ";" + key[2] + ";" + str(bundle_sum) + ";\n")
+            if key is not None and key < rows[0:2]:  # KEY BREAK ON COMPANY PER YEAR
+                if distribution is not None:
+                    bundle_file.write(key[0] + ";" + key[1] + ";" + "DIS" + ";" + str(distribution) + ";\n")
+                if gain is not None:
+                    bundle_file.write(key[0] + ";" + key[1] + ";" + "GAN" + ";" + str(gain) + ";\n")
+                if gain is not None and distribution is not None:
+                    if gain != 0:
+                        bundle_file.write(
+                            key[0] + ";" + key[1] + ";" + "DIR" + ";" + str(int(distribution / gain)) + ";\n")
             if key == rows[0:3]:  # SAME KEY, SUM THE BUNDLE AMOUNT
-                bundle_file += int(rows[3])
+                bundle_sum += int(rows[3])
+                if rows[2] in config["gainCodes"]:
+                    gain += int(rows[3])
+                if rows[2] in config["distributionCodes"]:
+                    distribution += int(rows[3])
             else:
                 key = rows[0:3]  # NEW KEY INITIATE BUNDLE AMOUNT
-                bundle_file = int(rows[3])
+                bundle_sum = int(rows[3])
+                if rows[2] in config["gainCodes"]:
+                    gain = int(rows[3])
+                if rows[2] in config["distributionCodes"]:
+                    distribution = int(rows[3])
+    bundle_file.close()
 
 
 if __name__ == '__main__':

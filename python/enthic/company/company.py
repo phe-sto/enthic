@@ -27,10 +27,10 @@ class Company(OKJSONResponse):
 
            :param sql_results: Result from a previously executed request.
         """
-        self.siren = sql_results[0][0]
-        self.denomination = sql_results[0][1]
-        self.accountability = sql_results[0][2]
-        self.devise = sql_results[0][3]
-        for line in sql_results:
+        self.siren = sql_results[0][0][0]
+        self.denomination = sql_results[0][0][1]
+        self.accountability = sql_results[0][0][2]
+        self.devise = sql_results[0][0][3]
+        for line in sql_results[0]:
             setattr(self, line[4], line[5])
         OKJSONResponse.__init__(self, self.dict)

@@ -44,4 +44,4 @@ class DenominationCompany(Company):
             AND declaration = %s;""" % (denomination, year))
         sql_results = cur.fetchall()
         cur.close()
-        Company.__(self, sql_results)
+        Company.__init__(self, sql_results)

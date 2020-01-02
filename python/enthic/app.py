@@ -23,6 +23,7 @@ from enthic.utils.error_json_response import ErrorJSONResponse
 from enthic.utils.ok_json_response import OKJSONResponse
 from enthic.utils.sql_json_response import SQLJSONResponse
 from enthic.ontology import ONTOLOGY
+from enthic.company.siren_company import SirenCompany
 from flask import Flask, request
 from flask_mysqldb import MySQL
 
@@ -63,11 +64,7 @@ def company_siren_year(siren, year):
     """
     if siren_re.match(siren):
         if year_re.match(year):
-            return SQLJSONResponse(mysql, """SELECT bundle, amount
-                                    FROM identity INNER JOIN bundle
-                                    ON bundle.siren = identity.siren
-                                    WHERE identity.siren = '%s' 
-                                    AND declaration = %s;""", siren, year)
+            return SirenCompany(mysql, siren, year)
         else:
             return ErrorJSONResponse("YEAR for is wrong, must match ^\d{4}$.")
     else:

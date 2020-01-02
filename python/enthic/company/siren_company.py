@@ -44,4 +44,4 @@ class SirenCompany(Company):
             AND declaration = %s;""" % (siren, year))
         sql_results = cur.fetchall()
         cur.close()
-        Company.__(self, sql_results)
+        Company.__init__(self, sql_results)

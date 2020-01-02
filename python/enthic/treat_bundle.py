@@ -56,7 +56,7 @@ def main():
                 if gain is not None and distribution is not None:
                     if gain != 0:
                         bundle_file.write(
-                            key[0] + ";" + key[1] + ";" + "DIR" + ";" + str(int(distribution / gain)) + ";\n")
+                            key[0] + ";" + key[1] + ";" + "DIR" + ";" + str(round(distribution / gain, 2)) + ";\n")
             if key == rows[0:3]:  # SAME KEY, SUM THE BUNDLE AMOUNT
                 bundle_sum += int(rows[3])
                 if rows[2] in config["gainCodes"]:

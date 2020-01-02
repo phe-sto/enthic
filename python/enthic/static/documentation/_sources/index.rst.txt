@@ -19,55 +19,52 @@ Those two python scripts are used in shell ``script table-csv.sh``.
 Extract bundle
 ==============
 
-.. automodule:: enthic.extract_bundle
-   :members:
+.. automodule:: extract_bundle
 
 Sum bundle
 ==========
 
-.. automodule:: enthic.treat_bundle
-   :members:
+.. automodule:: treat_bundle
 
 Flask API server
 ================
 
 Following module relates to Flask server.
 
-.. automodule:: enthic.app
-   :members:
+.. automodule:: app
 
 SQL injection decorator
 =======================
 
-.. automodule:: enthic.decorator.check_sql_injection
+.. automodule:: decorator.check_sql_injection
    :members:
 
 Insert incoming request decorator
 =================================
 
-.. automodule:: enthic.decorator.insert_request
+.. automodule:: decorator.insert_request
    :members:
 
 Flask JSON response
 ===================
 
-.. automodule:: enthic.utils.json_response
+.. automodule:: utils.json_response
    :members:
 
 Flask OK JSON response
 ======================
 
-.. automodule:: enthic.utils.ok_json_response
+.. automodule:: utils.ok_json_response
    :members:
 
 Flask error JSON response
 =========================
 
-.. automodule:: enthic.utils.error_json_response
+.. automodule:: utils.error_json_response
    :members:
 
 Flask SQL JSON response
 =======================
 
-.. automodule:: enthic.utils.sql_json_response
+.. automodule:: utils.sql_json_response
    :members:

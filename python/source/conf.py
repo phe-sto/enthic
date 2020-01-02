@@ -1,4 +1,9 @@
 # -*- coding: utf-8 -*-
+import enthic
+from os.path import abspath
+from sys import path
+
+path.insert(0, abspath("../enthic"))
 #
 # Configuration file for the Sphinx documentation builder.
 #
@@ -12,7 +17,6 @@
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 #
-import enthic
 
 # -- Project information -----------------------------------------------------
 
@@ -75,7 +79,7 @@ pygments_style = None
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 # Activate the theme.
-html_theme = "classic"
+html_theme = "alabaster"
 html_theme_options = {}
 
 html_logo = "papit.png"
@@ -98,8 +102,14 @@ html_logo = "papit.png"
 # default: ``['localtoc.html', 'relations.html', 'sourcelink.html',
 # 'searchbox.html']``.
 #
-# html_sidebars = {}
+html_sidebars = {
+    '**': [
+        'searchbox.html',
+        'localtoc.html',
+        'relations.html'
+    ]
 
+}
 
 # -- Options for HTMLHelp output ---------------------------------------------
 
@@ -132,10 +142,8 @@ latex_elements = {
 # Grouping the document tree into LaTeX files. List of tuples
 # (source start file, target name, title,
 #  author, documentclass [howto, manual, or own class]).
-latex_documents = [
-    (master_doc, 'enthic.tex', 'enthic Documentation',
-     'Christophe Brun', 'manual'),
-]
+# latex_documents = [
+# ]
 
 # -- Options for manual page output ------------------------------------------
 
@@ -160,7 +168,7 @@ texinfo_documents = [
 # -- Options for Epub output -------------------------------------------------
 
 # Bibliographic Dublin Core info.
-epub_title = project
+# epub_title = project
 
 # The unique identifier of the text. This can be a ISBN number
 # or the project homepage.
@@ -172,7 +180,7 @@ epub_title = project
 # epub_uid = ''
 
 # A list of files that should not be packed into the epub file.
-epub_exclude_files = ['search.html']
+# epub_exclude_files = ['search.html']
 
 # -- Extension configuration -------------------------------------------------
 

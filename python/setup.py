@@ -4,24 +4,21 @@ from os.path import join
 
 import enthic
 from setuptools import setup, find_packages
+from sphinx.application import Sphinx
 
-try:
-    from sphinx.application import Sphinx
+################################################################################
+# BUILD THE DOCUMENTATION WITH SPHINX FRAMEWORK
+builder = "html"
+srcdir = "source"
+builddir = join("./enthic/static/documentation")
+doctreedir = join(builddir, "doctrees")
 
-    ################################################################################
-    # BUILD THE DOCUMENTATION WITH SPHINX FRAMEWORK
-    builder = "html"
-    srcdir = "source"
-    builddir = join("./enthic/static/documentation")
-    doctreedir = join(builddir, "doctrees")
+# Create the Sphinx application object
+app = Sphinx(srcdir, srcdir, builddir, doctreedir, builder)
 
-    # Create the Sphinx application object
-    app = Sphinx(srcdir, srcdir, builddir, doctreedir, builder)
+# Run the build
+app.build()
 
-    # Run the build
-    app.build()
-except ModuleNotFoundError as error:
-    print("Run the setup.py again to have sphinx documentation.")
 ################################################################################
 # BUILD OR INSTALL THE PACKAGE
 NAME = 'enthic'

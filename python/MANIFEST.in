@@ -1,2 +1,2 @@
-include enthic/static/*
+recursive-include enthic/ *
 global-exclude *.pyc

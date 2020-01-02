@@ -8,7 +8,7 @@
   "yearlyScoreFilePattern": "yyyy-score.csv",
   "globalScoreFile": "score.csv",
   "gainCodes": [
-    "HI"
+    "FJ"
   ],
   "distributionCodes": [
     "HJ",
@@ -21,7 +21,7 @@
     "enthic": {
       "host": "",
       "user": "",
-      "password": ""
+      "password": "q250685Q"
     }
   },
   "flask": {

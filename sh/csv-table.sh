@@ -4,7 +4,6 @@
 ################################################################################
 # CONSTANTS
 readonly OUPUT_DIR="../output/";
-readonly INPUT_DIR="../input/";
 # 1) EXECUTE IT PYTHON STEP FROM py FOLDER
 cd ../python || exit;
 ################################################################################
@@ -18,7 +17,7 @@ sort ${OUPUT_DIR}bundle.tmp > ${OUPUT_DIR}sort-bundle.tmp
 python3 enthic/treat_bundle.py -c ../configuration.json > ${OUPUT_DIR}bundle.csv
 ################################################################################
 # 5) MOVE TO LOAD DIRECTORY FOR MYSQL 8 COMPATIBILITY
-# mv ${OUPUT_DIR}/*.csv /var/lib/mysql
+mv ${OUPUT_DIR}/*.csv /var/lib/mysql
 ################################################################################
 # 6) CLEAN UP OUTPUT DIRECTY
-#rm -rf ${OUPUT_DIR}*.tmp;
+rm -rf ${OUPUT_DIR}*.tmp;

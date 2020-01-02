@@ -174,8 +174,7 @@ Library structure
    │   │
    │   ├── setup.py
    │   ├── __init__.py
-   │   ├── MANIFEST.in
-   │   └── Makefile
+   │   └── MANIFEST.in
    │
    ├── sql
    │   ├── create-database-enthic.sql

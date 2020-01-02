@@ -30,6 +30,7 @@ siren_re = compile(r"^\d{9}$")  # REGEX OF A SIREN
 year_re = compile(r"^\d{4}$")  # REGEX OF A YEAR
 
 application = Flask(__name__)
+
 mysql = MySQL(application)
 
 ############################################################################
@@ -40,6 +41,7 @@ application._static_folder = "./static/"
 application.config['MYSQL_HOST'] = config["mySQL"]["enthic"]["host"]
 application.config['MYSQL_USER'] = config["mySQL"]["enthic"]["user"]
 application.config['MYSQL_PASSWORD'] = config["mySQL"]["enthic"]["password"]
+application.config['CACHE_TYPE'] = 'simple'
 application.config['MYSQL_DB'] = 'enthic'
 
 

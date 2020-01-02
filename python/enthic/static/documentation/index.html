@@ -7,34 +7,29 @@
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>French societies accountability extraction and treatment by PapIT &#8212; enthic 2019.12.0 documentation</title>
-    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    
     <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
     <script type="text/javascript" src="_static/language_data.js"></script>
-    
     <link rel="index" title="Index" href="genindex.html" />
-    <link rel="search" title="Search" href="search.html" /> 
+    <link rel="search" title="Search" href="search.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
   </head><body>
-    <div class="related" role="navigation" aria-label="related navigation">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="genindex.html" title="General Index"
-             accesskey="I">index</a></li>
-        <li class="right" >
-          <a href="py-modindex.html" title="Python Module Index"
-             >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="#">enthic 2019.12.0 documentation</a> &#187;</li> 
-      </ul>
-    </div>  
+  
 
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
+          
+
           <div class="body" role="main">
             
   <div class="section" id="french-societies-accountability-extraction-and-treatment-by-papit">
@@ -191,8 +186,7 @@ build the doc at the same time.</p>
 │   │
 │   ├── setup.py
 │   ├── __init__.py
-│   ├── MANIFEST.in
-│   └── Makefile
+│   └── MANIFEST.in
 │
 ├── sql
 │   ├── create-database-enthic.sql
@@ -240,8 +234,8 @@ build the doc at the same time.</p>
 <h1><strong>Documentation of the Python Code</strong><a class="headerlink" href="#documentation-of-the-python-code" title="Permalink to this headline">¶</a></h1>
 <p>Those two python scripts are used in shell <code class="docutils literal notranslate"><span class="pre">script</span> <span class="pre">table-csv.sh</span></code>.</p>
 </div>
-<div class="section" id="module-enthic.extract_bundle">
-<span id="extract-bundle"></span><h1>Extract bundle<a class="headerlink" href="#module-enthic.extract_bundle" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="module-extract_bundle">
+<span id="extract-bundle"></span><h1>Extract bundle<a class="headerlink" href="#module-extract_bundle" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="parse-all-the-xml-available-to-list-all-the-bundle-code">
 <h2>Parse all the XML available to list all the bundle code<a class="headerlink" href="#parse-all-the-xml-available-to-list-all-the-bundle-code" title="Permalink to this headline">¶</a></h2>
 <p>PROGRAM BY PAPIT SASU, 2019</p>
@@ -251,17 +245,10 @@ build the doc at the same time.</p>
 <li>Only argument is configuration file.</li>
 <li>No output or print, just log and files.</li>
 </ul>
-<dl class="function">
-<dt id="enthic.extract_bundle.main">
-<code class="descclassname">enthic.extract_bundle.</code><code class="descname">main</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/enthic/extract_bundle.html#main"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#enthic.extract_bundle.main" title="Permalink to this definition">¶</a></dt>
-<dd><p>Based on the configuration storing the input file path. All the xml are
-read to list the bundle code.</p>
-</dd></dl>
-
 </div>
 </div>
-<div class="section" id="module-enthic.treat_bundle">
-<span id="sum-bundle"></span><h1>Sum bundle<a class="headerlink" href="#module-enthic.treat_bundle" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="module-treat_bundle">
+<span id="sum-bundle"></span><h1>Sum bundle<a class="headerlink" href="#module-treat_bundle" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="sum-all-the-bundle-of-the-year-for-one-company-from-a-csv-sorted-file">
 <h2>Sum all the bundle of the year for one company from a CSV sorted file<a class="headerlink" href="#sum-all-the-bundle-of-the-year-for-one-company-from-a-csv-sorted-file" title="Permalink to this headline">¶</a></h2>
 <p>PROGRAM BY PAPIT SASU, 2019</p>
@@ -269,21 +256,14 @@ read to list the bundle code.</p>
 <ul class="simple">
 <li>Snake case for variables.</li>
 <li>Only argument is configuration file.</li>
-<li>No output or print, just log and files.</li>
+<li>No output or bundle_file.write, just log and files.</li>
 </ul>
-<dl class="function">
-<dt id="enthic.treat_bundle.main">
-<code class="descclassname">enthic.treat_bundle.</code><code class="descname">main</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/enthic/treat_bundle.html#main"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#enthic.treat_bundle.main" title="Permalink to this definition">¶</a></dt>
-<dd><p>Based on the configuration storing the input file path. Sum all the bundle
-of the year for one company.</p>
-</dd></dl>
-
 </div>
 </div>
 <div class="section" id="flask-api-server">
 <h1>Flask API server<a class="headerlink" href="#flask-api-server" title="Permalink to this headline">¶</a></h1>
 <p>Following module relates to Flask server.</p>
-<span class="target" id="module-enthic.app"></span><div class="section" id="flask-application-compatible-with-sphinx-documentation-and-gunicorn-server">
+<span class="target" id="module-app"></span><div class="section" id="flask-application-compatible-with-sphinx-documentation-and-gunicorn-server">
 <h2>Flask application, compatible with Sphinx documentation and Gunicorn server<a class="headerlink" href="#flask-application-compatible-with-sphinx-documentation-and-gunicorn-server" title="Permalink to this headline">¶</a></h2>
 <p>PROGRAM BY PAPIT SASU, 2019</p>
 <p>Coding Rules:</p>
@@ -292,213 +272,15 @@ of the year for one company.</p>
 <li>Only argument is configuration file.</li>
 <li>No output or print, just log and files.</li>
 </ul>
-<dl class="function">
-<dt id="enthic.app.company_denomination">
-<code class="descclassname">enthic.app.</code><code class="descname">company_denomination</code><span class="sig-paren">(</span><em>denomination</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/enthic/app.html#company_denomination"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#enthic.app.company_denomination" title="Permalink to this definition">¶</a></dt>
-<dd><p>Retrieve company information by company denomination. Path is
-/company/denomination/&lt;denomination&gt; GET method only and no strict slash.</p>
-<blockquote>
-<div><table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name" colspan="2">param denomination:</th></tr>
-<tr class="field-odd field"><td>&#160;</td><td class="field-body">String, denomination of the company.</td>
-</tr>
-<tr class="field-even field"><th class="field-name">return:</th><td class="field-body">HTTP Response as application/json. Contain all known information.</td>
-</tr>
-</tbody>
-</table>
-</div></blockquote>
-</dd></dl>
-
-<dl class="function">
-<dt id="enthic.app.company_denomination_year">
-<code class="descclassname">enthic.app.</code><code class="descname">company_denomination_year</code><span class="sig-paren">(</span><em>denomination</em>, <em>year</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/enthic/app.html#company_denomination_year"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#enthic.app.company_denomination_year" title="Permalink to this definition">¶</a></dt>
-<dd><p>Retrieve company information for a given year by company denomination. Path
-is /company/denomination/&lt;denomination&gt; GET method only and no strict slash.</p>
-<blockquote>
-<div><table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name" colspan="2">param denomination:</th></tr>
-<tr class="field-odd field"><td>&#160;</td><td class="field-body">String, denomination of the company.</td>
-</tr>
-<tr class="field-even field"><th class="field-name">param year:</th><td class="field-body">Year of results to return, default is None.</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">return:</th><td class="field-body">HTTP Response as application/json. Contain all known information.</td>
-</tr>
-</tbody>
-</table>
-</div></blockquote>
-</dd></dl>
-
-<dl class="function">
-<dt id="enthic.app.company_siren">
-<code class="descclassname">enthic.app.</code><code class="descname">company_siren</code><span class="sig-paren">(</span><em>siren</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/enthic/app.html#company_siren"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#enthic.app.company_siren" title="Permalink to this definition">¶</a></dt>
-<dd><p>Retrieve company information by SIREN. Path is /company/siren/&lt;siren&gt; GET
-method only and no strict slash.</p>
-<blockquote>
-<div><table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">param siren:</th><td class="field-body">SIREN identification, must be an 9 character long,
-numeric only.</td>
-</tr>
-<tr class="field-even field"><th class="field-name">return:</th><td class="field-body">HTTP Response as application/json. Contain all known information
-on that company of an error message if SIREN wrongly formatted.</td>
-</tr>
-</tbody>
-</table>
-</div></blockquote>
-</dd></dl>
-
-<dl class="function">
-<dt id="enthic.app.company_siren_year">
-<code class="descclassname">enthic.app.</code><code class="descname">company_siren_year</code><span class="sig-paren">(</span><em>siren</em>, <em>year</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/enthic/app.html#company_siren_year"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#enthic.app.company_siren_year" title="Permalink to this definition">¶</a></dt>
-<dd><p>Retrieve company information by SIREN for a given year. Path is
-/company/siren/&lt;siren&gt; GET method only and no strict slash.</p>
-<blockquote>
-<div><table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">param siren:</th><td class="field-body">SIREN identification, must be an 9 character long,
-numeric only.</td>
-</tr>
-<tr class="field-even field"><th class="field-name">param year:</th><td class="field-body">Year of results to return, default is None.</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">return:</th><td class="field-body">HTTP Response as application/json. Contain all known information
-on that company of an error message if SIREN or YEAR wrongly formatted.</td>
-</tr>
-</tbody>
-</table>
-</div></blockquote>
-</dd></dl>
-
-<dl class="function">
-<dt id="enthic.app.index">
-<code class="descclassname">enthic.app.</code><code class="descname">index</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/enthic/app.html#index"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#enthic.app.index" title="Permalink to this definition">¶</a></dt>
-<dd><p>Serve the index.html at the base path.</p>
-<blockquote>
-<div><table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">return:</th><td class="field-body">The static index.html and a return code 200.</td>
-</tr>
-</tbody>
-</table>
-</div></blockquote>
-</dd></dl>
-
-<dl class="function">
-<dt id="enthic.app.main">
-<code class="descclassname">enthic.app.</code><code class="descname">main</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/enthic/app.html#main"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#enthic.app.main" title="Permalink to this definition">¶</a></dt>
-<dd><p>Start app, after configuration.</p>
-</dd></dl>
-
-<dl class="function">
-<dt id="enthic.app.ontology">
-<code class="descclassname">enthic.app.</code><code class="descname">ontology</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/enthic/app.html#ontology"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#enthic.app.ontology" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return the ontology used to extract accountability data.</p>
-<blockquote>
-<div><table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">return:</th><td class="field-body">HTTP Response as application/json. the ontology as JSON.</td>
-</tr>
-</tbody>
-</table>
-</div></blockquote>
-</dd></dl>
-
-<dl class="function">
-<dt id="enthic.app.page_not_found">
-<code class="descclassname">enthic.app.</code><code class="descname">page_not_found</code><span class="sig-paren">(</span><em>error</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/enthic/app.html#page_not_found"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#enthic.app.page_not_found" title="Permalink to this definition">¶</a></dt>
-<dd><p>Page not found and logging.</p>
-<blockquote>
-<div><table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">param error:</th><td class="field-body">Error message to be logged.</td>
-</tr>
-<tr class="field-even field"><th class="field-name">return:</th><td class="field-body">The HTML 404 page.</td>
-</tr>
-</tbody>
-</table>
-</div></blockquote>
-</dd></dl>
-
-<dl class="function">
-<dt id="enthic.app.search">
-<code class="descclassname">enthic.app.</code><code class="descname">search</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/enthic/app.html#search"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#enthic.app.search" title="Permalink to this definition">¶</a></dt>
-<dd><p>Search companies by SIREN or denomination. Limited to 1000 results. Path is
-/company/search POST method only and no strict slash. A JSON Body is to
-be post with the keys probe and limit. Key probe is the string to search,
-limit is an integer, the maximum number of results to return.</p>
-<blockquote>
-<div><table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">return:</th><td class="field-body">HTTP Response as application/json. Contain all known information
-on that company of an error message if SIREN wrongly formatted.</td>
-</tr>
-</tbody>
-</table>
-</div></blockquote>
-</dd></dl>
-
-<dl class="function">
-<dt id="enthic.app.server_error">
-<code class="descclassname">enthic.app.</code><code class="descname">server_error</code><span class="sig-paren">(</span><em>error</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/enthic/app.html#server_error"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#enthic.app.server_error" title="Permalink to this definition">¶</a></dt>
-<dd><p>Server error page and logging.</p>
-<blockquote>
-<div><table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">param error:</th><td class="field-body">Error message to be logged.</td>
-</tr>
-<tr class="field-even field"><th class="field-name">return:</th><td class="field-body">The HTML 500 page.</td>
-</tr>
-</tbody>
-</table>
-</div></blockquote>
-</dd></dl>
-
-<dl class="function">
-<dt id="enthic.app.static_proxy">
-<code class="descclassname">enthic.app.</code><code class="descname">static_proxy</code><span class="sig-paren">(</span><em>path</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/enthic/app.html#static_proxy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#enthic.app.static_proxy" title="Permalink to this definition">¶</a></dt>
-<dd><p>Serve the static files, like the Swagger definition page and the 404.</p>
-<blockquote>
-<div><table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">param path:</th><td class="field-body">/ Base path of the host.</td>
-</tr>
-<tr class="field-even field"><th class="field-name">return:</th><td class="field-body">The resource present at the path.</td>
-</tr>
-</tbody>
-</table>
-</div></blockquote>
-</dd></dl>
-
 </div>
 </div>
-<div class="section" id="module-enthic.decorator.check_sql_injection">
-<span id="sql-injection-decorator"></span><h1>SQL injection decorator<a class="headerlink" href="#module-enthic.decorator.check_sql_injection" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="module-decorator.check_sql_injection">
+<span id="sql-injection-decorator"></span><h1>SQL injection decorator<a class="headerlink" href="#module-decorator.check_sql_injection" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="decorator-checking-sql-injection-in-requests">
 <h2>Decorator checking SQL injection in requests<a class="headerlink" href="#decorator-checking-sql-injection-in-requests" title="Permalink to this headline">¶</a></h2>
 <dl class="function">
-<dt id="enthic.decorator.check_sql_injection.check_sql_injection">
-<code class="descclassname">enthic.decorator.check_sql_injection.</code><code class="descname">check_sql_injection</code><span class="sig-paren">(</span><em>func</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/enthic/decorator/check_sql_injection.html#check_sql_injection"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#enthic.decorator.check_sql_injection.check_sql_injection" title="Permalink to this definition">¶</a></dt>
+<dt id="decorator.check_sql_injection.check_sql_injection">
+<code class="descclassname">decorator.check_sql_injection.</code><code class="descname">check_sql_injection</code><span class="sig-paren">(</span><em>func</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/decorator/check_sql_injection.html#check_sql_injection"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#decorator.check_sql_injection.check_sql_injection" title="Permalink to this definition">¶</a></dt>
 <dd><p>Decorator checking SQL injection.</p>
 <blockquote>
 <div><table class="docutils field-list" frame="void" rules="none">
@@ -516,13 +298,13 @@ on that company of an error message if SIREN wrongly formatted.</td>
 
 </div>
 </div>
-<div class="section" id="module-enthic.decorator.insert_request">
-<span id="insert-incoming-request-decorator"></span><h1>Insert incoming request decorator<a class="headerlink" href="#module-enthic.decorator.insert_request" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="module-decorator.insert_request">
+<span id="insert-incoming-request-decorator"></span><h1>Insert incoming request decorator<a class="headerlink" href="#module-decorator.insert_request" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="decorator-inserting-data-from-the-incoming-request-in-another-thread">
 <h2>Decorator inserting data from the incoming request in another thread<a class="headerlink" href="#decorator-inserting-data-from-the-incoming-request-in-another-thread" title="Permalink to this headline">¶</a></h2>
 <dl class="function">
-<dt id="enthic.decorator.insert_request.insert">
-<code class="descclassname">enthic.decorator.insert_request.</code><code class="descname">insert</code><span class="sig-paren">(</span><em>*args</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/enthic/decorator/insert_request.html#insert"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#enthic.decorator.insert_request.insert" title="Permalink to this definition">¶</a></dt>
+<dt id="decorator.insert_request.insert">
+<code class="descclassname">decorator.insert_request.</code><code class="descname">insert</code><span class="sig-paren">(</span><em>*args</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/decorator/insert_request.html#insert"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#decorator.insert_request.insert" title="Permalink to this definition">¶</a></dt>
 <dd><p>Insert data from the request in the request table.</p>
 <blockquote>
 <div><table class="docutils field-list" frame="void" rules="none">
@@ -538,8 +320,8 @@ request data.</td>
 </dd></dl>
 
 <dl class="function">
-<dt id="enthic.decorator.insert_request.insert_request">
-<code class="descclassname">enthic.decorator.insert_request.</code><code class="descname">insert_request</code><span class="sig-paren">(</span><em>my_sql_db</em>, <em>request</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/enthic/decorator/insert_request.html#insert_request"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#enthic.decorator.insert_request.insert_request" title="Permalink to this definition">¶</a></dt>
+<dt id="decorator.insert_request.insert_request">
+<code class="descclassname">decorator.insert_request.</code><code class="descname">insert_request</code><span class="sig-paren">(</span><em>my_sql_db</em>, <em>request</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/decorator/insert_request.html#insert_request"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#decorator.insert_request.insert_request" title="Permalink to this definition">¶</a></dt>
 <dd><p>Decorator insert request data in database for further analysis using
 arguments objects of the function.</p>
 <blockquote>
@@ -561,47 +343,47 @@ arguments objects of the function.</p>
 
 </div>
 </div>
-<div class="section" id="module-enthic.utils.json_response">
-<span id="flask-json-response"></span><h1>Flask JSON response<a class="headerlink" href="#module-enthic.utils.json_response" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="module-utils.json_response">
+<span id="flask-json-response"></span><h1>Flask JSON response<a class="headerlink" href="#module-utils.json_response" title="Permalink to this headline">¶</a></h1>
 <dl class="class">
-<dt id="enthic.utils.json_response.JSONResponse">
-<em class="property">class </em><code class="descclassname">enthic.utils.json_response.</code><code class="descname">JSONResponse</code><span class="sig-paren">(</span><em>object_response</em>, <em>status=200</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/enthic/utils/json_response.html#JSONResponse"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#enthic.utils.json_response.JSONResponse" title="Permalink to this definition">¶</a></dt>
+<dt id="utils.json_response.JSONResponse">
+<em class="property">class </em><code class="descclassname">utils.json_response.</code><code class="descname">JSONResponse</code><span class="sig-paren">(</span><em>object_response</em>, <em>status=200</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/utils/json_response.html#JSONResponse"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#utils.json_response.JSONResponse" title="Permalink to this definition">¶</a></dt>
 <dd><p>Abstraction on top of the flask Response class, as most Response will be
 application/json and HTTP default return code 200, but can be changed.</p>
 </dd></dl>
 
 </div>
-<div class="section" id="module-enthic.utils.ok_json_response">
-<span id="flask-ok-json-response"></span><h1>Flask OK JSON response<a class="headerlink" href="#module-enthic.utils.ok_json_response" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="module-utils.ok_json_response">
+<span id="flask-ok-json-response"></span><h1>Flask OK JSON response<a class="headerlink" href="#module-utils.ok_json_response" title="Permalink to this headline">¶</a></h1>
 <dl class="class">
-<dt id="enthic.utils.ok_json_response.OKJSONResponse">
-<em class="property">class </em><code class="descclassname">enthic.utils.ok_json_response.</code><code class="descname">OKJSONResponse</code><span class="sig-paren">(</span><em>object_response</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/enthic/utils/ok_json_response.html#OKJSONResponse"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#enthic.utils.ok_json_response.OKJSONResponse" title="Permalink to this definition">¶</a></dt>
+<dt id="utils.ok_json_response.OKJSONResponse">
+<em class="property">class </em><code class="descclassname">utils.ok_json_response.</code><code class="descname">OKJSONResponse</code><span class="sig-paren">(</span><em>object_response</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/utils/ok_json_response.html#OKJSONResponse"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#utils.ok_json_response.OKJSONResponse" title="Permalink to this definition">¶</a></dt>
 <dd><p>Abstraction on top of the Enthic JSONResponse class, as most Response will be
 application/json and HTTP return code 200.</p>
 </dd></dl>
 
 </div>
-<div class="section" id="module-enthic.utils.error_json_response">
-<span id="flask-error-json-response"></span><h1>Flask error JSON response<a class="headerlink" href="#module-enthic.utils.error_json_response" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="module-utils.error_json_response">
+<span id="flask-error-json-response"></span><h1>Flask error JSON response<a class="headerlink" href="#module-utils.error_json_response" title="Permalink to this headline">¶</a></h1>
 <dl class="class">
-<dt id="enthic.utils.error_json_response.ErrorJSONResponse">
-<em class="property">class </em><code class="descclassname">enthic.utils.error_json_response.</code><code class="descname">ErrorJSONResponse</code><span class="sig-paren">(</span><em>error_message</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/enthic/utils/error_json_response.html#ErrorJSONResponse"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#enthic.utils.error_json_response.ErrorJSONResponse" title="Permalink to this definition">¶</a></dt>
+<dt id="utils.error_json_response.ErrorJSONResponse">
+<em class="property">class </em><code class="descclassname">utils.error_json_response.</code><code class="descname">ErrorJSONResponse</code><span class="sig-paren">(</span><em>error_message</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/utils/error_json_response.html#ErrorJSONResponse"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#utils.error_json_response.ErrorJSONResponse" title="Permalink to this definition">¶</a></dt>
 <dd><p>Abstraction on top of the flask JSON Response class, for error JSON,
 application/json and HTTP return code 400.</p>
 </dd></dl>
 
 </div>
-<div class="section" id="module-enthic.utils.sql_json_response">
-<span id="flask-sql-json-response"></span><h1>Flask SQL JSON response<a class="headerlink" href="#module-enthic.utils.sql_json_response" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="module-utils.sql_json_response">
+<span id="flask-sql-json-response"></span><h1>Flask SQL JSON response<a class="headerlink" href="#module-utils.sql_json_response" title="Permalink to this headline">¶</a></h1>
 <dl class="class">
-<dt id="enthic.utils.sql_json_response.SQLJSONResponse">
-<em class="property">class </em><code class="descclassname">enthic.utils.sql_json_response.</code><code class="descname">SQLJSONResponse</code><span class="sig-paren">(</span><em>my_sql_db</em>, <em>sql_request</em>, <em>*args</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/enthic/utils/sql_json_response.html#SQLJSONResponse"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#enthic.utils.sql_json_response.SQLJSONResponse" title="Permalink to this definition">¶</a></dt>
+<dt id="utils.sql_json_response.SQLJSONResponse">
+<em class="property">class </em><code class="descclassname">utils.sql_json_response.</code><code class="descname">SQLJSONResponse</code><span class="sig-paren">(</span><em>my_sql_db</em>, <em>sql_request</em>, <em>*args</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/utils/sql_json_response.html#SQLJSONResponse"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#utils.sql_json_response.SQLJSONResponse" title="Permalink to this definition">¶</a></dt>
 <dd><p>SQL result turn into JSON response via OKJSONResponse class.</p>
 </dd></dl>
 
 <dl class="exception">
-<dt id="enthic.utils.sql_json_response.SQLJSONResponseException">
-<em class="property">exception </em><code class="descclassname">enthic.utils.sql_json_response.</code><code class="descname">SQLJSONResponseException</code><a class="reference internal" href="_modules/enthic/utils/sql_json_response.html#SQLJSONResponseException"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#enthic.utils.sql_json_response.SQLJSONResponseException" title="Permalink to this definition">¶</a></dt>
+<dt id="utils.sql_json_response.SQLJSONResponseException">
+<em class="property">exception </em><code class="descclassname">utils.sql_json_response.</code><code class="descname">SQLJSONResponseException</code><a class="reference internal" href="_modules/utils/sql_json_response.html#SQLJSONResponseException"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#utils.sql_json_response.SQLJSONResponseException" title="Permalink to this definition">¶</a></dt>
 <dd><p>Specific exception to SQLJSONResponse.</p>
 </dd></dl>
 
@@ -609,6 +391,7 @@ application/json and HTTP return code 400.</p>
 
 
           </div>
+          
         </div>
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
@@ -616,6 +399,18 @@ application/json and HTTP return code 400.</p>
             <p class="logo"><a href="#">
               <img class="logo" src="_static/papit.png" alt="Logo"/>
             </a></p>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
   <h3><a href="#">Table of Contents</a></h3>
   <ul>
 <li><a class="reference internal" href="#"><strong>French societies accountability extraction and treatment by PapIT</strong></a><ul>
@@ -637,11 +432,11 @@ application/json and HTTP return code 400.</p>
 </li>
 <li><a class="reference internal" href="#indices-and-tables">Indices and tables</a></li>
 <li><a class="reference internal" href="#documentation-of-the-python-code"><strong>Documentation of the Python Code</strong></a></li>
-<li><a class="reference internal" href="#module-enthic.extract_bundle">Extract bundle</a><ul>
+<li><a class="reference internal" href="#module-extract_bundle">Extract bundle</a><ul>
 <li><a class="reference internal" href="#parse-all-the-xml-available-to-list-all-the-bundle-code">Parse all the XML available to list all the bundle code</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#module-enthic.treat_bundle">Sum bundle</a><ul>
+<li><a class="reference internal" href="#module-treat_bundle">Sum bundle</a><ul>
 <li><a class="reference internal" href="#sum-all-the-bundle-of-the-year-for-one-company-from-a-csv-sorted-file">Sum all the bundle of the year for one company from a CSV sorted file</a></li>
 </ul>
 </li>
@@ -649,58 +444,44 @@ application/json and HTTP return code 400.</p>
 <li><a class="reference internal" href="#flask-application-compatible-with-sphinx-documentation-and-gunicorn-server">Flask application, compatible with Sphinx documentation and Gunicorn server</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#module-enthic.decorator.check_sql_injection">SQL injection decorator</a><ul>
+<li><a class="reference internal" href="#module-decorator.check_sql_injection">SQL injection decorator</a><ul>
 <li><a class="reference internal" href="#decorator-checking-sql-injection-in-requests">Decorator checking SQL injection in requests</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#module-enthic.decorator.insert_request">Insert incoming request decorator</a><ul>
+<li><a class="reference internal" href="#module-decorator.insert_request">Insert incoming request decorator</a><ul>
 <li><a class="reference internal" href="#decorator-inserting-data-from-the-incoming-request-in-another-thread">Decorator inserting data from the incoming request in another thread</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#module-enthic.utils.json_response">Flask JSON response</a></li>
-<li><a class="reference internal" href="#module-enthic.utils.ok_json_response">Flask OK JSON response</a></li>
-<li><a class="reference internal" href="#module-enthic.utils.error_json_response">Flask error JSON response</a></li>
-<li><a class="reference internal" href="#module-enthic.utils.sql_json_response">Flask SQL JSON response</a></li>
+<li><a class="reference internal" href="#module-utils.json_response">Flask JSON response</a></li>
+<li><a class="reference internal" href="#module-utils.ok_json_response">Flask OK JSON response</a></li>
+<li><a class="reference internal" href="#module-utils.error_json_response">Flask error JSON response</a></li>
+<li><a class="reference internal" href="#module-utils.sql_json_response">Flask SQL JSON response</a></li>
 </ul>
-
-  <div role="note" aria-label="source link">
-    <h3>This Page</h3>
-    <ul class="this-page-menu">
-      <li><a href="_sources/index.rst.txt"
-            rel="nofollow">Show Source</a></li>
-    </ul>
-   </div>
-<div id="searchbox" style="display: none" role="search">
-  <h3>Quick search</h3>
-    <div class="searchformwrapper">
-    <form class="search" action="search.html" method="get">
-      <input type="text" name="q" />
-      <input type="submit" value="Go" />
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
-    </form>
-    </div>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="#">Documentation overview</a><ul>
+  </ul></li>
+</ul>
 </div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
       </div>
       <div class="clearer"></div>
     </div>
-    <div class="related" role="navigation" aria-label="related navigation">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="genindex.html" title="General Index"
-             >index</a></li>
-        <li class="right" >
-          <a href="py-modindex.html" title="Python Module Index"
-             >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="#">enthic 2019.12.0 documentation</a> &#187;</li> 
-      </ul>
+    <div class="footer">
+      &copy;2019, Christophe Brun, PapIT.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.5</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/index.rst.txt"
+          rel="nofollow">Page source</a>
     </div>
-    <div class="footer" role="contentinfo">
-        &#169; Copyright 2019, Christophe Brun, PapIT.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.5.
-    </div>
+
+    
+
+    
   </body>
 </html>

@@ -279,7 +279,7 @@ def test_search(host, probe, limit):
 
 
 from random import randint, choice
-from string import ascii_letters, punctuation, digits
+from string import ascii_letters, digits
 
 
 @pytest.mark.parametrize("hack", ((0,) * 100)
@@ -334,16 +334,24 @@ def test_search_wrong_type(host, body):
 
 @pytest.mark.parametrize("sql_request_1,sql_request_2", (("drop database toto;", 100),
                                                          ("drop table enthic;", 1),
-                                                         ("toto et Michel", "select * from enthic;"),
-                                                         ("toto et Michel", "update toto set siren = '000000';"),
-                                                         ("toto et Michel", "insert ('toto') into pouet"),
+                                                         (
+                                                                 "toto et Michel",
+                                                                 "select * from enthic;"),
+                                                         ("toto et Michel",
+                                                          "update toto set siren = '000000';"),
+                                                         ("toto et Michel",
+                                                          "insert ('toto') into pouet"),
                                                          ("select * from enthic;", 100),
                                                          # SAME UPPER CASE
                                                          ("DROP DATABASE TOTO;", 100),
                                                          ("DROP TABLE ENTHIC;", 1),
-                                                         ("TOTO ET MICHEL", "SELECT * FROM ENTHIC;"),
-                                                         ("TOTO ET MICHEL", "UPDATE TOTO SET SIREN = '000000';"),
-                                                         ("TOTO ET MICHEL", "INSERT ('TOTO') INTO POUET"),
+                                                         (
+                                                                 "TOTO ET MICHEL",
+                                                                 "SELECT * FROM ENTHIC;"),
+                                                         ("TOTO ET MICHEL",
+                                                          "UPDATE TOTO SET SIREN = '000000';"),
+                                                         ("TOTO ET MICHEL",
+                                                          "INSERT ('TOTO') INTO POUET"),
                                                          ("SELECT * FROM ENTHIC;", 100)
                                                          )
                          )
@@ -356,7 +364,8 @@ def test_check_sql_injection_body(host, sql_request_1, sql_request_2):
        :param sql_request_1: Parametrize fixture of a possible SQL request.
        :param sql_request_2: Parametrize fixture of a possible SQL request.
     """
-    response = post("http://" + host + "/company/search/", dumps({"probe": sql_request_1, "limit": sql_request_2}))
+    response = post("http://" + host + "/company/search/",
+                    dumps({"probe": sql_request_1, "limit": sql_request_2}))
     assert response.status_code == 500, "WRONG HTTP RETURN CODE"
 
 

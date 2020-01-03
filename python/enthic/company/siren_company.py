@@ -15,12 +15,13 @@ Coding Rules:
 
 from enthic.company.company import Company
 
+
 class SirenCompany(Company):
     """
     Class SirenCompany inherit from Company class.
     """
 
-    def __init__(self, mysql, siren, year=None):
+    def __init__(self, mysql, siren, year, *args):
         """
         Constructor of the DenominationCompany class.
 
@@ -28,7 +29,15 @@ class SirenCompany(Company):
            :param siren: The SIREN of the company.
            :param year: Kwarg, default is None, otherwise an integer of the year
               to retrieve.
+           :param *args: Average distribution ratio.
         """
+        if year is None:
+            avg_dir = args[0]
+        else:
+            try:
+                avg_dir = args[0][int(year)]
+            except (KeyError, TypeError):
+                avg_dir = None
         cur = mysql.connection.cursor()
         if year is None:
             cur.execute("""SELECT identity.siren, denomination, accountability, devise, bundle, SUM(amount)
@@ -44,4 +53,4 @@ class SirenCompany(Company):
             AND declaration = %s;""" % (siren, year))
         sql_results = cur.fetchall()
         cur.close()
-        Company.__init__(self, sql_results)
+        Company.__init__(self, sql_results, avg_dir)

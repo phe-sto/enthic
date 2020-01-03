@@ -21,7 +21,11 @@ ONTOLOGY = {"accounting":
                     "HM": "Total des charges",
                     "FJ": "Chiffre d’affaires nets",
                     "VN": "Impôts, taxes et versements assimilés",
-                    "YP": "Effectif moyen du personnel"}
+                    "YP": "Effectif moyen du personnel",
+                    "FO": "Subventions d’exploitation",
+                    "GAN": "Gain d'une companie, actuellement le chiffre d'affaire uniquement FJ",
+                    "DIR": "Distribution ratio, (FY + HI) / GAN"
+                }
             },
         "S":
             {
@@ -35,7 +39,18 @@ ONTOLOGY = {"accounting":
                     "310": "Bénéfice ou perte",
                     "FJ": "Chiffre d’affaires nets",
                     "244": "Impôts, taxes et versements assimilés",
-                    "376": "Effectif moyen du personnel"}
+                    "376": "Effectif moyen du personnel",
+                    "226": "Subventions d’exploitation reçues",
+                    "GAN": "Gain d'une companie, actuellement le chiffre d'affaire uniquement FJ",
+                    "DIR": "Distribution ratio, (FY + HI) / GAN"
+                }
             }
+    },
+    "scoring": {
+        "distribution": {
+            "type": "enum",
+            "values": ["TIGHT", "AVERAGE", "GOOD"],
+            "description": "Classification d'une companie basée sur le ratio de redistribution DIR. TIGHT est 10% en dessous de la moyenne, GOOD est 10% au dessus, AVERAGE entre les deux."
+        }
     }
 }

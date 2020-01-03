@@ -38,7 +38,9 @@
 files of the account declaration of all french societies. The overall project
 is meant to be low-code and open source. Aim to provide ethical indicators on companies.
 Information media is a MySQL database, CSV files, web visualisation and a
-swagger API. Score and indicators are calculated by batch using fancy libraries.
+swagger API.
+Score and indicators are calculated by batch, sql and why not using
+fancy libraries. Help in data treatment to improve scoring would be appreciated.
 Scoring, AI, data scrapping for segmentation. Shell and python are to launch be
 from their corresponding directory <code class="docutils literal notranslate"><span class="pre">./sh</span></code> and <code class="docutils literal notranslate"><span class="pre">./py</span></code>.</p>
 <div class="section" id="install-dependencies-and-python-package">
@@ -388,6 +390,63 @@ application/json and HTTP return code 400.</p>
 </dd></dl>
 
 </div>
+<div class="section" id="module-company.siren_company">
+<span id="siren-company-response"></span><h1>Siren Company response<a class="headerlink" href="#module-company.siren_company" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="class-representing-a-company-constructed-with-a-siren">
+<h2>Class representing a company, constructed with a SIREN<a class="headerlink" href="#class-representing-a-company-constructed-with-a-siren" title="Permalink to this headline">¶</a></h2>
+<p>PROGRAM BY PAPIT SASU, 2020</p>
+<p>Coding Rules:</p>
+<ul class="simple">
+<li>Snake case for variables.</li>
+<li>Only argument is configuration file.</li>
+<li>No output or print, just log and files.</li>
+</ul>
+<dl class="class">
+<dt id="company.siren_company.SirenCompany">
+<em class="property">class </em><code class="descclassname">company.siren_company.</code><code class="descname">SirenCompany</code><span class="sig-paren">(</span><em>mysql</em>, <em>siren</em>, <em>year</em>, <em>*args</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/company/siren_company.html#SirenCompany"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#company.siren_company.SirenCompany" title="Permalink to this definition">¶</a></dt>
+<dd><p>Class SirenCompany inherit from Company class.</p>
+</dd></dl>
+
+</div>
+</div>
+<div class="section" id="module-company.denomination_company">
+<span id="denomination-company-response"></span><h1>Denomination Company response<a class="headerlink" href="#module-company.denomination_company" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="class-representing-a-company-constructed-with-a-denomination">
+<h2>Class representing a company, constructed with a Denomination<a class="headerlink" href="#class-representing-a-company-constructed-with-a-denomination" title="Permalink to this headline">¶</a></h2>
+<p>PROGRAM BY PAPIT SASU, 2020</p>
+<p>Coding Rules:</p>
+<ul class="simple">
+<li>Snake case for variables.</li>
+<li>Only argument is configuration file.</li>
+<li>No output or print, just log and files.</li>
+</ul>
+<dl class="class">
+<dt id="company.denomination_company.DenominationCompany">
+<em class="property">class </em><code class="descclassname">company.denomination_company.</code><code class="descname">DenominationCompany</code><span class="sig-paren">(</span><em>mysql</em>, <em>denomination</em>, <em>year</em>, <em>*args</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/company/denomination_company.html#DenominationCompany"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#company.denomination_company.DenominationCompany" title="Permalink to this definition">¶</a></dt>
+<dd><p>Class DenominationCompany inherit from Company class.</p>
+</dd></dl>
+
+</div>
+</div>
+<div class="section" id="module-company.company">
+<span id="company-response"></span><h1>Company response<a class="headerlink" href="#module-company.company" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="class-representing-a-company">
+<h2>Class representing a company<a class="headerlink" href="#class-representing-a-company" title="Permalink to this headline">¶</a></h2>
+<p>PROGRAM BY PAPIT SASU, 2020</p>
+<p>Coding Rules:</p>
+<ul class="simple">
+<li>Snake case for variables.</li>
+<li>Only argument is configuration file.</li>
+<li>No output or print, just log and files.</li>
+</ul>
+<dl class="class">
+<dt id="company.company.Company">
+<em class="property">class </em><code class="descclassname">company.company.</code><code class="descname">Company</code><span class="sig-paren">(</span><em>sql_results</em>, <em>avg_dir</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/company/company.html#Company"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#company.company.Company" title="Permalink to this definition">¶</a></dt>
+<dd><p>Company class inherit from OKJSONResponse.</p>
+</dd></dl>
+
+</div>
+</div>
 
 
           </div>
@@ -456,6 +515,18 @@ application/json and HTTP return code 400.</p>
 <li><a class="reference internal" href="#module-utils.ok_json_response">Flask OK JSON response</a></li>
 <li><a class="reference internal" href="#module-utils.error_json_response">Flask error JSON response</a></li>
 <li><a class="reference internal" href="#module-utils.sql_json_response">Flask SQL JSON response</a></li>
+<li><a class="reference internal" href="#module-company.siren_company">Siren Company response</a><ul>
+<li><a class="reference internal" href="#class-representing-a-company-constructed-with-a-siren">Class representing a company, constructed with a SIREN</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-company.denomination_company">Denomination Company response</a><ul>
+<li><a class="reference internal" href="#class-representing-a-company-constructed-with-a-denomination">Class representing a company, constructed with a Denomination</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-company.company">Company response</a><ul>
+<li><a class="reference internal" href="#class-representing-a-company">Class representing a company</a></li>
+</ul>
+</li>
 </ul>
 <div class="relations">
 <h3>Related Topics</h3>

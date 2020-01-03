@@ -36,6 +36,6 @@ setup(name=NAME,
           'console_scripts': ['enthic-api = enthic.app:main'],
       },
       install_requires=[
-          'flask', 'flask-mysqldb', 'requests', 'pytest', 'sphinx'
+          'flask', 'flask-mysqldb', 'requests', 'pytest', 'sphinx', 'flask-cors'
       ]
       )

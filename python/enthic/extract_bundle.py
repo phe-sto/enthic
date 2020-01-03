@@ -48,7 +48,8 @@ def main():
         )
     ############################################################################
     # SET LOG LEVEL
-    basicConfig(level=config['debugLevel'], format="%(asctime)s [%(levelname)8s] %(message)s (%(filename)s:%(lineno)s)")
+    basicConfig(level=config['debugLevel'],
+                format="%(asctime)s [%(levelname)8s] %(message)s (%(filename)s:%(lineno)s)")
     ############################################################################
     # READ THE CODES TO EXTRACT
     account_ontology = {}  # EMPTY OBJECT STORING DATA TO EXTRACT
@@ -117,16 +118,20 @@ def main():
                                     for bundle in page:
                                         try:
                                             for bundle_code in \
-                                                    account_ontology[accountability_type]['bundleCodeAtt']:
+                                                    account_ontology[accountability_type][
+                                                        'bundleCodeAtt']:
                                                 if bundle.attrib["code"] in bundle_code.keys():
-                                                    for amount_code in bundle_code[bundle.attrib["code"]]:
+                                                    for amount_code in bundle_code[
+                                                        bundle.attrib["code"]]:
                                                         amount_code = "m{0}".format(amount_code)
                                                         ########################
                                                         # WRITE RESULTS FILE
                                                         bundle_file.write(";".join([siren, year,
-                                                                                    bundle.attrib["code"],
+                                                                                    bundle.attrib[
+                                                                                        "code"],
                                                                                     str(int(
-                                                                                        bundle.attrib[amount_code])),
+                                                                                        bundle.attrib[
+                                                                                            amount_code])),
                                                                                     "\n"]))
                                         except KeyError as key_error:
                                             debug(key_error)

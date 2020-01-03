@@ -5,7 +5,9 @@ Project than treat data from opendata-rncs.inpi.fr. They contain xml
 files of the account declaration of all french societies. The overall project
 is meant to be low-code and open source. Aim to provide ethical indicators on companies.
 Information media is a MySQL database, CSV files, web visualisation and a
-swagger API. Score and indicators are calculated by batch using fancy libraries.
+swagger API.
+Score and indicators are calculated by batch, sql and why not using
+fancy libraries. Help in data treatment to improve scoring would be appreciated.
 Scoring, AI, data scrapping for segmentation. Shell and python are to launch be
 from their corresponding directory ``./sh`` and ``./py``.
 

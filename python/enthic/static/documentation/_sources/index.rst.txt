@@ -68,3 +68,21 @@ Flask SQL JSON response
 
 .. automodule:: utils.sql_json_response
    :members:
+
+Siren Company response
+======================
+
+.. automodule:: company.siren_company
+   :members:
+
+Denomination Company response
+=============================
+
+.. automodule:: company.denomination_company
+   :members:
+
+Company response
+================
+
+.. automodule:: company.company
+   :members:

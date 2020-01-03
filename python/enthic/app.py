@@ -17,24 +17,26 @@ from json import loads, load
 from os.path import dirname, join
 from re import compile
 
+from enthic.company.denomination_company import DenominationCompany
+from enthic.company.siren_company import SirenCompany
 from enthic.decorator.check_sql_injection import check_sql_injection
 from enthic.decorator.insert_request import insert_request
+from enthic.ontology import ONTOLOGY
 from enthic.utils.error_json_response import ErrorJSONResponse
 from enthic.utils.ok_json_response import OKJSONResponse
 from enthic.utils.sql_json_response import SQLJSONResponse
-from enthic.ontology import ONTOLOGY
-from enthic.company.siren_company import SirenCompany
 from flask import Flask, request
+from flask_cors import CORS
 from flask_mysqldb import MySQL
 
 siren_re = compile(r"^\d{9}$")  # REGEX OF A SIREN
 year_re = compile(r"^\d{4}$")  # REGEX OF A YEAR
 
 application = Flask(__name__)
-
+CORS(application, expose_headers='Authorization')
 mysql = MySQL(application)
 
-############################################################################
+################################################################################
 # CONFIGURE APPLICATION
 with open(join(dirname(__file__), "configuration.json")) as json_configuration_file:
     config = load(json_configuration_file)
@@ -44,6 +46,19 @@ application.config['MYSQL_USER'] = config["mySQL"]["enthic"]["user"]
 application.config['MYSQL_PASSWORD'] = config["mySQL"]["enthic"]["password"]
 application.config['CACHE_TYPE'] = 'simple'
 application.config['MYSQL_DB'] = 'enthic'
+
+################################################################################
+# CALCULATE SCORES RELATED DATA
+with application.app_context():
+    cur = mysql.connection.cursor()
+    cur.execute("""SELECT declaration, ROUND(AVG(amount))
+                FROM bundle where bundle = 'DIR'
+                GROUP BY declaration;""")
+    sql_results_dir_year = cur.fetchall()
+    cur.execute("""SELECT ROUND(AVG(amount), 2)
+                FROM bundle where bundle = 'DIR';""")
+    avg_dir, = cur.fetchone()
+    cur.close()
 
 
 @application.route("/company/siren/<siren>/<year>", methods=['GET'],
@@ -64,7 +79,8 @@ def company_siren_year(siren, year):
     """
     if siren_re.match(siren):
         if year_re.match(year):
-            return SirenCompany(mysql, siren, year)
+
+            return SirenCompany(mysql, siren, year, dict(sql_results_dir_year))
         else:
             return ErrorJSONResponse("YEAR for is wrong, must match ^\d{4}$.")
     else:
@@ -85,11 +101,7 @@ def company_siren(siren):
           on that company of an error message if SIREN wrongly formatted.
     """
     if siren_re.match(siren):
-        return SQLJSONResponse(mysql, """SELECT bundle, CONVERT(AVG(amount), UNSIGNED INTEGER)
-                                FROM identity INNER JOIN bundle
-                                ON bundle.siren = identity.siren
-                                WHERE identity.siren = '%s'
-                                GROUP BY bundle.bundle;""", siren)
+        return SirenCompany(mysql, siren, None, avg_dir)
     else:
         return ErrorJSONResponse("SIREN for is wrong, must match ^\d{9}$.")
 
@@ -106,11 +118,7 @@ def company_denomination(denomination):
        :param denomination: String, denomination of the company.
        :return: HTTP Response as application/json. Contain all known information.
     """
-    return SQLJSONResponse(mysql, """SELECT bundle, CONVERT(AVG(amount), UNSIGNED INTEGER)
-                                FROM identity INNER JOIN bundle
-                                ON bundle.siren = identity.siren
-                                WHERE identity.denomination = '%s'
-                                GROUP BY bundle.bundle;""", denomination)
+    return DenominationCompany(mysql, denomination, None, avg_dir)
 
 
 @application.route("/company/denomination/<denomination>/<year>", methods=['GET'],
@@ -127,12 +135,7 @@ def company_denomination_year(denomination, year):
        :return: HTTP Response as application/json. Contain all known information.
     """
     if year_re.match(year):
-        return SQLJSONResponse(mysql, """SELECT bundle, amount
-                                FROM identity INNER JOIN bundle
-                                ON bundle.siren = identity.siren
-                                WHERE identity.denomination = '%s'
-                                AND declaration = %s;""",
-                               denomination, year)
+        return DenominationCompany(mysql, denomination, year, dict(sql_results_dir_year))
     else:
         return ErrorJSONResponse("YEAR for is wrong, must match ^\d{4}$.")
 

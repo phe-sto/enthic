@@ -41,7 +41,7 @@
     }
   ],
   "schemes": [
-    "http"
+    "http", "https"
   ],
   "paths": {
     "/siren/{siren}": {

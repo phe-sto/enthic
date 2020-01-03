@@ -24,13 +24,14 @@ def insert(*args):
         parameter = "NULL"
     with args[0].app.app_context():
         cur = args[0].connection.cursor()
-        cur.execute("""INSERT INTO request VALUES ("%s", "%s", "%s", "%s", "%s", %s, CURRENT_TIMESTAMP)""" %
-                    (args[1]['environ']['REQUEST_METHOD'],
-                     args[1]['environ']['PATH_INFO'],
-                     args[1]['environ']['REMOTE_ADDR'],
-                     args[1]['environ']['REMOTE_PORT'],
-                     args[1]['environ']['HTTP_USER_AGENT'],
-                     parameter))
+        cur.execute(
+            """INSERT INTO request VALUES ("%s", "%s", "%s", "%s", "%s", %s, CURRENT_TIMESTAMP)""" %
+            (args[1]['environ']['REQUEST_METHOD'],
+             args[1]['environ']['PATH_INFO'],
+             args[1]['environ']['REMOTE_ADDR'],
+             args[1]['environ']['REMOTE_PORT'],
+             args[1]['environ']['HTTP_USER_AGENT'],
+             parameter))
         cur.close()
         args[0].connection.commit()
 

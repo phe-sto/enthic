@@ -20,7 +20,8 @@ class DenominationCompany(Company):
     """
     Class DenominationCompany inherit from Company class.
     """
-    def __init__(self, mysql, denomination, year=None):
+
+    def __init__(self, mysql, denomination, year, *args):
         """
         Constructor of the DenominationCompany class.
 
@@ -28,14 +29,22 @@ class DenominationCompany(Company):
            :param denomination: The official denomination of the company.
            :param year: Kwarg, default is None, otherwise an integer of the year
               to retrieve.
+           :param *args: Average distribution ratio.
         """
+        if year is None:
+            avg_dir = args[0]
+        else:
+            try:
+                avg_dir = args[0][int(year)]
+            except (KeyError, TypeError):
+                avg_dir = None
         cur = mysql.connection.cursor()
         if year is None:
             cur.execute("""SELECT identity.siren, denomination, accountability, devise, bundle, SUM(amount)
             FROM identity INNER JOIN bundle
             ON bundle.siren = identity.siren
             WHERE identity.denomination = '%s'
-            GROUP BY bundle.bundle;""" % (denomination))
+            GROUP BY identity.siren, bundle.bundle;""" % (denomination))
         else:
             cur.execute("""SELECT identity.siren, denomination, accountability, devise, bundle, amount
             FROM identity INNER JOIN bundle
@@ -44,4 +53,4 @@ class DenominationCompany(Company):
             AND declaration = %s;""" % (denomination, year))
         sql_results = cur.fetchall()
         cur.close()
-        Company.__init__(self, sql_results)
+        Company.__init__(self, sql_results, avg_dir)

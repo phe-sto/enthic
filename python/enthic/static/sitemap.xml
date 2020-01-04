@@ -17,4 +17,14 @@
         <lastmod>2019-12-06T21:38:08+00:00</lastmod>
         <priority>0.8</priority>
     </url>
+        <url>
+        <loc>https://api.enthic.fr/</loc>
+        <lastmod>2019-12-06T21:38:08+00:00</lastmod>
+        <priority>1</priority>
+    </url>
+    <url>
+        <loc>https://api.enthic.fr/documentation/index.html</loc>
+        <lastmod>2019-12-06T21:38:08+00:00</lastmod>
+        <priority>0.8</priority>
+    </url>
 </urlset>

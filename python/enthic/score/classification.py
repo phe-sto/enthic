@@ -16,6 +16,15 @@ from enum import Enum
 
 
 class DistributionClassification(Enum):
+    """
+    Classification of company by type of distribution. Their name and value
+    should be self explanatory:
+
+    - TIGHT
+    - AVERAGE
+    - GOOD
+    - UNKNOWN
+    """
     TIGHT = "TIGHT"
     AVERAGE = "AVERAGE"
     GOOD = "GOOD"

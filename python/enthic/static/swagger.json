@@ -36,7 +36,7 @@
       "description": "Describe the development process",
       "externalDocs": {
         "description": "API Sphinx documentation",
-        "url": "http://api.enthic.fr/documentation/index.html"
+        "url": "https://api.enthic.fr/documentation/index.html"
       }
     }
   ],

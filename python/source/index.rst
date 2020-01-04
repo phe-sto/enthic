@@ -86,3 +86,9 @@ Company response
 
 .. automodule:: company.company
    :members:
+
+Distribution Classifier
+=======================
+
+.. automodule:: score.classification
+   :members:

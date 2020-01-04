@@ -1,10 +1,12 @@
 # -*- coding: utf-8 -*-
 """
-===============================
-TOntology of the data extracted
-===============================
+=========================================
+Ontology of the data retrieved by the API
+=========================================
 
-In complement, explanation of the data retrieved by the API.
+In complement, explanation of the data retrieved by the API. Combining data
+endpoints and the ontology endpoint should avoid multiplication and backward
+compatibility issue.
 """
 
 ONTOLOGY = {"accounting":
@@ -49,8 +51,8 @@ ONTOLOGY = {"accounting":
     "scoring": {
         "distribution": {
             "type": "enum",
-            "values": ["TIGHT", "AVERAGE", "GOOD"],
-            "description": "Classification d'une companie basée sur le ratio de redistribution DIR. TIGHT est 10% en dessous de la moyenne, GOOD est 10% au dessus, AVERAGE entre les deux."
+            "values": ["TIGHT", "AVERAGE", "GOOD", "UNKNOWN"],
+            "description": "Classification d'une companie basée sur le ratio de redistribution DIR. GOOD est 10% en dessous de la moyenne, TIGHT est 10% au dessus, AVERAGE entre les deux. UNKNOWN si impossible à calculer."
         }
     }
 }

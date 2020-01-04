@@ -43,11 +43,11 @@ class Company(OKJSONResponse):
             ####################################################################
             # SCORE RELATED CALCULATION
             if hasattr(self, "DIR") and avg_dir is not None:
-                if self.DIR < avg_dir - avg_dir * 0.1:
+                if self.DIR > avg_dir - avg_dir * 0.1:
                     self.distribution = DistributionClassification.TIGHT.value
                 elif avg_dir - avg_dir * 0.1 <= self.DIR <= avg_dir + avg_dir * 0.1:
                     self.distribution = DistributionClassification.AVERAGE.value
-                elif avg_dir + avg_dir * 0.1 < self.DIR:
+                elif avg_dir + avg_dir * 0.1 > self.DIR:
                     self.distribution = DistributionClassification.GOOD.value
             else:
                 self.distribution = DistributionClassification.UNKNOWN.value

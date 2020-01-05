@@ -26,7 +26,7 @@ ONTOLOGY = {"accounting":
                     "YP": "Effectif moyen du personnel",
                     "FO": "Subventions d’exploitation",
                     "GAN": "Gain d'une companie, actuellement le chiffre d'affaire uniquement FJ",
-                    "DIR": "Distribution ratio, (FY + HI) / GAN"
+                    "DIR": "Distribution ratio, (FY + HJ) / GAN"
                 }
             },
         "S":
@@ -44,7 +44,7 @@ ONTOLOGY = {"accounting":
                     "376": "Effectif moyen du personnel",
                     "226": "Subventions d’exploitation reçues",
                     "GAN": "Gain d'une companie, actuellement le chiffre d'affaire uniquement FJ",
-                    "DIR": "Distribution ratio, (FY + HI) / GAN"
+                    "DIR": "Distribution ratio, (FY + HJ) / GAN"
                 }
             }
     },

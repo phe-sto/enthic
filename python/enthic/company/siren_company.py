@@ -34,7 +34,8 @@ class SirenCompany(Company):
         cur = mysql.connection.cursor()
         if year is None:
             avg_dir = args[0]
-            cur.execute("""SELECT identity.siren, denomination, accountability, devise, bundle, SUM(amount)
+            cur.execute("""SELECT identity.siren, denomination, ape,
+            postal_code, town, accountability, devise, bundle, SUM(amount)
             FROM identity INNER JOIN bundle
             ON bundle.siren = identity.siren
             WHERE identity.siren = '%s'
@@ -44,7 +45,8 @@ class SirenCompany(Company):
                 avg_dir = args[0][int(year)]
             except KeyError:
                 avg_dir = None
-            cur.execute("""SELECT identity.siren, denomination, accountability, devise, bundle, amount
+            cur.execute("""SELECT identity.siren, denomination, ape,
+            postal_code, town, accountability, devise, bundle, amount
             FROM identity INNER JOIN bundle
             ON bundle.siren = identity.siren
             WHERE identity.siren = '%s'

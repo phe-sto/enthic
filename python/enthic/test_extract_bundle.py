@@ -118,21 +118,24 @@ def test_result_line_data(result_file):
 
 def test_identity_line_data(identity_file):
     """
-    Test the line contain always 4 columns. Check it's type.
+    Test the line contain always 8 columns. Check it's type.
 
        :param identity_file: Fixture of the CSV result file.
     """
     max_length = 0
     for line in identity_file:
         line = line.split(";")
-        assert len(line) == 5, "NUMBER OF COLUMNS NOT 5"
+        assert len(line) == 8, "NUMBER OF COLUMNS NOT 8"
         assert " " not in line, "BLANK ENTRY"
         assert "" not in line, "EMPTY ENTRY"
         assert line[0].isnumeric() is True, "SIREN NOT NUMERIC"
-        assert len([2]) == 1, "ACCOUNTABILITY TYPE LENGTH NOT 1"
-        assert line[3] == "EUR", "DEVISE NOT EUR"
+        assert len(line[2]) == 5, "APE NOT 5 CHARACTERS"
+        assert line[3].isnumeric() is True, "POSTAL CODE NOT NUMERIC"
+        assert len(line[3]) == 5, "POSTAL CODE NOT 5 CHARACTERS"
+        assert len([5]) == 1, "ACCOUNTABILITY TYPE LENGTH NOT 1"
+        assert line[6] == "EUR", "DEVISE NOT EUR"
         # DENOMINATION LENGTH
         denomination_length = len(line[1])
         if max_length < denomination_length:
             max_length = denomination_length
-    info("> MAXIMUM DENOMINATION LENGTH >{}<".format(max_length))
+        info("> MAXIMUM DENOMINATION LENGTH >{}<".format(max_length))

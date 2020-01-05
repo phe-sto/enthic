@@ -51,7 +51,7 @@ def configuration_path():
 
        :return: A string of the configuration path.
     """
-    return "../configuration.json"
+    return "enthic/configuration.json"
 
 
 @pytest.fixture()

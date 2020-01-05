@@ -23,6 +23,9 @@ from re import sub, compile
 from zipfile import ZipFile, BadZipFile
 
 re_multiple_whitespace = compile(r"\s+")  # NOT AN OBVIOUS PERFORMANCE GAIN...
+re_postal_code_town = compile(r"([0-9]+)[ -]?([a-zA-Z0-9_ \'\"-\.\(\)\-]+)")
+re_town = compile(r"([a-zA-Z0-9_ \'\"-\.\(\)\-]+)")
+re_postal_code = compile(r"([0-9]+)")
 
 
 def main():
@@ -84,7 +87,8 @@ def main():
                         root = tree.getroot()
                         ########################################################
                         # XML RELATED VARIABLES
-                        accountability_type, siren, code_devise, denomination, year = (None,) * 5
+                        accountability_type, siren, code_devise, denomination, \
+                        year, ape, postal_code, town = (None,) * 8
                         ########################################################
                         # ITERATE ALL TAGS
                         for child in root[0]:
@@ -105,10 +109,40 @@ def main():
                                         code_devise = identity.text
                                     elif identity.tag == '{fr:inpi:odrncs:bilansSaisisXML}date_cloture_exercice':
                                         year = identity.text[:4]
+                                    # re_town
+                                    elif identity.tag == '{fr:inpi:odrncs:bilansSaisisXML}adresse':
+                                        ########################################
+                                        # PARSING THE 'adresse' FIELD, MANY
+                                        # DATA-CAPTURE ERROR.
+                                        try:
+                                            m = re_postal_code_town.match(identity.text)
+                                            postal_code = m.group(1)
+                                            town = m.group(2).upper()
+                                        except TypeError as error:
+                                            debug(str(error) + ": " + str(identity.text))
+                                            postal_code, town = ('UNKNWON',) * 2
+                                        except AttributeError as error:
+                                            try:
+                                                debug(str(error) + ": " + str(identity.text))
+                                                m = re_town.match(identity.text)
+                                                town = m.group(1).upper()
+                                                postal_code = 'UNKNWON'
+                                            except AttributeError as error:
+                                                try:
+                                                    debug(str(error) + ": " + str(identity.text))
+                                                    m = re_postal_code.match(identity.text)
+                                                    town = 'UNKNWON'
+                                                    postal_code = m.group(1)
+                                                except AttributeError as error:
+                                                    debug(str(error) + ": " + str(identity.text))
+                                                    postal_code, town = ('UNKNWON',) * 2
+                                    elif identity.tag == '{fr:inpi:odrncs:bilansSaisisXML}code_activite':
+                                        ape = identity.text
                                 ################################################
                                 # WRITE IDENTITY FILE
-                                identity_file.write(";".join([siren, denomination,
-                                                              accountability_type, code_devise,
+                                identity_file.write(";".join([siren, denomination, ape, postal_code,
+                                                              town, accountability_type,
+                                                              code_devise,
                                                               "\n"]))
                             ####################################################
                             # BUNDLE TAGS IN PAGES TO ITERATE WITH BUNDLE CODES

@@ -34,12 +34,15 @@ class Company(OKJSONResponse):
             # IDENTIFICATION RELATED DATA
             self.siren = sql_results[0][0]
             self.denomination = sql_results[0][1]
-            self.accountability = sql_results[0][2]
-            self.devise = sql_results[0][3]
+            self.ape = sql_results[0][2]
+            self.postalCode = sql_results[0][3]
+            self.town = sql_results[0][4]
+            self.accountability = sql_results[0][5]
+            self.devise = sql_results[0][6]
             ####################################################################
             # BUNDLE RELATED DATA, THEREFORE DYNAMIC
             for line in sql_results:
-                setattr(self, line[4], round(line[5], 2))
+                setattr(self, line[7], round(line[8], 2))
             ####################################################################
             # SCORE RELATED CALCULATION
             if hasattr(self, "DIR") and avg_dir is not None:

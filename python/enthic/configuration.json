@@ -5,8 +5,6 @@
   "bundleFile": "bundle.tmp",
   "sortBundleFile": "sort-bundle.tmp",
   "scoreBundleFile": "bundle.csv",
-  "yearlyScoreFilePattern": "yyyy-score.csv",
-  "globalScoreFile": "score.csv",
   "gainCodes": [
     "FJ"
   ],
@@ -21,7 +19,7 @@
     "enthic": {
       "host": "",
       "user": "",
-      "password": ""
+      "password": "q250685Q"
     }
   },
   "flask": {

@@ -1,2 +1,3 @@
 recursive-include enthic/ *
 global-exclude *.pyc
+include ../LICENSE.md

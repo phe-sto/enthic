@@ -108,7 +108,6 @@ html_sidebars = {
         'localtoc.html',
         'relations.html'
     ]
-
 }
 
 # -- Options for HTMLHelp output ---------------------------------------------

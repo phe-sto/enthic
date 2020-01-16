@@ -50,15 +50,16 @@ application.config['MYSQL_DB'] = 'enthic'
 ################################################################################
 # CALCULATE SCORES RELATED DATA
 with application.app_context():
-    cur = mysql.connection.cursor()
-    cur.execute("""SELECT declaration, ROUND(AVG(amount))
-                FROM bundle where bundle = 'DIR'
-                GROUP BY declaration;""")
-    sql_results_dir_year = cur.fetchall()
-    cur.execute("""SELECT ROUND(AVG(amount), 2)
-                FROM bundle where bundle = 'DIR';""")
-    avg_dir, = cur.fetchone()
-    cur.close()
+    if __name__ == "__main__":
+        cur = mysql.connection.cursor()
+        cur.execute("""SELECT declaration, ROUND(AVG(amount))
+                    FROM bundle where bundle = 'DIR'
+                    GROUP BY declaration;""")
+        sql_results_dir_year = cur.fetchall()
+        cur.execute("""SELECT ROUND(AVG(amount), 2)
+                    FROM bundle where bundle = 'DIR';""")
+        avg_dir, = cur.fetchone()
+        cur.close()
 
 
 @application.route("/company/siren/<siren>/<year>", methods=['GET'],

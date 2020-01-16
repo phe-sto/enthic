@@ -82,6 +82,11 @@ A flask REST API can distribute data over the web. Following Swagger standard.
 **Development and contribution**
 ----------------------------------
 
+License
+-------
+
+`Do What The Fuck You Want To Public License (WTFPL) <http://www.wtfpl.net/about/>`_
+
 Development and Coding Rules
 ------------------------------
 
@@ -127,6 +132,7 @@ Library structure
    ├── README.rst
    ├── account-ontology.csv
    ├── .gitignore
+   ├── LICENSE.md
    │
    ├── python
    │   ├── source
@@ -174,6 +180,7 @@ Library structure
    │   │   ├── swagger-ui-standalone-preset.js
    │   │   └── swagger-ui-standalone-preset.js.map
    │   │
+   │   ├── LICENSE.md
    │   ├── setup.py
    │   ├── __init__.py
    │   └── MANIFEST.in
@@ -196,8 +203,6 @@ Library structure
    │   └── csv-table.sh
    │
    ├── input
-   │   └── qualification
-   │       └──...
    │
    └── output
 

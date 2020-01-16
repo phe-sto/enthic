@@ -2,7 +2,7 @@
   "swagger": "2.0",
   "info": {
     "description": "JSON API of French Company Account and Ethical Score",
-    "version": "2019.12.0",
+    "version": "2020.1.1",
     "title": "Swagger French Company Account and Ethical Score",
     "contact": {
       "email": "services@papit.fr"
@@ -38,10 +38,19 @@
         "description": "API Sphinx documentation",
         "url": "https://api.enthic.fr/documentation/index.html"
       }
+    },
+    {
+      "name": "Wexample Labs",
+      "description": "IT Freelance association supporting the project",
+      "externalDocs": {
+        "description": "Wexample web site",
+        "url": "https://wexample.com/"
+      }
     }
   ],
   "schemes": [
-    "http", "https"
+    "http",
+    "https"
   ],
   "paths": {
     "/siren/{siren}": {

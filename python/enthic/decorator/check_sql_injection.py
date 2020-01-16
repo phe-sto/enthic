@@ -9,7 +9,7 @@ from functools import wraps
 from json import loads, JSONDecodeError
 from re import compile, IGNORECASE
 
-from flask import request
+from flask import request, abort
 
 sql_re = compile(
     'SELECT.*FROM|UPDATE.*SET|INSERT.*INTO|DELETE.*FROM|DROP.*DATABASE|DROP.*TABLE',
@@ -39,7 +39,7 @@ def check_sql_injection(func):
         for parameter in request.view_args.values():
             try:
                 if sql_re.match(parameter):
-                    raise ValueError("Path parameter cannot be a SQL.")
+                    abort(400)  # LEAVE REQUEST IN 400 STATUS
             except TypeError:  # IF NOT A STRING, ONLY STRING CAN BE AN INJECTION
                 continue
         ########################################################################
@@ -50,7 +50,7 @@ def check_sql_injection(func):
                 for value in json_data.values():
                     try:
                         if sql_re.match(value):
-                            raise ValueError("JSON body value cannot be a SQL.")
+                            abort(400)  # LEAVE REQUEST IN 400 STATUS
                     except TypeError:  # IF NOT A STRING, ONLY STRING CAN BE AN INJECTION
                         continue
         except JSONDecodeError:  # IF NOT A JSON

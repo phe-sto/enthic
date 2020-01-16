@@ -70,6 +70,7 @@ def host():
 
 @pytest.mark.parametrize("siren", ("389718115",
                                    "410660492",
+                                   "402595250",
                                    "999999999"))  # DOES NOT EXIST
 def test_siren(host, siren):
     """
@@ -99,6 +100,7 @@ def test_siren_wrong_method(host, method):
 
 @pytest.mark.parametrize("siren,year", (("389718115", 2019),
                                         ("410660492", 2019),
+                                        ("402595250", 2018),
                                         ("999999999", 2019)))  # DOES NOT EXIST
 def test_siren_year(host, siren, year):
     """
@@ -159,8 +161,8 @@ def test_wrong_siren(host, siren):
     assert loads(response.text)["error"] != "", "NO ERROR MESSAGE OR EMPTY"
 
 
-@pytest.mark.parametrize("denomination", ("RCV PEINTURE",
-                                          "RESEAUX ELECTRIQUE & INFORMATIQUE",
+@pytest.mark.parametrize("denomination", ("RCV PEINTURE", "THALES",
+                                          "L'APOSTROPHE", "RESEAUX ELECTRIQUE & INFORMATIQUE",
                                           "TOTO SASU"))  # DOES NOT EXIST
 def test_denomination(host, denomination):
     """
@@ -188,9 +190,9 @@ def test_denomination_wrong_method(host, method):
     assert response.status_code == 405, "WRONG HTTP RETURN CODE"
 
 
-@pytest.mark.parametrize("denomination,year", (("RCV PEINTURE", 2019),
+@pytest.mark.parametrize("denomination,year", (("RCV PEINTURE", 2019), ("THALES", 2018),
                                                ("RESEAUX ELECTRIQUE & INFORMATIQUE", 2019),
-                                               ("TOTO SASU", 2019)))  # DOES NOT EXIST
+                                               ("TOTO SASU", 2019), ("L'APOSTROPHE", 2018),))
 def test_denomination_year(host, denomination, year):
     """
     Test the /company/denomination/year endpoint. Should return a JSON.
@@ -366,7 +368,7 @@ def test_check_sql_injection_body(host, sql_request_1, sql_request_2):
     """
     response = post("http://" + host + "/company/search/",
                     dumps({"probe": sql_request_1, "limit": sql_request_2}))
-    assert response.status_code == 500, "WRONG HTTP RETURN CODE"
+    assert response.status_code == 400, "WRONG HTTP RETURN CODE"
 
 
 @pytest.mark.parametrize("sql_request", (("drop database toto;"),
@@ -393,7 +395,7 @@ def test_check_sql_injection_path(host, sql_request):
        :param sql_request_1: Parametrize fixture of a possible SQL request.
     """
     response = get("http://" + host + "/company/denomination/" + sql_request)
-    assert response.status_code == 500, "WRONG HTTP RETURN CODE"
+    assert response.status_code == 400, "WRONG HTTP RETURN CODE"
 
 
 @pytest.mark.parametrize("probe,limit", (("toto", "pouet"),

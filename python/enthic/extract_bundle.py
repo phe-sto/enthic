@@ -78,97 +78,104 @@ def main():
             try:  # SOME BAD ZIP FILE ARE IN HE DATASET
                 input_zip = ZipFile(join(config['inputPath'], file))
                 for zipped_xml in input_zip.namelist():  # LIST ARCHIVES IN ZIP
-                    zipped_xml = ZipFile(BytesIO(input_zip.read(zipped_xml)))
-                    # SUPPOSED ONLY ONE XML BUT ITERATE TO BE SURE
-                    for xml in zipped_xml.namelist():
-                        ########################################################
-                        # XML PARSER
-                        tree = ElementTree.parse(BytesIO(zipped_xml.open(xml).read()))
-                        root = tree.getroot()
-                        ########################################################
-                        # XML RELATED VARIABLES
-                        accountability_type, siren, code_devise, denomination, \
-                        year, ape, postal_code, town = (None,) * 8
-                        ########################################################
-                        # ITERATE ALL TAGS
-                        for child in root[0]:
-                            ####################################################
-                            # IDENTITY TAGS, SIREN AND TYPE OF ACCOUNTABILITY
-                            if child.tag == "{fr:inpi:odrncs:bilansSaisisXML}identite":
-                                for identity in child:  # identite LEVEL
-                                    if identity.tag == '{fr:inpi:odrncs:bilansSaisisXML}siren':
-                                        siren = identity.text
-                                    elif identity.tag == '{fr:inpi:odrncs:bilansSaisisXML}code_type_bilan':
-                                        accountability_type = identity.text
-                                    elif identity.tag == '{fr:inpi:odrncs:bilansSaisisXML}denomination':
-                                        # REMOVE MULTIPLE WHITESPACES, SWITCH TO UPPER CASE, REMOVE EOF
-                                        denomination = sub(re_multiple_whitespace, " ",
-                                                           identity.text.replace("\n", " ").upper()
-                                                           ).strip(" ")
-                                    elif identity.tag == '{fr:inpi:odrncs:bilansSaisisXML}code_devise':
-                                        code_devise = identity.text
-                                    elif identity.tag == '{fr:inpi:odrncs:bilansSaisisXML}date_cloture_exercice':
-                                        year = identity.text[:4]
-                                    # re_town
-                                    elif identity.tag == '{fr:inpi:odrncs:bilansSaisisXML}adresse':
-                                        ########################################
-                                        # PARSING THE 'adresse' FIELD, MANY
-                                        # DATA-CAPTURE ERROR.
-                                        try:
-                                            m = re_postal_code_town.match(identity.text)
-                                            postal_code = m.group(1)
-                                            town = m.group(2).upper()
-                                        except TypeError as error:
-                                            debug(str(error) + ": " + str(identity.text))
-                                            postal_code, town = ('UNKNWON',) * 2
-                                        except AttributeError as error:
+                    try:
+                        zipped_xml = ZipFile(BytesIO(input_zip.read(zipped_xml)))
+                        # SUPPOSED ONLY ONE XML BUT ITERATE TO BE SURE
+                        for xml in zipped_xml.namelist():
+                            ########################################################
+                            # XML PARSER
+                            tree = ElementTree.parse(BytesIO(zipped_xml.open(xml).read()))
+                            root = tree.getroot()
+                            ########################################################
+                            # XML RELATED VARIABLES
+                            accountability_type, siren, code_devise, denomination, \
+                            year, ape, postal_code, town = (None,) * 8
+                            ########################################################
+                            # ITERATE ALL TAGS
+                            for child in root[0]:
+                                ####################################################
+                                # IDENTITY TAGS, SIREN AND TYPE OF ACCOUNTABILITY
+                                if child.tag == "{fr:inpi:odrncs:bilansSaisisXML}identite":
+                                    for identity in child:  # identite LEVEL
+                                        if identity.tag == '{fr:inpi:odrncs:bilansSaisisXML}siren':
+                                            siren = identity.text
+                                        elif identity.tag == '{fr:inpi:odrncs:bilansSaisisXML}code_type_bilan':
+                                            accountability_type = identity.text
+                                        elif identity.tag == '{fr:inpi:odrncs:bilansSaisisXML}denomination':
+                                            # REMOVE MULTIPLE WHITESPACES, SWITCH TO UPPER CASE, REMOVE EOF
+                                            denomination = sub(re_multiple_whitespace, " ",
+                                                               identity.text.replace("\n",
+                                                                                     " ").upper()
+                                                               ).strip(" ")
+                                        elif identity.tag == '{fr:inpi:odrncs:bilansSaisisXML}code_devise':
+                                            code_devise = identity.text
+                                        elif identity.tag == '{fr:inpi:odrncs:bilansSaisisXML}date_cloture_exercice':
+                                            year = identity.text[:4]
+                                        # re_town
+                                        elif identity.tag == '{fr:inpi:odrncs:bilansSaisisXML}adresse':
+                                            ########################################
+                                            # PARSING THE 'adresse' FIELD, MANY
+                                            # DATA-CAPTURE ERROR.
                                             try:
+                                                m = re_postal_code_town.match(identity.text)
+                                                postal_code = m.group(1)
+                                                town = m.group(2).upper()
+                                            except TypeError as error:
                                                 debug(str(error) + ": " + str(identity.text))
-                                                m = re_town.match(identity.text)
-                                                town = m.group(1).upper()
-                                                postal_code = 'UNKNWON'
+                                                postal_code, town = ('UNKNWON',) * 2
                                             except AttributeError as error:
                                                 try:
                                                     debug(str(error) + ": " + str(identity.text))
-                                                    m = re_postal_code.match(identity.text)
-                                                    town = 'UNKNWON'
-                                                    postal_code = m.group(1)
+                                                    m = re_town.match(identity.text)
+                                                    town = m.group(1).upper()
+                                                    postal_code = 'UNKNWON'
                                                 except AttributeError as error:
-                                                    debug(str(error) + ": " + str(identity.text))
-                                                    postal_code, town = ('UNKNWON',) * 2
-                                    elif identity.tag == '{fr:inpi:odrncs:bilansSaisisXML}code_activite':
-                                        ape = identity.text
-                                ################################################
-                                # WRITE IDENTITY FILE
-                                identity_file.write(";".join([siren, denomination, ape, postal_code,
-                                                              town, accountability_type,
-                                                              code_devise,
-                                                              "\n"]))
-                            ####################################################
-                            # BUNDLE TAGS IN PAGES TO ITERATE WITH BUNDLE CODES
-                            # AND AMOUNT
-                            elif child.tag == "{fr:inpi:odrncs:bilansSaisisXML}detail":
-                                for page in child:
-                                    for bundle in page:
-                                        try:
-                                            for bundle_code in \
-                                                    account_ontology[accountability_type][
-                                                        'bundleCodeAtt']:
-                                                if bundle.attrib["code"] in bundle_code.keys():
-                                                    for amount_code in bundle_code[
-                                                        bundle.attrib["code"]]:
-                                                        amount_code = "m{0}".format(amount_code)
-                                                        ########################
-                                                        # WRITE RESULTS FILE
-                                                        bundle_file.write(";".join([siren, year,
-                                                                                    bundle.attrib[
-                                                                                        "code"],
-                                                                                    str(int(
+                                                    try:
+                                                        debug(
+                                                            str(error) + ": " + str(identity.text))
+                                                        m = re_postal_code.match(identity.text)
+                                                        town = 'UNKNWON'
+                                                        postal_code = m.group(1)
+                                                    except AttributeError as error:
+                                                        debug(
+                                                            str(error) + ": " + str(identity.text))
+                                                        postal_code, town = ('UNKNWON',) * 2
+                                        elif identity.tag == '{fr:inpi:odrncs:bilansSaisisXML}code_activite':
+                                            ape = identity.text
+                                    ################################################
+                                    # WRITE IDENTITY FILE
+                                    identity_file.write(
+                                        ";".join([siren, denomination, ape, postal_code,
+                                                  town, accountability_type,
+                                                  code_devise,
+                                                  "\n"]))
+                                ####################################################
+                                # BUNDLE TAGS IN PAGES TO ITERATE WITH BUNDLE CODES
+                                # AND AMOUNT
+                                elif child.tag == "{fr:inpi:odrncs:bilansSaisisXML}detail":
+                                    for page in child:
+                                        for bundle in page:
+                                            try:
+                                                for bundle_code in \
+                                                        account_ontology[accountability_type][
+                                                            'bundleCodeAtt']:
+                                                    if bundle.attrib["code"] in bundle_code.keys():
+                                                        for amount_code in bundle_code[
+                                                            bundle.attrib["code"]]:
+                                                            amount_code = "m{0}".format(amount_code)
+                                                            ########################
+                                                            # WRITE RESULTS FILE
+                                                            bundle_file.write(";".join([siren, year,
                                                                                         bundle.attrib[
-                                                                                            amount_code])),
-                                                                                    "\n"]))
-                                        except KeyError as key_error:
-                                            debug(key_error)
+                                                                                            "code"],
+                                                                                        str(int(
+                                                                                            bundle.attrib[
+                                                                                                amount_code])),
+                                                                                        "\n"]))
+                                            except KeyError as key_error:
+                                                debug(key_error)
+                    except UnicodeDecodeError as error:
+                        debug(error)
             except BadZipFile as error:  #  TODO REPORT ERROR TO INPI
                 debug(error)
     ############################################################################

@@ -14,11 +14,11 @@
   ],
   "yearlyBundleFile": "bundle.csv",
   "identityFile": "identity.tmp",
-  "debugLevel": "ERROR",
+  "debugLevel": "DEBUG",
   "mySQL": {
     "enthic": {
       "host": "",
-      "user": "",
+      "user": "chrichri",
       "password": "q250685Q"
     }
   },

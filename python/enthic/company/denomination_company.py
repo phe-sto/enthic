@@ -38,7 +38,7 @@ class DenominationCompany(Company):
             postal_code, town, accountability, devise, bundle, SUM(amount)
             FROM identity INNER JOIN bundle
             ON bundle.siren = identity.siren
-            WHERE identity.denomination = '%s'
+            WHERE identity.denomination = "%s"
             GROUP BY identity.siren, bundle.bundle;""" % (denomination))
         else:
             try:
@@ -46,10 +46,10 @@ class DenominationCompany(Company):
             except KeyError:
                 avg_dir = None
             cur.execute("""SELECT identity.siren, denomination, 
-            ape, postal_code, accountability, town, devise, bundle, amount
+            ape, postal_code, town, accountability, devise, bundle, amount
             FROM identity INNER JOIN bundle
             ON bundle.siren = identity.siren
-            WHERE identity.denomination = '%s'
+            WHERE identity.denomination = "%s"
             AND declaration = %s;""" % (denomination, year))
         sql_results = cur.fetchall()
         cur.close()

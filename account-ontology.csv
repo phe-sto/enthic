@@ -19,3 +19,13 @@ Chiffre d’affaires nets;FJ;1,2,3;S
 Subventions d’exploitation reçues;226;1;S
 Effectif moyen du personnel;376;1;S
 Impôts, taxes et versements assimilés;244;1;S
+Salaires et traitements;FY;3;K
+Résultat de l’exercice (bénéfice ou perte);DI;1;K
+Résultat exceptionnel;HI;1;K
+Participation des salariés aux résultats de l’entreprise;HJ;1;K
+Impôts sur les bénéfices;HK;1;K
+Total des charges d’exploitation;GF;3;K
+Chiffre d’affaires nets;FJ;1,2,3;K
+Impôts, taxes et versements assimilés;FX;3;K
+Subventions d’exploitation;FO;3;K
+Résultat Groupe (Résultat net consolidé);R6;1;K

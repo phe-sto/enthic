@@ -15,6 +15,7 @@ Coding Rules:
 
 from enthic.score.classification import DistributionClassification
 from enthic.utils.ok_json_response import OKJSONResponse
+from enthic.ontology import ONTOLOGY
 
 
 class Company(OKJSONResponse):
@@ -35,25 +36,37 @@ class Company(OKJSONResponse):
             self.siren = sql_results[0][0]
             self.denomination = sql_results[0][1]
             self.ape = sql_results[0][2]
-            self.postalCode = sql_results[0][3]
+            self.postal_code = sql_results[0][3]
             self.town = sql_results[0][4]
-            self.accountability = sql_results[0][5]
+            self.accountability = {"value": sql_results[0][5],
+                                   "description": ONTOLOGY["accounting"][sql_results[0][5]][
+                                       "description"]}
             self.devise = sql_results[0][6]
             ####################################################################
             # BUNDLE RELATED DATA, THEREFORE DYNAMIC
             for line in sql_results:
-                setattr(self, line[7], round(line[8], 2))
+                _value = round(line[8], 2)
+                for accounting in ONTOLOGY["accounting"].keys():
+                    try:
+                        _description = ONTOLOGY["accounting"][accounting][
+                            "code"][line[7].lower()]
+                    except KeyError:
+                        pass
+                setattr(self, line[7].lower(), {"value": _value, "description": _description})
+
             ####################################################################
             # SCORE RELATED CALCULATION
-            if hasattr(self, "DIR") and avg_dir is not None:
-                if self.DIR > avg_dir - avg_dir * 0.1:
-                    self.distribution = DistributionClassification.TIGHT.value
-                elif avg_dir - avg_dir * 0.1 <= self.DIR <= avg_dir + avg_dir * 0.1:
-                    self.distribution = DistributionClassification.AVERAGE.value
-                elif avg_dir + avg_dir * 0.1 > self.DIR:
-                    self.distribution = DistributionClassification.GOOD.value
+            if hasattr(self, "dir") and avg_dir is not None:
+                if self.dir["value"] > avg_dir - avg_dir * 0.1:
+                    _distribution = DistributionClassification.TIGHT
+                elif avg_dir - avg_dir * 0.1 <= self.dir["value"] <= avg_dir + avg_dir * 0.1:
+                    _distribution = DistributionClassification.AVERAGE
+                elif avg_dir + avg_dir * 0.1 > self.dir["value"]:
+                    _distribution = DistributionClassification.GOOD
             else:
-                self.distribution = DistributionClassification.UNKNOWN.value
+                _distribution = DistributionClassification.UNKNOWN
+            self.distribution = {"value": _distribution.value,
+                                 "description": ONTOLOGY["scoring"]["distribution"]["description"]}
         except IndexError:
             pass
         OKJSONResponse.__init__(self, self.__dict__)

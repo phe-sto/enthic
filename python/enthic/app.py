@@ -13,6 +13,7 @@ Coding Rules:
 - No output or print, just log and files.
 """
 
+from inspect import stack
 from json import loads, load
 from os.path import dirname, join
 from re import compile
@@ -48,9 +49,15 @@ application.config['CACHE_TYPE'] = 'simple'
 application.config['MYSQL_DB'] = 'enthic'
 
 ################################################################################
-# CALCULATE SCORES RELATED DATA
+# IN ORDER NOT TO CONNECT DATABASE BELOW IF EXECUTED DURING SPHINX IMPORT
+try:
+    setup = stack()[6].filename.endswith("autodoc/importer.py")
+except IndexError as error:
+    setup = False
+################################################################################
+# CALCULATE SCORES RELATED DATA ONLY IF NOT BUILDING/INSTALLING
 with application.app_context():
-    if __name__ == "__main__":
+    if setup is False:
         cur = mysql.connection.cursor()
         cur.execute("""SELECT declaration, ROUND(AVG(amount))
                     FROM bundle where bundle = 'DIR'
@@ -187,8 +194,11 @@ def search():
         # CORRECT JSON
         else:
             return SQLJSONResponse(mysql, """SELECT siren, denomination
-                                    FROM identity WHERE siren like '%s'
-                                    OR denomination like '%s' LIMIT %s;""",
+                                    FROM identity WHERE siren LIKE '%s'
+                                    OR denomination LIKE '%s'
+                                    OR MATCH(denomination) AGAINST ('%s' IN NATURAL LANGUAGE MODE)
+                                    LIMIT %s;""",
+                                   json_data["probe"] + "%",
                                    json_data["probe"] + "%",
                                    json_data["probe"] + "%",
                                    json_data["limit"])

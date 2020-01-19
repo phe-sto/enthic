@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>decorator.check_sql_injection &#8212; enthic 2020.1.1 documentation</title>
+    <title>decorator.check_sql_injection &#8212; enthic 2020.1.2 documentation</title>
     <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
@@ -74,7 +74,7 @@
         <span class="k">for</span> <span class="n">parameter</span> <span class="ow">in</span> <span class="n">request</span><span class="o">.</span><span class="n">view_args</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
             <span class="k">try</span><span class="p">:</span>
                 <span class="k">if</span> <span class="n">sql_re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">parameter</span><span class="p">):</span>
-                    <span class="n">abort</span><span class="p">(</span><span class="mi">400</span><span class="p">)</span>
+                    <span class="n">abort</span><span class="p">(</span><span class="mi">400</span><span class="p">)</span>  <span class="c1"># LEAVE REQUEST IN 400 STATUS</span>
             <span class="k">except</span> <span class="ne">TypeError</span><span class="p">:</span>  <span class="c1"># IF NOT A STRING, ONLY STRING CAN BE AN INJECTION</span>
                 <span class="k">continue</span>
         <span class="c1">########################################################################</span>
@@ -85,7 +85,7 @@
                 <span class="k">for</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">json_data</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
                     <span class="k">try</span><span class="p">:</span>
                         <span class="k">if</span> <span class="n">sql_re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
-                            <span class="n">abort</span><span class="p">(</span><span class="mi">400</span><span class="p">)</span>
+                            <span class="n">abort</span><span class="p">(</span><span class="mi">400</span><span class="p">)</span>  <span class="c1"># LEAVE REQUEST IN 400 STATUS</span>
                     <span class="k">except</span> <span class="ne">TypeError</span><span class="p">:</span>  <span class="c1"># IF NOT A STRING, ONLY STRING CAN BE AN INJECTION</span>
                         <span class="k">continue</span>
         <span class="k">except</span> <span class="n">JSONDecodeError</span><span class="p">:</span>  <span class="c1"># IF NOT A JSON</span>

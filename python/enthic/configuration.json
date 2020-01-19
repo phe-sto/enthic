@@ -18,8 +18,8 @@
   "mySQL": {
     "enthic": {
       "host": "",
-      "user": "",
-      "password": ""
+      "user": "chrichri",
+      "password": "q250685Q"
     }
   },
   "flask": {

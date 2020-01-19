@@ -6,5 +6,6 @@ CREATE TABLE IF NOT EXISTS identity
     postal_code CHAR(5) NOT NULL,
     town VARCHAR(25) NOT NULL,
     accountability CHAR(1) NOT NULL,
-    devise CHAR(3) NOT NULL
-);
+    devise CHAR(3) NOT NULL,
+    FULLTEXT(denomination)
+) ENGINE=InnoDB;

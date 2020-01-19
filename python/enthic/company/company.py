@@ -45,14 +45,17 @@ class Company(OKJSONResponse):
             ####################################################################
             # BUNDLE RELATED DATA, THEREFORE DYNAMIC
             for line in sql_results:
-                _value = round(line[8], 2)
-                for accounting in ONTOLOGY["accounting"].keys():
-                    try:
-                        _description = ONTOLOGY["accounting"][accounting][
-                            "code"][line[7].lower()]
-                    except KeyError:
-                        pass
-                setattr(self, line[7].lower(), {"value": _value, "description": _description})
+                try:
+                    _value = round(line[8], 2)
+                    for accounting in ONTOLOGY["accounting"].keys():
+                        try:
+                            _description = ONTOLOGY["accounting"][accounting][
+                                "code"][line[7].lower()]
+                        except KeyError:
+                            pass
+                    setattr(self, line[7].lower(), {"value": _value, "description": _description})
+                except TypeError:  # IN CASE OF NO BUNDLE
+                    continue
 
             ####################################################################
             # SCORE RELATED CALCULATION

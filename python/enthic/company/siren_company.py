@@ -36,7 +36,7 @@ class SirenCompany(Company):
             avg_dir = args[0]
             cur.execute("""SELECT identity.siren, denomination, ape,
             postal_code, town, accountability, devise, bundle, SUM(amount)
-            FROM identity INNER JOIN bundle
+            FROM identity LEFT OUTER JOIN bundle
             ON bundle.siren = identity.siren
             WHERE identity.siren = '%s'
             GROUP BY bundle.bundle;""" % (siren))
@@ -47,7 +47,7 @@ class SirenCompany(Company):
                 avg_dir = None
             cur.execute("""SELECT identity.siren, denomination, ape,
             postal_code, town, accountability, devise, bundle, amount
-            FROM identity INNER JOIN bundle
+            FROM identity LEFT OUTER JOIN bundle
             ON bundle.siren = identity.siren
             WHERE identity.siren = '%s'
             AND declaration = %s;""" % (siren, year))

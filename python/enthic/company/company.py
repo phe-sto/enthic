@@ -46,7 +46,7 @@ class Company(OKJSONResponse):
                                                             ONTOLOGY["accounting"][
                                                                 sql_results[0][5]]["description"]),
                                    "description": "Type de comptabilité"}
-            self.devise = sql_results[0][6]
+            self.devise = {"value": sql_results[0][6], "description": "Devise"}
             ####################################################################
             # BUNDLE RELATED DATA, THEREFORE DYNAMIC
             for line in sql_results:

@@ -35,7 +35,7 @@ class DenominationCompany(Company):
         if year is None:
             avg_dir = args[0]
             cur.execute("""SELECT identity.siren, denomination, ape,
-            postal_code, town, accountability, devise, bundle, SUM(amount)
+            postal_code, town, accountability, devise, bundle, AVG(amount)
             FROM identity LEFT OUTER JOIN bundle
             ON bundle.siren = identity.siren
             WHERE identity.denomination = "%s"

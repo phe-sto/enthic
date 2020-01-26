@@ -16,6 +16,7 @@ Coding Rules:
 from enthic.score.classification import DistributionClassification
 from enthic.utils.ok_json_response import OKJSONResponse
 from enthic.ontology import ONTOLOGY
+from enthic.ape import ape_list
 
 
 class Company(OKJSONResponse):
@@ -33,14 +34,18 @@ class Company(OKJSONResponse):
         try:
             ####################################################################
             # IDENTIFICATION RELATED DATA
-            self.siren = sql_results[0][0]
-            self.denomination = sql_results[0][1]
-            self.ape = sql_results[0][2]
-            self.postal_code = sql_results[0][3]
-            self.town = sql_results[0][4]
-            self.accountability = {"value": sql_results[0][5],
-                                   "description": ONTOLOGY["accounting"][sql_results[0][5]][
-                                       "description"]}
+            self.siren = {"value": sql_results[0][0], "description": "SIREN"}
+            self.denomination = {"value": sql_results[0][1], "description": "Dénomination"}
+            self.ape = {"value": "{}, {}".format(sql_results[0][2], next(
+                (x for x in ape_list if x["fields"]["code_naf"] == sql_results[0][2]), None)[
+                "fields"]["intitule_naf"]),
+                        "description": "Code Activité Principale Exercée (NAF)"}
+            self.postal_code = {"value": sql_results[0][3], "description": "Code Postal"}
+            self.town = {"value": sql_results[0][4], "description": "Commune"}
+            self.accountability = {"value": "{}, {}".format(sql_results[0][5],
+                                                            ONTOLOGY["accounting"][
+                                                                sql_results[0][5]]["description"]),
+                                   "description": "Type de comptabilité"}
             self.devise = sql_results[0][6]
             ####################################################################
             # BUNDLE RELATED DATA, THEREFORE DYNAMIC

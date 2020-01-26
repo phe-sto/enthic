@@ -9,7 +9,7 @@ from sphinx.application import Sphinx
 ################################################################################
 # BUILD THE DOCUMENTATION WITH SPHINX FRAMEWORK
 builder = "html"
-srcdir = "source"
+srcdir = "doc"
 builddir = join("./enthic/static/documentation")
 doctreedir = join(builddir, "doctrees")
 

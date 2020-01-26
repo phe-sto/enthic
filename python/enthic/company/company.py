@@ -16,7 +16,7 @@ Coding Rules:
 from enthic.score.classification import DistributionClassification
 from enthic.utils.ok_json_response import OKJSONResponse
 from enthic.ontology import ONTOLOGY
-from enthic.ape import ape_list
+from enthic.ape import ape_code
 
 
 class Company(OKJSONResponse):
@@ -36,10 +36,12 @@ class Company(OKJSONResponse):
             # IDENTIFICATION RELATED DATA
             self.siren = {"value": sql_results[0][0], "description": "SIREN"}
             self.denomination = {"value": sql_results[0][1], "description": "Dénomination"}
-            self.ape = {"value": "{}, {}".format(sql_results[0][2], next(
-                (x for x in ape_list if x["fields"]["code_naf"] == sql_results[0][2]), None)[
-                "fields"]["intitule_naf"]),
-                        "description": "Code Activité Principale Exercée (NAF)"}
+            try:
+                self.ape = {"value": "{}, {}".format(sql_results[0][2], ape_code[sql_results[0][2]]),
+                            "description": "Code Activité Principale Exercée (NAF)"}
+            except KeyError:
+                self.ape = {"value": "{}, Code APE inconnu".format(sql_results[0][2]),
+                            "description": "Code Activité Principale Exercée (NAF)"}
             self.postal_code = {"value": sql_results[0][3], "description": "Code Postal"}
             self.town = {"value": sql_results[0][4], "description": "Commune"}
             self.accountability = {"value": "{}, {}".format(sql_results[0][5],

@@ -34,7 +34,7 @@ siren_re = compile(r"^\d{9}$")  # REGEX OF A SIREN
 year_re = compile(r"^\d{4}$")  # REGEX OF A YEAR
 
 application = Flask(__name__)
-CORS(application, expose_headers='Authorization')
+CORS(application, expose_headers='Authorization', max_age=600, methods=["POST", "GET"])
 mysql = MySQL(application)
 
 ################################################################################

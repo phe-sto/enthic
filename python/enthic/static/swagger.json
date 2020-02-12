@@ -2,7 +2,7 @@
   "swagger": "2.0",
   "info": {
     "description": "JSON API of French Company Account and Ethical Score",
-    "version": "2020.1.4",
+    "version": "2020.2.1",
     "title": "Swagger French Company Account and Ethical Score",
     "contact": {
       "email": "services@papit.fr"
@@ -58,7 +58,7 @@
         "tags": [
           "SIREN"
         ],
-        "summary": "Retrieve company information by SIREN.",
+        "summary": "Retrieve all company information by SIREN.",
         "description": "",
         "operationId": "siren_get",
         "consumes": [
@@ -126,12 +126,45 @@
         }
       }
     },
+    "/siren/{siren}/average": {
+      "get": {
+        "tags": [
+          "SIREN"
+        ],
+        "summary": "Retrieve company yearly average information by SIREN.",
+        "description": "",
+        "operationId": "siren_average_get",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "siren",
+            "in": "path",
+            "description": "All company SIREN. A 9 numeric characters long number.",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation, company information is returned in JSON"
+          },
+          "400": {
+            "description": "JSON is returned, contain a error value as error message."
+          }
+        }
+      }
+    },
     "/denomination/{denomination}": {
       "get": {
         "tags": [
           "Denomination"
         ],
-        "summary": "Retrieve company information by company name.",
+        "summary": "Retrieve all company information by company name.",
         "description": "",
         "operationId": "denomination_get",
         "consumes": [
@@ -152,6 +185,9 @@
         "responses": {
           "200": {
             "description": "Successful operation, company information is returned in JSON"
+          },
+          "400": {
+            "description": "JSON is returned, contain a error value as error message."
           }
         }
       }
@@ -189,6 +225,42 @@
         "responses": {
           "200": {
             "description": "Successful operation, company information is returned in JSON"
+          },
+          "400": {
+            "description": "JSON is returned, contain a error value as error message."
+          }
+        }
+      }
+    },
+    "/denomination/{denomination}/average": {
+      "get": {
+        "tags": [
+          "Denomination"
+        ],
+        "summary": "Retrieve company yearly average information by company name.",
+        "description": "",
+        "operationId": "denomination_average_get",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "denomination",
+            "in": "path",
+            "description": "An official company denomination.",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation, company information is returned in JSON"
+          },
+          "400": {
+            "description": "JSON is returned, contain a error value as error message."
           }
         }
       }

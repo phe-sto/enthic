@@ -9,6 +9,7 @@ from functools import wraps
 from json import loads, JSONDecodeError
 from re import compile, IGNORECASE
 
+from enthic.utils.error_json_response import ErrorJSONResponse
 from flask import request, abort
 
 sql_re = compile(
@@ -39,7 +40,7 @@ def check_sql_injection(func):
         for parameter in request.view_args.values():
             try:
                 if sql_re.match(parameter):
-                    abort(400)  # LEAVE REQUEST IN 400 STATUS
+                    abort(ErrorJSONResponse("Potential SQL injection prevented"))
             except TypeError:  # IF NOT A STRING, ONLY STRING CAN BE AN INJECTION
                 continue
         ########################################################################
@@ -50,7 +51,7 @@ def check_sql_injection(func):
                 for value in json_data.values():
                     try:
                         if sql_re.match(value):
-                            abort(400)  # LEAVE REQUEST IN 400 STATUS
+                            abort(ErrorJSONResponse("Potential SQL injection prevented"))
                     except TypeError:  # IF NOT A STRING, ONLY STRING CAN BE AN INJECTION
                         continue
         except JSONDecodeError:  # IF NOT A JSON

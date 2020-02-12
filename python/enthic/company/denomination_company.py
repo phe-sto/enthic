@@ -13,6 +13,7 @@ Coding Rules:
 - No output or print, just log and files.
 """
 
+from enthic.calculation.calculation import BundleCalculation
 from enthic.company.company import Company
 
 
@@ -21,36 +22,36 @@ class DenominationCompany(Company):
     Class DenominationCompany inherit from Company class.
     """
 
-    def __init__(self, mysql, denomination, year, *args):
+    def __init__(self, mysql, denomination, calculation):
         """
         Constructor of the DenominationCompany class.
 
            :param mysql: MySQL database to connect.
            :param denomination: The official denomination of the company.
-           :param year: Kwarg, default is None, otherwise an integer of the year
-              to retrieve.
-           :param *args: Average distribution ratio.
+           :param calculation: Type of data to return, average, a year, all.
+              Must be BundleCalculation enum.
         """
-        cur = mysql.connection.cursor()
-        if year is None:
-            avg_dir = args[0]
-            cur.execute("""SELECT identity.siren, denomination, ape,
-            postal_code, town, accountability, devise, bundle, AVG(amount)
-            FROM identity LEFT OUTER JOIN bundle
+        if calculation == BundleCalculation.AVERAGE:
+            Company.__init__(self, mysql, denomination, calculation, """
+            SELECT identity.siren, denomination, ape, postal_code, town,
+                accountability, devise, bundle, "average", AVG(amount)
+            FROM bundle LEFT JOIN identity
             ON bundle.siren = identity.siren
             WHERE identity.denomination = "%s"
-            GROUP BY identity.siren, bundle.bundle;""" % (denomination))
+            GROUP BY identity.siren, bundle.bundle;""")
+        elif calculation == BundleCalculation.ALL:
+            Company.__init__(self, mysql, denomination, calculation, """
+            SELECT identity.siren, denomination, ape, postal_code, town,
+                accountability, devise, bundle, declaration, amount
+            FROM bundle LEFT JOIN identity
+            ON bundle.siren = identity.siren
+            WHERE identity.denomination = "%s"
+            GROUP BY identity.siren, bundle.bundle, declaration, amount;""")
         else:
-            try:
-                avg_dir = args[0][int(year)]
-            except KeyError:
-                avg_dir = None
-            cur.execute("""SELECT identity.siren, denomination, 
-            ape, postal_code, town, accountability, devise, bundle, amount
-            FROM identity LEFT OUTER JOIN bundle
+            Company.__init__(self, mysql, denomination, calculation, """
+            SELECT identity.siren, denomination, ape, postal_code, town,
+                accountability, devise, bundle, "%s", amount
+            FROM bundle LEFT JOIN identity
             ON bundle.siren = identity.siren
             WHERE identity.denomination = "%s"
-            AND declaration = %s;""" % (denomination, year))
-        sql_results = cur.fetchall()
-        cur.close()
-        Company.__init__(self, sql_results, avg_dir)
+            AND declaration = %s;""")

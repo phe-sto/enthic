@@ -21,6 +21,6 @@ rm -rf $DATA_DIR/*.md5>/dev/null 2>&1;
 rm -rf ../output/*.tmp>/dev/null 2>&1;
 ################################################################################
 # CONSIDERED AS TWO STEPS
-step "UNZIP IN PYTHON ${unzipping_step} ZIP IN ${DATA_DIR}";
+step "UNZIPING IN ${DATA_DIR}";
 python3 ../python/enthic/extract_bundle.py -c ../configuration.json
 rm -rf $DATA_DIR/*.zip>/dev/null 2>&1;         # DELETE THE UNZIPPED FILE

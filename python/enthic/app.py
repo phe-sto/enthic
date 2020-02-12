@@ -16,13 +16,14 @@ Coding Rules:
 from inspect import stack
 from json import loads, load
 from os.path import dirname, join
-from re import compile
 
+from enthic.calculation.calculation import BundleCalculation
 from enthic.company.denomination_company import DenominationCompany
 from enthic.company.siren_company import SirenCompany
 from enthic.decorator.check_sql_injection import check_sql_injection
 from enthic.decorator.insert_request import insert_request
 from enthic.ontology import ONTOLOGY
+from enthic.result.result import result
 from enthic.utils.error_json_response import ErrorJSONResponse
 from enthic.utils.ok_json_response import OKJSONResponse
 from enthic.utils.sql_json_response import SQLJSONResponse
@@ -30,9 +31,8 @@ from flask import Flask, request
 from flask_cors import CORS
 from flask_mysqldb import MySQL
 
-siren_re = compile(r"^\d{9}$")  # REGEX OF A SIREN
-year_re = compile(r"^\d{4}$")  # REGEX OF A YEAR
-
+################################################################################
+# FLASK INITIALISATION
 application = Flask(__name__)
 CORS(application, expose_headers='Authorization', max_age=600, methods=["POST", "GET"])
 mysql = MySQL(application)
@@ -56,16 +56,17 @@ except IndexError as error:
     setup = False
 ################################################################################
 # CALCULATE SCORES RELATED DATA ONLY IF NOT BUILDING/INSTALLING
+
 with application.app_context():
     if setup is False:
         cur = mysql.connection.cursor()
         cur.execute("""SELECT declaration, ROUND(AVG(amount))
                     FROM bundle where bundle = 'DIR'
                     GROUP BY declaration;""")
-        sql_results_dir_year = cur.fetchall()
+        result.yearly_avg_dir = cur.fetchall()
         cur.execute("""SELECT ROUND(AVG(amount), 2)
                     FROM bundle where bundle = 'DIR';""")
-        avg_dir, = cur.fetchone()
+        result.avg_dir = cur.fetchone()[0]
         cur.close()
 
 
@@ -85,14 +86,23 @@ def company_siren_year(siren, year):
        :return: HTTP Response as application/json. Contain all known information
           on that company of an error message if SIREN or YEAR wrongly formatted.
     """
-    if siren_re.match(siren):
-        if year_re.match(year):
+    return SirenCompany(mysql, siren, year)
 
-            return SirenCompany(mysql, siren, year, dict(sql_results_dir_year))
-        else:
-            return ErrorJSONResponse("YEAR for is wrong, must match ^\d{4}$.")
-    else:
-        return ErrorJSONResponse("SIREN for is wrong, must match ^\d{9}$.")
+
+@application.route("/company/siren/<siren>/average", methods=['GET'], strict_slashes=False)
+@check_sql_injection
+@insert_request(mysql, request)
+def company_siren_average(siren):
+    """
+    Retrieve company information by SIREN, calculation of the years average.
+    Path is /company/siren/<siren> GET method only and no strict slash.
+
+       :param siren: SIREN identification, must be an 9 character long,
+          numeric only.
+       :return: HTTP Response as application/json. Contain all known information
+          on that company of an error message if SIREN wrongly formatted.
+    """
+    return SirenCompany(mysql, siren, BundleCalculation.AVERAGE)
 
 
 @application.route("/company/siren/<siren>", methods=['GET'], strict_slashes=False)
@@ -100,18 +110,31 @@ def company_siren_year(siren, year):
 @insert_request(mysql, request)
 def company_siren(siren):
     """
-    Retrieve company information by SIREN. Path is /company/siren/<siren> GET
-    method only and no strict slash.
+    Retrieve company information by SIREN, calculation of all years. Path is
+    /company/siren/<siren> GET method only and no strict slash.
 
        :param siren: SIREN identification, must be an 9 character long,
           numeric only.
        :return: HTTP Response as application/json. Contain all known information
           on that company of an error message if SIREN wrongly formatted.
     """
-    if siren_re.match(siren):
-        return SirenCompany(mysql, siren, None, avg_dir)
-    else:
-        return ErrorJSONResponse("SIREN for is wrong, must match ^\d{9}$.")
+    return SirenCompany(mysql, siren, BundleCalculation.ALL)
+
+
+@application.route("/company/denomination/<denomination>/average", methods=['GET'],
+                   strict_slashes=False)
+@check_sql_injection
+@insert_request(mysql, request)
+def company_denomination_average(denomination):
+    """
+    Retrieve company information by company denomination of the years average.
+    Path is /company/denomination/<denomination> GET method only and no strict
+    slash.
+
+       :param denomination: String, denomination of the company.
+       :return: HTTP Response as application/json. Contain all known information.
+    """
+    return DenominationCompany(mysql, denomination, BundleCalculation.AVERAGE)
 
 
 @application.route("/company/denomination/<denomination>", methods=['GET'],
@@ -120,13 +143,13 @@ def company_siren(siren):
 @insert_request(mysql, request)
 def company_denomination(denomination):
     """
-    Retrieve company information by company denomination. Path is
-    /company/denomination/<denomination> GET method only and no strict slash.
+    Retrieve company information by company denomination, calculation of all
+    years. Path is /company/denomination/<denomination> GET method only and no strict slash.
 
        :param denomination: String, denomination of the company.
        :return: HTTP Response as application/json. Contain all known information.
     """
-    return DenominationCompany(mysql, denomination, None, avg_dir)
+    return DenominationCompany(mysql, denomination, BundleCalculation.ALL)
 
 
 @application.route("/company/denomination/<denomination>/<year>", methods=['GET'],
@@ -142,10 +165,7 @@ def company_denomination_year(denomination, year):
        :param year: Year of results to return, default is None.
        :return: HTTP Response as application/json. Contain all known information.
     """
-    if year_re.match(year):
-        return DenominationCompany(mysql, denomination, year, dict(sql_results_dir_year))
-    else:
-        return ErrorJSONResponse("YEAR for is wrong, must match ^\d{4}$.")
+    return DenominationCompany(mysql, denomination, year)
 
 
 @application.route("/company/ontology", methods=['GET'], strict_slashes=False)

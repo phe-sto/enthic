@@ -84,6 +84,22 @@ def test_siren(host, siren):
     assert loads(response.text) is not None, "NOT RETURNING A JSON"
 
 
+@pytest.mark.parametrize("siren", ("38971811555",  # 11 CHARACTERS
+                                   "41066 492",  # 9 CHARACTERS WITH WHITESPACE
+                                   "41066d492",  # NON NUMERIC CHARACTER
+                                   "9999999"))  # 7 CHARACTERS
+def test_wrong_siren(host, siren):
+    """
+    Test the /company/siren endpoint with wrong SIREN. Should return a JSON.
+
+       :param host: Fixture of the API host.
+       :param siren: Parametrise fixture of a SIREN.
+    """
+    response = get("http://" + host + "/company/siren/" + siren)
+    assert response.status_code == 400
+    assert loads(response.text)["error"] != "", "NO ERROR MESSAGE OR EMPTY"
+
+
 @pytest.mark.parametrize("method", (put,
                                     delete,
                                     post))  # DOES NOT EXIST
@@ -95,6 +111,36 @@ def test_siren_wrong_method(host, method):
        :param host: Fixture of the API host.the wrong method to test.
     """
     response = method("http://" + host + "/company/siren/" + "410660492")
+    assert response.status_code == 405, "WRONG HTTP RETURN CODE"
+
+
+@pytest.mark.parametrize("siren", ("389718115",
+                                   "410660492",
+                                   "402595250",
+                                   "999999999"))  # DOES NOT EXIST
+def test_siren_average(host, siren):
+    """
+    Test the /company/siren/average endpoint. Should return a JSON.
+
+       :param host: Fixture of the API host.
+       :param siren: Parametrise fixture of a SIREN.
+    """
+    response = get("http://" + host + "/company/siren/" + siren + "/average")
+    assert response.status_code == 200, "WRONG HTTP RETURN CODE"
+    assert loads(response.text) is not None, "NOT RETURNING A JSON"
+
+
+@pytest.mark.parametrize("method", (put,
+                                    delete,
+                                    post))  # DOES NOT EXIST
+def test_siren_wrong_method_average(host, method):
+    """
+    Test the /company/siren/average endpoint with the wrong method. Should
+    return a JSON and a 404 status.
+
+       :param host: Fixture of the API host.the wrong method to test.
+    """
+    response = method("http://" + host + "/company/siren/" + "410660492" + "/average")
     assert response.status_code == 405, "WRONG HTTP RETURN CODE"
 
 
@@ -149,14 +195,14 @@ def test_siren_wrong_year(host, siren, year):
                                    "41066 492",  # 9 CHARACTERS WITH WHITESPACE
                                    "41066d492",  # NON NUMERIC CHARACTER
                                    "9999999"))  # 7 CHARACTERS
-def test_wrong_siren(host, siren):
+def test_wrong_siren_average(host, siren):
     """
-    Test the /company/siren endpoint with wrong SIREN. Should return a JSON.
+    Test the /company/siren/average endpoint with wrong SIREN. Should return a JSON.
 
        :param host: Fixture of the API host.
        :param siren: Parametrise fixture of a SIREN.
     """
-    response = get("http://" + host + "/company/siren/" + siren)
+    response = get("http://" + host + "/company/siren/" + siren + "/average")
     assert response.status_code == 400
     assert loads(response.text)["error"] != "", "NO ERROR MESSAGE OR EMPTY"
 
@@ -186,7 +232,36 @@ def test_denomination_wrong_method(host, method):
 
        :param host: Fixture of the API host.the wrong method to test.
     """
-    response = method("http://" + host + "/company/denomination/" + "410660492")
+    response = method("http://" + host + "/company/denomination/" + "410660492/")
+    assert response.status_code == 405, "WRONG HTTP RETURN CODE"
+
+
+@pytest.mark.parametrize("denomination", ("RCV PEINTURE", "THALES",
+                                          "L'APOSTROPHE", "RESEAUX ELECTRIQUE & INFORMATIQUE",
+                                          "TOTO SASU"))  # DOES NOT EXIST
+def test_denomination_average(host, denomination):
+    """
+    Test the /company/denomination/average endpoint. Should return a JSON.
+
+       :param host: Fixture of the API host.
+       :param denomination: Parametrise fixture of a company official name.
+    """
+    response = get("http://" + host + "/company/denomination/" + denomination + "/average")
+    assert response.status_code == 200, "WRONG HTTP RETURN CODE"
+    assert loads(response.text) is not None, "NOT RETURNING A JSON"
+
+
+@pytest.mark.parametrize("method", (put,
+                                    delete,
+                                    post))  # DOES NOT EXIST
+def test_denomination_wrong_method_average(host, method):
+    """
+    Test the /company/denomination/average endpoint with the wrong method.
+    Should return a JSON and a 404 status.
+
+       :param host: Fixture of the API host.the wrong method to test.
+    """
+    response = method("http://" + host + "/company/denomination/" + "410660492/average")
     assert response.status_code == 405, "WRONG HTTP RETURN CODE"
 
 
@@ -394,7 +469,7 @@ def test_check_sql_injection_path(host, sql_request):
        :param host: Fixture of the API host.
        :param sql_request_1: Parametrize fixture of a possible SQL request.
     """
-    response = get("http://" + host + "/company/denomination/" + sql_request)
+    response = get("http://" + host + "/company/denomination/" + sql_request + "/average")
     assert response.status_code == 400, "WRONG HTTP RETURN CODE"
 
 

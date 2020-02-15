@@ -107,7 +107,7 @@ previous CSV files.</p>
 <div class="section" id="development-and-coding-rules">
 <h2>Development and Coding Rules<a class="headerlink" href="#development-and-coding-rules" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
-<li>snake_case for variables, defintion and CamelCase for classes.</li>
+<li>snake_case for variables, definition and CamelCase for classes.</li>
 <li>Only argument is configuration file for python.</li>
 <li>No output or print information (just raw results authorized), just log and files.</li>
 <li>Sonar Qube integration.</li>
@@ -146,18 +146,15 @@ build the doc at the same time.</p>
 ├── LICENSE.md
 │
 ├── python
-│   ├── <span class="nb">source</span>
+│   ├── doc
 │   │   ├── conf.py
 │   │   ├── index.rst
 │   │   └── papit.png
 │   │
-│   ├── decorator
-│   │   ├── __init__.py
-│   │   ├── check_sql_injection.py
-│   │   └── insert_request.py
-│   │
 │   ├── enthic
 │   │   ├── app.py
+│   │   ├── ape.py
+│   │   ├── ontology.py
 │   │   ├── conftest.py
 │   │   ├── extract_bundle.py
 │   │   ├── __init__.py
@@ -166,6 +163,26 @@ build the doc at the same time.</p>
 │   │   ├── test_extract_bundle.py
 │   │   ├── test_app.py
 │   │   ├── test_treat_bundle.py
+│   │   │
+│   │   ├── company
+│   │   │   ├── __init__.py
+│   │   │   ├── siren_company.py
+│   │   │   ├── denomination_company.py
+│   │   │   └── company.py
+│   │   │
+│   │   ├── result
+│   │   │   ├── __init__.py
+│   │   │   └── result.py
+│   │   │
+│   │   ├── score
+│   │   │   ├── __init__.py
+│   │   │   └── classification.py
+│   │   │
+│   │   ├── decorator
+│   │   │   ├── __init__.py
+│   │   │   ├── check_sql_injection.py
+│   │   │   └── insert_request.py
+│   │   │
 │   │   └── utils
 │   │       ├── configuration.py
 │   │       ├── json_response.py
@@ -191,9 +208,8 @@ build the doc at the same time.</p>
 │   │   ├── swagger-ui-standalone-preset.js
 │   │   └── swagger-ui-standalone-preset.js.map
 │   │
-│   ├── LICENSE.md
 │   ├── setup.py
-│   ├── __init__.py
+│   ├── setup.cfg
 │   └── MANIFEST.in
 │
 ├── sql

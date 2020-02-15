@@ -90,7 +90,7 @@ License
 Development and Coding Rules
 ------------------------------
 
-- snake_case for variables, defintion and CamelCase for classes.
+- snake_case for variables, definition and CamelCase for classes.
 - Only argument is configuration file for python.
 - No output or print information (just raw results authorized), just log and files.
 - Sonar Qube integration.
@@ -135,18 +135,15 @@ Library structure
    ├── LICENSE.md
    │
    ├── python
-   │   ├── source
+   │   ├── doc
    │   │   ├── conf.py
    │   │   ├── index.rst
    │   │   └── papit.png
    │   │
-   │   ├── decorator
-   │   │   ├── __init__.py
-   │   │   ├── check_sql_injection.py
-   │   │   └── insert_request.py
-   │   │
    │   ├── enthic
    │   │   ├── app.py
+   │   │   ├── ape.py
+   │   │   ├── ontology.py
    │   │   ├── conftest.py
    │   │   ├── extract_bundle.py
    │   │   ├── __init__.py
@@ -155,6 +152,26 @@ Library structure
    │   │   ├── test_extract_bundle.py
    │   │   ├── test_app.py
    │   │   ├── test_treat_bundle.py
+   │   │   │
+   │   │   ├── company
+   │   │   │   ├── __init__.py
+   │   │   │   ├── siren_company.py
+   │   │   │   ├── denomination_company.py
+   │   │   │   └── company.py
+   │   │   │
+   │   │   ├── result
+   │   │   │   ├── __init__.py
+   │   │   │   └── result.py
+   │   │   │
+   │   │   ├── score
+   │   │   │   ├── __init__.py
+   │   │   │   └── classification.py
+   │   │   │
+   │   │   ├── decorator
+   │   │   │   ├── __init__.py
+   │   │   │   ├── check_sql_injection.py
+   │   │   │   └── insert_request.py
+   │   │   │
    │   │   └── utils
    │   │       ├── configuration.py
    │   │       ├── json_response.py
@@ -180,9 +197,8 @@ Library structure
    │   │   ├── swagger-ui-standalone-preset.js
    │   │   └── swagger-ui-standalone-preset.js.map
    │   │
-   │   ├── LICENSE.md
    │   ├── setup.py
-   │   ├── __init__.py
+   │   ├── setup.cfg
    │   └── MANIFEST.in
    │
    ├── sql

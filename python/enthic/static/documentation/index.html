@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>French societies accountability extraction and treatment by PapIT &#8212; enthic 2020.2.1 documentation</title>
+    <title>French societies accountability extraction and treatment by PapIT &#8212; enthic 2020.2.2 documentation</title>
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
@@ -559,7 +559,7 @@ or average</p>
 <dt id="company.company.MultipleBundleCompany">
 <em class="property">class </em><code class="descclassname">company.company.</code><code class="descname">MultipleBundleCompany</code><span class="sig-paren">(</span><em>sql_request</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/company/company.html#MultipleBundleCompany"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#company.company.MultipleBundleCompany" title="Permalink to this definition">¶</a></dt>
 <dd><p>Company data returned with array of Bundle for each declaration. Inherit from
-OKJSONResponse to return a JSON.</p>
+OKJSONResponse to return a JSON and SQLData because of base data.</p>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
    <span class="nt">&quot;gan&quot;</span> <span class="p">:</span> <span class="p">{</span>
       <span class="nt">&quot;value&quot;</span> <span class="p">:</span> <span class="mi">2976860</span><span class="p">,</span>
@@ -616,29 +616,13 @@ OKJSONResponse to return a JSON.</p>
 <dt id="company.company.UniqueBundleCompany">
 <em class="property">class </em><code class="descclassname">company.company.</code><code class="descname">UniqueBundleCompany</code><span class="sig-paren">(</span><em>sql_request</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/company/company.html#UniqueBundleCompany"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#company.company.UniqueBundleCompany" title="Permalink to this definition">¶</a></dt>
 <dd><p>Company data returned with a unique bundle as attribute. Inherit from
-OKJSONResponse to return a JSON.</p>
+OKJSONResponse to return a JSON and SQLData because of base data..</p>
 </dd></dl>
 
 <dl class="class">
 <dt id="company.company.YearCompany">
 <em class="property">class </em><code class="descclassname">company.company.</code><code class="descname">YearCompany</code><span class="sig-paren">(</span><em>year</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/company/company.html#YearCompany"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#company.company.YearCompany" title="Permalink to this definition">¶</a></dt>
 <dd><p>Company data for a given year.</p>
-</dd></dl>
-
-<dl class="function">
-<dt id="company.company.get_result">
-<code class="descclassname">company.company.</code><code class="descname">get_result</code><span class="sig-paren">(</span><em>request</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/company/company.html#get_result"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#company.company.get_result" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return a fetchall for a given SQL request on the application MySQL database</p>
-<blockquote>
-<div><table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">param request:</th><td class="field-body">SQL request to execute as a string.</td>
-</tr>
-</tbody>
-</table>
-</div></blockquote>
 </dd></dl>
 
 </div>

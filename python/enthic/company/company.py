@@ -16,13 +16,13 @@ Coding Rules:
 from re import compile
 
 from enthic.ape import ape_code
+from enthic.database.sql_data import SQLData
 from enthic.ontology import ONTOLOGY
 from enthic.result.result import result
 from enthic.score.classification import DistributionClassification
 from enthic.utils.error_json_response import ErrorJSONResponse
-from enthic.utils.not_found_response import NotFoundJSONResponse
 from enthic.utils.ok_json_response import OKJSONResponse
-from flask import current_app as application, abort
+from flask import abort
 
 year_re = compile(r"^\d{4}$")  # REGEX OF A YEAR
 siren_re = compile(r"^\d{9}$")  # REGEX OF A SIREN
@@ -172,25 +172,10 @@ class Bundle:
             setattr(self, _declaration, _bundles)
 
 
-def get_result(request):
-    """
-    Return a fetchall for a given SQL request on the application MySQL database
-
-       :param request: SQL request to execute as a string.
-    """
-    with application.app_context():
-        from enthic.database.mysql import mysql
-        cur = mysql.connection.cursor()
-        cur.execute(request)
-        sql_result = cur.fetchall()
-        cur.close()
-        return sql_result
-
-
-class UniqueBundleCompany(OKJSONResponse):
+class UniqueBundleCompany(OKJSONResponse, SQLData):
     """
     Company data returned with a unique bundle as attribute. Inherit from
-    OKJSONResponse to return a JSON.
+    OKJSONResponse to return a JSON and SQLData because of base data..
     """
 
     def __init__(self, sql_request):
@@ -240,21 +225,18 @@ class UniqueBundleCompany(OKJSONResponse):
               }
            }
         """
-        sql_result = get_result(sql_request)
-        try:
-            OKJSONResponse.__init__(self, {**CompanyIdentity(*sql_result[0][:7]).__dict__,
-                                           **Bundle(
-                                               *[bundle[7:] for bundle in
-                                                 list(sql_result)]).__dict__[
-                                               sql_result[0][8]]})
-        except IndexError:
-            abort(NotFoundJSONResponse())
+        SQLData.__init__(self, sql_request)
+        OKJSONResponse.__init__(self, {**CompanyIdentity(*self.sql_results[0][:7]).__dict__,
+                                       **Bundle(
+                                           *[bundle[7:] for bundle in
+                                             list(self.sql_results)]).__dict__[
+                                           self.sql_results[0][8]]})
 
 
-class MultipleBundleCompany(OKJSONResponse):
+class MultipleBundleCompany(OKJSONResponse, SQLData):
     """
     Company data returned with array of Bundle for each declaration. Inherit from
-    OKJSONResponse to return a JSON.
+    OKJSONResponse to return a JSON and SQLData because of base data.
 
     .. code-block:: json
 
@@ -312,17 +294,14 @@ class MultipleBundleCompany(OKJSONResponse):
 
            :param sql_request: SQL request of the Company data to execute as a string.
         """
-        sql_result = get_result(sql_request)
-        try:
-            _bundles = Bundle(*[bundle[7:] for bundle in list(sql_result)]).__dict__
-            self.financial_data = {"financial_data": []}
-            for year, _bundle in _bundles.items():
-                self.financial_data["financial_data"].append(
-                    {**{"declaration": {"value": int(year), "description": "Année de déclaration"}},
-                     **_bundle})
-            OKJSONResponse.__init__(self,
-                                    {**CompanyIdentity(
-                                        *sql_result[0][:7]).__dict__,
-                                     **self.financial_data})
-        except IndexError:
-            abort(NotFoundJSONResponse())
+        SQLData.__init__(self, sql_request)
+        _bundles = Bundle(*[bundle[7:] for bundle in list(self.sql_results)]).__dict__
+        self.financial_data = {"financial_data": []}
+        for year, _bundle in _bundles.items():
+            self.financial_data["financial_data"].append(
+                {**{"declaration": {"value": int(year), "description": "Année de déclaration"}},
+                 **_bundle})
+        OKJSONResponse.__init__(self,
+                                {**CompanyIdentity(
+                                    *self.sql_results[0][:7]).__dict__,
+                                 **self.financial_data})

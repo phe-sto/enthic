@@ -28,6 +28,7 @@ from enthic.company.siren_company import (
     AverageSirenCompany,
     AllSirenCompany
 )
+from enthic.database.fetchall import get_results
 from enthic.decorator.check_sql_injection import check_sql_injection
 from enthic.decorator.insert_request import insert_request
 from enthic.ontology import ONTOLOGY
@@ -190,19 +191,16 @@ def result_array(probe, limit):
        :param probe: A string to match.
        :param limit: Integer, the limit of result to return.
     """
-    cursor = mysql.connection.cursor()
-    cursor.execute("""SELECT siren, denomination, ape, postal_code, town, 
+    companies = list(get_results("""SELECT siren, denomination, ape, postal_code, town, 
                     accountability, devise
                     FROM identity WHERE siren LIKE '%s'
                     OR denomination LIKE '%s'
                     OR MATCH(denomination) AGAINST ('%s' IN NATURAL LANGUAGE MODE)
                     LIMIT %s;""" %
-                   ("{0}%".format(probe),
-                    "{0}%".format(probe),
-                    "{0}%".format(probe),
-                    limit))
-    companies = list(cursor.fetchall())
-    cursor.close()
+                                 ("{0}%".format(probe),
+                                  "{0}%".format(probe),
+                                  "{0}%".format(probe),
+                                  limit)))
     return tuple([CompanyIdentity(*company).__dict__ for company in companies])
 
 

@@ -125,102 +125,161 @@ Library structure
 
 .. code-block:: bash
 
-   .
-   │
-   ├── bilans-saisis-v1.1.xsd
-   ├── sonar-project.properties
-   ├── README.rst
-   ├── account-ontology.csv
-   ├── .gitignore
-   ├── LICENSE.md
-   │
-   ├── python
-   │   ├── doc
-   │   │   ├── conf.py
-   │   │   ├── index.rst
-   │   │   └── papit.png
-   │   │
-   │   ├── enthic
-   │   │   ├── app.py
-   │   │   ├── ape.py
-   │   │   ├── ontology.py
-   │   │   ├── conftest.py
-   │   │   ├── extract_bundle.py
-   │   │   ├── __init__.py
-   │   │   ├── configuration.json
-   │   │   ├── treat_bundle.py
-   │   │   ├── test_extract_bundle.py
-   │   │   ├── test_app.py
-   │   │   ├── test_treat_bundle.py
-   │   │   │
-   │   │   ├── company
-   │   │   │   ├── __init__.py
-   │   │   │   ├── siren_company.py
-   │   │   │   ├── denomination_company.py
-   │   │   │   └── company.py
-   │   │   │
-   │   │   ├── result
-   │   │   │   ├── __init__.py
-   │   │   │   └── result.py
-   │   │   │
-   │   │   ├── score
-   │   │   │   ├── __init__.py
-   │   │   │   └── classification.py
-   │   │   │
-   │   │   ├── decorator
-   │   │   │   ├── __init__.py
-   │   │   │   ├── check_sql_injection.py
-   │   │   │   └── insert_request.py
-   │   │   │
-   │   │   └── utils
-   │   │       ├── configuration.py
-   │   │       ├── json_response.py
-   │   │       ├── error_json_response.py
-   │   │       ├── ok_json_response.py
-   │   │       ├── sql_json_response.py
-   │   │       └── __init__.py
-   │   │
-   │   ├── static
-   │   │   ├── 404.html
-   │   │   ├── 500.html
-   │   │   ├── bootstrap.min.css
-   │   │   ├── favicon.ico
-   │   │   ├── index.html
-   │   │   ├── jquery.min.js
-   │   │   ├── swagger.json
-   │   │   ├── swagger-ui-bundle.js
-   │   │   ├── swagger-ui-bundle.js.map
-   │   │   ├── swagger-ui.css
-   │   │   ├── swagger-ui.css.map
-   │   │   ├── swagger-ui.js
-   │   │   ├── swagger-ui.js.map
-   │   │   ├── swagger-ui-standalone-preset.js
-   │   │   └── swagger-ui-standalone-preset.js.map
-   │   │
-   │   ├── setup.py
-   │   ├── setup.cfg
-   │   └── MANIFEST.in
-   │
-   ├── sql
-   │   ├── create-database-enthic.sql
-   │   ├── create-index-bundle.sql
-   │   ├── create-index-identity.sql
-   │   ├── create-table-bundle.sql 
-   │   ├── create-table-identity.sql
-   │   ├── insert-bundle.sql
-   │   └── insert-identity.sql   
-   │
-   ├── sh
-   │   ├── check-data.sh   
-   │   ├── clear-data.sh
-   │   ├── database-creation.sh
-   │   ├── install-dependencies.sh
-   │   ├── install-wheel.sh
-   │   └── csv-table.sh
-   │
-   ├── input
-   │
-   └── output
+    ./enthic
+    ├── account-ontology.csv
+    ├── bilans-saisis-v1.1.xsd
+    ├── .gitignore
+    ├── input
+    ├── LICENSE.md
+    ├── output
+    │   ├── bundle.csv
+    │   └── identity.csv
+    ├── python
+    │   ├── doc
+    │   │   ├── conf.py
+    │   │   ├── index.rst
+    │   │   └── papit.png
+    │   ├── enthic
+    │   │   ├── ape.py
+    │   │   ├── app.py
+    │   │   ├── company
+    │   │   │   ├── company.py
+    │   │   │   ├── denomination_company.py
+    │   │   │   ├── __init__.py
+    │   │   │   └── siren_company.py
+    │   │   ├── database
+    │   │   │   ├── mysql.py
+    │   │   │   └── __init__.py
+    │   │   ├── configuration.json
+    │   │   ├── conftest.py
+    │   │   ├── decorator
+    │   │   │   ├── check_sql_injection.py
+    │   │   │   ├── __init__.py
+    │   │   │   └── insert_request.py
+    │   │   ├── extract_bundle.py
+    │   │   ├── __init__.py
+    │   │   ├── ontology.py
+    │   │   ├── result
+    │   │   │   ├── __init__.py
+    │   │   │   └── result.py
+    │   │   ├── score
+    │   │   │   ├── classification.py
+    │   │   │   └── __init__.py
+    │   │   ├── static
+    │   │   │   ├── 404.html
+    │   │   │   ├── 500.html
+    │   │   │   ├── bootstrap.min.css
+    │   │   │   ├── documentation
+    │   │   │   │   ├── .buildinfo
+    │   │   │   │   ├── doctrees
+    │   │   │   │   │   ├── environment.pickle
+    │   │   │   │   │   └── index.doctree
+    │   │   │   │   ├── genindex.html
+    │   │   │   │   ├── index.html
+    │   │   │   │   ├── _modules
+    │   │   │   │   │   ├── company
+    │   │   │   │   │   │   ├── company.html
+    │   │   │   │   │   │   ├── denomination_company.html
+    │   │   │   │   │   │   └── siren_company.html
+    │   │   │   │   │   ├── decorator
+    │   │   │   │   │   │   ├── check_sql_injection.html
+    │   │   │   │   │   │   └── insert_request.html
+    │   │   │   │   │   ├── index.html
+    │   │   │   │   │   ├── score
+    │   │   │   │   │   │   └── classification.html
+    │   │   │   │   │   └── utils
+    │   │   │   │   │       ├── error_json_response.html
+    │   │   │   │   │       ├── json_response.html
+    │   │   │   │   │       ├── not_found_response.html
+    │   │   │   │   │       └── ok_json_response.html
+    │   │   │   │   ├── .nojekyll
+    │   │   │   │   ├── objects.inv
+    │   │   │   │   ├── py-modindex.html
+    │   │   │   │   ├── search.html
+    │   │   │   │   ├── searchindex.js
+    │   │   │   │   ├── _sources
+    │   │   │   │   │   └── index.rst.txt
+    │   │   │   │   └── _static
+    │   │   │   │       ├── ajax-loader.gif
+    │   │   │   │       ├── alabaster.css
+    │   │   │   │       ├── basic.css
+    │   │   │   │       ├── comment-bright.png
+    │   │   │   │       ├── comment-close.png
+    │   │   │   │       ├── comment.png
+    │   │   │   │       ├── custom.css
+    │   │   │   │       ├── doctools.js
+    │   │   │   │       ├── documentation_options.js
+    │   │   │   │       ├── down.png
+    │   │   │   │       ├── down-pressed.png
+    │   │   │   │       ├── file.png
+    │   │   │   │       ├── jquery-3.2.1.js
+    │   │   │   │       ├── jquery.js
+    │   │   │   │       ├── language_data.js
+    │   │   │   │       ├── minus.png
+    │   │   │   │       ├── papit.png
+    │   │   │   │       ├── plus.png
+    │   │   │   │       ├── pygments.css
+    │   │   │   │       ├── searchtools.js
+    │   │   │   │       ├── underscore-1.3.1.js
+    │   │   │   │       ├── underscore.js
+    │   │   │   │       ├── up.png
+    │   │   │   │       ├── up-pressed.png
+    │   │   │   │       └── websupport.js
+    │   │   │   ├── favicon.ico
+    │   │   │   ├── google7775f38904c3d3fc.html
+    │   │   │   ├── index.html
+    │   │   │   ├── jquery.min.js
+    │   │   │   ├── robot.txt
+    │   │   │   ├── sitemap.xml
+    │   │   │   ├── swagger.json
+    │   │   │   ├── swagger-ui-bundle.js
+    │   │   │   ├── swagger-ui-bundle.js.map
+    │   │   │   ├── swagger-ui.css
+    │   │   │   ├── swagger-ui.css.map
+    │   │   │   ├── swagger-ui.js
+    │   │   │   ├── swagger-ui.js.map
+    │   │   │   ├── swagger-ui-standalone-preset.js
+    │   │   │   └── swagger-ui-standalone-preset.js.map
+    │   │   ├── test_app.py
+    │   │   ├── test_extract_bundle.py
+    │   │   ├── test_treat_bundle.py
+    │   │   ├── treat_bundle.py
+    │   │   └── utils
+    │   │       ├── error_json_response.py
+    │   │       ├── __init__.py
+    │   │       ├── json_response.py
+    │   │       ├── not_found_response.py
+    │   │       └── ok_json_response.py
+    │   ├── enthic.egg-info
+    │   │   ├── dependency_links.txt
+    │   │   ├── entry_points.txt
+    │   │   ├── PKG-INFO
+    │   │   ├── requires.txt
+    │   │   ├── SOURCES.txt
+    │   │   └── top_level.txt
+    │   ├── __init__.py
+    │   ├── MANIFEST.in
+    │   ├── setup.cfg
+    │   └── setup.py
+    ├── README.rst
+    ├── sh
+    │   ├── check-data.sh
+    │   ├── clear-data.sh
+    │   ├── csv-table.sh
+    │   ├── database-creation.sh
+    │   ├── install-dependencies.sh
+    │   └── install-wheel.sh
+    ├── sonar-project.properties
+    └── sql
+        ├── create-database-enthic.sql
+        ├── create-index-bundle.sql
+        ├── create-index-identity.sql
+        ├── create-table-bundle.sql
+        ├── create-table-identity.sql
+        ├── create-table-request.sql
+        ├── insert-bundle.sql
+        └── insert-identity.sql
+
 
 
 Donation

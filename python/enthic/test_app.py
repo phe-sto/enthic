@@ -11,14 +11,13 @@ Coding Rules:
 - No output or print, just log and files.
 """
 from json import loads, dumps
+from random import randint, choice
+from string import ascii_letters, digits
 
 import pytest
-from enthic.app import mysql
 from enthic.utils.error_json_response import ErrorJSONResponse
 from enthic.utils.json_response import JSONResponse
 from enthic.utils.ok_json_response import OKJSONResponse
-from enthic.utils.sql_json_response import SQLJSONResponse, \
-    SQLJSONResponseException
 from requests import get, post, delete, put
 
 
@@ -44,19 +43,6 @@ def test_json_response():
     """
     with pytest.raises(TypeError):
         JSONResponse({2})
-
-
-@pytest.mark.parametrize("sql_request", ("INSERT (1, 2, 3) INTO bundle;",
-                                         "UPDATE bundle SET siren = '' WHERE siren = '999';",
-                                         "DROP bundle;"))
-def test_sql_json_response_wrong_statement(sql_request):
-    """
-    Test SQLJSONResponse with wrong INSERT and UPDATE.
-
-       :param sql_request: SQL requests to test.
-    """
-    with pytest.raises(SQLJSONResponseException):
-        SQLJSONResponse(mysql, sql_request)
 
 
 @pytest.fixture()
@@ -355,8 +341,7 @@ def test_search(host, probe, limit):
     assert loads(response.text) is not None, "NOT RETURNING A JSON"
 
 
-from random import randint, choice
-from string import ascii_letters, digits
+
 
 
 @pytest.mark.parametrize("hack", ((0,) * 100)
@@ -476,7 +461,7 @@ def test_check_sql_injection_path(host, sql_request):
 @pytest.mark.parametrize("probe,limit", (("toto", "pouet"),
                                          (2, 1),
                                          (2, "toto"),
-                                         ("toto", 10000),
+                                         ("toto", 10000000000),
                                          )
                          )
 def test_wrong_value_search(host, probe, limit):

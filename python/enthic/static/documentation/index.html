@@ -136,102 +136,160 @@ build the doc at the same time.</p>
 </div>
 <div class="section" id="library-structure">
 <h2>Library structure<a class="headerlink" href="#library-structure" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>.
-│
-├── bilans-saisis-v1.1.xsd
-├── sonar-project.properties
-├── README.rst
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>./enthic
 ├── account-ontology.csv
+├── bilans-saisis-v1.1.xsd
 ├── .gitignore
-├── LICENSE.md
-│
-├── python
-│   ├── doc
-│   │   ├── conf.py
-│   │   ├── index.rst
-│   │   └── papit.png
-│   │
-│   ├── enthic
-│   │   ├── app.py
-│   │   ├── ape.py
-│   │   ├── ontology.py
-│   │   ├── conftest.py
-│   │   ├── extract_bundle.py
-│   │   ├── __init__.py
-│   │   ├── configuration.json
-│   │   ├── treat_bundle.py
-│   │   ├── test_extract_bundle.py
-│   │   ├── test_app.py
-│   │   ├── test_treat_bundle.py
-│   │   │
-│   │   ├── company
-│   │   │   ├── __init__.py
-│   │   │   ├── siren_company.py
-│   │   │   ├── denomination_company.py
-│   │   │   └── company.py
-│   │   │
-│   │   ├── result
-│   │   │   ├── __init__.py
-│   │   │   └── result.py
-│   │   │
-│   │   ├── score
-│   │   │   ├── __init__.py
-│   │   │   └── classification.py
-│   │   │
-│   │   ├── decorator
-│   │   │   ├── __init__.py
-│   │   │   ├── check_sql_injection.py
-│   │   │   └── insert_request.py
-│   │   │
-│   │   └── utils
-│   │       ├── configuration.py
-│   │       ├── json_response.py
-│   │       ├── error_json_response.py
-│   │       ├── ok_json_response.py
-│   │       ├── sql_json_response.py
-│   │       └── __init__.py
-│   │
-│   ├── static
-│   │   ├── <span class="m">404</span>.html
-│   │   ├── <span class="m">500</span>.html
-│   │   ├── bootstrap.min.css
-│   │   ├── favicon.ico
-│   │   ├── index.html
-│   │   ├── jquery.min.js
-│   │   ├── swagger.json
-│   │   ├── swagger-ui-bundle.js
-│   │   ├── swagger-ui-bundle.js.map
-│   │   ├── swagger-ui.css
-│   │   ├── swagger-ui.css.map
-│   │   ├── swagger-ui.js
-│   │   ├── swagger-ui.js.map
-│   │   ├── swagger-ui-standalone-preset.js
-│   │   └── swagger-ui-standalone-preset.js.map
-│   │
-│   ├── setup.py
-│   ├── setup.cfg
-│   └── MANIFEST.in
-│
-├── sql
-│   ├── create-database-enthic.sql
-│   ├── create-index-bundle.sql
-│   ├── create-index-identity.sql
-│   ├── create-table-bundle.sql
-│   ├── create-table-identity.sql
-│   ├── insert-bundle.sql
-│   └── insert-identity.sql
-│
-├── sh
-│   ├── check-data.sh
-│   ├── clear-data.sh
-│   ├── database-creation.sh
-│   ├── install-dependencies.sh
-│   ├── install-wheel.sh
-│   └── csv-table.sh
-│
 ├── input
-│
-└── output
+├── LICENSE.md
+├── output
+│   ├── bundle.csv
+│   └── identity.csv
+├── python
+│   ├── doc
+│   │   ├── conf.py
+│   │   ├── index.rst
+│   │   └── papit.png
+│   ├── enthic
+│   │   ├── ape.py
+│   │   ├── app.py
+│   │   ├── company
+│   │   │   ├── company.py
+│   │   │   ├── denomination_company.py
+│   │   │   ├── __init__.py
+│   │   │   └── siren_company.py
+│   │   ├── database
+│   │   │   ├── mysql.py
+│   │   │   └── __init__.py
+│   │   ├── configuration.json
+│   │   ├── conftest.py
+│   │   ├── decorator
+│   │   │   ├── check_sql_injection.py
+│   │   │   ├── __init__.py
+│   │   │   └── insert_request.py
+│   │   ├── extract_bundle.py
+│   │   ├── __init__.py
+│   │   ├── ontology.py
+│   │   ├── result
+│   │   │   ├── __init__.py
+│   │   │   └── result.py
+│   │   ├── score
+│   │   │   ├── classification.py
+│   │   │   └── __init__.py
+│   │   ├── static
+│   │   │   ├── <span class="m">404</span>.html
+│   │   │   ├── <span class="m">500</span>.html
+│   │   │   ├── bootstrap.min.css
+│   │   │   ├── documentation
+│   │   │   │   ├── .buildinfo
+│   │   │   │   ├── doctrees
+│   │   │   │   │   ├── environment.pickle
+│   │   │   │   │   └── index.doctree
+│   │   │   │   ├── genindex.html
+│   │   │   │   ├── index.html
+│   │   │   │   ├── _modules
+│   │   │   │   │   ├── company
+│   │   │   │   │   │   ├── company.html
+│   │   │   │   │   │   ├── denomination_company.html
+│   │   │   │   │   │   └── siren_company.html
+│   │   │   │   │   ├── decorator
+│   │   │   │   │   │   ├── check_sql_injection.html
+│   │   │   │   │   │   └── insert_request.html
+│   │   │   │   │   ├── index.html
+│   │   │   │   │   ├── score
+│   │   │   │   │   │   └── classification.html
+│   │   │   │   │   └── utils
+│   │   │   │   │       ├── error_json_response.html
+│   │   │   │   │       ├── json_response.html
+│   │   │   │   │       ├── not_found_response.html
+│   │   │   │   │       └── ok_json_response.html
+│   │   │   │   ├── .nojekyll
+│   │   │   │   ├── objects.inv
+│   │   │   │   ├── py-modindex.html
+│   │   │   │   ├── search.html
+│   │   │   │   ├── searchindex.js
+│   │   │   │   ├── _sources
+│   │   │   │   │   └── index.rst.txt
+│   │   │   │   └── _static
+│   │   │   │       ├── ajax-loader.gif
+│   │   │   │       ├── alabaster.css
+│   │   │   │       ├── basic.css
+│   │   │   │       ├── comment-bright.png
+│   │   │   │       ├── comment-close.png
+│   │   │   │       ├── comment.png
+│   │   │   │       ├── custom.css
+│   │   │   │       ├── doctools.js
+│   │   │   │       ├── documentation_options.js
+│   │   │   │       ├── down.png
+│   │   │   │       ├── down-pressed.png
+│   │   │   │       ├── file.png
+│   │   │   │       ├── jquery-3.2.1.js
+│   │   │   │       ├── jquery.js
+│   │   │   │       ├── language_data.js
+│   │   │   │       ├── minus.png
+│   │   │   │       ├── papit.png
+│   │   │   │       ├── plus.png
+│   │   │   │       ├── pygments.css
+│   │   │   │       ├── searchtools.js
+│   │   │   │       ├── underscore-1.3.1.js
+│   │   │   │       ├── underscore.js
+│   │   │   │       ├── up.png
+│   │   │   │       ├── up-pressed.png
+│   │   │   │       └── websupport.js
+│   │   │   ├── favicon.ico
+│   │   │   ├── google7775f38904c3d3fc.html
+│   │   │   ├── index.html
+│   │   │   ├── jquery.min.js
+│   │   │   ├── robot.txt
+│   │   │   ├── sitemap.xml
+│   │   │   ├── swagger.json
+│   │   │   ├── swagger-ui-bundle.js
+│   │   │   ├── swagger-ui-bundle.js.map
+│   │   │   ├── swagger-ui.css
+│   │   │   ├── swagger-ui.css.map
+│   │   │   ├── swagger-ui.js
+│   │   │   ├── swagger-ui.js.map
+│   │   │   ├── swagger-ui-standalone-preset.js
+│   │   │   └── swagger-ui-standalone-preset.js.map
+│   │   ├── test_app.py
+│   │   ├── test_extract_bundle.py
+│   │   ├── test_treat_bundle.py
+│   │   ├── treat_bundle.py
+│   │   └── utils
+│   │       ├── error_json_response.py
+│   │       ├── __init__.py
+│   │       ├── json_response.py
+│   │       ├── not_found_response.py
+│   │       └── ok_json_response.py
+│   ├── enthic.egg-info
+│   │   ├── dependency_links.txt
+│   │   ├── entry_points.txt
+│   │   ├── PKG-INFO
+│   │   ├── requires.txt
+│   │   ├── SOURCES.txt
+│   │   └── top_level.txt
+│   ├── __init__.py
+│   ├── MANIFEST.in
+│   ├── setup.cfg
+│   └── setup.py
+├── README.rst
+├── sh
+│   ├── check-data.sh
+│   ├── clear-data.sh
+│   ├── csv-table.sh
+│   ├── database-creation.sh
+│   ├── install-dependencies.sh
+│   └── install-wheel.sh
+├── sonar-project.properties
+└── sql
+    ├── create-database-enthic.sql
+    ├── create-index-bundle.sql
+    ├── create-index-identity.sql
+    ├── create-table-bundle.sql
+    ├── create-table-identity.sql
+    ├── create-table-request.sql
+    ├── insert-bundle.sql
+    └── insert-identity.sql
 </pre></div>
 </div>
 </div>
@@ -255,10 +313,7 @@ build the doc at the same time.</p>
 <div class="section" id="documentation-of-the-python-code">
 <h1><strong>Documentation of the Python Code</strong><a class="headerlink" href="#documentation-of-the-python-code" title="Permalink to this headline">¶</a></h1>
 <p>Those two python scripts are used in shell <code class="docutils literal notranslate"><span class="pre">script</span> <span class="pre">table-csv.sh</span></code>.</p>
-</div>
-<div class="section" id="module-extract_bundle">
-<span id="extract-bundle"></span><h1>Extract bundle<a class="headerlink" href="#module-extract_bundle" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="parse-all-the-xml-available-to-list-all-the-bundle-code">
+<span class="target" id="module-extract_bundle"></span><div class="section" id="parse-all-the-xml-available-to-list-all-the-bundle-code">
 <h2>Parse all the XML available to list all the bundle code<a class="headerlink" href="#parse-all-the-xml-available-to-list-all-the-bundle-code" title="Permalink to this headline">¶</a></h2>
 <p>PROGRAM BY PAPIT SASU, 2019</p>
 <p>Coding Rules:</p>
@@ -268,10 +323,7 @@ build the doc at the same time.</p>
 <li>No output or print, just log and files.</li>
 </ul>
 </div>
-</div>
-<div class="section" id="module-treat_bundle">
-<span id="sum-bundle"></span><h1>Sum bundle<a class="headerlink" href="#module-treat_bundle" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="sum-all-the-bundle-of-the-year-for-one-company-from-a-csv-sorted-file">
+<span class="target" id="module-treat_bundle"></span><div class="section" id="sum-all-the-bundle-of-the-year-for-one-company-from-a-csv-sorted-file">
 <h2>Sum all the bundle of the year for one company from a CSV sorted file<a class="headerlink" href="#sum-all-the-bundle-of-the-year-for-one-company-from-a-csv-sorted-file" title="Permalink to this headline">¶</a></h2>
 <p>PROGRAM BY PAPIT SASU, 2019</p>
 <p>Coding Rules:</p>
@@ -281,9 +333,6 @@ build the doc at the same time.</p>
 <li>No output or bundle_file.write, just log and files.</li>
 </ul>
 </div>
-</div>
-<div class="section" id="flask-api-server">
-<h1>Flask API server<a class="headerlink" href="#flask-api-server" title="Permalink to this headline">¶</a></h1>
 <p>Following module relates to Flask server.</p>
 <span class="target" id="module-app"></span><div class="section" id="flask-application-compatible-with-sphinx-documentation-and-gunicorn-server">
 <h2>Flask application, compatible with Sphinx documentation and Gunicorn server<a class="headerlink" href="#flask-application-compatible-with-sphinx-documentation-and-gunicorn-server" title="Permalink to this headline">¶</a></h2>
@@ -295,10 +344,7 @@ build the doc at the same time.</p>
 <li>No output or print, just log and files.</li>
 </ul>
 </div>
-</div>
-<div class="section" id="module-decorator.check_sql_injection">
-<span id="sql-injection-decorator"></span><h1>SQL injection decorator<a class="headerlink" href="#module-decorator.check_sql_injection" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="decorator-checking-sql-injection-in-requests">
+<span class="target" id="module-decorator.check_sql_injection"></span><div class="section" id="decorator-checking-sql-injection-in-requests">
 <h2>Decorator checking SQL injection in requests<a class="headerlink" href="#decorator-checking-sql-injection-in-requests" title="Permalink to this headline">¶</a></h2>
 <dl class="function">
 <dt id="decorator.check_sql_injection.check_sql_injection">
@@ -319,44 +365,20 @@ build the doc at the same time.</p>
 </dd></dl>
 
 </div>
-</div>
-<div class="section" id="module-decorator.insert_request">
-<span id="insert-incoming-request-decorator"></span><h1>Insert incoming request decorator<a class="headerlink" href="#module-decorator.insert_request" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="decorator-inserting-data-from-the-incoming-request-in-another-thread">
-<h2>Decorator inserting data from the incoming request in another thread<a class="headerlink" href="#decorator-inserting-data-from-the-incoming-request-in-another-thread" title="Permalink to this headline">¶</a></h2>
-<dl class="function">
-<dt id="decorator.insert_request.insert">
-<code class="descclassname">decorator.insert_request.</code><code class="descname">insert</code><span class="sig-paren">(</span><em>*args</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/decorator/insert_request.html#insert"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#decorator.insert_request.insert" title="Permalink to this definition">¶</a></dt>
-<dd><p>Insert data from the request in the request table.</p>
-<blockquote>
-<div><table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">param args:</th><td class="field-body">A tuple, first element is the database, second is the
-request data.</td>
-</tr>
-</tbody>
-</table>
-</div></blockquote>
-</dd></dl>
-
+<span class="target" id="module-decorator.insert_request"></span><div class="section" id="decorator-inserting-data-from-the-incoming-request-after-having-executed-function">
+<h2>Decorator inserting data from the incoming request after having executed function<a class="headerlink" href="#decorator-inserting-data-from-the-incoming-request-after-having-executed-function" title="Permalink to this headline">¶</a></h2>
 <dl class="function">
 <dt id="decorator.insert_request.insert_request">
-<code class="descclassname">decorator.insert_request.</code><code class="descname">insert_request</code><span class="sig-paren">(</span><em>my_sql_db</em>, <em>request</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/decorator/insert_request.html#insert_request"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#decorator.insert_request.insert_request" title="Permalink to this definition">¶</a></dt>
-<dd><p>Decorator insert request data in database for further analysis using
-arguments objects of the function.</p>
+<code class="descclassname">decorator.insert_request.</code><code class="descname">insert_request</code><span class="sig-paren">(</span><em>func</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/decorator/insert_request.html#insert_request"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#decorator.insert_request.insert_request" title="Permalink to this definition">¶</a></dt>
+<dd><p>Decorator inserting relevant request data timestamped.</p>
 <blockquote>
 <div><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name" colspan="2">param my_sql_db:</th></tr>
-<tr class="field-odd field"><td>&#160;</td><td class="field-body">The database where the request data is to be inserted.</td>
+<tr class="field-odd field"><th class="field-name">param func:</th><td class="field-body">Function decorated.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">param request:</th><td class="field-body">The request object.</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">return:</th><td class="field-body">The function decorated.</td>
+<tr class="field-even field"><th class="field-name">return:</th><td class="field-body">The function decorated.</td>
 </tr>
 </tbody>
 </table>
@@ -364,9 +386,15 @@ arguments objects of the function.</p>
 </dd></dl>
 
 </div>
-</div>
-<div class="section" id="module-utils.json_response">
-<span id="flask-json-response"></span><h1>Flask JSON response<a class="headerlink" href="#module-utils.json_response" title="Permalink to this headline">¶</a></h1>
+<span class="target" id="module-utils.json_response"></span><div class="section" id="json-response-class">
+<h2>JSON response Class<a class="headerlink" href="#json-response-class" title="Permalink to this headline">¶</a></h2>
+<p>PROGRAM BY PAPIT SASU, 2020</p>
+<p>Coding Rules:</p>
+<ul class="simple">
+<li>Snake case for variables.</li>
+<li>Only argument is configuration file.</li>
+<li>No output or print, just log and files.</li>
+</ul>
 <dl class="class">
 <dt id="utils.json_response.JSONResponse">
 <em class="property">class </em><code class="descclassname">utils.json_response.</code><code class="descname">JSONResponse</code><span class="sig-paren">(</span><em>object_response</em>, <em>status=200</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/utils/json_response.html#JSONResponse"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#utils.json_response.JSONResponse" title="Permalink to this definition">¶</a></dt>
@@ -375,8 +403,15 @@ application/json and HTTP default return code 200, but can be changed.</p>
 </dd></dl>
 
 </div>
-<div class="section" id="module-utils.ok_json_response">
-<span id="flask-ok-json-response"></span><h1>Flask OK JSON response<a class="headerlink" href="#module-utils.ok_json_response" title="Permalink to this headline">¶</a></h1>
+<span class="target" id="module-utils.ok_json_response"></span><div class="section" id="valid-json-response-class">
+<h2>Valid JSON response Class<a class="headerlink" href="#valid-json-response-class" title="Permalink to this headline">¶</a></h2>
+<p>PROGRAM BY PAPIT SASU, 2020</p>
+<p>Coding Rules:</p>
+<ul class="simple">
+<li>Snake case for variables.</li>
+<li>Only argument is configuration file.</li>
+<li>No output or print, just log and files.</li>
+</ul>
 <dl class="class">
 <dt id="utils.ok_json_response.OKJSONResponse">
 <em class="property">class </em><code class="descclassname">utils.ok_json_response.</code><code class="descname">OKJSONResponse</code><span class="sig-paren">(</span><em>object_response</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/utils/ok_json_response.html#OKJSONResponse"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#utils.ok_json_response.OKJSONResponse" title="Permalink to this definition">¶</a></dt>
@@ -385,34 +420,51 @@ application/json and HTTP return code 200.</p>
 </dd></dl>
 
 </div>
-<div class="section" id="module-utils.error_json_response">
-<span id="flask-error-json-response"></span><h1>Flask error JSON response<a class="headerlink" href="#module-utils.error_json_response" title="Permalink to this headline">¶</a></h1>
+<span class="target" id="module-utils.error_json_response"></span><div class="section" id="error-json-response-class">
+<h2>Error JSON response Class<a class="headerlink" href="#error-json-response-class" title="Permalink to this headline">¶</a></h2>
+<p>PROGRAM BY PAPIT SASU, 2020</p>
+<p>Coding Rules:</p>
+<ul class="simple">
+<li>Snake case for variables.</li>
+<li>Only argument is configuration file.</li>
+<li>No output or print, just log and files.</li>
+</ul>
 <dl class="class">
 <dt id="utils.error_json_response.ErrorJSONResponse">
 <em class="property">class </em><code class="descclassname">utils.error_json_response.</code><code class="descname">ErrorJSONResponse</code><span class="sig-paren">(</span><em>error_message</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/utils/error_json_response.html#ErrorJSONResponse"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#utils.error_json_response.ErrorJSONResponse" title="Permalink to this definition">¶</a></dt>
 <dd><p>Abstraction on top of the flask JSON Response class, for error JSON,
-application/json and HTTP return code 400.</p>
+application/json and HTTP return code 400. Formatted as hydra JSON-LD.</p>
 </dd></dl>
 
 </div>
-<div class="section" id="module-utils.sql_json_response">
-<span id="flask-sql-json-response"></span><h1>Flask SQL JSON response<a class="headerlink" href="#module-utils.sql_json_response" title="Permalink to this headline">¶</a></h1>
+<span class="target" id="module-utils.not_found_response"></span><div class="section" id="not-found-json-response-class">
+<h2>Not found JSON response Class<a class="headerlink" href="#not-found-json-response-class" title="Permalink to this headline">¶</a></h2>
+<p>PROGRAM BY PAPIT SASU, 2020</p>
+<p>Coding Rules:</p>
+<ul class="simple">
+<li>Snake case for variables.</li>
+<li>Only argument is configuration file.</li>
+<li>No output or print, just log and files.</li>
+</ul>
 <dl class="class">
-<dt id="utils.sql_json_response.SQLJSONResponse">
-<em class="property">class </em><code class="descclassname">utils.sql_json_response.</code><code class="descname">SQLJSONResponse</code><span class="sig-paren">(</span><em>my_sql_db</em>, <em>sql_request</em>, <em>*args</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/utils/sql_json_response.html#SQLJSONResponse"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#utils.sql_json_response.SQLJSONResponse" title="Permalink to this definition">¶</a></dt>
-<dd><p>SQL result turn into JSON response via OKJSONResponse class.</p>
-</dd></dl>
-
-<dl class="exception">
-<dt id="utils.sql_json_response.SQLJSONResponseException">
-<em class="property">exception </em><code class="descclassname">utils.sql_json_response.</code><code class="descname">SQLJSONResponseException</code><a class="reference internal" href="_modules/utils/sql_json_response.html#SQLJSONResponseException"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#utils.sql_json_response.SQLJSONResponseException" title="Permalink to this definition">¶</a></dt>
-<dd><p>Specific exception to SQLJSONResponse.</p>
+<dt id="utils.not_found_response.NotFoundJSONResponse">
+<em class="property">class </em><code class="descclassname">utils.not_found_response.</code><code class="descname">NotFoundJSONResponse</code><a class="reference internal" href="_modules/utils/not_found_response.html#NotFoundJSONResponse"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#utils.not_found_response.NotFoundJSONResponse" title="Permalink to this definition">¶</a></dt>
+<dd><p>Abstraction on top of the flask JSON Response class, for not found data JSON,
+application/json and HTTP return code 404. Formatted as hydra JSON-LD.</p>
 </dd></dl>
 
 </div>
-<div class="section" id="module-company.siren_company">
-<span id="siren-company-response"></span><h1>Siren Company response<a class="headerlink" href="#module-company.siren_company" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="class-representing-a-company-constructed-with-a-siren">
+<span class="target" id="module-result.result"></span><div class="section" id="class-result-singleton">
+<h2>Class Result Singleton<a class="headerlink" href="#class-result-singleton" title="Permalink to this headline">¶</a></h2>
+<p>PROGRAM BY PAPIT SASU, 2020</p>
+<p>Coding Rules:</p>
+<ul class="simple">
+<li>Snake case for variables.</li>
+<li>Only argument is configuration file.</li>
+<li>No output or print, just log and files.</li>
+</ul>
+</div>
+<span class="target" id="module-company.siren_company"></span><div class="section" id="class-representing-a-company-constructed-with-a-siren">
 <h2>Class representing a company, constructed with a SIREN<a class="headerlink" href="#class-representing-a-company-constructed-with-a-siren" title="Permalink to this headline">¶</a></h2>
 <p>PROGRAM BY PAPIT SASU, 2020</p>
 <p>Coding Rules:</p>
@@ -422,17 +474,29 @@ application/json and HTTP return code 400.</p>
 <li>No output or print, just log and files.</li>
 </ul>
 <dl class="class">
-<dt id="company.siren_company.SirenCompany">
-<em class="property">class </em><code class="descclassname">company.siren_company.</code><code class="descname">SirenCompany</code><span class="sig-paren">(</span><em>mysql</em>, <em>siren</em>, <em>calculation</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/company/siren_company.html#SirenCompany"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#company.siren_company.SirenCompany" title="Permalink to this definition">¶</a></dt>
-<dd><p>Class SirenCompany inherit from Company class.</p>
+<dt id="company.siren_company.AllSirenCompany">
+<em class="property">class </em><code class="descclassname">company.siren_company.</code><code class="descname">AllSirenCompany</code><span class="sig-paren">(</span><em>siren</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/company/siren_company.html#AllSirenCompany"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#company.siren_company.AllSirenCompany" title="Permalink to this definition">¶</a></dt>
+<dd><p>Class SirenCompany and MultipleBundleCompany inherit from Company class as
+it has potentially multiple declarations.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="company.siren_company.AverageSirenCompany">
+<em class="property">class </em><code class="descclassname">company.siren_company.</code><code class="descname">AverageSirenCompany</code><span class="sig-paren">(</span><em>siren</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/company/siren_company.html#AverageSirenCompany"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#company.siren_company.AverageSirenCompany" title="Permalink to this definition">¶</a></dt>
+<dd><p>Class AverageSirenCompany inherit from UniqueBundleCompany class as
+it as a unique average bundle. Inherit also YearCompany to check the year.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="company.siren_company.YearSirenCompany">
+<em class="property">class </em><code class="descclassname">company.siren_company.</code><code class="descname">YearSirenCompany</code><span class="sig-paren">(</span><em>siren</em>, <em>year</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/company/siren_company.html#YearSirenCompany"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#company.siren_company.YearSirenCompany" title="Permalink to this definition">¶</a></dt>
+<dd><p>Class YearDenominationCompany inherit from UniqueBundleCompany class as
+it as a unique average bundle. Inherit also YearCompany to check the year.</p>
 </dd></dl>
 
 </div>
-</div>
-<div class="section" id="module-company.denomination_company">
-<span id="denomination-company-response"></span><h1>Denomination Company response<a class="headerlink" href="#module-company.denomination_company" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="class-representing-a-company-constructed-with-a-denomination">
-<h2>Class representing a company, constructed with a Denomination<a class="headerlink" href="#class-representing-a-company-constructed-with-a-denomination" title="Permalink to this headline">¶</a></h2>
+<span class="target" id="module-company.denomination_company"></span><div class="section" id="class-representing-a-company-constructed-with-a-denomination">
+<h2>Class representing a company, constructed with a denomination<a class="headerlink" href="#class-representing-a-company-constructed-with-a-denomination" title="Permalink to this headline">¶</a></h2>
 <p>PROGRAM BY PAPIT SASU, 2020</p>
 <p>Coding Rules:</p>
 <ul class="simple">
@@ -441,17 +505,30 @@ application/json and HTTP return code 400.</p>
 <li>No output or print, just log and files.</li>
 </ul>
 <dl class="class">
-<dt id="company.denomination_company.DenominationCompany">
-<em class="property">class </em><code class="descclassname">company.denomination_company.</code><code class="descname">DenominationCompany</code><span class="sig-paren">(</span><em>mysql</em>, <em>denomination</em>, <em>calculation</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/company/denomination_company.html#DenominationCompany"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#company.denomination_company.DenominationCompany" title="Permalink to this definition">¶</a></dt>
-<dd><p>Class DenominationCompany inherit from Company class.</p>
+<dt id="company.denomination_company.AllDenominationCompany">
+<em class="property">class </em><code class="descclassname">company.denomination_company.</code><code class="descname">AllDenominationCompany</code><span class="sig-paren">(</span><em>denomination</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/company/denomination_company.html#AllDenominationCompany"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#company.denomination_company.AllDenominationCompany" title="Permalink to this definition">¶</a></dt>
+<dd><p>Class AllDenominationCompany inherit from MultipleBundleCompany,
+DenominationCompany class as it has multiple bundles.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="company.denomination_company.AverageDenominationCompany">
+<em class="property">class </em><code class="descclassname">company.denomination_company.</code><code class="descname">AverageDenominationCompany</code><span class="sig-paren">(</span><em>denomination</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/company/denomination_company.html#AverageDenominationCompany"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#company.denomination_company.AverageDenominationCompany" title="Permalink to this definition">¶</a></dt>
+<dd><p>Class AverageDenominationCompany inherit from UniqueBundleCompany,
+DenominationCompany class as it as a unique average bundle.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="company.denomination_company.YearDenominationCompany">
+<em class="property">class </em><code class="descclassname">company.denomination_company.</code><code class="descname">YearDenominationCompany</code><span class="sig-paren">(</span><em>denomination</em>, <em>year</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/company/denomination_company.html#YearDenominationCompany"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#company.denomination_company.YearDenominationCompany" title="Permalink to this definition">¶</a></dt>
+<dd><p>Class YearDenominationCompany inherit from YearCompany, UniqueBundleCompany,
+DenominationCompany class as it as a unique average bundle. Inherit also
+YearCompany to check the year.</p>
 </dd></dl>
 
 </div>
-</div>
-<div class="section" id="module-company.company">
-<span id="company-response"></span><h1>Company response<a class="headerlink" href="#module-company.company" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="class-representing-a-company">
-<h2>Class representing a company<a class="headerlink" href="#class-representing-a-company" title="Permalink to this headline">¶</a></h2>
+<span class="target" id="module-company.company"></span><div class="section" id="generic-classes-representing-a-company-and-their-function-s">
+<h2>Generic classes representing a company and their function(s)<a class="headerlink" href="#generic-classes-representing-a-company-and-their-function-s" title="Permalink to this headline">¶</a></h2>
 <p>PROGRAM BY PAPIT SASU, 2020</p>
 <p>Coding Rules:</p>
 <ul class="simple">
@@ -460,16 +537,132 @@ application/json and HTTP return code 400.</p>
 <li>No output or print, just log and files.</li>
 </ul>
 <dl class="class">
-<dt id="company.company.Company">
-<em class="property">class </em><code class="descclassname">company.company.</code><code class="descname">Company</code><span class="sig-paren">(</span><em>mysql</em>, <em>probe</em>, <em>calculation</em>, <em>sql_request</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/company/company.html#Company"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#company.company.Company" title="Permalink to this definition">¶</a></dt>
-<dd><p>Company class inherit from OKJSONResponse.</p>
+<dt id="company.company.Bundle">
+<em class="property">class </em><code class="descclassname">company.company.</code><code class="descname">Bundle</code><span class="sig-paren">(</span><em>*args</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/company/company.html#Bundle"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#company.company.Bundle" title="Permalink to this definition">¶</a></dt>
+<dd><p>All the bundle declared and scoring of a company. Can be several year, one
+or average</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="company.company.CompanyIdentity">
+<em class="property">class </em><code class="descclassname">company.company.</code><code class="descname">CompanyIdentity</code><span class="sig-paren">(</span><em>*args</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/company/company.html#CompanyIdentity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#company.company.CompanyIdentity" title="Permalink to this definition">¶</a></dt>
+<dd><p>Identity data of the Company.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="company.company.DenominationCompany">
+<em class="property">class </em><code class="descclassname">company.company.</code><code class="descname">DenominationCompany</code><span class="sig-paren">(</span><em>denomination</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/company/company.html#DenominationCompany"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#company.company.DenominationCompany" title="Permalink to this definition">¶</a></dt>
+<dd><p>Denomination defined company.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="company.company.MultipleBundleCompany">
+<em class="property">class </em><code class="descclassname">company.company.</code><code class="descname">MultipleBundleCompany</code><span class="sig-paren">(</span><em>sql_request</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/company/company.html#MultipleBundleCompany"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#company.company.MultipleBundleCompany" title="Permalink to this definition">¶</a></dt>
+<dd><p>Company data returned with array of Bundle for each declaration. Inherit from
+OKJSONResponse to return a JSON.</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+   <span class="nt">&quot;gan&quot;</span> <span class="p">:</span> <span class="p">{</span>
+      <span class="nt">&quot;value&quot;</span> <span class="p">:</span> <span class="mi">2976860</span><span class="p">,</span>
+      <span class="nt">&quot;description&quot;</span> <span class="p">:</span> <span class="s2">&quot;Gain d&#39;une companie, actuellement le chiffre d&#39;affaire uniquement FJ&quot;</span>
+   <span class="p">},</span>
+   <span class="nt">&quot;ape&quot;</span> <span class="p">:</span> <span class="p">{</span>
+      <span class="nt">&quot;description&quot;</span> <span class="p">:</span> <span class="s2">&quot;Code Activité Principale Exercée (NAF)&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;value&quot;</span> <span class="p">:</span> <span class="s2">&quot;7311Z, Activités des agences de publicité&quot;</span>
+   <span class="p">},</span>
+   <span class="nt">&quot;di&quot;</span> <span class="p">:</span> <span class="p">{</span>
+      <span class="nt">&quot;value&quot;</span> <span class="p">:</span> <span class="mi">499</span><span class="p">,</span>
+      <span class="nt">&quot;description&quot;</span> <span class="p">:</span> <span class="s2">&quot;Résultat de l’exercice (bénéfice ou perte)&quot;</span>
+   <span class="p">},</span>
+   <span class="nt">&quot;town&quot;</span> <span class="p">:</span> <span class="p">{</span>
+      <span class="nt">&quot;description&quot;</span> <span class="p">:</span> <span class="s2">&quot;Commune&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;value&quot;</span> <span class="p">:</span> <span class="s2">&quot;ERMONT&quot;</span>
+   <span class="p">},</span>
+   <span class="nt">&quot;financial_data&quot;</span> <span class="p">:</span> <span class="p">[</span>
+       <span class="p">{</span>
+          <span class="nt">&quot;dir&quot;</span> <span class="p">:</span> <span class="p">{</span>
+             <span class="nt">&quot;value&quot;</span> <span class="p">:</span> <span class="mf">0.03</span><span class="p">,</span>
+             <span class="nt">&quot;description&quot;</span> <span class="p">:</span> <span class="s2">&quot;Distribution ratio, (FY + HJ) / GAN, i.e pondération de dis par le chiffre d&#39;affaire&quot;</span>
+          <span class="p">},</span>
+          <span class="nt">&quot;dis&quot;</span> <span class="p">:</span> <span class="p">{</span>
+             <span class="nt">&quot;value&quot;</span> <span class="p">:</span> <span class="mi">34974</span><span class="p">,</span>
+             <span class="nt">&quot;description&quot;</span> <span class="p">:</span> <span class="s2">&quot;Somme des distributions, FY + HJ&quot;</span>
+          <span class="p">},</span>
+          <span class="nt">&quot;di&quot;</span> <span class="p">:</span> <span class="p">{</span>
+             <span class="nt">&quot;description&quot;</span> <span class="p">:</span> <span class="s2">&quot;Résultat de l’exercice (bénéfice ou perte)&quot;</span><span class="p">,</span>
+             <span class="nt">&quot;value&quot;</span> <span class="p">:</span> <span class="mi">-129783</span>
+          <span class="p">},</span>
+          <span class="nt">&quot;gan&quot;</span> <span class="p">:</span> <span class="p">{</span>
+             <span class="nt">&quot;description&quot;</span> <span class="p">:</span> <span class="s2">&quot;Gain d&#39;une companie, actuellement le chiffre d&#39;affaire uniquement FJ&quot;</span><span class="p">,</span>
+             <span class="nt">&quot;value&quot;</span> <span class="p">:</span> <span class="mi">1196260</span>
+          <span class="p">},</span>
+          <span class="nt">&quot;declaration&quot;</span> <span class="p">:</span> <span class="p">{</span>
+             <span class="nt">&quot;value&quot;</span> <span class="p">:</span> <span class="mi">2015</span><span class="p">,</span>
+             <span class="nt">&quot;description&quot;</span> <span class="p">:</span> <span class="s2">&quot;Année de déclaration&quot;</span>
+          <span class="p">}</span>
+       <span class="p">}</span>
+    <span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="class">
+<dt id="company.company.SirenCompany">
+<em class="property">class </em><code class="descclassname">company.company.</code><code class="descname">SirenCompany</code><span class="sig-paren">(</span><em>siren</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/company/company.html#SirenCompany"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#company.company.SirenCompany" title="Permalink to this definition">¶</a></dt>
+<dd><p>Siren defined company.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="company.company.UniqueBundleCompany">
+<em class="property">class </em><code class="descclassname">company.company.</code><code class="descname">UniqueBundleCompany</code><span class="sig-paren">(</span><em>sql_request</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/company/company.html#UniqueBundleCompany"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#company.company.UniqueBundleCompany" title="Permalink to this definition">¶</a></dt>
+<dd><p>Company data returned with a unique bundle as attribute. Inherit from
+OKJSONResponse to return a JSON.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="company.company.YearCompany">
+<em class="property">class </em><code class="descclassname">company.company.</code><code class="descname">YearCompany</code><span class="sig-paren">(</span><em>year</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/company/company.html#YearCompany"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#company.company.YearCompany" title="Permalink to this definition">¶</a></dt>
+<dd><p>Company data for a given year.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="company.company.get_result">
+<code class="descclassname">company.company.</code><code class="descname">get_result</code><span class="sig-paren">(</span><em>request</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/company/company.html#get_result"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#company.company.get_result" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a fetchall for a given SQL request on the application MySQL database</p>
+<blockquote>
+<div><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">param request:</th><td class="field-body">SQL request to execute as a string.</td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
 </dd></dl>
 
 </div>
+<span class="target" id="module-database.mysql"></span><div class="section" id="flask-mysql-initialisation">
+<h2>Flask MySQL initialisation<a class="headerlink" href="#flask-mysql-initialisation" title="Permalink to this headline">¶</a></h2>
+<p>PROGRAM BY PAPIT SASU, 2019</p>
+<p>Coding Rules:</p>
+<ul class="simple">
+<li>Snake case for variables.</li>
+<li>Only argument is configuration file.</li>
+<li>No output or print, just log and files.</li>
+</ul>
 </div>
-<div class="section" id="module-score.classification">
-<span id="distribution-classifier"></span><h1>Distribution Classifier<a class="headerlink" href="#module-score.classification" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="enum-of-divers-classification">
+<span class="target" id="module-result.result"></span><div class="section" id="id1">
+<h2>Class Result Singleton<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<p>PROGRAM BY PAPIT SASU, 2020</p>
+<p>Coding Rules:</p>
+<ul class="simple">
+<li>Snake case for variables.</li>
+<li>Only argument is configuration file.</li>
+<li>No output or print, just log and files.</li>
+</ul>
+</div>
+<span class="target" id="module-score.classification"></span><div class="section" id="enum-of-divers-classification">
 <h2>Enum of divers classification<a class="headerlink" href="#enum-of-divers-classification" title="Permalink to this headline">¶</a></h2>
 <p>PROGRAM BY PAPIT SASU, 2020</p>
 <p>Coding Rules:</p>
@@ -537,44 +730,22 @@ should be self explanatory:</p>
 </ul>
 </li>
 <li><a class="reference internal" href="#indices-and-tables">Indices and tables</a></li>
-<li><a class="reference internal" href="#documentation-of-the-python-code"><strong>Documentation of the Python Code</strong></a></li>
-<li><a class="reference internal" href="#module-extract_bundle">Extract bundle</a><ul>
+<li><a class="reference internal" href="#documentation-of-the-python-code"><strong>Documentation of the Python Code</strong></a><ul>
 <li><a class="reference internal" href="#parse-all-the-xml-available-to-list-all-the-bundle-code">Parse all the XML available to list all the bundle code</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#module-treat_bundle">Sum bundle</a><ul>
 <li><a class="reference internal" href="#sum-all-the-bundle-of-the-year-for-one-company-from-a-csv-sorted-file">Sum all the bundle of the year for one company from a CSV sorted file</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#flask-api-server">Flask API server</a><ul>
 <li><a class="reference internal" href="#flask-application-compatible-with-sphinx-documentation-and-gunicorn-server">Flask application, compatible with Sphinx documentation and Gunicorn server</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#module-decorator.check_sql_injection">SQL injection decorator</a><ul>
 <li><a class="reference internal" href="#decorator-checking-sql-injection-in-requests">Decorator checking SQL injection in requests</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#module-decorator.insert_request">Insert incoming request decorator</a><ul>
-<li><a class="reference internal" href="#decorator-inserting-data-from-the-incoming-request-in-another-thread">Decorator inserting data from the incoming request in another thread</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#module-utils.json_response">Flask JSON response</a></li>
-<li><a class="reference internal" href="#module-utils.ok_json_response">Flask OK JSON response</a></li>
-<li><a class="reference internal" href="#module-utils.error_json_response">Flask error JSON response</a></li>
-<li><a class="reference internal" href="#module-utils.sql_json_response">Flask SQL JSON response</a></li>
-<li><a class="reference internal" href="#module-company.siren_company">Siren Company response</a><ul>
+<li><a class="reference internal" href="#decorator-inserting-data-from-the-incoming-request-after-having-executed-function">Decorator inserting data from the incoming request after having executed function</a></li>
+<li><a class="reference internal" href="#json-response-class">JSON response Class</a></li>
+<li><a class="reference internal" href="#valid-json-response-class">Valid JSON response Class</a></li>
+<li><a class="reference internal" href="#error-json-response-class">Error JSON response Class</a></li>
+<li><a class="reference internal" href="#not-found-json-response-class">Not found JSON response Class</a></li>
+<li><a class="reference internal" href="#class-result-singleton">Class Result Singleton</a></li>
 <li><a class="reference internal" href="#class-representing-a-company-constructed-with-a-siren">Class representing a company, constructed with a SIREN</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#module-company.denomination_company">Denomination Company response</a><ul>
-<li><a class="reference internal" href="#class-representing-a-company-constructed-with-a-denomination">Class representing a company, constructed with a Denomination</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#module-company.company">Company response</a><ul>
-<li><a class="reference internal" href="#class-representing-a-company">Class representing a company</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#module-score.classification">Distribution Classifier</a><ul>
+<li><a class="reference internal" href="#class-representing-a-company-constructed-with-a-denomination">Class representing a company, constructed with a denomination</a></li>
+<li><a class="reference internal" href="#generic-classes-representing-a-company-and-their-function-s">Generic classes representing a company and their function(s)</a></li>
+<li><a class="reference internal" href="#flask-mysql-initialisation">Flask MySQL initialisation</a></li>
+<li><a class="reference internal" href="#id1">Class Result Singleton</a></li>
 <li><a class="reference internal" href="#enum-of-divers-classification">Enum of divers classification</a></li>
 </ul>
 </li>

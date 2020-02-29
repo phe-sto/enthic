@@ -17,25 +17,31 @@ from inspect import stack
 from json import loads, load
 from os.path import dirname, join
 
-from enthic.calculation.calculation import BundleCalculation
-from enthic.company.denomination_company import DenominationCompany
-from enthic.company.siren_company import SirenCompany
+from enthic.company.company import CompanyIdentity
+from enthic.company.denomination_company import (
+    YearDenominationCompany,
+    AverageDenominationCompany,
+    AllDenominationCompany
+)
+from enthic.company.siren_company import (
+    YearSirenCompany,
+    AverageSirenCompany,
+    AllSirenCompany
+)
 from enthic.decorator.check_sql_injection import check_sql_injection
 from enthic.decorator.insert_request import insert_request
 from enthic.ontology import ONTOLOGY
 from enthic.result.result import result
 from enthic.utils.error_json_response import ErrorJSONResponse
+from enthic.utils.not_found_response import NotFoundJSONResponse
 from enthic.utils.ok_json_response import OKJSONResponse
-from enthic.utils.sql_json_response import SQLJSONResponse
 from flask import Flask, request
 from flask_cors import CORS
-from flask_mysqldb import MySQL
 
 ################################################################################
 # FLASK INITIALISATION
 application = Flask(__name__)
 CORS(application, expose_headers='Authorization', max_age=600, methods=["POST", "GET"])
-mysql = MySQL(application)
 
 ################################################################################
 # CONFIGURE APPLICATION
@@ -52,28 +58,27 @@ application.config['MYSQL_DB'] = 'enthic'
 # IN ORDER NOT TO CONNECT DATABASE BELOW IF EXECUTED DURING SPHINX IMPORT
 try:
     setup = stack()[6].filename.endswith("autodoc/importer.py")
-except IndexError as error:
+except IndexError:
     setup = False
 ################################################################################
 # CALCULATE SCORES RELATED DATA ONLY IF NOT BUILDING/INSTALLING
 
 with application.app_context():
+    from enthic.database.mysql import mysql
+
     if setup is False:
-        cur = mysql.connection.cursor()
-        cur.execute("""SELECT declaration, ROUND(AVG(amount))
+        cursor = mysql.connection.cursor()
+        cursor.execute("""SELECT declaration, ROUND(AVG(amount))
                     FROM bundle where bundle = 'DIR'
                     GROUP BY declaration;""")
-        result.yearly_avg_dir = cur.fetchall()
-        cur.execute("""SELECT ROUND(AVG(amount), 2)
-                    FROM bundle where bundle = 'DIR';""")
-        result.avg_dir = cur.fetchone()[0]
-        cur.close()
+        result.yearly_avg_dir = cursor.fetchall()
+        cursor.close()
 
 
 @application.route("/company/siren/<siren>/<year>", methods=['GET'],
                    strict_slashes=False)
 @check_sql_injection
-@insert_request(mysql, request)
+@insert_request
 def company_siren_year(siren, year):
     """
     Retrieve company information by SIREN for a given year. Path is
@@ -86,12 +91,12 @@ def company_siren_year(siren, year):
        :return: HTTP Response as application/json. Contain all known information
           on that company of an error message if SIREN or YEAR wrongly formatted.
     """
-    return SirenCompany(mysql, siren, year)
+    return YearSirenCompany(siren, year)
 
 
 @application.route("/company/siren/<siren>/average", methods=['GET'], strict_slashes=False)
 @check_sql_injection
-@insert_request(mysql, request)
+@insert_request
 def company_siren_average(siren):
     """
     Retrieve company information by SIREN, calculation of the years average.
@@ -102,12 +107,12 @@ def company_siren_average(siren):
        :return: HTTP Response as application/json. Contain all known information
           on that company of an error message if SIREN wrongly formatted.
     """
-    return SirenCompany(mysql, siren, BundleCalculation.AVERAGE)
+    return AverageSirenCompany(siren)
 
 
 @application.route("/company/siren/<siren>", methods=['GET'], strict_slashes=False)
 @check_sql_injection
-@insert_request(mysql, request)
+@insert_request
 def company_siren(siren):
     """
     Retrieve company information by SIREN, calculation of all years. Path is
@@ -118,13 +123,13 @@ def company_siren(siren):
        :return: HTTP Response as application/json. Contain all known information
           on that company of an error message if SIREN wrongly formatted.
     """
-    return SirenCompany(mysql, siren, BundleCalculation.ALL)
+    return AllSirenCompany(siren)
 
 
 @application.route("/company/denomination/<denomination>/average", methods=['GET'],
                    strict_slashes=False)
 @check_sql_injection
-@insert_request(mysql, request)
+@insert_request
 def company_denomination_average(denomination):
     """
     Retrieve company information by company denomination of the years average.
@@ -134,13 +139,13 @@ def company_denomination_average(denomination):
        :param denomination: String, denomination of the company.
        :return: HTTP Response as application/json. Contain all known information.
     """
-    return DenominationCompany(mysql, denomination, BundleCalculation.AVERAGE)
+    return AverageDenominationCompany(denomination)
 
 
 @application.route("/company/denomination/<denomination>", methods=['GET'],
                    strict_slashes=False)
 @check_sql_injection
-@insert_request(mysql, request)
+@insert_request
 def company_denomination(denomination):
     """
     Retrieve company information by company denomination, calculation of all
@@ -149,13 +154,13 @@ def company_denomination(denomination):
        :param denomination: String, denomination of the company.
        :return: HTTP Response as application/json. Contain all known information.
     """
-    return DenominationCompany(mysql, denomination, BundleCalculation.ALL)
+    return AllDenominationCompany(denomination)
 
 
 @application.route("/company/denomination/<denomination>/<year>", methods=['GET'],
                    strict_slashes=False)
 @check_sql_injection
-@insert_request(mysql, request)
+@insert_request
 def company_denomination_year(denomination, year):
     """
     Retrieve company information for a given year by company denomination. Path
@@ -165,7 +170,7 @@ def company_denomination_year(denomination, year):
        :param year: Year of results to return, default is None.
        :return: HTTP Response as application/json. Contain all known information.
     """
-    return DenominationCompany(mysql, denomination, year)
+    return YearDenominationCompany(denomination, year)
 
 
 @application.route("/company/ontology", methods=['GET'], strict_slashes=False)
@@ -178,9 +183,32 @@ def ontology():
     return OKJSONResponse(ONTOLOGY)
 
 
+def result_array(probe, limit):
+    """
+    List the result of the search in the database.
+
+       :param probe: A string to match.
+       :param limit: Integer, the limit of result to return.
+    """
+    cursor = mysql.connection.cursor()
+    cursor.execute("""SELECT siren, denomination, ape, postal_code, town, 
+                    accountability, devise
+                    FROM identity WHERE siren LIKE '%s'
+                    OR denomination LIKE '%s'
+                    OR MATCH(denomination) AGAINST ('%s' IN NATURAL LANGUAGE MODE)
+                    LIMIT %s;""" %
+                   ("{0}%".format(probe),
+                    "{0}%".format(probe),
+                    "{0}%".format(probe),
+                    limit))
+    companies = list(cursor.fetchall())
+    cursor.close()
+    return tuple([CompanyIdentity(*company).__dict__ for company in companies])
+
+
 @application.route("/company/search", methods=['POST'], strict_slashes=False)
 @check_sql_injection
-@insert_request(mysql, request)
+@insert_request
 def search():
     """
     Search companies by SIREN or denomination. Limited to 1000 results. Path is
@@ -208,20 +236,20 @@ def search():
             return ErrorJSONResponse("Value probe must be a string.")
         ########################################################################
         # WRONG LIMIT
-        elif int(json_data["limit"]) > 1000:
+        elif int(json_data["limit"]) > 10000:
             return ErrorJSONResponse("Value limit is 1000 maximum.")
         ########################################################################
         # CORRECT JSON
         else:
-            return SQLJSONResponse(mysql, """SELECT siren, denomination
-                                    FROM identity WHERE siren LIKE '%s'
-                                    OR denomination LIKE '%s'
-                                    OR MATCH(denomination) AGAINST ('%s' IN NATURAL LANGUAGE MODE)
-                                    LIMIT %s;""",
-                                   json_data["probe"] + "%",
-                                   json_data["probe"] + "%",
-                                   json_data["probe"] + "%",
-                                   json_data["limit"])
+            results = result_array(json_data["probe"], json_data["limit"])
+            return OKJSONResponse({
+                "@context": "http://www.w3.org/ns/hydra/context.jsonld",
+                "@id": "http://%s%s" % (config["url"], request.path),
+                "@type": "Collection",
+                "totalItems": results.__len__(),
+                "member":
+                    results
+            })
     ############################################################################
     # WRONG JSON KEY
     except KeyError as error:
@@ -232,8 +260,68 @@ def search():
         )
 
 
+@application.route("/company/search/page", methods=['POST'], strict_slashes=False)
+@check_sql_injection
+@insert_request
+def page_search():
+    """
+    Return a JSON formatted as page. Try to implement the Hydra
+    hypermedia-driven Web APIs https://www.markus-lanthaler.com/hydra/.
+    """
+
+    page = int(request.args.get('page', '1')) - 1  #  TO COUNT
+    per_page = int(request.args.get('per_page', '30'))
+    probe = request.args.get('probe')
+    if probe is None:
+        return ErrorJSONResponse("Pass a probe field to search in the URL")
+
+    results = result_array(probe, 10000000)
+    count = len(results)
+    if count < page * per_page:
+        return NotFoundJSONResponse()
+
+    # OBJECT STORING RESPONSE
+    obj = {"@context": "http://www.w3.org/ns/hydra/context.jsonld",
+           "@id": "http://%s%s" % (config["url"], request.path), "@type": "Collection",
+           "totalItems": count, "view": {
+            "@id": request.full_path,
+            "@type": "PartialCollectionView",
+            "first": '%s?page=1d&per_page=%d&probe=%s' % (request.path,
+                                                          per_page, probe),
+            "last": '%s?page=%d&per_page=%d&probe=%s' % (request.path,
+                                                         count / per_page + 1,
+                                                         count % per_page,
+                                                         probe)}
+           }
+    # MAKE URLS
+    # MAKE PREVIOUS URL
+    if page == 0:
+        obj["view"]['previous'] = ''
+    else:
+        obj["view"]['previous'] = '%s?page=%d&per_page=%d&probe=%s' % (request.path,
+                                                                       page,
+                                                                       per_page,
+                                                                       probe)
+    # MAKE NEXT URL
+    if page * per_page + per_page > count:
+        obj["view"]["next"] = ''
+    elif page + 1 < int(count / per_page):
+        obj["view"]["next"] = '%s?page=%d&per_page=%d&probe=%s' % (request.path,
+                                                                   page + 2,
+                                                                   per_page,
+                                                                   probe)
+    else:
+        obj["view"]["next"] = '%s?page=%d&per_page=%d&probe=%s' % (request.path,
+                                                                   page + 2,
+                                                                   count % per_page,
+                                                                   probe)
+    # FINALLY EXTRACT RESULT ACCORDING TO BOUNDS
+    obj["member"] = results[(page * per_page):((page + 1) * per_page + per_page)]
+    return OKJSONResponse(obj)
+
+
 @application.route('/<path:path>', strict_slashes=False)
-@insert_request(mysql, request)
+@insert_request
 def static_proxy(path):
     """
     Serve the static files, like the Swagger definition page and the 404.
@@ -245,7 +333,7 @@ def static_proxy(path):
 
 
 @application.route("/", strict_slashes=False)
-@insert_request(mysql, request)
+@insert_request
 def index():
     """
     Serve the index.html at the base path.
@@ -256,7 +344,7 @@ def index():
 
 
 @application.errorhandler(404)
-@insert_request(mysql, request)
+@insert_request
 def page_not_found(error):
     """
     Page not found and logging.
@@ -269,7 +357,7 @@ def page_not_found(error):
 
 
 @application.errorhandler(500)
-@insert_request(mysql, request)
+@insert_request
 def server_error(error):
     """
     Server error page and logging.

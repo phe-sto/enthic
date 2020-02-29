@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
 =============================================================
-Class representing a company, constructed with a Denomination
+Class representing a company, constructed with a denomination
 =============================================================
 
 PROGRAM BY PAPIT SASU, 2020
@@ -13,45 +13,78 @@ Coding Rules:
 - No output or print, just log and files.
 """
 
-from enthic.calculation.calculation import BundleCalculation
-from enthic.company.company import Company
+from enthic.company.company import (
+    YearCompany,
+    UniqueBundleCompany,
+    MultipleBundleCompany,
+    DenominationCompany
+)
 
 
-class DenominationCompany(Company):
+class AllDenominationCompany(MultipleBundleCompany, DenominationCompany):
     """
-    Class DenominationCompany inherit from Company class.
+    Class AllDenominationCompany inherit from MultipleBundleCompany,
+    DenominationCompany class as it has multiple bundles.
     """
 
-    def __init__(self, mysql, denomination, calculation):
+    def __init__(self, denomination):
         """
-        Constructor of the DenominationCompany class.
+        Constructor of the AllDenominationCompany class.
 
-           :param mysql: MySQL database to connect.
            :param denomination: The official denomination of the company.
-           :param calculation: Type of data to return, average, a year, all.
-              Must be BundleCalculation enum.
         """
-        if calculation == BundleCalculation.AVERAGE:
-            Company.__init__(self, mysql, denomination, calculation, """
-            SELECT identity.siren, denomination, ape, postal_code, town,
-                accountability, devise, bundle, "average", AVG(amount)
-            FROM bundle LEFT JOIN identity
-            ON bundle.siren = identity.siren
-            WHERE identity.denomination = "%s"
-            GROUP BY identity.siren, bundle.bundle;""")
-        elif calculation == BundleCalculation.ALL:
-            Company.__init__(self, mysql, denomination, calculation, """
+        DenominationCompany.__init__(self, denomination)
+        MultipleBundleCompany.__init__(self, """
             SELECT identity.siren, denomination, ape, postal_code, town,
                 accountability, devise, bundle, declaration, amount
             FROM bundle LEFT JOIN identity
             ON bundle.siren = identity.siren
             WHERE identity.denomination = "%s"
-            GROUP BY identity.siren, bundle.bundle, declaration, amount;""")
-        else:
-            Company.__init__(self, mysql, denomination, calculation, """
+            GROUP BY identity.siren, bundle.bundle, declaration, amount;""" % self.denomination)
+
+
+class AverageDenominationCompany(UniqueBundleCompany, DenominationCompany):
+    """
+    Class AverageDenominationCompany inherit from UniqueBundleCompany,
+    DenominationCompany class as it as a unique average bundle.
+    """
+
+    def __init__(self, denomination):
+        """
+        Constructor of the AverageDenominationCompany class.
+
+           :param denomination: The official denomination of the company.
+        """
+        DenominationCompany.__init__(self, denomination)
+        UniqueBundleCompany.__init__(self, """
+            SELECT identity.siren, denomination, ape, postal_code, town,
+                accountability, devise, bundle, "average", AVG(amount)
+            FROM bundle LEFT JOIN identity
+            ON bundle.siren = identity.siren
+            WHERE identity.denomination = "%s"
+            GROUP BY identity.siren, bundle.bundle;""" % self.denomination)
+
+
+class YearDenominationCompany(YearCompany, UniqueBundleCompany, DenominationCompany):
+    """
+    Class YearDenominationCompany inherit from YearCompany, UniqueBundleCompany,
+    DenominationCompany class as it as a unique average bundle. Inherit also
+    YearCompany to check the year.
+    """
+
+    def __init__(self, denomination, year):
+        """
+        Constructor of the YearDenominationCompany class.
+
+           :param denomination: The official denomination of the company.
+           :param year: The declaration to return, i.e. a year.
+        """
+        DenominationCompany.__init__(self, denomination)
+        YearCompany.__init__(self, year)
+        UniqueBundleCompany.__init__(self, """
             SELECT identity.siren, denomination, ape, postal_code, town,
                 accountability, devise, bundle, "%s", amount
             FROM bundle LEFT JOIN identity
             ON bundle.siren = identity.siren
             WHERE identity.denomination = "%s"
-            AND declaration = %s;""")
+            AND declaration = %s;""" % (self.year, self.denomination, self.year))

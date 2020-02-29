@@ -1,4 +1,17 @@
 # -*- coding: utf-8 -*-
+"""
+===================
+JSON response Class
+===================
+
+PROGRAM BY PAPIT SASU, 2020
+
+Coding Rules:
+
+- Snake case for variables.
+- Only argument is configuration file.
+- No output or print, just log and files.
+"""
 from json import dumps
 
 from flask import Response

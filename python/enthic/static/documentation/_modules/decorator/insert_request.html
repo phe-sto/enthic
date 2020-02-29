@@ -36,88 +36,69 @@
 <span></span><span class="c1"># -*- coding: utf-8 -*-</span>
 
 <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">====================================================================</span>
-<span class="sd">Decorator inserting data from the incoming request in another thread</span>
-<span class="sd">====================================================================</span>
+<span class="sd">=================================================================================</span>
+<span class="sd">Decorator inserting data from the incoming request after having executed function</span>
+<span class="sd">=================================================================================</span>
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">wraps</span>
-<span class="kn">from</span> <span class="nn">threading</span> <span class="kn">import</span> <span class="n">Thread</span>
+
+<span class="kn">from</span> <span class="nn">flask</span> <span class="kn">import</span> <span class="n">current_app</span> <span class="k">as</span> <span class="n">application</span><span class="p">,</span> <span class="n">request</span> <span class="k">as</span> <span class="n">app_request</span>
 
 
-<div class="viewcode-block" id="insert"><a class="viewcode-back" href="../../index.html#decorator.insert_request.insert">[docs]</a><span class="k">def</span> <span class="nf">insert</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">):</span>
+<div class="viewcode-block" id="insert_request"><a class="viewcode-back" href="../../index.html#decorator.insert_request.insert_request">[docs]</a><span class="k">def</span> <span class="nf">insert_request</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Insert data from the request in the request table.</span>
+<span class="sd">    Decorator inserting relevant request data timestamped.</span>
 
-<span class="sd">       :param args: A tuple, first element is the database, second is the</span>
-<span class="sd">          request data.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">try</span><span class="p">:</span>
-        <span class="k">if</span> <span class="n">args</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;data&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">args</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="s1">&#39;data&#39;</span><span class="p">]</span> <span class="o">!=</span> <span class="sa">b</span><span class="s1">&#39;&#39;</span><span class="p">:</span>
-            <span class="n">request</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;INSERT INTO request VALUES (&quot;</span><span class="si">%s</span><span class="s2">&quot;, &quot;</span><span class="si">%s</span><span class="s2">&quot;, &quot;</span><span class="si">%s</span><span class="s2">&quot;, &quot;</span><span class="si">%s</span><span class="s2">&quot;, &quot;</span><span class="si">%s</span><span class="s2">&quot;, &quot;</span><span class="si">%s</span><span class="s2">&quot;, CURRENT_TIMESTAMP)&quot;&quot;&quot;</span> <span class="o">%</span> \
-                      <span class="p">(</span><span class="n">args</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="s1">&#39;environ&#39;</span><span class="p">][</span><span class="s1">&#39;REQUEST_METHOD&#39;</span><span class="p">],</span>
-                       <span class="n">args</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="s1">&#39;environ&#39;</span><span class="p">][</span><span class="s1">&#39;PATH_INFO&#39;</span><span class="p">],</span>
-                       <span class="n">args</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="s1">&#39;environ&#39;</span><span class="p">][</span><span class="s1">&#39;REMOTE_ADDR&#39;</span><span class="p">],</span>
-                       <span class="n">args</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="s1">&#39;environ&#39;</span><span class="p">][</span><span class="s1">&#39;REMOTE_PORT&#39;</span><span class="p">],</span>
-                       <span class="n">args</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="s1">&#39;environ&#39;</span><span class="p">][</span><span class="s1">&#39;HTTP_USER_AGENT&#39;</span><span class="p">],</span>
-                       <span class="nb">str</span><span class="p">(</span><span class="n">args</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="s1">&#39;data&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;&quot;&#39;</span><span class="p">,</span> <span class="s2">&quot;&#39;&quot;</span><span class="p">))</span>
-        <span class="k">elif</span> <span class="n">args</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="s1">&#39;view_args&#39;</span><span class="p">]</span> <span class="o">!=</span> <span class="p">{}:</span>
-            <span class="n">request</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;INSERT INTO request VALUES (&quot;</span><span class="si">%s</span><span class="s2">&quot;, &quot;</span><span class="si">%s</span><span class="s2">&quot;, &quot;</span><span class="si">%s</span><span class="s2">&quot;, &quot;</span><span class="si">%s</span><span class="s2">&quot;, &quot;</span><span class="si">%s</span><span class="s2">&quot;, &quot;</span><span class="si">%s</span><span class="s2">&quot;, CURRENT_TIMESTAMP)&quot;&quot;&quot;</span> <span class="o">%</span> \
-                      <span class="p">(</span><span class="n">args</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="s1">&#39;environ&#39;</span><span class="p">][</span><span class="s1">&#39;REQUEST_METHOD&#39;</span><span class="p">],</span>
-                       <span class="n">args</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="s1">&#39;environ&#39;</span><span class="p">][</span><span class="s1">&#39;PATH_INFO&#39;</span><span class="p">],</span>
-                       <span class="n">args</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="s1">&#39;environ&#39;</span><span class="p">][</span><span class="s1">&#39;REMOTE_ADDR&#39;</span><span class="p">],</span>
-                       <span class="n">args</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="s1">&#39;environ&#39;</span><span class="p">][</span><span class="s1">&#39;REMOTE_PORT&#39;</span><span class="p">],</span>
-                       <span class="n">args</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="s1">&#39;environ&#39;</span><span class="p">][</span><span class="s1">&#39;HTTP_USER_AGENT&#39;</span><span class="p">],</span>
-                       <span class="nb">str</span><span class="p">(</span><span class="n">args</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="s1">&#39;view_args&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;&quot;&#39;</span><span class="p">,</span> <span class="s2">&quot;&#39;&quot;</span><span class="p">))</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">request</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;INSERT INTO request VALUES (&quot;</span><span class="si">%s</span><span class="s2">&quot;, &quot;</span><span class="si">%s</span><span class="s2">&quot;, &quot;</span><span class="si">%s</span><span class="s2">&quot;, &quot;</span><span class="si">%s</span><span class="s2">&quot;, &quot;</span><span class="si">%s</span><span class="s2">&quot;, NULL, CURRENT_TIMESTAMP)&quot;&quot;&quot;</span> <span class="o">%</span> \
-                      <span class="p">(</span><span class="n">args</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="s1">&#39;environ&#39;</span><span class="p">][</span><span class="s1">&#39;REQUEST_METHOD&#39;</span><span class="p">],</span>
-                       <span class="n">args</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="s1">&#39;environ&#39;</span><span class="p">][</span><span class="s1">&#39;PATH_INFO&#39;</span><span class="p">],</span>
-                       <span class="n">args</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="s1">&#39;environ&#39;</span><span class="p">][</span><span class="s1">&#39;REMOTE_ADDR&#39;</span><span class="p">],</span>
-                       <span class="n">args</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="s1">&#39;environ&#39;</span><span class="p">][</span><span class="s1">&#39;REMOTE_PORT&#39;</span><span class="p">],</span>
-                       <span class="n">args</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="s1">&#39;environ&#39;</span><span class="p">][</span><span class="s1">&#39;HTTP_USER_AGENT&#39;</span><span class="p">])</span>
-    <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
-        <span class="k">pass</span>
-    <span class="k">with</span> <span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">app_context</span><span class="p">():</span>
-        <span class="n">cur</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
-        <span class="n">cur</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
-        <span class="n">cur</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
-        <span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span></div>
-
-
-<div class="viewcode-block" id="insert_request"><a class="viewcode-back" href="../../index.html#decorator.insert_request.insert_request">[docs]</a><span class="k">def</span> <span class="nf">insert_request</span><span class="p">(</span><span class="n">my_sql_db</span><span class="p">,</span> <span class="n">request</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Decorator insert request data in database for further analysis using</span>
-<span class="sd">    arguments objects of the function.</span>
-
-<span class="sd">       :param my_sql_db: The database where the request data is to be inserted.</span>
-<span class="sd">       :param request: The request object.</span>
+<span class="sd">       :param func: Function decorated.</span>
 <span class="sd">       :return: The function decorated.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">insert_request_func</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
+    <span class="nd">@wraps</span><span class="p">(</span><span class="n">func</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">wrapper</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Decorator inserting relevant request data timestamped.</span>
+<span class="sd">        Wrapper to the insert in another thread to save time.</span>
 
-<span class="sd">           :param func: Function decorated.</span>
+<span class="sd">           :param args: Possible arguments.</span>
+<span class="sd">           :param kwargs: Possible keyword argument.</span>
 <span class="sd">           :return: The function decorated.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">handle_request</span> <span class="o">=</span> <span class="n">func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">with</span> <span class="n">application</span><span class="o">.</span><span class="n">app_context</span><span class="p">():</span>
+            <span class="kn">from</span> <span class="nn">enthic.database.mysql</span> <span class="kn">import</span> <span class="n">mysql</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">app_request</span><span class="o">.</span><span class="vm">__dict__</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;data&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">app_request</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">[</span><span class="s1">&#39;data&#39;</span><span class="p">]</span> <span class="o">!=</span> <span class="sa">b</span><span class="s1">&#39;&#39;</span><span class="p">:</span>
+                    <span class="n">sql_request</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;INSERT INTO request VALUES (&quot;</span><span class="si">%s</span><span class="s2">&quot;, &quot;</span><span class="si">%s</span><span class="s2">&quot;, &quot;</span><span class="si">%s</span><span class="s2">&quot;, &quot;</span><span class="si">%s</span><span class="s2">&quot;, &quot;</span><span class="si">%s</span><span class="s2">&quot;, &quot;</span><span class="si">%s</span><span class="s2">&quot;, CURRENT_TIMESTAMP)&quot;&quot;&quot;</span> <span class="o">%</span> \
+                                  <span class="p">(</span><span class="n">app_request</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">[</span><span class="s1">&#39;environ&#39;</span><span class="p">][</span><span class="s1">&#39;REQUEST_METHOD&#39;</span><span class="p">],</span>
+                                   <span class="n">app_request</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">[</span><span class="s1">&#39;environ&#39;</span><span class="p">][</span><span class="s1">&#39;PATH_INFO&#39;</span><span class="p">],</span>
+                                   <span class="n">app_request</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">[</span><span class="s1">&#39;environ&#39;</span><span class="p">][</span><span class="s1">&#39;REMOTE_ADDR&#39;</span><span class="p">],</span>
+                                   <span class="n">app_request</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">[</span><span class="s1">&#39;environ&#39;</span><span class="p">][</span><span class="s1">&#39;REMOTE_PORT&#39;</span><span class="p">],</span>
+                                   <span class="n">app_request</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">[</span><span class="s1">&#39;environ&#39;</span><span class="p">][</span><span class="s1">&#39;HTTP_USER_AGENT&#39;</span><span class="p">],</span>
+                                   <span class="nb">str</span><span class="p">(</span><span class="n">app_request</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">[</span><span class="s1">&#39;data&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;&quot;&#39;</span><span class="p">,</span> <span class="s2">&quot;&#39;&quot;</span><span class="p">))</span>
+                <span class="k">elif</span> <span class="n">app_request</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">[</span><span class="s1">&#39;view_args&#39;</span><span class="p">]</span> <span class="o">!=</span> <span class="p">{}:</span>
+                    <span class="n">sql_request</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;INSERT INTO request VALUES (&quot;</span><span class="si">%s</span><span class="s2">&quot;, &quot;</span><span class="si">%s</span><span class="s2">&quot;, &quot;</span><span class="si">%s</span><span class="s2">&quot;, &quot;</span><span class="si">%s</span><span class="s2">&quot;, &quot;</span><span class="si">%s</span><span class="s2">&quot;, &quot;</span><span class="si">%s</span><span class="s2">&quot;, CURRENT_TIMESTAMP)&quot;&quot;&quot;</span> <span class="o">%</span> \
+                                  <span class="p">(</span><span class="n">app_request</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">[</span><span class="s1">&#39;environ&#39;</span><span class="p">][</span><span class="s1">&#39;REQUEST_METHOD&#39;</span><span class="p">],</span>
+                                   <span class="n">app_request</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">[</span><span class="s1">&#39;environ&#39;</span><span class="p">][</span><span class="s1">&#39;PATH_INFO&#39;</span><span class="p">],</span>
+                                   <span class="n">app_request</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">[</span><span class="s1">&#39;environ&#39;</span><span class="p">][</span><span class="s1">&#39;REMOTE_ADDR&#39;</span><span class="p">],</span>
+                                   <span class="n">app_request</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">[</span><span class="s1">&#39;environ&#39;</span><span class="p">][</span><span class="s1">&#39;REMOTE_PORT&#39;</span><span class="p">],</span>
+                                   <span class="n">app_request</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">[</span><span class="s1">&#39;environ&#39;</span><span class="p">][</span><span class="s1">&#39;HTTP_USER_AGENT&#39;</span><span class="p">],</span>
+                                   <span class="nb">str</span><span class="p">(</span><span class="n">app_request</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">[</span><span class="s1">&#39;view_args&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;&quot;&#39;</span><span class="p">,</span> <span class="s2">&quot;&#39;&quot;</span><span class="p">))</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">sql_request</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;INSERT INTO request VALUES (&quot;</span><span class="si">%s</span><span class="s2">&quot;, &quot;</span><span class="si">%s</span><span class="s2">&quot;, &quot;</span><span class="si">%s</span><span class="s2">&quot;, &quot;</span><span class="si">%s</span><span class="s2">&quot;, &quot;</span><span class="si">%s</span><span class="s2">&quot;, NULL, CURRENT_TIMESTAMP)&quot;&quot;&quot;</span> <span class="o">%</span> \
+                                  <span class="p">(</span><span class="n">app_request</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">[</span><span class="s1">&#39;environ&#39;</span><span class="p">][</span><span class="s1">&#39;REQUEST_METHOD&#39;</span><span class="p">],</span>
+                                   <span class="n">app_request</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">[</span><span class="s1">&#39;environ&#39;</span><span class="p">][</span><span class="s1">&#39;PATH_INFO&#39;</span><span class="p">],</span>
+                                   <span class="n">app_request</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">[</span><span class="s1">&#39;environ&#39;</span><span class="p">][</span><span class="s1">&#39;REMOTE_ADDR&#39;</span><span class="p">],</span>
+                                   <span class="n">app_request</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">[</span><span class="s1">&#39;environ&#39;</span><span class="p">][</span><span class="s1">&#39;REMOTE_PORT&#39;</span><span class="p">],</span>
+                                   <span class="n">app_request</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">[</span><span class="s1">&#39;environ&#39;</span><span class="p">][</span><span class="s1">&#39;HTTP_USER_AGENT&#39;</span><span class="p">])</span>
+            <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+                <span class="k">pass</span>
+            <span class="n">cur</span> <span class="o">=</span> <span class="n">mysql</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
+            <span class="n">cur</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">sql_request</span><span class="p">)</span>
+            <span class="n">cur</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+            <span class="n">mysql</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
 
-        <span class="nd">@wraps</span><span class="p">(</span><span class="n">func</span><span class="p">)</span>
-        <span class="k">def</span> <span class="nf">wrapper</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-            <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">            Wrapper to the insert in another thread to save time.</span>
+        <span class="k">return</span> <span class="n">handle_request</span>
 
-<span class="sd">               :param args: Possible arguments.</span>
-<span class="sd">               :param kwargs: Possible keyword argument.</span>
-<span class="sd">               :return: The function decorated.</span>
-<span class="sd">            &quot;&quot;&quot;</span>
-            <span class="n">Thread</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="n">insert</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">my_sql_db</span><span class="p">,</span> <span class="n">request</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">))</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
-
-            <span class="k">return</span> <span class="n">func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-
-        <span class="k">return</span> <span class="n">wrapper</span>
-
-    <span class="k">return</span> <span class="n">insert_request_func</span></div>
+    <span class="k">return</span> <span class="n">wrapper</span></div>
 </pre></div>
 
           </div>

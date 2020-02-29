@@ -121,24 +121,28 @@ def main():
                                                 postal_code = m.group(1)
                                                 town = m.group(2).upper()
                                             except TypeError as error:
-                                                debug(str(error) + ": " + str(identity.text))
+                                                debug("{0}: {1}".format(str(error),
+                                                                        str(identity.text)))
                                                 postal_code, town = ('UNKNWON',) * 2
                                             except AttributeError as error:
                                                 try:
-                                                    debug(str(error) + ": " + str(identity.text))
+                                                    debug("{0}: {1}".format(str(error),
+                                                                            str(identity.text)))
                                                     m = re_town.match(identity.text)
                                                     town = m.group(1).upper()
                                                     postal_code = 'UNKNWON'
                                                 except AttributeError as error:
                                                     try:
                                                         debug(
-                                                            str(error) + ": " + str(identity.text))
+                                                            "{0}: {1}".format(str(error),
+                                                                              str(identity.text)))
                                                         m = re_postal_code.match(identity.text)
                                                         town = 'UNKNWON'
                                                         postal_code = m.group(1)
                                                     except AttributeError as error:
                                                         debug(
-                                                            str(error) + ": " + str(identity.text))
+                                                            "{0}: {1}".format(str(error),
+                                                                              str(identity.text)))
                                                         postal_code, town = ('UNKNWON',) * 2
                                         elif identity.tag == '{fr:inpi:odrncs:bilansSaisisXML}code_activite':
                                             ape = identity.text

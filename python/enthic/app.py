@@ -28,7 +28,7 @@ from enthic.company.siren_company import (
     AverageSirenCompany,
     AllSirenCompany
 )
-from enthic.database.fetchall import get_results
+from enthic.database.fetch import fetchall, fetchone
 from enthic.decorator.check_sql_injection import check_sql_injection
 from enthic.decorator.insert_request import insert_request
 from enthic.ontology import ONTOLOGY
@@ -184,23 +184,20 @@ def ontology():
     return OKJSONResponse(ONTOLOGY)
 
 
-def result_array(probe, limit):
+def result_array(probe, limit, offset=0):
     """
     List the result of the search in the database.
 
        :param probe: A string to match.
        :param limit: Integer, the limit of result to return.
+       :param offset: Integer, offset of the select SQL request.
     """
-    companies = list(get_results("""SELECT siren, denomination, ape, postal_code, town, 
+    companies = list(fetchall("""SELECT siren, denomination, ape, postal_code, town, 
                     accountability, devise
-                    FROM identity WHERE siren LIKE '%s'
-                    OR denomination LIKE '%s'
-                    OR MATCH(denomination) AGAINST ('%s' IN NATURAL LANGUAGE MODE)
-                    LIMIT %s;""" %
-                                 ("{0}%".format(probe),
-                                  "{0}%".format(probe),
-                                  "{0}%".format(probe),
-                                  limit)))
+                    FROM identity WHERE siren LIKE "%s%%"
+                    OR denomination LIKE "%s%%"
+                    OR MATCH(denomination) AGAINST ("%s%%" IN NATURAL LANGUAGE MODE)
+                    LIMIT %d OFFSET %d;""" % (probe, probe, probe, limit, offset)))
     return tuple([CompanyIdentity(*company).__dict__ for company in companies])
 
 
@@ -234,7 +231,7 @@ def search():
             return ErrorJSONResponse("Value probe must be a string.")
         ########################################################################
         # WRONG LIMIT
-        elif int(json_data["limit"]) > 10000:
+        elif json_data["limit"] > 10000:
             return ErrorJSONResponse("Value limit is 1000 maximum.")
         ########################################################################
         # CORRECT JSON
@@ -242,7 +239,7 @@ def search():
             results = result_array(json_data["probe"], json_data["limit"])
             return OKJSONResponse({
                 "@context": "http://www.w3.org/ns/hydra/context.jsonld",
-                "@id": "http://%s%s" % (config["url"], request.path),
+                "@id": request.url,
                 "@type": "Collection",
                 "totalItems": results.__len__(),
                 "member":
@@ -258,7 +255,7 @@ def search():
         )
 
 
-@application.route("/company/search/page", methods=['POST'], strict_slashes=False)
+@application.route("/company/search/page", methods=['GET'], strict_slashes=False)
 @check_sql_injection
 @insert_request
 def page_search():
@@ -269,30 +266,33 @@ def page_search():
 
     page = int(request.args.get('page', '1')) - 1  #  TO COUNT
     per_page = int(request.args.get('per_page', '30'))
-    probe = request.args.get('probe')
-    if probe is None:
-        return ErrorJSONResponse("Pass a probe field to search in the URL")
-
-    results = result_array(probe, 10000000)
-    count = len(results)
+    probe = request.args.get('probe', "")
+    results = result_array(probe, per_page, offset=page * per_page)
+    count = fetchone("""SELECT COUNT(*)
+                        FROM identity WHERE siren LIKE "%s%%"
+                        OR denomination LIKE "%s%%"
+                        OR MATCH(denomination) AGAINST ("%s%%" IN NATURAL LANGUAGE MODE)""" % (
+        probe, probe, probe))
     if count < page * per_page:
         return NotFoundJSONResponse()
-
+    ############################################################################
     # OBJECT STORING RESPONSE
     obj = {"@context": "http://www.w3.org/ns/hydra/context.jsonld",
-           "@id": "http://%s%s" % (config["url"], request.path), "@type": "Collection",
+           "@id": request.url,
+           "@type": "Collection",
            "totalItems": count, "view": {
             "@id": request.full_path,
             "@type": "PartialCollectionView",
-            "first": '%s?page=1d&per_page=%d&probe=%s' % (request.path,
-                                                          per_page, probe),
+            "first": '%s?page=1&per_page=%d&probe=%s' % (request.path,
+                                                         per_page, probe),
             "last": '%s?page=%d&per_page=%d&probe=%s' % (request.path,
                                                          count / per_page + 1,
-                                                         count % per_page,
-                                                         probe)}
+                                                         per_page,
+                                                         probe)},
+           "member": results
            }
-    # MAKE URLS
-    # MAKE PREVIOUS URL
+    ############################################################################
+    # OBJECT VIEW
     if page == 0:
         obj["view"]['previous'] = ''
     else:
@@ -311,10 +311,8 @@ def page_search():
     else:
         obj["view"]["next"] = '%s?page=%d&per_page=%d&probe=%s' % (request.path,
                                                                    page + 2,
-                                                                   count % per_page,
+                                                                   per_page,
                                                                    probe)
-    # FINALLY EXTRACT RESULT ACCORDING TO BOUNDS
-    obj["member"] = results[(page * per_page):((page + 1) * per_page + per_page)]
     return OKJSONResponse(obj)
 
 

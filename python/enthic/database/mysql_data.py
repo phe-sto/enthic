@@ -12,7 +12,7 @@ Coding Rules:
 - Only argument is configuration file.
 - No output or print, just log and files.
 """
-from enthic.database.fetchall import get_results
+from enthic.database.fetch import fetchall
 from enthic.utils.not_found_response import NotFoundJSONResponse
 from flask import abort
 
@@ -28,8 +28,8 @@ class SQLData:
 
            :param sql_request: SQL request with data to fetch.
         """
-        sql_results = get_results(sql_request)
-        if sql_request.__len__() > 0:
-            self.sql_results = sql_results
-        else:
+        sql_results = fetchall(sql_request)
+        if sql_results == ():
             abort(NotFoundJSONResponse())
+        else:
+            self.sql_results = sql_results

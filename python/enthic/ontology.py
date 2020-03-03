@@ -68,6 +68,16 @@ ONTOLOGY = {"accounting":
                     "r6": "Résultat Groupe (Résultat net consolidé)"
                 }
             },
+        "A":
+            {
+                "description": "Le plan comptable des compagnies d’assurance de l’article A 343-1 du Code des assurances est calqué sur le PCG; Il les capitaux permanents et emprunts, placements, provisions techniques, comptes de tiers et de régularisation, autres actifs, charges, produits, comptes spéciaux (engagements notamment).",
+                "code": {}
+            },
+        "B":
+            {
+                "description": "Divisé entre actif et passif, le bilan bancaire comprend les 5 classes des normes comptables IFRS (International Financial Reporting Standards), opérations interbancaires, opérations que la banque réalise avec sa clientèle, opérations sur titres, biens et valeurs immobilisées.",
+                "code": {}
+            },
     },
     "scoring": {
         "distribution": {

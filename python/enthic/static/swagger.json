@@ -82,6 +82,9 @@
           },
           "400": {
             "description": "JSON is returned, contain a error value as error message."
+          },
+          "404": {
+            "description": "If no information for the desired SIREN."
           }
         }
       }
@@ -122,6 +125,9 @@
           },
           "400": {
             "description": "JSON is returned, contain a error value as error message."
+          },
+          "404": {
+            "description": "If no information for the desired SIREN."
           }
         }
       }
@@ -155,6 +161,9 @@
           },
           "400": {
             "description": "JSON is returned, contain a error value as error message."
+          },
+          "404": {
+            "description": "If no information for the desired SIREN."
           }
         }
       }
@@ -188,6 +197,9 @@
           },
           "400": {
             "description": "JSON is returned, contain a error value as error message."
+          },
+          "404": {
+            "description": "If no information for the desired denomination."
           }
         }
       }
@@ -228,6 +240,9 @@
           },
           "400": {
             "description": "JSON is returned, contain a error value as error message."
+          },
+          "404": {
+            "description": "If no information for the desired denomination."
           }
         }
       }
@@ -261,6 +276,9 @@
           },
           "400": {
             "description": "JSON is returned, contain a error value as error message."
+          },
+          "404": {
+            "description": "If no information for the desired denomination."
           }
         }
       }
@@ -270,9 +288,9 @@
         "tags": [
           "Search"
         ],
-        "summary": "Minimal search engine, return companies based on SIREN or name.",
+        "summary": "Minimal search engine, return companies based on SIREN or name in a hydra (JSON-LD) Collection.",
         "description": "",
-        "operationId": "search_probe_get",
+        "operationId": "search_post",
         "consumes": [
           "application/json"
         ],
@@ -282,8 +300,8 @@
         "parameters": [
           {
             "in": "body",
-            "name": "body",
-            "description": "Search for companies based on a probe",
+            "name": "bodyParam",
+            "description": "Probe (SIREN or denomination) and limit of results parameters to pass in the body",
             "required": true,
             "schema": {
               "type": "object",
@@ -306,6 +324,56 @@
           },
           "400": {
             "description": "JSON is returned, contain a error value as error message."
+          }
+        }
+      }
+    },
+    "/search/page": {
+      "get": {
+        "tags": [
+          "Search"
+        ],
+        "summary": "Minimal search engine, return paginated result companies based on SIREN or name in a hydra (JSON-LD) PartialCollection.",
+        "description": "",
+        "operationId": "search_page_get",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "probe",
+            "required": false,
+            "type": "string",
+            "description": "Probe (SIREN or denomination) to search for."
+          },
+          {
+            "in": "query",
+            "name": "per_page",
+            "required": false,
+            "type": "integer",
+            "description": "Number of results per page."
+          },
+          {
+            "in": "query",
+            "name": "page",
+            "required": false,
+            "type": "integer",
+            "description": "Page number."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation, JSON is returned."
+          },
+          "400": {
+            "description": "JSON is returned, contain a error value as error message."
+          },
+          "404": {
+            "description": "If page not found."
           }
         }
       }

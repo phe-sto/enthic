@@ -1,5 +1,4 @@
 {
-  "url": "api.enthic.fr",
   "inputPath": "../input",
   "outputPath": "../output/",
   "accountOntologyCSV": "../account-ontology.csv",

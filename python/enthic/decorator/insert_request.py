@@ -54,12 +54,13 @@ def insert_request(func):
                                    app_request.__dict__['environ']['REMOTE_ADDR'],
                                    app_request.__dict__['environ']['REMOTE_PORT'],
                                    app_request.__dict__['environ']['HTTP_USER_AGENT'])
+                cur = mysql.connection.cursor()
+                cur.execute(sql_request)
+                cur.close()
+                mysql.connection.commit()
             except KeyError:
                 pass
-            cur = mysql.connection.cursor()
-            cur.execute(sql_request)
-            cur.close()
-            mysql.connection.commit()
+
 
         return handle_request
 

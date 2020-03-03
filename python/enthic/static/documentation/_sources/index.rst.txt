@@ -57,7 +57,10 @@ Following module relates to Flask server.
 .. automodule:: database.mysql
    :members:
 
-.. automodule:: result.result
+.. automodule:: database.fetch
+   :members:
+
+.. automodule:: database.mysql_data
    :members:
 
 .. automodule:: score.classification

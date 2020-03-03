@@ -38,14 +38,16 @@
 files of the account declaration of all french societies. The overall project
 is meant to be low-code and open source. Aim to provide ethical indicators on companies.
 Information media is a MySQL database, CSV files, web visualisation and a
-swagger API.
+swagger API. The search engine endpoint return a JSON-LD (Hydra) complaint JSON.
+Company JSON cannot conform to JSON-LD Organization type  due to lack of data
+(contact for instance).
 Score and indicators are calculated by batch, sql and why not using
 fancy libraries. Help in data treatment to improve scoring would be appreciated.
 Scoring, AI, data scrapping for segmentation. Shell and python are to launch be
 from their corresponding directory <code class="docutils literal notranslate"><span class="pre">./sh</span></code> and <code class="docutils literal notranslate"><span class="pre">./py</span></code>.</p>
 <div class="section" id="install-dependencies-and-python-package">
 <h2><strong>Install dependencies and python package</strong><a class="headerlink" href="#install-dependencies-and-python-package" title="Permalink to this headline">¶</a></h2>
-<p>Synaptic packages have to be installed <code class="docutils literal notranslate"><span class="pre">zip</span> <span class="pre">libxml2-utils</span> <span class="pre">mysql-server</span> <span class="pre">tree</span> <span class="pre">python3</span></code>.
+<p>Synaptic packages have to be installed <code class="docutils literal notranslate"><span class="pre">libxml2-utils</span> <span class="pre">mysql-server</span> <span class="pre">tree</span> <span class="pre">python3</span></code>.
 Pip packages as well has to be installed for development purpose.</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ sh ./install-dependencies.sh
 </pre></div>
@@ -160,6 +162,8 @@ build the doc at the same time.</p>
 │   │   │   └── siren_company.py
 │   │   ├── database
 │   │   │   ├── mysql.py
+│   │   │   ├── mysql_data.py
+│   │   │   ├── fetchall.py
 │   │   │   └── __init__.py
 │   │   ├── configuration.json
 │   │   ├── conftest.py
@@ -261,13 +265,6 @@ build the doc at the same time.</p>
 │   │       ├── json_response.py
 │   │       ├── not_found_response.py
 │   │       └── ok_json_response.py
-│   ├── enthic.egg-info
-│   │   ├── dependency_links.txt
-│   │   ├── entry_points.txt
-│   │   ├── PKG-INFO
-│   │   ├── requires.txt
-│   │   ├── SOURCES.txt
-│   │   └── top_level.txt
 │   ├── __init__.py
 │   ├── MANIFEST.in
 │   ├── setup.cfg
@@ -636,15 +633,81 @@ OKJSONResponse to return a JSON and SQLData because of base data..</p>
 <li>No output or print, just log and files.</li>
 </ul>
 </div>
-<span class="target" id="module-result.result"></span><div class="section" id="id1">
-<h2>Class Result Singleton<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
-<p>PROGRAM BY PAPIT SASU, 2020</p>
+<span class="target" id="module-database.fetch"></span><div class="section" id="fetch-results-on-the-mysql-database">
+<h2>Fetch results on the MySQL database<a class="headerlink" href="#fetch-results-on-the-mysql-database" title="Permalink to this headline">¶</a></h2>
+<p>PROGRAM BY PAPIT SASU, 2019</p>
 <p>Coding Rules:</p>
 <ul class="simple">
 <li>Snake case for variables.</li>
 <li>Only argument is configuration file.</li>
 <li>No output or print, just log and files.</li>
 </ul>
+<dl class="function">
+<dt id="database.fetch.fetchall">
+<code class="descclassname">database.fetch.</code><code class="descname">fetchall</code><span class="sig-paren">(</span><em>request</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/database/fetch.html#fetchall"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#database.fetch.fetchall" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a fetchall for a given SQL request on the application MySQL database</p>
+<blockquote>
+<div><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">param request:</th><td class="field-body">SQL request to execute as a string.</td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+</dd></dl>
+
+<dl class="function">
+<dt id="database.fetch.fetchone">
+<code class="descclassname">database.fetch.</code><code class="descname">fetchone</code><span class="sig-paren">(</span><em>request</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/database/fetch.html#fetchone"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#database.fetch.fetchone" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a fetchall for a given SQL request on the application MySQL database</p>
+<blockquote>
+<div><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">param request:</th><td class="field-body">SQL request to execute as a string.</td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+</dd></dl>
+
+<dl class="function">
+<dt id="database.fetch.get_results">
+<code class="descclassname">database.fetch.</code><code class="descname">get_results</code><span class="sig-paren">(</span><em>request</em>, <em>sql_func</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/database/fetch.html#get_results"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#database.fetch.get_results" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a fetchall for a given SQL request on the application MySQL database</p>
+<blockquote>
+<div><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">param request:</th><td class="field-body">SQL request to execute as a string.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">param request:</th><td class="field-body">Cursor callable attribute to call.</td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+</dd></dl>
+
+</div>
+<span class="target" id="module-database.mysql_data"></span><div class="section" id="sql-data-object">
+<h2>SQL data object<a class="headerlink" href="#sql-data-object" title="Permalink to this headline">¶</a></h2>
+<p>PROGRAM BY PAPIT SASU, 2019</p>
+<p>Coding Rules:</p>
+<ul class="simple">
+<li>Snake case for variables.</li>
+<li>Only argument is configuration file.</li>
+<li>No output or print, just log and files.</li>
+</ul>
+<dl class="class">
+<dt id="database.mysql_data.SQLData">
+<em class="property">class </em><code class="descclassname">database.mysql_data.</code><code class="descname">SQLData</code><span class="sig-paren">(</span><em>sql_request</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/database/mysql_data.html#SQLData"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#database.mysql_data.SQLData" title="Permalink to this definition">¶</a></dt>
+<dd><p>Execute a request and store data as attribute. Response 404 if no data retrieved</p>
+</dd></dl>
+
 </div>
 <span class="target" id="module-score.classification"></span><div class="section" id="enum-of-divers-classification">
 <h2>Enum of divers classification<a class="headerlink" href="#enum-of-divers-classification" title="Permalink to this headline">¶</a></h2>
@@ -729,7 +792,8 @@ should be self explanatory:</p>
 <li><a class="reference internal" href="#class-representing-a-company-constructed-with-a-denomination">Class representing a company, constructed with a denomination</a></li>
 <li><a class="reference internal" href="#generic-classes-representing-a-company-and-their-function-s">Generic classes representing a company and their function(s)</a></li>
 <li><a class="reference internal" href="#flask-mysql-initialisation">Flask MySQL initialisation</a></li>
-<li><a class="reference internal" href="#id1">Class Result Singleton</a></li>
+<li><a class="reference internal" href="#fetch-results-on-the-mysql-database">Fetch results on the MySQL database</a></li>
+<li><a class="reference internal" href="#sql-data-object">SQL data object</a></li>
 <li><a class="reference internal" href="#enum-of-divers-classification">Enum of divers classification</a></li>
 </ul>
 </li>

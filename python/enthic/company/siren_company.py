@@ -61,7 +61,7 @@ class AverageSirenCompany(UniqueBundleCompany, SirenCompany):
                 accountability, devise, bundle, "average", AVG(amount)
             FROM bundle LEFT OUTER JOIN identity
             ON bundle.siren = identity.siren
-            WHERE identity.siren = '%s'
+            WHERE identity.siren = "%s"
             GROUP BY bundle.bundle;""" % self.siren)
 
 
@@ -85,5 +85,5 @@ class YearSirenCompany(YearCompany, UniqueBundleCompany, SirenCompany):
                 accountability, devise, bundle, "%s", amount
             FROM bundle LEFT OUTER JOIN identity
             ON bundle.siren = identity.siren
-            WHERE identity.siren = '%s'
+            WHERE identity.siren = "%s"
             AND declaration = %s;""" % (self.year, self.siren, self.year))

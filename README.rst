@@ -5,7 +5,9 @@ Project than treat data from opendata-rncs.inpi.fr. They contain xml
 files of the account declaration of all french societies. The overall project
 is meant to be low-code and open source. Aim to provide ethical indicators on companies.
 Information media is a MySQL database, CSV files, web visualisation and a
-swagger API.
+swagger API. The search engine endpoint return a JSON-LD (Hydra) complaint JSON.
+Company JSON cannot conform to JSON-LD Organization type  due to lack of data
+(contact for instance).
 Score and indicators are calculated by batch, sql and why not using
 fancy libraries. Help in data treatment to improve scoring would be appreciated.
 Scoring, AI, data scrapping for segmentation. Shell and python are to launch be
@@ -14,7 +16,7 @@ from their corresponding directory ``./sh`` and ``./py``.
 **Install dependencies and python package**
 -------------------------------------------
 
-Synaptic packages have to be installed ``zip libxml2-utils mysql-server tree python3``.
+Synaptic packages have to be installed ``libxml2-utils mysql-server tree python3``.
 Pip packages as well has to be installed for development purpose.
 
 .. code-block:: bash
@@ -149,6 +151,8 @@ Library structure
     │   │   │   └── siren_company.py
     │   │   ├── database
     │   │   │   ├── mysql.py
+    │   │   │   ├── mysql_data.py
+    │   │   │   ├── fetchall.py
     │   │   │   └── __init__.py
     │   │   ├── configuration.json
     │   │   ├── conftest.py
@@ -250,13 +254,6 @@ Library structure
     │   │       ├── json_response.py
     │   │       ├── not_found_response.py
     │   │       └── ok_json_response.py
-    │   ├── enthic.egg-info
-    │   │   ├── dependency_links.txt
-    │   │   ├── entry_points.txt
-    │   │   ├── PKG-INFO
-    │   │   ├── requires.txt
-    │   │   ├── SOURCES.txt
-    │   │   └── top_level.txt
     │   ├── __init__.py
     │   ├── MANIFEST.in
     │   ├── setup.cfg
@@ -279,8 +276,6 @@ Library structure
         ├── create-table-request.sql
         ├── insert-bundle.sql
         └── insert-identity.sql
-
-
 
 Donation
 --------

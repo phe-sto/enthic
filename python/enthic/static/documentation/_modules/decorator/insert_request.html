@@ -89,12 +89,13 @@
                                    <span class="n">app_request</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">[</span><span class="s1">&#39;environ&#39;</span><span class="p">][</span><span class="s1">&#39;REMOTE_ADDR&#39;</span><span class="p">],</span>
                                    <span class="n">app_request</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">[</span><span class="s1">&#39;environ&#39;</span><span class="p">][</span><span class="s1">&#39;REMOTE_PORT&#39;</span><span class="p">],</span>
                                    <span class="n">app_request</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">[</span><span class="s1">&#39;environ&#39;</span><span class="p">][</span><span class="s1">&#39;HTTP_USER_AGENT&#39;</span><span class="p">])</span>
+                <span class="n">cur</span> <span class="o">=</span> <span class="n">mysql</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
+                <span class="n">cur</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">sql_request</span><span class="p">)</span>
+                <span class="n">cur</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+                <span class="n">mysql</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
             <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
                 <span class="k">pass</span>
-            <span class="n">cur</span> <span class="o">=</span> <span class="n">mysql</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
-            <span class="n">cur</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">sql_request</span><span class="p">)</span>
-            <span class="n">cur</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
-            <span class="n">mysql</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+
 
         <span class="k">return</span> <span class="n">handle_request</span>
 

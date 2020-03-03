@@ -16,7 +16,7 @@ Coding Rules:
 from re import compile
 
 from enthic.ape import ape_code
-from enthic.database.sql_data import SQLData
+from enthic.database.mysql_data import SQLData
 from enthic.ontology import ONTOLOGY
 from enthic.result.result import result
 from enthic.score.classification import DistributionClassification
@@ -26,7 +26,7 @@ from flask import abort
 
 year_re = compile(r"^\d{4}$")  # REGEX OF A YEAR
 siren_re = compile(r"^\d{9}$")  # REGEX OF A SIREN
-denomination_re = compile(r"^[a-zA-Z0-9_ ]*$")  # REGEX OF A SIREN
+denomination_re = compile(r"^.*$")  # TODO: DEFINE A SAFER REGEX FOR DENOMINATION
 
 
 class YearCompany:
@@ -58,10 +58,10 @@ class DenominationCompany:
         Constructor, check the format of the denomination passed.
         Denomination set as attribute if correct.
 
-           :param year: String that to match ^[a-zA-Z0-9_ ]*$.
+           :param denomination: String that to match ^.*$.
         """
         if denomination_re.match(denomination) is None:  # CHECK denomination FORMAT
-            abort(ErrorJSONResponse("Denomination format is not ^[a-zA-Z0-9_ ]*$"))
+            abort(ErrorJSONResponse("Denomination format is not ^.*$"))
         else:
             self.denomination = denomination
 

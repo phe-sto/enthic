@@ -82,18 +82,18 @@ def main():
                         zipped_xml = ZipFile(BytesIO(input_zip.read(zipped_xml)))
                         # SUPPOSED ONLY ONE XML BUT ITERATE TO BE SURE
                         for xml in zipped_xml.namelist():
-                            ########################################################
+                            ####################################################
                             # XML PARSER
                             tree = ElementTree.parse(BytesIO(zipped_xml.open(xml).read()))
                             root = tree.getroot()
-                            ########################################################
+                            ####################################################
                             # XML RELATED VARIABLES
                             accountability_type, siren, code_devise, denomination, \
                             year, ape, postal_code, town = (None,) * 8
-                            ########################################################
+                            ####################################################
                             # ITERATE ALL TAGS
                             for child in root[0]:
-                                ####################################################
+                                ################################################
                                 # IDENTITY TAGS, SIREN AND TYPE OF ACCOUNTABILITY
                                 if child.tag == "{fr:inpi:odrncs:bilansSaisisXML}identite":
                                     for identity in child:  # identite LEVEL
@@ -113,7 +113,7 @@ def main():
                                             year = identity.text[:4]
                                         # re_town
                                         elif identity.tag == '{fr:inpi:odrncs:bilansSaisisXML}adresse':
-                                            ########################################
+                                            ####################################
                                             # PARSING THE 'adresse' FIELD, MANY
                                             # DATA-CAPTURE ERROR.
                                             try:

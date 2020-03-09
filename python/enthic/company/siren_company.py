@@ -37,10 +37,10 @@ class AllSirenCompany(MultipleBundleCompany, SirenCompany):
         MultipleBundleCompany.__init__(self, """
             SELECT identity.siren, denomination, ape, postal_code, town,
                 accountability, devise, bundle, declaration, amount
-            FROM bundle LEFT JOIN identity
+            FROM identity LEFT JOIN bundle
             ON bundle.siren = identity.siren
-            WHERE identity.siren = "%s"
-            GROUP BY identity.siren, bundle.bundle, declaration, amount;""" % self.siren)
+            WHERE identity.siren = %s
+            GROUP BY identity.siren, bundle.bundle, declaration, amount;""", (self.siren,))
 
 
 class AverageSirenCompany(UniqueBundleCompany, SirenCompany):
@@ -59,10 +59,10 @@ class AverageSirenCompany(UniqueBundleCompany, SirenCompany):
         UniqueBundleCompany.__init__(self, """
             SELECT identity.siren, denomination, ape, postal_code, town,
                 accountability, devise, bundle, "average", AVG(amount)
-            FROM bundle LEFT OUTER JOIN identity
+            FROM identity LEFT JOIN bundle
             ON bundle.siren = identity.siren
-            WHERE identity.siren = "%s"
-            GROUP BY bundle.bundle;""" % self.siren)
+            WHERE identity.siren = %s
+            GROUP BY bundle.bundle;""", (self.siren,))
 
 
 class YearSirenCompany(YearCompany, UniqueBundleCompany, SirenCompany):
@@ -82,8 +82,8 @@ class YearSirenCompany(YearCompany, UniqueBundleCompany, SirenCompany):
         YearCompany.__init__(self, year)
         UniqueBundleCompany.__init__(self, """
             SELECT identity.siren, denomination, ape, postal_code, town,
-                accountability, devise, bundle, "%s", amount
-            FROM bundle LEFT OUTER JOIN identity
+                accountability, devise, bundle, %s, amount
+            FROM identity LEFT JOIN bundle
             ON bundle.siren = identity.siren
-            WHERE identity.siren = "%s"
-            AND declaration = %s;""" % (self.year, self.siren, self.year))
+            WHERE identity.siren = %s
+            AND declaration = %s;""", (self.year, self.siren, self.year))

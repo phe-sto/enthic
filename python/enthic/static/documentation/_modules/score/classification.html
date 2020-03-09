@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>utils.ok_json_response &#8212; enthic 2020.3.1 documentation</title>
+    <title>score.classification &#8212; enthic 2020.3.1 documentation</title>
     <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
@@ -32,12 +32,12 @@
 
           <div class="body" role="main">
             
-  <h1>Source code for utils.ok_json_response</h1><div class="highlight"><pre>
+  <h1>Source code for score.classification</h1><div class="highlight"><pre>
 <span></span><span class="c1"># -*- coding: utf-8 -*-</span>
 <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">=========================</span>
-<span class="sd">Valid JSON response Class</span>
-<span class="sd">=========================</span>
+<span class="sd">=============================</span>
+<span class="sd">Enum of divers classification</span>
+<span class="sd">=============================</span>
 
 <span class="sd">PROGRAM BY PAPIT SASU, 2020</span>
 
@@ -47,30 +47,23 @@
 <span class="sd">- Only argument is configuration file.</span>
 <span class="sd">- No output or print, just log and files.</span>
 <span class="sd">&quot;&quot;&quot;</span>
-<span class="kn">from</span> <span class="nn">enthic.utils.json_response</span> <span class="kn">import</span> <span class="n">JSONResponse</span>
+<span class="kn">from</span> <span class="nn">enum</span> <span class="kn">import</span> <span class="n">Enum</span>
 
 
-<div class="viewcode-block" id="OKJSONResponse"><a class="viewcode-back" href="../../index.html#utils.ok_json_response.OKJSONResponse">[docs]</a><span class="k">class</span> <span class="nc">OKJSONResponse</span><span class="p">(</span><span class="n">JSONResponse</span><span class="p">):</span>
+<div class="viewcode-block" id="DistributionClassification"><a class="viewcode-back" href="../../index.html#score.classification.DistributionClassification">[docs]</a><span class="k">class</span> <span class="nc">DistributionClassification</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Abstraction on top of the Enthic JSONResponse class, as most Response will be</span>
-<span class="sd">    application/json and HTTP return code 200.</span>
+<span class="sd">    Classification of company by type of distribution. Their name and value</span>
+<span class="sd">    should be self explanatory:</span>
+
+<span class="sd">    - TIGHT</span>
+<span class="sd">    - AVERAGE</span>
+<span class="sd">    - GOOD</span>
+<span class="sd">    - UNKNOWN</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">object_response</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Constructor of the OKJSONResponse class.</span>
-
-<span class="sd">           :param object_response: Dictionary to convert to JSON.</span>
-<span class="sd">           :raise TypeError: If argument not a dict, list or tuple.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="n">object_response</span><span class="o">.</span><span class="vm">__class__</span> <span class="ow">is</span> <span class="nb">dict</span> \
-                <span class="ow">or</span> <span class="n">object_response</span><span class="o">.</span><span class="vm">__class__</span> <span class="ow">is</span> <span class="nb">list</span> \
-                <span class="ow">or</span> <span class="n">object_response</span><span class="o">.</span><span class="vm">__class__</span> <span class="ow">is</span> <span class="nb">tuple</span><span class="p">:</span>
-            <span class="n">JSONResponse</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">object_response</span><span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
-                <span class="s1">&#39;OKJSONResponse CLASS CONSTRUCTOR ARGUMENT MUST BE A dict, list or tuple.&#39;</span>
-            <span class="p">)</span></div>
+    <span class="n">TIGHT</span> <span class="o">=</span> <span class="s2">&quot;TIGHT&quot;</span>
+    <span class="n">AVERAGE</span> <span class="o">=</span> <span class="s2">&quot;AVERAGE&quot;</span>
+    <span class="n">GOOD</span> <span class="o">=</span> <span class="s2">&quot;GOOD&quot;</span>
+    <span class="n">UNKNOWN</span> <span class="o">=</span> <span class="s2">&quot;UNKNOWN&quot;</span></div>
 </pre></div>
 
           </div>

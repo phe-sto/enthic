@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>French societies accountability extraction and treatment by PapIT &#8212; enthic 2020.2.2 documentation</title>
+    <title>French societies accountability extraction and treatment by PapIT &#8212; enthic 2020.3.1 documentation</title>
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
@@ -341,27 +341,6 @@ build the doc at the same time.</p>
 <li>No output or print, just log and files.</li>
 </ul>
 </div>
-<span class="target" id="module-decorator.check_sql_injection"></span><div class="section" id="decorator-checking-sql-injection-in-requests">
-<h2>Decorator checking SQL injection in requests<a class="headerlink" href="#decorator-checking-sql-injection-in-requests" title="Permalink to this headline">¶</a></h2>
-<dl class="function">
-<dt id="decorator.check_sql_injection.check_sql_injection">
-<code class="descclassname">decorator.check_sql_injection.</code><code class="descname">check_sql_injection</code><span class="sig-paren">(</span><em>func</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/decorator/check_sql_injection.html#check_sql_injection"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#decorator.check_sql_injection.check_sql_injection" title="Permalink to this definition">¶</a></dt>
-<dd><p>Decorator checking SQL injection.</p>
-<blockquote>
-<div><table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">param func:</th><td class="field-body">Function decorated.</td>
-</tr>
-<tr class="field-even field"><th class="field-name">return:</th><td class="field-body">The function decorated.</td>
-</tr>
-</tbody>
-</table>
-</div></blockquote>
-</dd></dl>
-
-</div>
 <span class="target" id="module-decorator.insert_request"></span><div class="section" id="decorator-inserting-data-from-the-incoming-request-after-having-executed-function">
 <h2>Decorator inserting data from the incoming request after having executed function<a class="headerlink" href="#decorator-inserting-data-from-the-incoming-request-after-having-executed-function" title="Permalink to this headline">¶</a></h2>
 <dl class="function">
@@ -554,7 +533,7 @@ or average</p>
 
 <dl class="class">
 <dt id="company.company.MultipleBundleCompany">
-<em class="property">class </em><code class="descclassname">company.company.</code><code class="descname">MultipleBundleCompany</code><span class="sig-paren">(</span><em>sql_request</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/company/company.html#MultipleBundleCompany"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#company.company.MultipleBundleCompany" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">company.company.</code><code class="descname">MultipleBundleCompany</code><span class="sig-paren">(</span><em>sql_request</em>, <em>args</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/company/company.html#MultipleBundleCompany"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#company.company.MultipleBundleCompany" title="Permalink to this definition">¶</a></dt>
 <dd><p>Company data returned with array of Bundle for each declaration. Inherit from
 OKJSONResponse to return a JSON and SQLData because of base data.</p>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
@@ -611,7 +590,7 @@ OKJSONResponse to return a JSON and SQLData because of base data.</p>
 
 <dl class="class">
 <dt id="company.company.UniqueBundleCompany">
-<em class="property">class </em><code class="descclassname">company.company.</code><code class="descname">UniqueBundleCompany</code><span class="sig-paren">(</span><em>sql_request</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/company/company.html#UniqueBundleCompany"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#company.company.UniqueBundleCompany" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">company.company.</code><code class="descname">UniqueBundleCompany</code><span class="sig-paren">(</span><em>sql_request</em>, <em>args</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/company/company.html#UniqueBundleCompany"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#company.company.UniqueBundleCompany" title="Permalink to this definition">¶</a></dt>
 <dd><p>Company data returned with a unique bundle as attribute. Inherit from
 OKJSONResponse to return a JSON and SQLData because of base data..</p>
 </dd></dl>
@@ -644,7 +623,7 @@ OKJSONResponse to return a JSON and SQLData because of base data..</p>
 </ul>
 <dl class="function">
 <dt id="database.fetch.fetchall">
-<code class="descclassname">database.fetch.</code><code class="descname">fetchall</code><span class="sig-paren">(</span><em>request</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/database/fetch.html#fetchall"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#database.fetch.fetchall" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">database.fetch.</code><code class="descname">fetchall</code><span class="sig-paren">(</span><em>request</em>, <em>args=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/database/fetch.html#fetchall"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#database.fetch.fetchall" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return a fetchall for a given SQL request on the application MySQL database</p>
 <blockquote>
 <div><table class="docutils field-list" frame="void" rules="none">
@@ -652,6 +631,8 @@ OKJSONResponse to return a JSON and SQLData because of base data..</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">param request:</th><td class="field-body">SQL request to execute as a string.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">param args:</th><td class="field-body">SQL argument to pass the request. Default is None.</td>
 </tr>
 </tbody>
 </table>
@@ -660,14 +641,16 @@ OKJSONResponse to return a JSON and SQLData because of base data..</p>
 
 <dl class="function">
 <dt id="database.fetch.fetchone">
-<code class="descclassname">database.fetch.</code><code class="descname">fetchone</code><span class="sig-paren">(</span><em>request</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/database/fetch.html#fetchone"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#database.fetch.fetchone" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return a fetchall for a given SQL request on the application MySQL database</p>
+<code class="descclassname">database.fetch.</code><code class="descname">fetchone</code><span class="sig-paren">(</span><em>request</em>, <em>args=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/database/fetch.html#fetchone"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#database.fetch.fetchone" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a fetchone for a given SQL request on the application MySQL database</p>
 <blockquote>
 <div><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">param request:</th><td class="field-body">SQL request to execute as a string.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">param args:</th><td class="field-body">SQL argument to pass the request. Default is None.</td>
 </tr>
 </tbody>
 </table>
@@ -676,7 +659,7 @@ OKJSONResponse to return a JSON and SQLData because of base data..</p>
 
 <dl class="function">
 <dt id="database.fetch.get_results">
-<code class="descclassname">database.fetch.</code><code class="descname">get_results</code><span class="sig-paren">(</span><em>request</em>, <em>sql_func</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/database/fetch.html#get_results"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#database.fetch.get_results" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">database.fetch.</code><code class="descname">get_results</code><span class="sig-paren">(</span><em>request</em>, <em>args</em>, <em>sql_func</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/database/fetch.html#get_results"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#database.fetch.get_results" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return a fetchall for a given SQL request on the application MySQL database</p>
 <blockquote>
 <div><table class="docutils field-list" frame="void" rules="none">
@@ -685,7 +668,9 @@ OKJSONResponse to return a JSON and SQLData because of base data..</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">param request:</th><td class="field-body">SQL request to execute as a string.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">param request:</th><td class="field-body">Cursor callable attribute to call.</td>
+<tr class="field-even field"><th class="field-name">param args:</th><td class="field-body">SQL argument to pass the request.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">param request:</th><td class="field-body">Cursor callable attribute to call.</td>
 </tr>
 </tbody>
 </table>
@@ -704,7 +689,7 @@ OKJSONResponse to return a JSON and SQLData because of base data..</p>
 </ul>
 <dl class="class">
 <dt id="database.mysql_data.SQLData">
-<em class="property">class </em><code class="descclassname">database.mysql_data.</code><code class="descname">SQLData</code><span class="sig-paren">(</span><em>sql_request</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/database/mysql_data.html#SQLData"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#database.mysql_data.SQLData" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">database.mysql_data.</code><code class="descname">SQLData</code><span class="sig-paren">(</span><em>sql_request</em>, <em>args</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/database/mysql_data.html#SQLData"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#database.mysql_data.SQLData" title="Permalink to this definition">¶</a></dt>
 <dd><p>Execute a request and store data as attribute. Response 404 if no data retrieved</p>
 </dd></dl>
 
@@ -781,7 +766,6 @@ should be self explanatory:</p>
 <li><a class="reference internal" href="#parse-all-the-xml-available-to-list-all-the-bundle-code">Parse all the XML available to list all the bundle code</a></li>
 <li><a class="reference internal" href="#sum-all-the-bundle-of-the-year-for-one-company-from-a-csv-sorted-file">Sum all the bundle of the year for one company from a CSV sorted file</a></li>
 <li><a class="reference internal" href="#flask-application-compatible-with-sphinx-documentation-and-gunicorn-server">Flask application, compatible with Sphinx documentation and Gunicorn server</a></li>
-<li><a class="reference internal" href="#decorator-checking-sql-injection-in-requests">Decorator checking SQL injection in requests</a></li>
 <li><a class="reference internal" href="#decorator-inserting-data-from-the-incoming-request-after-having-executed-function">Decorator inserting data from the incoming request after having executed function</a></li>
 <li><a class="reference internal" href="#json-response-class">JSON response Class</a></li>
 <li><a class="reference internal" href="#valid-json-response-class">Valid JSON response Class</a></li>

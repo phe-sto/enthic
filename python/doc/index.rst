@@ -24,8 +24,6 @@ Following module relates to Flask server.
 
 .. automodule:: app
 
-.. automodule:: decorator.check_sql_injection
-   :members:
 
 .. automodule:: decorator.insert_request
    :members:

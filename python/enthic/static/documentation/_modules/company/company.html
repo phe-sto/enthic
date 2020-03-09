@@ -1,0 +1,396 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>company.company &#8212; enthic 2020.3.1 documentation</title>
+    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for company.company</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">============================================================</span>
+<span class="sd">Generic classes representing a company and their function(s)</span>
+<span class="sd">============================================================</span>
+
+<span class="sd">PROGRAM BY PAPIT SASU, 2020</span>
+
+<span class="sd">Coding Rules:</span>
+
+<span class="sd">- Snake case for variables.</span>
+<span class="sd">- Only argument is configuration file.</span>
+<span class="sd">- No output or print, just log and files.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">re</span> <span class="kn">import</span> <span class="nb">compile</span>
+
+<span class="kn">from</span> <span class="nn">enthic.ape</span> <span class="kn">import</span> <span class="n">ape_code</span>
+<span class="kn">from</span> <span class="nn">enthic.database.mysql_data</span> <span class="kn">import</span> <span class="n">SQLData</span>
+<span class="kn">from</span> <span class="nn">enthic.ontology</span> <span class="kn">import</span> <span class="n">ONTOLOGY</span>
+<span class="kn">from</span> <span class="nn">enthic.result.result</span> <span class="kn">import</span> <span class="n">result</span>
+<span class="kn">from</span> <span class="nn">enthic.score.classification</span> <span class="kn">import</span> <span class="n">DistributionClassification</span>
+<span class="kn">from</span> <span class="nn">enthic.utils.error_json_response</span> <span class="kn">import</span> <span class="n">ErrorJSONResponse</span>
+<span class="kn">from</span> <span class="nn">enthic.utils.ok_json_response</span> <span class="kn">import</span> <span class="n">OKJSONResponse</span>
+<span class="kn">from</span> <span class="nn">flask</span> <span class="kn">import</span> <span class="n">abort</span>
+
+<span class="n">year_re</span> <span class="o">=</span> <span class="nb">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;^\d</span><span class="si">{4}</span><span class="s2">$&quot;</span><span class="p">)</span>  <span class="c1"># REGEX OF A YEAR</span>
+<span class="n">denomination_re</span> <span class="o">=</span> <span class="nb">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;^.*$&quot;</span><span class="p">)</span>  <span class="c1"># TODO: DEFINE A SAFER REGEX FOR DENOMINATION</span>
+
+
+<div class="viewcode-block" id="YearCompany"><a class="viewcode-back" href="../../index.html#company.company.YearCompany">[docs]</a><span class="k">class</span> <span class="nc">YearCompany</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Company data for a given year.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;year&#39;</span><span class="p">,)</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">year</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Constructor, check the format of the year passed. Year set as attribute</span>
+<span class="sd">        if correct.</span>
+
+<span class="sd">           :param year: String that to match ^\\d{4}$.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">year_re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">year</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>  <span class="c1"># CHECK YEAR FORMAT</span>
+            <span class="n">abort</span><span class="p">(</span><span class="n">ErrorJSONResponse</span><span class="p">(</span><span class="s2">&quot;Year format is not ^</span><span class="se">\\</span><span class="s2">d</span><span class="si">{4}</span><span class="s2">$&quot;</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">year</span> <span class="o">=</span> <span class="n">year</span></div>
+
+
+<div class="viewcode-block" id="DenominationCompany"><a class="viewcode-back" href="../../index.html#company.company.DenominationCompany">[docs]</a><span class="k">class</span> <span class="nc">DenominationCompany</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Denomination defined company.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">denomination</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Constructor, check the format of the denomination passed.</span>
+<span class="sd">        Denomination set as attribute if correct.</span>
+
+<span class="sd">           :param denomination: String that to match ^.*$.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">denomination_re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">denomination</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>  <span class="c1"># CHECK denomination FORMAT</span>
+            <span class="n">abort</span><span class="p">(</span><span class="n">ErrorJSONResponse</span><span class="p">(</span><span class="s2">&quot;Denomination format is not ^.*$&quot;</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">denomination</span> <span class="o">=</span> <span class="n">denomination</span></div>
+
+
+<div class="viewcode-block" id="SirenCompany"><a class="viewcode-back" href="../../index.html#company.company.SirenCompany">[docs]</a><span class="k">class</span> <span class="nc">SirenCompany</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Siren defined company.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">siren</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Constructor, check the the siren passed. Siren set as attribute</span>
+<span class="sd">        if correct.</span>
+
+<span class="sd">           :param siren: Integer between 0 and 1000000000 (excluded).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="mi">0</span> <span class="o">&lt;=</span> <span class="n">siren</span> <span class="o">&lt;</span> <span class="mi">1000000000</span><span class="p">:</span>  <span class="c1"># CHECK SIREN</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">siren</span> <span class="o">=</span> <span class="n">siren</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">abort</span><span class="p">(</span><span class="n">ErrorJSONResponse</span><span class="p">(</span><span class="s2">&quot;SIREN not between 0 and 1000000000 (excluded)&quot;</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="CompanyIdentity"><a class="viewcode-back" href="../../index.html#company.company.CompanyIdentity">[docs]</a><span class="k">class</span> <span class="nc">CompanyIdentity</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Identity data of the Company.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Constructor initialising attributes as value/description pair.</span>
+
+<span class="sd">           :param args: a tuple coming SQL result, each result being</span>
+<span class="sd">              [[bundle, calculation, amount]...].</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">siren</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="s2">&quot;</span><span class="si">%09d</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;SIREN&quot;</span><span class="p">}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">denomination</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="n">args</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;Dénomination&quot;</span><span class="p">}</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ape</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">, </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">args</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">ape_code</span><span class="p">[</span><span class="n">args</span><span class="p">[</span><span class="mi">2</span><span class="p">]]),</span>
+                <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;Code Activité Principale Exercée (NAF)&quot;</span><span class="p">}</span>
+        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ape</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">, Code APE inconnu&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">args</span><span class="p">[</span><span class="mi">2</span><span class="p">]),</span>
+                        <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;Code Activité Principale Exercée (NAF)&quot;</span><span class="p">}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">postal_code</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="n">args</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span> <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;Code Postal&quot;</span><span class="p">}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">town</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="n">args</span><span class="p">[</span><span class="mi">4</span><span class="p">],</span> <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;Commune&quot;</span><span class="p">}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">accountability</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">, </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">args</span><span class="p">[</span><span class="mi">5</span><span class="p">],</span>
+                                                        <span class="n">ONTOLOGY</span><span class="p">[</span><span class="s2">&quot;accounting&quot;</span><span class="p">][</span>
+                                                            <span class="n">args</span><span class="p">[</span><span class="mi">5</span><span class="p">]][</span><span class="s2">&quot;description&quot;</span><span class="p">]),</span>
+                               <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;Type de comptabilité&quot;</span><span class="p">}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">devise</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="n">args</span><span class="p">[</span><span class="mi">6</span><span class="p">],</span> <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;Devise&quot;</span><span class="p">}</span></div>
+
+
+<div class="viewcode-block" id="Bundle"><a class="viewcode-back" href="../../index.html#company.company.Bundle">[docs]</a><span class="k">class</span> <span class="nc">Bundle</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    All the bundle declared and scoring of a company. Can be several year, one</span>
+<span class="sd">    or average</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Constructor initialising attributes as value/description pair.</span>
+
+<span class="sd">           :param args: a tuple coming SQL result, each result being</span>
+<span class="sd">              [identity.siren, denomination, ape, postal_code, town,</span>
+<span class="sd">              accountability, devise].</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">bundles</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">declaration</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">for</span> <span class="n">tup_bundle</span> <span class="ow">in</span> <span class="n">args</span><span class="p">:</span>
+            <span class="c1">####################################################################</span>
+            <span class="c1"># BUNDLE FROM DATABASE</span>
+            <span class="n">bundle</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">tup_bundle</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+            <span class="k">if</span> <span class="nb">str</span><span class="p">(</span><span class="n">tup_bundle</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">bundles</span><span class="p">:</span>
+                <span class="n">declaration</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">tup_bundle</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+                <span class="n">bundles</span><span class="p">[</span><span class="n">declaration</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">value</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="n">tup_bundle</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="mi">2</span><span class="p">)</span>
+                <span class="k">for</span> <span class="n">accounting</span> <span class="ow">in</span> <span class="n">ONTOLOGY</span><span class="p">[</span><span class="s2">&quot;accounting&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                    <span class="k">try</span><span class="p">:</span>
+                        <span class="n">bundles</span><span class="p">[</span><span class="n">declaration</span><span class="p">][</span><span class="n">bundle</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+                            <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="n">value</span><span class="p">,</span>
+                            <span class="s2">&quot;description&quot;</span><span class="p">:</span>
+                                <span class="n">ONTOLOGY</span><span class="p">[</span><span class="s2">&quot;accounting&quot;</span><span class="p">][</span><span class="n">accounting</span><span class="p">][</span><span class="s2">&quot;code&quot;</span><span class="p">][</span>
+                                    <span class="n">bundle</span><span class="p">]</span>
+                        <span class="p">}</span>
+                    <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+                        <span class="k">pass</span>
+                <span class="c1">################################################################</span>
+                <span class="c1"># SCORE RELATED CALCULATION</span>
+                <span class="k">if</span> <span class="n">bundle</span> <span class="o">==</span> <span class="s2">&quot;dir&quot;</span> <span class="ow">and</span> <span class="n">result</span><span class="o">.</span><span class="n">avg_dir</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">value</span> <span class="o">&gt;</span> <span class="n">result</span><span class="o">.</span><span class="n">avg_dir</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">result</span><span class="o">.</span><span class="n">avg_dir</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="mf">0.1</span><span class="p">:</span>
+                        <span class="n">distribution</span> <span class="o">=</span> <span class="n">DistributionClassification</span><span class="o">.</span><span class="n">TIGHT</span>
+                    <span class="k">elif</span> <span class="n">result</span><span class="o">.</span><span class="n">avg_dir</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">result</span><span class="o">.</span><span class="n">avg_dir</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="mf">0.1</span> <span class="o">&lt;=</span> <span class="n">value</span> <span class="o">&lt;=</span> \
+                            <span class="n">result</span><span class="o">.</span><span class="n">avg_dir</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">result</span><span class="o">.</span><span class="n">avg_dir</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="mf">0.1</span><span class="p">:</span>
+                        <span class="n">distribution</span> <span class="o">=</span> <span class="n">DistributionClassification</span><span class="o">.</span><span class="n">AVERAGE</span>
+                    <span class="k">elif</span> <span class="n">result</span><span class="o">.</span><span class="n">avg_dir</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">result</span><span class="o">.</span><span class="n">avg_dir</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="mf">0.1</span> <span class="o">&gt;</span> <span class="n">value</span><span class="p">:</span>
+                        <span class="n">distribution</span> <span class="o">=</span> <span class="n">DistributionClassification</span><span class="o">.</span><span class="n">GOOD</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">distribution</span> <span class="o">=</span> <span class="n">DistributionClassification</span><span class="o">.</span><span class="n">UNKNOWN</span>
+                    <span class="n">bundles</span><span class="p">[</span><span class="n">declaration</span><span class="p">][</span><span class="n">bundle</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+                        <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="n">distribution</span><span class="o">.</span><span class="n">value</span><span class="p">,</span>
+                        <span class="s2">&quot;description&quot;</span><span class="p">:</span>
+                            <span class="n">ONTOLOGY</span><span class="p">[</span><span class="s2">&quot;scoring&quot;</span><span class="p">][</span><span class="s2">&quot;distribution&quot;</span><span class="p">][</span>
+                                <span class="s2">&quot;description&quot;</span><span class="p">]}</span>
+            <span class="k">except</span> <span class="ne">TypeError</span><span class="p">:</span>  <span class="c1"># IN CASE OF NO BUNDLE</span>
+                <span class="k">continue</span>
+        <span class="k">for</span> <span class="n">_declaration</span><span class="p">,</span> <span class="n">_bundles</span> <span class="ow">in</span> <span class="n">bundles</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">_declaration</span><span class="p">,</span> <span class="n">_bundles</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="UniqueBundleCompany"><a class="viewcode-back" href="../../index.html#company.company.UniqueBundleCompany">[docs]</a><span class="k">class</span> <span class="nc">UniqueBundleCompany</span><span class="p">(</span><span class="n">OKJSONResponse</span><span class="p">,</span> <span class="n">SQLData</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Company data returned with a unique bundle as attribute. Inherit from</span>
+<span class="sd">    OKJSONResponse to return a JSON and SQLData because of base data..</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sql_request</span><span class="p">,</span> <span class="n">args</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Constructor assigning CompanyIdentity and only Bundle</span>
+
+<span class="sd">           :param sql_request: SQL request of the Company data to execute as a string.</span>
+
+<span class="sd">        .. code-block:: json</span>
+
+<span class="sd">           {</span>
+<span class="sd">              &quot;gan&quot; : {</span>
+<span class="sd">                 &quot;value&quot; : 2976860,</span>
+<span class="sd">                 &quot;description&quot; : &quot;Gain d&#39;une companie, actuellement le chiffre d&#39;affaire uniquement FJ&quot;</span>
+<span class="sd">              },</span>
+<span class="sd">              &quot;ape&quot; : {</span>
+<span class="sd">                 &quot;description&quot; : &quot;Code Activité Principale Exercée (NAF)&quot;,</span>
+<span class="sd">                 &quot;value&quot; : &quot;7311Z, Activités des agences de publicité&quot;</span>
+<span class="sd">              },</span>
+<span class="sd">              &quot;di&quot; : {</span>
+<span class="sd">                 &quot;value&quot; : 499,</span>
+<span class="sd">                 &quot;description&quot; : &quot;Résultat de l’exercice (bénéfice ou perte)&quot;</span>
+<span class="sd">              },</span>
+<span class="sd">              &quot;town&quot; : {</span>
+<span class="sd">                 &quot;description&quot; : &quot;Commune&quot;,</span>
+<span class="sd">                 &quot;value&quot; : &quot;ERMONT&quot;</span>
+<span class="sd">              },</span>
+<span class="sd">              &quot;denomination&quot; : {</span>
+<span class="sd">                 &quot;value&quot; : &quot;MRG PROMOTION&quot;,</span>
+<span class="sd">                 &quot;description&quot; : &quot;Dénomination&quot;</span>
+<span class="sd">              },</span>
+<span class="sd">              &quot;siren&quot; : {</span>
+<span class="sd">                 &quot;description&quot; : &quot;SIREN&quot;,</span>
+<span class="sd">                 &quot;value&quot; : &quot;307034421&quot;</span>
+<span class="sd">              },</span>
+<span class="sd">              &quot;devise&quot; : {</span>
+<span class="sd">                 &quot;value&quot; : &quot;EUR&quot;,</span>
+<span class="sd">                 &quot;description&quot; : &quot;Devise&quot;</span>
+<span class="sd">              },</span>
+<span class="sd">              &quot;postal_code&quot; : {</span>
+<span class="sd">                 &quot;description&quot; : &quot;Code Postal&quot;,</span>
+<span class="sd">                 &quot;value&quot; : &quot;95120&quot;</span>
+<span class="sd">              },</span>
+<span class="sd">              &quot;dir&quot; : {</span>
+<span class="sd">                 &quot;value&quot; : 0.01,</span>
+<span class="sd">                 &quot;description&quot; : &quot;Distribution ratio, (FY + HJ) / GAN, i.e pondération de dis par le chiffre d&#39;affaire&quot;</span>
+<span class="sd">              }</span>
+<span class="sd">           }</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">SQLData</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sql_request</span><span class="p">,</span> <span class="n">args</span><span class="p">)</span>
+        <span class="k">if</span> <span class="kc">None</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">sql_results</span><span class="p">:</span>
+            <span class="n">OKJSONResponse</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">CompanyIdentity</span><span class="p">(</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">sql_results</span><span class="p">[</span><span class="mi">0</span><span class="p">][:</span><span class="mi">7</span><span class="p">])</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">)</span>
+
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">OKJSONResponse</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="p">{</span><span class="o">**</span><span class="n">CompanyIdentity</span><span class="p">(</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">sql_results</span><span class="p">[</span><span class="mi">0</span><span class="p">][:</span><span class="mi">7</span><span class="p">])</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">,</span>
+                                           <span class="o">**</span><span class="n">Bundle</span><span class="p">(</span><span class="o">*</span><span class="p">[</span><span class="n">bundle</span><span class="p">[</span><span class="mi">7</span><span class="p">:]</span> <span class="k">for</span> <span class="n">bundle</span> <span class="ow">in</span>
+                                                      <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sql_results</span><span class="p">)])</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">[</span>
+                                               <span class="bp">self</span><span class="o">.</span><span class="n">sql_results</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">8</span><span class="p">]]})</span></div>
+
+
+<div class="viewcode-block" id="MultipleBundleCompany"><a class="viewcode-back" href="../../index.html#company.company.MultipleBundleCompany">[docs]</a><span class="k">class</span> <span class="nc">MultipleBundleCompany</span><span class="p">(</span><span class="n">OKJSONResponse</span><span class="p">,</span> <span class="n">SQLData</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Company data returned with array of Bundle for each declaration. Inherit from</span>
+<span class="sd">    OKJSONResponse to return a JSON and SQLData because of base data.</span>
+
+<span class="sd">    .. code-block:: json</span>
+
+<span class="sd">       {</span>
+<span class="sd">          &quot;gan&quot; : {</span>
+<span class="sd">             &quot;value&quot; : 2976860,</span>
+<span class="sd">             &quot;description&quot; : &quot;Gain d&#39;une companie, actuellement le chiffre d&#39;affaire uniquement FJ&quot;</span>
+<span class="sd">          },</span>
+<span class="sd">          &quot;ape&quot; : {</span>
+<span class="sd">             &quot;description&quot; : &quot;Code Activité Principale Exercée (NAF)&quot;,</span>
+<span class="sd">             &quot;value&quot; : &quot;7311Z, Activités des agences de publicité&quot;</span>
+<span class="sd">          },</span>
+<span class="sd">          &quot;di&quot; : {</span>
+<span class="sd">             &quot;value&quot; : 499,</span>
+<span class="sd">             &quot;description&quot; : &quot;Résultat de l’exercice (bénéfice ou perte)&quot;</span>
+<span class="sd">          },</span>
+<span class="sd">          &quot;town&quot; : {</span>
+<span class="sd">             &quot;description&quot; : &quot;Commune&quot;,</span>
+<span class="sd">             &quot;value&quot; : &quot;ERMONT&quot;</span>
+<span class="sd">          },</span>
+<span class="sd">          &quot;financial_data&quot; : [</span>
+<span class="sd">              {</span>
+<span class="sd">                 &quot;dir&quot; : {</span>
+<span class="sd">                    &quot;value&quot; : 0.03,</span>
+<span class="sd">                    &quot;description&quot; : &quot;Distribution ratio, (FY + HJ) / GAN, i.e pondération de dis par le chiffre d&#39;affaire&quot;</span>
+<span class="sd">                 },</span>
+<span class="sd">                 &quot;dis&quot; : {</span>
+<span class="sd">                    &quot;value&quot; : 34974,</span>
+<span class="sd">                    &quot;description&quot; : &quot;Somme des distributions, FY + HJ&quot;</span>
+<span class="sd">                 },</span>
+<span class="sd">                 &quot;di&quot; : {</span>
+<span class="sd">                    &quot;description&quot; : &quot;Résultat de l’exercice (bénéfice ou perte)&quot;,</span>
+<span class="sd">                    &quot;value&quot; : -129783</span>
+<span class="sd">                 },</span>
+<span class="sd">                 &quot;gan&quot; : {</span>
+<span class="sd">                    &quot;description&quot; : &quot;Gain d&#39;une companie, actuellement le chiffre d&#39;affaire uniquement FJ&quot;,</span>
+<span class="sd">                    &quot;value&quot; : 1196260</span>
+<span class="sd">                 },</span>
+<span class="sd">                 &quot;declaration&quot; : {</span>
+<span class="sd">                    &quot;value&quot; : 2015,</span>
+<span class="sd">                    &quot;description&quot; : &quot;Année de déclaration&quot;</span>
+<span class="sd">                 }</span>
+<span class="sd">              }</span>
+<span class="sd">           ]</span>
+<span class="sd">       }</span>
+
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;financial_data&#39;</span><span class="p">,)</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sql_request</span><span class="p">,</span> <span class="n">args</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Constructor assigning CompanyIdentity and an array of</span>
+<span class="sd">        Bundles.</span>
+
+<span class="sd">           :param sql_request: SQL request of the Company data to execute as a string.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">SQLData</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sql_request</span><span class="p">,</span> <span class="n">args</span><span class="p">)</span>
+        <span class="n">_bundles</span> <span class="o">=</span> <span class="n">Bundle</span><span class="p">(</span><span class="o">*</span><span class="p">[</span><span class="n">bundle</span><span class="p">[</span><span class="mi">7</span><span class="p">:]</span> <span class="k">for</span> <span class="n">bundle</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sql_results</span><span class="p">)])</span><span class="o">.</span><span class="vm">__dict__</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">financial_data</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;financial_data&quot;</span><span class="p">:</span> <span class="p">[]}</span>
+        <span class="k">if</span> <span class="kc">None</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">sql_results</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">sql_results</span><span class="o">.</span><span class="fm">__len__</span><span class="p">():</span>
+            <span class="k">for</span> <span class="n">year</span><span class="p">,</span> <span class="n">_bundle</span> <span class="ow">in</span> <span class="n">_bundles</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">financial_data</span><span class="p">[</span><span class="s2">&quot;financial_data&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                        <span class="p">{</span><span class="o">**</span><span class="p">{</span><span class="s2">&quot;declaration&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">year</span><span class="p">),</span>
+                                            <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;Année de déclaration&quot;</span><span class="p">}},</span>
+                         <span class="o">**</span><span class="n">_bundle</span><span class="p">})</span>
+                <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+                    <span class="k">continue</span>
+        <span class="n">OKJSONResponse</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="p">{</span><span class="o">**</span><span class="n">CompanyIdentity</span><span class="p">(</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">sql_results</span><span class="p">[</span><span class="mi">0</span><span class="p">][:</span><span class="mi">7</span><span class="p">])</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">,</span>
+                                       <span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">financial_data</span><span class="p">})</span></div>
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../../index.html">
+              <img class="logo" src="../../_static/papit.png" alt="Logo"/>
+            </a></p>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script><div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2019, Christophe Brun, PapIT.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.5</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

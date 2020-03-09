@@ -37,10 +37,10 @@ class AllDenominationCompany(MultipleBundleCompany, DenominationCompany):
         MultipleBundleCompany.__init__(self, """
             SELECT identity.siren, denomination, ape, postal_code, town,
                 accountability, devise, bundle, declaration, amount
-            FROM bundle LEFT JOIN identity
+            FROM identity LEFT JOIN bundle
             ON bundle.siren = identity.siren
-            WHERE identity.denomination = "%s"
-            GROUP BY identity.siren, bundle.bundle, declaration, amount;""" % self.denomination)
+            WHERE identity.denomination = %s
+            GROUP BY identity.siren, bundle.bundle, declaration, amount;""", (self.denomination,))
 
 
 class AverageDenominationCompany(UniqueBundleCompany, DenominationCompany):
@@ -59,10 +59,10 @@ class AverageDenominationCompany(UniqueBundleCompany, DenominationCompany):
         UniqueBundleCompany.__init__(self, """
             SELECT identity.siren, denomination, ape, postal_code, town,
                 accountability, devise, bundle, "average", AVG(amount)
-            FROM bundle LEFT JOIN identity
+            FROM identity LEFT JOIN bundle
             ON bundle.siren = identity.siren
-            WHERE identity.denomination = "%s"
-            GROUP BY identity.siren, bundle.bundle;""" % self.denomination)
+            WHERE identity.denomination = %s
+            GROUP BY identity.siren, bundle.bundle;""", (self.denomination,))
 
 
 class YearDenominationCompany(YearCompany, UniqueBundleCompany, DenominationCompany):
@@ -83,8 +83,8 @@ class YearDenominationCompany(YearCompany, UniqueBundleCompany, DenominationComp
         YearCompany.__init__(self, year)
         UniqueBundleCompany.__init__(self, """
             SELECT identity.siren, denomination, ape, postal_code, town,
-                accountability, devise, bundle, "%s", amount
-            FROM bundle LEFT JOIN identity
+                accountability, devise, bundle, %s, amount
+            FROM identity LEFT JOIN bundle
             ON bundle.siren = identity.siren
-            WHERE identity.denomination = "%s"
-            AND declaration = %s;""" % (self.year, self.denomination, self.year))
+            WHERE identity.denomination = %s
+            AND declaration = %s;""", (self.year, self.denomination, self.year))

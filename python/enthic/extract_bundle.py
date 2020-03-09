@@ -90,6 +90,7 @@ def main():
                             # XML RELATED VARIABLES
                             accountability_type, siren, code_devise, denomination, \
                             year, ape, postal_code, town = (None,) * 8
+                            identity_writen = False
                             ####################################################
                             # ITERATE ALL TAGS
                             for child in root[0]:
@@ -123,37 +124,40 @@ def main():
                                             except TypeError as error:
                                                 debug("{0}: {1}".format(str(error),
                                                                         str(identity.text)))
-                                                postal_code, town = ('UNKNWON',) * 2
+                                                postal_code, town = ('UNKNOWN',) * 2
                                             except AttributeError as error:
                                                 try:
                                                     debug("{0}: {1}".format(str(error),
                                                                             str(identity.text)))
                                                     m = re_town.match(identity.text)
                                                     town = m.group(1).upper()
-                                                    postal_code = 'UNKNWON'
+                                                    postal_code = 'UNKNOWN'
                                                 except AttributeError as error:
                                                     try:
                                                         debug(
                                                             "{0}: {1}".format(str(error),
                                                                               str(identity.text)))
                                                         m = re_postal_code.match(identity.text)
-                                                        town = 'UNKNWON'
+                                                        town = 'UNKNOWN'
                                                         postal_code = m.group(1)
                                                     except AttributeError as error:
                                                         debug(
                                                             "{0}: {1}".format(str(error),
                                                                               str(identity.text)))
-                                                        postal_code, town = ('UNKNWON',) * 2
+                                                        postal_code, town = ('UNKNOWN',) * 2
                                         elif identity.tag == '{fr:inpi:odrncs:bilansSaisisXML}code_activite':
                                             ape = identity.text
-                                    ################################################
-                                    # WRITE IDENTITY FILE
-                                    identity_file.write(
-                                        ";".join([siren, denomination, ape, postal_code,
-                                                  town, accountability_type,
-                                                  code_devise,
-                                                  "\n"]))
-                                ####################################################
+                                    ############################################
+                                    # WRITE IDENTITY FILE IF ACCOUNT TYPE IS
+                                    # KNOWN
+                                    if accountability_type in account_ontology.keys():
+                                        identity_file.write(
+                                            ";".join([siren, denomination, ape, postal_code,
+                                                      town, accountability_type,
+                                                      code_devise,
+                                                      "\n"]))
+                                        identity_writen = True
+                                ################################################
                                 # BUNDLE TAGS IN PAGES TO ITERATE WITH BUNDLE CODES
                                 # AND AMOUNT
                                 elif child.tag == "{fr:inpi:odrncs:bilansSaisisXML}detail":
@@ -167,15 +171,16 @@ def main():
                                                         for amount_code in bundle_code[
                                                             bundle.attrib["code"]]:
                                                             amount_code = "m{0}".format(amount_code)
-                                                            ########################
+                                                            ####################
                                                             # WRITE RESULTS FILE
-                                                            bundle_file.write(";".join([siren, year,
-                                                                                        bundle.attrib[
-                                                                                            "code"],
-                                                                                        str(int(
+                                                            if identity_writen is True:
+                                                                bundle_file.write(";".join([siren, year,
                                                                                             bundle.attrib[
-                                                                                                amount_code])),
-                                                                                        "\n"]))
+                                                                                                "code"],
+                                                                                            str(int(
+                                                                                                bundle.attrib[
+                                                                                                    amount_code])),
+                                                                                            "\n"]))
                                             except KeyError as key_error:
                                                 debug(key_error)
                     except UnicodeDecodeError as error:

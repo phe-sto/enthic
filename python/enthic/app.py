@@ -29,7 +29,6 @@ from enthic.company.siren_company import (
     AllSirenCompany
 )
 from enthic.database.fetch import fetchall, fetchone
-from enthic.decorator.check_sql_injection import check_sql_injection
 from enthic.decorator.insert_request import insert_request
 from enthic.ontology import ONTOLOGY
 from enthic.result.result import result
@@ -57,33 +56,23 @@ application.config['MYSQL_DB'] = 'enthic'
 
 ################################################################################
 # IN ORDER NOT TO CONNECT DATABASE BELOW IF EXECUTED DURING SPHINX IMPORT
+# IF NOT SPHINX CALCULATE SCORES RELATED DATA ONLY IF NOT BUILDING/INSTALLING
 try:
     setup = stack()[6].filename.endswith("autodoc/importer.py")
 except IndexError:
-    setup = False
-################################################################################
-# CALCULATE SCORES RELATED DATA ONLY IF NOT BUILDING/INSTALLING
-
-with application.app_context():
-    from enthic.database.mysql import mysql
-
-    if setup is False:
-        cursor = mysql.connection.cursor()
-        cursor.execute("""SELECT declaration, ROUND(AVG(amount))
-                    FROM bundle where bundle = 'DIR'
-                    GROUP BY declaration;""")
-        result.yearly_avg_dir = cursor.fetchall()
-        cursor.close()
+    with application.app_context():
+        result.yearly_avg_dir = fetchall("""SELECT declaration, ROUND(AVG(amount))
+                                            FROM bundle where bundle = 'DIR'
+                                            GROUP BY declaration;""")
 
 
-@application.route("/company/siren/<siren>/<year>", methods=['GET'],
-                   strict_slashes=False)
-@check_sql_injection
 @insert_request
+@application.route("/company/siren/<int:siren>/<string:year>", methods=['GET'],
+                   strict_slashes=False)
 def company_siren_year(siren, year):
     """
     Retrieve company information by SIREN for a given year. Path is
-    /company/siren/<siren> GET method only and no strict slash.
+    /company/siren/<int:siren> GET method only and no strict slash.
 
        :param siren: SIREN identification, must be an 9 character long,
           numeric only.
@@ -95,13 +84,12 @@ def company_siren_year(siren, year):
     return YearSirenCompany(siren, year)
 
 
-@application.route("/company/siren/<siren>/average", methods=['GET'], strict_slashes=False)
-@check_sql_injection
 @insert_request
+@application.route("/company/siren/<int:siren>/average", methods=['GET'], strict_slashes=False)
 def company_siren_average(siren):
     """
     Retrieve company information by SIREN, calculation of the years average.
-    Path is /company/siren/<siren> GET method only and no strict slash.
+    Path is /company/siren/<int:siren> GET method only and no strict slash.
 
        :param siren: SIREN identification, must be an 9 character long,
           numeric only.
@@ -111,13 +99,12 @@ def company_siren_average(siren):
     return AverageSirenCompany(siren)
 
 
-@application.route("/company/siren/<siren>", methods=['GET'], strict_slashes=False)
-@check_sql_injection
 @insert_request
+@application.route("/company/siren/<int:siren>", methods=['GET'], strict_slashes=False)
 def company_siren(siren):
     """
     Retrieve company information by SIREN, calculation of all years. Path is
-    /company/siren/<siren> GET method only and no strict slash.
+    /company/siren/<int:siren> GET method only and no strict slash.
 
        :param siren: SIREN identification, must be an 9 character long,
           numeric only.
@@ -127,14 +114,13 @@ def company_siren(siren):
     return AllSirenCompany(siren)
 
 
-@application.route("/company/denomination/<denomination>/average", methods=['GET'],
-                   strict_slashes=False)
-@check_sql_injection
 @insert_request
+@application.route("/company/denomination/<string:denomination>/average", methods=['GET'],
+                   strict_slashes=False)
 def company_denomination_average(denomination):
     """
     Retrieve company information by company denomination of the years average.
-    Path is /company/denomination/<denomination> GET method only and no strict
+    Path is /company/denomination/<string:denomination> GET method only and no strict
     slash.
 
        :param denomination: String, denomination of the company.
@@ -143,14 +129,13 @@ def company_denomination_average(denomination):
     return AverageDenominationCompany(denomination)
 
 
-@application.route("/company/denomination/<denomination>", methods=['GET'],
-                   strict_slashes=False)
-@check_sql_injection
 @insert_request
+@application.route("/company/denomination/<string:denomination>", methods=['GET'],
+                   strict_slashes=False)
 def company_denomination(denomination):
     """
     Retrieve company information by company denomination, calculation of all
-    years. Path is /company/denomination/<denomination> GET method only and no strict slash.
+    years. Path is /company/denomination/<string:denomination> GET method only and no strict slash.
 
        :param denomination: String, denomination of the company.
        :return: HTTP Response as application/json. Contain all known information.
@@ -158,14 +143,13 @@ def company_denomination(denomination):
     return AllDenominationCompany(denomination)
 
 
-@application.route("/company/denomination/<denomination>/<year>", methods=['GET'],
-                   strict_slashes=False)
-@check_sql_injection
 @insert_request
+@application.route("/company/denomination/<string:denomination>/<string:year>", methods=['GET'],
+                   strict_slashes=False)
 def company_denomination_year(denomination, year):
     """
     Retrieve company information for a given year by company denomination. Path
-    is /company/denomination/<denomination> GET method only and no strict slash.
+    is /company/denomination/<string:denomination> GET method only and no strict slash.
 
        :param denomination: String, denomination of the company.
        :param year: Year of results to return, default is None.
@@ -192,18 +176,18 @@ def result_array(probe, limit, offset=0):
        :param limit: Integer, the limit of result to return.
        :param offset: Integer, offset of the select SQL request.
     """
-    companies = list(fetchall("""SELECT siren, denomination, ape, postal_code, town, 
+    companies = fetchall("""SELECT siren, denomination, ape, postal_code, town, 
                     accountability, devise
-                    FROM identity WHERE siren LIKE "%s%%"
-                    OR denomination LIKE "%s%%"
-                    OR MATCH(denomination) AGAINST ("%s%%" IN NATURAL LANGUAGE MODE)
-                    LIMIT %d OFFSET %d;""" % (probe, probe, probe, limit, offset)))
-    return tuple([CompanyIdentity(*company).__dict__ for company in companies])
+                    FROM identity WHERE siren LIKE %s
+                    OR denomination LIKE %s
+                    OR MATCH(denomination) AGAINST (%s IN NATURAL LANGUAGE MODE)
+                    LIMIT %s OFFSET %s;""", ("{0}%".format(probe), "{0}%".format(probe),
+                                             "{0}%".format(probe), limit, offset))
+    return tuple(CompanyIdentity(*company).__dict__ for company in companies)
 
 
-@application.route("/company/search", methods=['POST'], strict_slashes=False)
-@check_sql_injection
 @insert_request
+@application.route("/company/search", methods=['POST'], strict_slashes=False)
 def search():
     """
     Search companies by SIREN or denomination. Limited to 1000 results. Path is
@@ -221,14 +205,15 @@ def search():
         ########################################################################
         # WRONG TYPE
         if json_data["limit"].__class__ is not int and \
-                json_data["probe"].__class__ is not str:
+                (json_data["probe"].__class__ is not str and json_data[
+                    "probe"].__class__ is not int):
             return ErrorJSONResponse(
-                "Value limit must be a string and limit an integer."
+                "Value limit must be a string or integer and limit an integer."
             )
         elif json_data["limit"].__class__ is not int:
             return ErrorJSONResponse("Value limit must be an integer.")
-        elif json_data["probe"].__class__ is not str:
-            return ErrorJSONResponse("Value probe must be a string.")
+        elif json_data["probe"].__class__ is not str and json_data["probe"].__class__ is not int:
+            return ErrorJSONResponse("Value probe must be a string or integer.")
         ########################################################################
         # WRONG LIMIT
         elif json_data["limit"] > 10000:
@@ -255,9 +240,8 @@ def search():
         )
 
 
-@application.route("/company/search/page", methods=['GET'], strict_slashes=False)
-@check_sql_injection
 @insert_request
+@application.route("/company/search/page", methods=['GET'], strict_slashes=False)
 def page_search():
     """
     Return a JSON formatted as page. Try to implement the Hydra
@@ -265,16 +249,24 @@ def page_search():
     """
 
     page = int(request.args.get('page', '1')) - 1  #  TO COUNT
+    if page < 0:
+        ErrorJSONResponse('page parameter should be > 0')
     per_page = int(request.args.get('per_page', '30'))
+    if per_page < 1:
+        ErrorJSONResponse('per_page parameter should be > 0')
     probe = request.args.get('probe', "")
     results = result_array(probe, per_page, offset=page * per_page)
-    count = fetchone("""SELECT COUNT(*)
-                        FROM identity WHERE siren LIKE "%s%%"
-                        OR denomination LIKE "%s%%"
-                        OR MATCH(denomination) AGAINST ("%s%%" IN NATURAL LANGUAGE MODE)""" % (
-        probe, probe, probe))
+    count, = fetchone("""SELECT COUNT(*)
+                        FROM identity WHERE siren LIKE %s
+                        OR denomination LIKE %s
+                        OR MATCH(denomination) AGAINST (%s IN NATURAL LANGUAGE MODE)""", (
+        "{0}%".format(probe), "{0}%".format(probe), "{0}%".format(probe)))
     if count < page * per_page:
         return NotFoundJSONResponse()
+    if per_page != 0:
+        last_per_page = count / per_page + 1
+    else:
+        last_per_page = 0
     ############################################################################
     # OBJECT STORING RESPONSE
     obj = {"@context": "http://www.w3.org/ns/hydra/context.jsonld",
@@ -286,7 +278,7 @@ def page_search():
             "first": '%s?page=1&per_page=%d&probe=%s' % (request.path,
                                                          per_page, probe),
             "last": '%s?page=%d&per_page=%d&probe=%s' % (request.path,
-                                                         count / per_page + 1,
+                                                         last_per_page,
                                                          per_page,
                                                          probe)},
            "member": results
@@ -303,7 +295,7 @@ def page_search():
     # MAKE NEXT URL
     if page * per_page + per_page > count:
         obj["view"]["next"] = ''
-    elif page + 1 < int(count / per_page):
+    elif page < last_per_page:
         obj["view"]["next"] = '%s?page=%d&per_page=%d&probe=%s' % (request.path,
                                                                    page + 2,
                                                                    per_page,
@@ -316,8 +308,8 @@ def page_search():
     return OKJSONResponse(obj)
 
 
-@application.route('/<path:path>', strict_slashes=False)
 @insert_request
+@application.route('/<path:path>', strict_slashes=False)
 def static_proxy(path):
     """
     Serve the static files, like the Swagger definition page and the 404.
@@ -328,8 +320,8 @@ def static_proxy(path):
     return application.send_static_file(path)
 
 
-@application.route("/", strict_slashes=False)
 @insert_request
+@application.route("/", strict_slashes=False)
 def index():
     """
     Serve the index.html at the base path.
@@ -339,8 +331,8 @@ def index():
     return application.send_static_file("index.html"), 200
 
 
-@application.errorhandler(404)
 @insert_request
+@application.errorhandler(404)
 def page_not_found(error):
     """
     Page not found and logging.
@@ -352,8 +344,8 @@ def page_not_found(error):
     return application.send_static_file('404.html'), 404
 
 
-@application.errorhandler(500)
 @insert_request
+@application.errorhandler(500)
 def server_error(error):
     """
     Server error page and logging.

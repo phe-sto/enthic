@@ -20,24 +20,25 @@ from enthic.utils.json_response import JSONResponse
 from enthic.utils.ok_json_response import OKJSONResponse
 from requests import get, post, delete, put
 
-EXISTING_SIREN_EXISTING_YEAR = (("005420120", 2016), ("005450119", 2015),
-                                ("005520176", 2016), ("005520242", 2016),
-                                ("005541552", 2017), ("005720644", 2016),
-                                ("005580113", 2016), ("005580501", 2016),
-                                ("005580683", 2016), ("005620034", 2016),
-                                ("005620117", 2017), ("005620190", 2016),
-                                ("005650031", 2016), ("005650148", 2016),
-                                ("005650189", 2016), ("005680541", 2016),
-                                ("005720164", 2016), ("005720552", 2016),
-                                ("005720602", 2016), ("005720610", 2016))
+EXISTING_SIREN_EXISTING_YEAR = ((5420120, 2016), (5450119, 2015),
+                                (5520176, 2016), (5520242, 2016),
+                                (5541552, 2017), (5720644, 2016),
+                                (5580113, 2016), (5580501, 2016),
+                                (5580683, 2016), (5620034, 2016),
+                                (5620117, 2017), (5620190, 2016),
+                                (5650031, 2016), (5650148, 2016),
+                                (5650189, 2016), (5680541, 2016),
+                                (5720164, 2016), (5720552, 2016),
+                                (5720602, 2016), (5720610, 2016),
+                                (5580113, 2016))
 
-EXISTING_SIREN = tuple([siren[0] for siren in EXISTING_SIREN_EXISTING_YEAR])
+EXISTING_SIREN = tuple(siren[0] for siren in EXISTING_SIREN_EXISTING_YEAR)
 
-NOT_EXISTING_SIREN = ("999999999", "999999998", "999999998", "999999997",
-                      "999999996", "999999995", "999999994", "999999993",
-                      "999999992", "999999991")
+NOT_EXISTING_SIREN = (999999999, 999999998, 999999998, 999999997,
+                      999999996, 999999995, 999999994, 999999993,
+                      999999992, 999999991)
 
-EXISTING_SIREN_NOT_EXISTING_YEAR = tuple([(siren, 1254) for siren in list(EXISTING_SIREN)])
+EXISTING_SIREN_NOT_EXISTING_YEAR = tuple((siren, 1254) for siren in list(EXISTING_SIREN))
 
 EXISTING_DENOMINATION_EXISTING_YEAR = (
     ("AESTERA ALLIANCE EVOLUTION SYNERGIE TECHNIQUE RESTAURATION A", 2013),
@@ -46,13 +47,12 @@ EXISTING_DENOMINATION_EXISTING_YEAR = (
     ("AESTHESIS", 2016),
     ("AESTHETIC", 2017),
     ("AESTHETIC ANATOMY ASSOCIATION OU 3A", 2016),
+    ("L'ABRI FAMILIAL", 2016),
     ("AESTHETIC GROUP", 2016),
     ('AESTHETIC MODELINE EN ABREGE "AE MODELINE"', 2017),
     ("AESTHETIC ROMY D", 2015),
     ("AESTHETIC SOLUTIONS TECHNOLOGIES", 2016),
-    ("AESTUS", 2019),
     ("AESUS", 2016),
-    ("AESY CONSULTIN", 2018),
     ("AET", 2017),
     ("AET CONSULTING", 2017),
     ("AET DESTINATION", 2016),
@@ -72,11 +72,18 @@ EXISTING_DENOMINATION_EXISTING_YEAR = (
     ("AETHER STUDIO", 2016),
     ("AETHICA", 2016))
 
+EXISTING_DENOMINATION_NO_BUNDLE = ("ETABLISSEMENTS GAETAN COPPIER ET FILS",
+                                   "SOCIETE RIQUIER ET CIE",
+                                   "EMILE BARNEAUD ET FILS",
+                                   "SARL BAS ALPINE D AUTOCARS")
+
+EXISTING_SIREN_NO_BUNDLE = (5450093, 5550108, 5620174, 5620364)
+
 EXISTING_DENOMINATION = tuple(
-    [denomination[0] for denomination in EXISTING_DENOMINATION_EXISTING_YEAR])
+    denomination[0] for denomination in EXISTING_DENOMINATION_EXISTING_YEAR)
 
 NOT_EXISTING_DENOMINATION = tuple(
-    [denomination + "ZzzzzzZ99996666" for denomination in list(EXISTING_DENOMINATION)])
+    denomination + "ZzzzzzZ99996666" for denomination in list(EXISTING_DENOMINATION))
 
 
 def test_ok_json_response():
@@ -112,7 +119,7 @@ def host():
     return "127.0.0.1:5000"
 
 
-@pytest.mark.parametrize("siren", EXISTING_SIREN)
+@pytest.mark.parametrize("siren", EXISTING_SIREN + EXISTING_SIREN_NO_BUNDLE)
 def test_existing_siren(host, siren):
     """
     Test the /company/siren endpoint with existing SIREN. Should return a JSON
@@ -121,7 +128,7 @@ def test_existing_siren(host, siren):
        :param host: Fixture of the API host.
        :param siren: Parametrise fixture of a SIREN.
     """
-    response = get("http://" + host + "/company/siren/" + siren)
+    response = get("http://" + host + "/company/siren/" + str(siren))
     assert response.status_code == 200, "WRONG HTTP RETURN CODE"
     assert loads(response.text) is not None, "NOT RETURNING A JSON"
 
@@ -135,15 +142,14 @@ def test_not_existing_siren(host, siren):
        :param host: Fixture of the API host.
        :param siren: Parametrise fixture of a SIREN.
     """
-    response = get("http://" + host + "/company/siren/" + siren)
+    response = get("http://" + host + "/company/siren/" + str(siren))
     assert response.status_code == 404, "WRONG HTTP RETURN CODE"
     assert loads(response.text) is not None, "NOT RETURNING A JSON"
 
 
-@pytest.mark.parametrize("siren", ("38971811555",  # 11 CHARACTERS
-                                   "41066 492",  # 9 CHARACTERS WITH WHITESPACE
-                                   "41066d492",  # NON NUMERIC CHARACTER
-                                   "9999999"))  # 7 CHARACTERS
+@pytest.mark.parametrize("siren", (-22,  # NEGATIVE
+                                   9999999999)  # SUPERIOR TO 9
+                         )
 def test_wrong_siren(host, siren):
     """
     Test the /company/siren endpoint with wrong SIREN. Should return a JSON.
@@ -151,9 +157,8 @@ def test_wrong_siren(host, siren):
        :param host: Fixture of the API host.
        :param siren: Parametrise fixture of a SIREN.
     """
-    response = get("http://" + host + "/company/siren/" + siren)
-    assert response.status_code == 400
-    assert loads(response.text)["@type"] == "Error", "NOT A JSON-LD ERROR"
+    response = get("http://" + host + "/company/siren/" + str(siren))
+    assert response.status_code in (400, 404)
 
 
 @pytest.mark.parametrize("method", (put,
@@ -178,7 +183,7 @@ def test_existing_siren_average(host, siren):
        :param host: Fixture of the API host.
        :param siren: Parametrise fixture of a SIREN.
     """
-    response = get("http://" + host + "/company/siren/" + siren + "/average")
+    response = get("http://" + host + "/company/siren/" + str(siren) + "/average")
     assert response.status_code == 200, "WRONG HTTP RETURN CODE"
     assert loads(response.text) is not None, "NOT RETURNING A JSON"
 
@@ -191,7 +196,7 @@ def test_not_existing_siren_average(host, siren):
        :param host: Fixture of the API host.
        :param siren: Parametrise fixture of a SIREN.
     """
-    response = get("http://" + host + "/company/siren/" + siren + "/average")
+    response = get("http://" + host + "/company/siren/" + str(siren) + "/average")
     assert response.status_code == 404, "WRONG HTTP RETURN CODE"
     assert loads(response.text) is not None, "NOT RETURNING A JSON"
 
@@ -219,7 +224,7 @@ def test_existing_siren_not_existing_year(host, siren, year):
        :param siren: Parametrise fixture of a SIREN.
        :param year: Parametrise fixture of the year to return.
     """
-    response = get("http://" + host + "/company/siren/" + siren + "/" + str(year))
+    response = get("http://" + host + "/company/siren/" + str(siren) + "/" + str(year))
     assert response.status_code == 404, "WRONG HTTP RETURN CODE"
     assert loads(response.text) is not None, "NOT RETURNING A JSON"
 
@@ -233,7 +238,7 @@ def test_existing_siren_existing_year(host, siren, year):
        :param siren: Parametrise fixture of a SIREN.
        :param year: Parametrise fixture of the year to return.
     """
-    response = get("http://" + host + "/company/siren/" + siren + "/" + str(year))
+    response = get("http://" + host + "/company/siren/" + str(siren) + "/" + str(year))
     assert response.status_code == 200, "WRONG HTTP RETURN CODE"
     assert loads(response.text) is not None, "NOT RETURNING A JSON"
 
@@ -252,9 +257,9 @@ def test_siren_year_wrong_method(host, method):
     assert response.status_code == 405, "WRONG HTTP RETURN CODE"
 
 
-@pytest.mark.parametrize("siren,year", (("389718115", 20199),
-                                        ("410660492", "2019f"),
-                                        ("999999999", 201)))  # DOES NOT EXIST
+@pytest.mark.parametrize("siren,year", ((-22, 20192),  # NEGATIVE
+                                        (9999999999, "2019f"))  # SUPERIOR TO 9
+                         )
 def test_siren_wrong_year(host, siren, year):
     """
     Test the /company/siren/year endpoint. Should return a JSON with
@@ -263,15 +268,12 @@ def test_siren_wrong_year(host, siren, year):
        :param host: Fixture of the API host.
        :param siren: Parametrise fixture of a SIREN.
     """
-    response = get("http://" + host + "/company/siren/" + siren + "/" + str(year))
-    assert response.status_code == 400, "WRONG HTTP RETURN CODE"
-    assert loads(response.text) is not None, "NOT RETURNING A JSON"
+    response = get("http://" + host + "/company/siren/" + str(siren) + "/" + str(year))
+    assert response.status_code in (400, 404), "WRONG HTTP RETURN CODE"
 
 
-@pytest.mark.parametrize("siren", ("38971811555",  # 11 CHARACTERS
-                                   "41066 492",  # 9 CHARACTERS WITH WHITESPACE
-                                   "41066d492",  # NON NUMERIC CHARACTER
-                                   "9999999"))  # 7 CHARACTERS
+@pytest.mark.parametrize("siren", (-22,  # NEGATIVE
+                                   9999999999))  # SUPERIOR TO 9
 def test_wrong_siren_average(host, siren):
     """
     Test the /company/siren/average endpoint with wrong SIREN. Should return a JSON.
@@ -279,12 +281,11 @@ def test_wrong_siren_average(host, siren):
        :param host: Fixture of the API host.
        :param siren: Parametrise fixture of a SIREN.
     """
-    response = get("http://" + host + "/company/siren/" + siren + "/average")
-    assert response.status_code == 400
-    assert loads(response.text)["@type"] == "Error", "NOT A JSON-LD ERROR"
+    response = get("http://" + host + "/company/siren/" + str(siren) + "/average")
+    assert response.status_code in (400, 404)
 
 
-@pytest.mark.parametrize("denomination", EXISTING_DENOMINATION)
+@pytest.mark.parametrize("denomination", EXISTING_DENOMINATION + EXISTING_DENOMINATION_NO_BUNDLE)
 def test_existing_denomination(host, denomination):
     """
     Test the /company/denomination endpoint with existing denomination. Should
@@ -508,85 +509,20 @@ def test_search_page(host, probe, per_page):
     assert response.status_code == 200, "WRONG HTTP RETURN CODE"
 
 
-@pytest.mark.parametrize("probe,page", [(probe, randint(0, 3)) for probe in
-                                        EXISTING_DENOMINATION + EXISTING_SIREN])
-def test_search_page_random_page(host, probe, page):
+@pytest.mark.parametrize("probe", [(probe) for probe in
+                                   EXISTING_DENOMINATION + EXISTING_SIREN])
+def test_search_page_random_page(host, probe):
     """
     Test the /company/search/page endpoint with existing on a random page.
     Should return a JSON and RC 200.
 
        :param host: Fixture of the API host.
        :param probe: Parametrize fixture of the string to search.
-       :param page: Parametrize fixture of the page to return.
     """
     response = get(
-        "http://" + host + "/company/search/page?probe=%s&page=%s&per_page=1" % (probe, page))
+        "http://" + host + "/company/search/page?probe=%s&page=1&per_page=1" % probe)
     assert loads(response.text) is not None, "NOT RETURNING A JSON, INSTEAD: %s" % response.text
     assert response.status_code == 200, "WRONG HTTP RETURN CODE"
-
-
-@pytest.mark.parametrize("sql_request_1,sql_request_2", (("drop database toto;", 100),
-                                                         ("drop table enthic;", 1),
-                                                         (
-                                                                 "toto et Michel",
-                                                                 "select * from enthic;"),
-                                                         ("toto et Michel",
-                                                          "update toto set siren = '000000';"),
-                                                         ("toto et Michel",
-                                                          "insert ('toto') into pouet"),
-                                                         ("select * from enthic;", 100),
-                                                         # SAME UPPER CASE
-                                                         ("DROP DATABASE TOTO;", 100),
-                                                         ("DROP TABLE ENTHIC;", 1),
-                                                         (
-                                                                 "TOTO ET MICHEL",
-                                                                 "SELECT * FROM ENTHIC;"),
-                                                         ("TOTO ET MICHEL",
-                                                          "UPDATE TOTO SET SIREN = '000000';"),
-                                                         ("TOTO ET MICHEL",
-                                                          "INSERT ('TOTO') INTO POUET"),
-                                                         ("SELECT * FROM ENTHIC;", 100)
-                                                         )
-                         )
-def test_check_sql_injection_body(host, sql_request_1, sql_request_2):
-    """
-    Test the check_sql_injection decorator, avoiding SQL injection from request
-    body.
-
-       :param host: Fixture of the API host.
-       :param sql_request_1: Parametrize fixture of a possible SQL request.
-       :param sql_request_2: Parametrize fixture of a possible SQL request.
-    """
-    response = post("http://" + host + "/company/search/",
-                    dumps({"probe": sql_request_1, "limit": sql_request_2}))
-    assert response.status_code == 400, "WRONG HTTP RETURN CODE"
-
-
-@pytest.mark.parametrize("sql_request", (("drop database toto;"),
-                                         ("drop table enthic;"),
-                                         ("select * from enthic;"),
-                                         ("update toto set siren = '000000';"),
-                                         ("insert ('toto') into pouet"),
-                                         ("select * from enthic;"),
-                                         # SAME UPPER CASE
-                                         ("DROP DATABASE TOTO;"),
-                                         ("DROP TABLE ENTHIC;"),
-                                         ("SELECT * FROM ENTHIC;"),
-                                         ("UPDATE TOTO SET SIREN = '000000';"),
-                                         ("INSERT ('TOTO') INTO POUET"),
-                                         ("SELECT * FROM ENTHIC;"),
-                                         )
-                         )
-def test_check_sql_injection_path(host, sql_request):
-    """
-    Test the check_sql_injection decorator, avoiding SQL injection from request
-    path.
-
-       :param host: Fixture of the API host.
-       :param sql_request_1: Parametrize fixture of a possible SQL request.
-    """
-    response = get("http://" + host + "/company/denomination/" + sql_request + "/average")
-    assert response.status_code == 400, "WRONG HTTP RETURN CODE"
 
 
 @pytest.mark.parametrize("probe,limit", (("toto", "pouet"),

@@ -38,7 +38,7 @@ NOT_EXISTING_SIREN = (999999999, 999999998, 999999998, 999999997,
                       999999996, 999999995, 999999994, 999999993,
                       999999992, 999999991)
 
-EXISTING_SIREN_NOT_EXISTING_YEAR = tuple((siren, 1254) for siren in list(EXISTING_SIREN))
+EXISTING_SIREN_NOT_EXISTING_YEAR = tuple((siren, 1254) for siren in EXISTING_SIREN)
 
 EXISTING_DENOMINATION_EXISTING_YEAR = (
     ("AESTERA ALLIANCE EVOLUTION SYNERGIE TECHNIQUE RESTAURATION A", 2013),
@@ -83,7 +83,7 @@ EXISTING_DENOMINATION = tuple(
     denomination[0] for denomination in EXISTING_DENOMINATION_EXISTING_YEAR)
 
 NOT_EXISTING_DENOMINATION = tuple(
-    denomination + "ZzzzzzZ99996666" for denomination in list(EXISTING_DENOMINATION))
+    denomination + "ZzzzzzZ99996666" for denomination in EXISTING_DENOMINATION)
 
 
 def test_ok_json_response():
@@ -509,8 +509,7 @@ def test_search_page(host, probe, per_page):
     assert response.status_code == 200, "WRONG HTTP RETURN CODE"
 
 
-@pytest.mark.parametrize("probe", [(probe) for probe in
-                                   EXISTING_DENOMINATION + EXISTING_SIREN])
+@pytest.mark.parametrize("probe", EXISTING_DENOMINATION + EXISTING_SIREN)
 def test_search_page_random_page(host, probe):
     """
     Test the /company/search/page endpoint with existing on a random page.
@@ -526,7 +525,6 @@ def test_search_page_random_page(host, probe):
 
 
 @pytest.mark.parametrize("probe,limit", (("toto", "pouet"),
-                                         (2, 1),
                                          (2, "toto"),
                                          ("toto", 10000000000),
                                          )

@@ -36,11 +36,11 @@ class AllDenominationCompany(MultipleBundleCompany, DenominationCompany):
         DenominationCompany.__init__(self, denomination)
         MultipleBundleCompany.__init__(self, """
             SELECT identity.siren, denomination, ape, postal_code, town,
-                accountability, devise, bundle, declaration, amount
+                accountability, bundle, declaration, amount
             FROM identity LEFT JOIN bundle
             ON bundle.siren = identity.siren
             WHERE identity.denomination = %s
-            GROUP BY identity.siren, bundle.bundle, declaration, amount;""", (self.denomination,))
+            GROUP BY identity.siren, accountability, bundle.bundle, declaration, amount;""", (self.denomination,))
 
 
 class AverageDenominationCompany(UniqueBundleCompany, DenominationCompany):
@@ -58,11 +58,11 @@ class AverageDenominationCompany(UniqueBundleCompany, DenominationCompany):
         DenominationCompany.__init__(self, denomination)
         UniqueBundleCompany.__init__(self, """
             SELECT identity.siren, denomination, ape, postal_code, town,
-                accountability, devise, bundle, "average", AVG(amount)
+                accountability, bundle, "average", AVG(amount)
             FROM identity LEFT JOIN bundle
             ON bundle.siren = identity.siren
             WHERE identity.denomination = %s
-            GROUP BY identity.siren, bundle.bundle;""", (self.denomination,))
+            GROUP BY identity.siren, accountability, bundle.bundle;""", (self.denomination,))
 
 
 class YearDenominationCompany(YearCompany, UniqueBundleCompany, DenominationCompany):
@@ -83,7 +83,7 @@ class YearDenominationCompany(YearCompany, UniqueBundleCompany, DenominationComp
         YearCompany.__init__(self, year)
         UniqueBundleCompany.__init__(self, """
             SELECT identity.siren, denomination, ape, postal_code, town,
-                accountability, devise, bundle, %s, amount
+                accountability, bundle, %s, amount
             FROM identity LEFT JOIN bundle
             ON bundle.siren = identity.siren
             WHERE identity.denomination = %s

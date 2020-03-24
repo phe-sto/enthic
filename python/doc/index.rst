@@ -40,6 +40,9 @@ Following module relates to Flask server.
 .. automodule:: utils.not_found_response
    :members:
 
+.. automodule:: utils.conversion
+   :members:
+
 .. automodule:: result.result
    :members:
 

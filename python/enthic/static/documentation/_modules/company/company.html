@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>company.company &#8212; enthic 2020.3.1 documentation</title>
+    <title>company.company &#8212; enthic 2020.3.2 documentation</title>
     <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
@@ -50,11 +50,10 @@
 
 <span class="kn">from</span> <span class="nn">re</span> <span class="kn">import</span> <span class="nb">compile</span>
 
-<span class="kn">from</span> <span class="nn">enthic.ape</span> <span class="kn">import</span> <span class="n">ape_code</span>
 <span class="kn">from</span> <span class="nn">enthic.database.mysql_data</span> <span class="kn">import</span> <span class="n">SQLData</span>
-<span class="kn">from</span> <span class="nn">enthic.ontology</span> <span class="kn">import</span> <span class="n">ONTOLOGY</span>
-<span class="kn">from</span> <span class="nn">enthic.result.result</span> <span class="kn">import</span> <span class="n">result</span>
-<span class="kn">from</span> <span class="nn">enthic.score.classification</span> <span class="kn">import</span> <span class="n">DistributionClassification</span>
+<span class="kn">from</span> <span class="nn">enthic.ontology</span> <span class="kn">import</span> <span class="n">ONTOLOGY</span><span class="p">,</span> <span class="n">APE_CODE</span>
+<span class="kn">from</span> <span class="nn">enthic.result</span> <span class="kn">import</span> <span class="n">result</span>
+<span class="kn">from</span> <span class="nn">enthic.score.classification</span> <span class="kn">import</span> <span class="n">Classification</span>
 <span class="kn">from</span> <span class="nn">enthic.utils.error_json_response</span> <span class="kn">import</span> <span class="n">ErrorJSONResponse</span>
 <span class="kn">from</span> <span class="nn">enthic.utils.ok_json_response</span> <span class="kn">import</span> <span class="n">OKJSONResponse</span>
 <span class="kn">from</span> <span class="nn">flask</span> <span class="kn">import</span> <span class="n">abort</span>
@@ -63,10 +62,20 @@
 <span class="n">denomination_re</span> <span class="o">=</span> <span class="nb">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;^.*$&quot;</span><span class="p">)</span>  <span class="c1"># TODO: DEFINE A SAFER REGEX FOR DENOMINATION</span>
 
 
+<div class="viewcode-block" id="JSONGenKey"><a class="viewcode-back" href="../../index.html#company.company.JSONGenKey">[docs]</a><span class="k">class</span> <span class="nc">JSONGenKey</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Generic keys found in the JSON response</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">VALUE</span> <span class="o">=</span> <span class="s2">&quot;value&quot;</span>
+    <span class="n">DESCRIPTION</span> <span class="o">=</span> <span class="s2">&quot;description&quot;</span>
+    <span class="n">ACCOUNT</span> <span class="o">=</span> <span class="s2">&quot;account&quot;</span></div>
+
+
 <div class="viewcode-block" id="YearCompany"><a class="viewcode-back" href="../../index.html#company.company.YearCompany">[docs]</a><span class="k">class</span> <span class="nc">YearCompany</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Company data for a given year.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;year&#39;</span><span class="p">,)</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">year</span><span class="p">):</span>
@@ -130,25 +139,20 @@
 <span class="sd">           :param args: a tuple coming SQL result, each result being</span>
 <span class="sd">              [[bundle, calculation, amount]...].</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">siren</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="s2">&quot;</span><span class="si">%09d</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;SIREN&quot;</span><span class="p">}</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">denomination</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="n">args</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;Dénomination&quot;</span><span class="p">}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">siren</span> <span class="o">=</span> <span class="p">{</span><span class="n">JSONGenKey</span><span class="o">.</span><span class="n">VALUE</span><span class="p">:</span> <span class="s2">&quot;</span><span class="si">%09d</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">JSONGenKey</span><span class="o">.</span><span class="n">DESCRIPTION</span><span class="p">:</span> <span class="s2">&quot;SIREN&quot;</span><span class="p">}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">denomination</span> <span class="o">=</span> <span class="p">{</span><span class="n">JSONGenKey</span><span class="o">.</span><span class="n">VALUE</span><span class="p">:</span> <span class="n">args</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">JSONGenKey</span><span class="o">.</span><span class="n">DESCRIPTION</span><span class="p">:</span> <span class="s2">&quot;Dénomination&quot;</span><span class="p">}</span>
         <span class="k">try</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">ape</span> <span class="o">=</span> <span class="p">{</span>
-                <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">, </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">args</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">ape_code</span><span class="p">[</span><span class="n">args</span><span class="p">[</span><span class="mi">2</span><span class="p">]]),</span>
-                <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;Code Activité Principale Exercée (NAF)&quot;</span><span class="p">}</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ape</span> <span class="o">=</span> <span class="p">{</span><span class="n">JSONGenKey</span><span class="o">.</span><span class="n">VALUE</span><span class="p">:</span> <span class="n">APE_CODE</span><span class="p">[</span><span class="n">args</span><span class="p">[</span><span class="mi">2</span><span class="p">]][</span><span class="mi">1</span><span class="p">],</span>
+                        <span class="n">JSONGenKey</span><span class="o">.</span><span class="n">DESCRIPTION</span><span class="p">:</span> <span class="s2">&quot;Code Activité Principale Exercée (NAF)&quot;</span><span class="p">}</span>
         <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">ape</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">, Code APE inconnu&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">args</span><span class="p">[</span><span class="mi">2</span><span class="p">]),</span>
-                        <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;Code Activité Principale Exercée (NAF)&quot;</span><span class="p">}</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">postal_code</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="n">args</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span> <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;Code Postal&quot;</span><span class="p">}</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">town</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="n">args</span><span class="p">[</span><span class="mi">4</span><span class="p">],</span> <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;Commune&quot;</span><span class="p">}</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">accountability</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">, </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">args</span><span class="p">[</span><span class="mi">5</span><span class="p">],</span>
-                                                        <span class="n">ONTOLOGY</span><span class="p">[</span><span class="s2">&quot;accounting&quot;</span><span class="p">][</span>
-                                                            <span class="n">args</span><span class="p">[</span><span class="mi">5</span><span class="p">]][</span><span class="s2">&quot;description&quot;</span><span class="p">]),</span>
-                               <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;Type de comptabilité&quot;</span><span class="p">}</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">devise</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="n">args</span><span class="p">[</span><span class="mi">6</span><span class="p">],</span> <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;Devise&quot;</span><span class="p">}</span></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ape</span> <span class="o">=</span> <span class="p">{</span><span class="n">JSONGenKey</span><span class="o">.</span><span class="n">VALUE</span><span class="p">:</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">, Code APE inconnu&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">args</span><span class="p">[</span><span class="mi">2</span><span class="p">]),</span>
+                        <span class="n">JSONGenKey</span><span class="o">.</span><span class="n">DESCRIPTION</span><span class="p">:</span> <span class="s2">&quot;Code Activité Principale Exercée (NAF)&quot;</span><span class="p">}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">postal_code</span> <span class="o">=</span> <span class="p">{</span><span class="n">JSONGenKey</span><span class="o">.</span><span class="n">VALUE</span><span class="p">:</span> <span class="n">args</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span> <span class="n">JSONGenKey</span><span class="o">.</span><span class="n">DESCRIPTION</span><span class="p">:</span> <span class="s2">&quot;Code Postal&quot;</span><span class="p">}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">town</span> <span class="o">=</span> <span class="p">{</span><span class="n">JSONGenKey</span><span class="o">.</span><span class="n">VALUE</span><span class="p">:</span> <span class="n">args</span><span class="p">[</span><span class="mi">4</span><span class="p">],</span> <span class="n">JSONGenKey</span><span class="o">.</span><span class="n">DESCRIPTION</span><span class="p">:</span> <span class="s2">&quot;Commune&quot;</span><span class="p">}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">devise</span> <span class="o">=</span> <span class="p">{</span><span class="n">JSONGenKey</span><span class="o">.</span><span class="n">VALUE</span><span class="p">:</span> <span class="s2">&quot;Euro&quot;</span><span class="p">,</span> <span class="n">JSONGenKey</span><span class="o">.</span><span class="n">DESCRIPTION</span><span class="p">:</span> <span class="s2">&quot;Devise&quot;</span><span class="p">}</span></div>
 
 
-<div class="viewcode-block" id="Bundle"><a class="viewcode-back" href="../../index.html#company.company.Bundle">[docs]</a><span class="k">class</span> <span class="nc">Bundle</span><span class="p">:</span>
+<div class="viewcode-block" id="Bundle"><a class="viewcode-back" href="../../index.html#company.company.Bundle">[docs]</a><span class="k">class</span> <span class="nc">Bundle</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    All the bundle declared and scoring of a company. Can be several year, one</span>
 <span class="sd">    or average</span>
@@ -159,51 +163,60 @@
 <span class="sd">        Constructor initialising attributes as value/description pair.</span>
 
 <span class="sd">           :param args: a tuple coming SQL result, each result being</span>
-<span class="sd">              [identity.siren, denomination, ape, postal_code, town,</span>
-<span class="sd">              accountability, devise].</span>
+<span class="sd">              (accountability, bundle, declaration, amount).</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">bundles</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="n">declaration</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="k">for</span> <span class="n">tup_bundle</span> <span class="ow">in</span> <span class="n">args</span><span class="p">:</span>
+        <span class="n">_gan</span><span class="p">,</span> <span class="n">_dis</span><span class="p">,</span> <span class="n">_dir</span> <span class="o">=</span> <span class="p">(</span><span class="kc">None</span><span class="p">,)</span> <span class="o">*</span> <span class="mi">3</span>
+        <span class="k">for</span> <span class="n">int_account</span><span class="p">,</span> <span class="n">int_bundle</span><span class="p">,</span> <span class="n">declaration</span><span class="p">,</span> <span class="n">amount</span> <span class="ow">in</span> <span class="n">args</span><span class="p">:</span>
             <span class="c1">####################################################################</span>
-            <span class="c1"># BUNDLE FROM DATABASE</span>
-            <span class="n">bundle</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">tup_bundle</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
-            <span class="k">if</span> <span class="nb">str</span><span class="p">(</span><span class="n">tup_bundle</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">bundles</span><span class="p">:</span>
-                <span class="n">declaration</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">tup_bundle</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
-                <span class="n">bundles</span><span class="p">[</span><span class="n">declaration</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
-            <span class="k">try</span><span class="p">:</span>
-                <span class="n">value</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="n">tup_bundle</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="mi">2</span><span class="p">)</span>
-                <span class="k">for</span> <span class="n">accounting</span> <span class="ow">in</span> <span class="n">ONTOLOGY</span><span class="p">[</span><span class="s2">&quot;accounting&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
-                    <span class="k">try</span><span class="p">:</span>
-                        <span class="n">bundles</span><span class="p">[</span><span class="n">declaration</span><span class="p">][</span><span class="n">bundle</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
-                            <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="n">value</span><span class="p">,</span>
-                            <span class="s2">&quot;description&quot;</span><span class="p">:</span>
-                                <span class="n">ONTOLOGY</span><span class="p">[</span><span class="s2">&quot;accounting&quot;</span><span class="p">][</span><span class="n">accounting</span><span class="p">][</span><span class="s2">&quot;code&quot;</span><span class="p">][</span>
-                                    <span class="n">bundle</span><span class="p">]</span>
-                        <span class="p">}</span>
-                    <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
-                        <span class="k">pass</span>
-                <span class="c1">################################################################</span>
-                <span class="c1"># SCORE RELATED CALCULATION</span>
-                <span class="k">if</span> <span class="n">bundle</span> <span class="o">==</span> <span class="s2">&quot;dir&quot;</span> <span class="ow">and</span> <span class="n">result</span><span class="o">.</span><span class="n">avg_dir</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-                    <span class="k">if</span> <span class="n">value</span> <span class="o">&gt;</span> <span class="n">result</span><span class="o">.</span><span class="n">avg_dir</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">result</span><span class="o">.</span><span class="n">avg_dir</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="mf">0.1</span><span class="p">:</span>
-                        <span class="n">distribution</span> <span class="o">=</span> <span class="n">DistributionClassification</span><span class="o">.</span><span class="n">TIGHT</span>
-                    <span class="k">elif</span> <span class="n">result</span><span class="o">.</span><span class="n">avg_dir</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">result</span><span class="o">.</span><span class="n">avg_dir</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="mf">0.1</span> <span class="o">&lt;=</span> <span class="n">value</span> <span class="o">&lt;=</span> \
-                            <span class="n">result</span><span class="o">.</span><span class="n">avg_dir</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">result</span><span class="o">.</span><span class="n">avg_dir</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="mf">0.1</span><span class="p">:</span>
-                        <span class="n">distribution</span> <span class="o">=</span> <span class="n">DistributionClassification</span><span class="o">.</span><span class="n">AVERAGE</span>
-                    <span class="k">elif</span> <span class="n">result</span><span class="o">.</span><span class="n">avg_dir</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">result</span><span class="o">.</span><span class="n">avg_dir</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="mf">0.1</span> <span class="o">&gt;</span> <span class="n">value</span><span class="p">:</span>
-                        <span class="n">distribution</span> <span class="o">=</span> <span class="n">DistributionClassification</span><span class="o">.</span><span class="n">GOOD</span>
-                    <span class="k">else</span><span class="p">:</span>
-                        <span class="n">distribution</span> <span class="o">=</span> <span class="n">DistributionClassification</span><span class="o">.</span><span class="n">UNKNOWN</span>
-                    <span class="n">bundles</span><span class="p">[</span><span class="n">declaration</span><span class="p">][</span><span class="n">bundle</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
-                        <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="n">distribution</span><span class="o">.</span><span class="n">value</span><span class="p">,</span>
-                        <span class="s2">&quot;description&quot;</span><span class="p">:</span>
-                            <span class="n">ONTOLOGY</span><span class="p">[</span><span class="s2">&quot;scoring&quot;</span><span class="p">][</span><span class="s2">&quot;distribution&quot;</span><span class="p">][</span>
-                                <span class="s2">&quot;description&quot;</span><span class="p">]}</span>
-            <span class="k">except</span> <span class="ne">TypeError</span><span class="p">:</span>  <span class="c1"># IN CASE OF NO BUNDLE</span>
-                <span class="k">continue</span>
-        <span class="k">for</span> <span class="n">_declaration</span><span class="p">,</span> <span class="n">_bundles</span> <span class="ow">in</span> <span class="n">bundles</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-            <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">_declaration</span><span class="p">,</span> <span class="n">_bundles</span><span class="p">)</span></div>
+            <span class="c1"># ACCOUNTING</span>
+            <span class="n">str_declaration</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">declaration</span><span class="p">)</span>
+            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">str_declaration</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+                <span class="n">att_declaration</span> <span class="o">=</span> <span class="nb">object</span><span class="o">.</span><span class="fm">__getattribute__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">str_declaration</span><span class="p">)</span>
+                <span class="n">att_declaration</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
+                    <span class="n">ONTOLOGY</span><span class="p">[</span><span class="s2">&quot;accounting&quot;</span><span class="p">][</span><span class="n">int_account</span><span class="p">][</span><span class="s2">&quot;code&quot;</span><span class="p">][</span><span class="n">int_bundle</span><span class="p">][</span><span class="mi">0</span><span class="p">]:</span> <span class="p">{</span>
+                        <span class="n">JSONGenKey</span><span class="o">.</span><span class="n">ACCOUNT</span><span class="p">:</span> <span class="n">ONTOLOGY</span><span class="p">[</span><span class="s2">&quot;accounting&quot;</span><span class="p">][</span><span class="n">int_account</span><span class="p">][</span><span class="mi">1</span><span class="p">],</span>
+                        <span class="n">JSONGenKey</span><span class="o">.</span><span class="n">VALUE</span><span class="p">:</span> <span class="n">amount</span><span class="p">,</span>
+                        <span class="n">JSONGenKey</span><span class="o">.</span><span class="n">DESCRIPTION</span><span class="p">:</span>
+                            <span class="n">ONTOLOGY</span><span class="p">[</span><span class="s2">&quot;accounting&quot;</span><span class="p">][</span><span class="n">int_account</span><span class="p">][</span><span class="s2">&quot;code&quot;</span><span class="p">][</span><span class="n">int_bundle</span><span class="p">][</span>
+                                <span class="mi">1</span><span class="p">]</span>
+                    <span class="p">}</span>
+                <span class="p">})</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">declaration</span><span class="p">),</span> <span class="p">[{</span>
+                    <span class="n">ONTOLOGY</span><span class="p">[</span><span class="s2">&quot;accounting&quot;</span><span class="p">][</span><span class="n">int_account</span><span class="p">][</span><span class="s2">&quot;code&quot;</span><span class="p">][</span><span class="n">int_bundle</span><span class="p">][</span><span class="mi">0</span><span class="p">]:</span> <span class="p">{</span>
+                        <span class="n">JSONGenKey</span><span class="o">.</span><span class="n">ACCOUNT</span><span class="p">:</span> <span class="n">ONTOLOGY</span><span class="p">[</span><span class="s2">&quot;accounting&quot;</span><span class="p">][</span><span class="n">int_account</span><span class="p">][</span><span class="mi">1</span><span class="p">],</span>
+                        <span class="n">JSONGenKey</span><span class="o">.</span><span class="n">VALUE</span><span class="p">:</span> <span class="n">amount</span><span class="p">,</span>
+                        <span class="n">JSONGenKey</span><span class="o">.</span><span class="n">DESCRIPTION</span><span class="p">:</span>
+                            <span class="n">ONTOLOGY</span><span class="p">[</span><span class="s2">&quot;accounting&quot;</span><span class="p">][</span><span class="n">int_account</span><span class="p">][</span><span class="s2">&quot;code&quot;</span><span class="p">][</span><span class="n">int_bundle</span><span class="p">][</span>
+                                <span class="mi">1</span><span class="p">]</span>
+                    <span class="p">}</span>
+                <span class="p">}])</span>
+            <span class="c1">####################################################################</span>
+            <span class="c1"># SCORING</span>
+            <span class="c1"># DISTRIBUTION RATIO</span>
+            <span class="k">if</span> <span class="n">int_bundle</span> <span class="o">==</span> <span class="mi">100</span><span class="p">:</span>
+                <span class="n">_gan</span> <span class="o">=</span> <span class="n">amount</span>
+            <span class="k">elif</span> <span class="n">int_bundle</span> <span class="o">==</span> <span class="mi">101</span><span class="p">:</span>
+                <span class="n">_dir</span> <span class="o">=</span> <span class="n">amount</span>
+            <span class="k">if</span> <span class="n">_dis</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">_gan</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">declaration</span> <span class="o">==</span> <span class="s2">&quot;average&quot;</span><span class="p">:</span>
+                    <span class="n">average_dir</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">average_dir</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">average_dir</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">yearly_average_dir</span><span class="p">[</span><span class="n">declaration</span><span class="p">]</span>
+                <span class="k">if</span> <span class="n">amount</span> <span class="o">&gt;</span> <span class="n">average_dir</span> <span class="o">-</span> <span class="n">average_dir</span> <span class="o">*</span> <span class="mf">0.1</span><span class="p">:</span>
+                    <span class="n">distribution</span> <span class="o">=</span> <span class="n">Classification</span><span class="o">.</span><span class="n">TIGHT</span>
+                <span class="k">elif</span> <span class="n">average_dir</span> <span class="o">-</span> <span class="n">average_dir</span> <span class="o">*</span> <span class="mf">0.1</span> <span class="o">&lt;=</span> <span class="n">amount</span> <span class="o">&lt;=</span> <span class="n">average_dir</span> <span class="o">+</span> <span class="n">average_dir</span> <span class="o">*</span> <span class="mf">0.1</span><span class="p">:</span>
+                    <span class="n">distribution</span> <span class="o">=</span> <span class="n">Classification</span><span class="o">.</span><span class="n">AVERAGE</span>
+                <span class="k">elif</span> <span class="n">average_dir</span> <span class="o">+</span> <span class="n">average_dir</span> <span class="o">*</span> <span class="mf">0.1</span> <span class="o">&gt;</span> <span class="n">amount</span><span class="p">:</span>
+                    <span class="n">distribution</span> <span class="o">=</span> <span class="n">Classification</span><span class="o">.</span><span class="n">GOOD</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">distribution</span> <span class="o">=</span> <span class="n">Classification</span><span class="o">.</span><span class="n">UNKNOWN</span>
+                <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">declaration</span><span class="p">),</span> <span class="p">{</span>
+                    <span class="s2">&quot;distribution_ratio&quot;</span><span class="p">:</span> <span class="p">{</span>
+                        <span class="n">JSONGenKey</span><span class="o">.</span><span class="n">VALUE</span><span class="p">:</span> <span class="n">distribution</span><span class="o">.</span><span class="n">value</span><span class="p">,</span>
+                        <span class="n">JSONGenKey</span><span class="o">.</span><span class="n">DESCRIPTION</span><span class="p">:</span> <span class="n">ONTOLOGY</span><span class="p">[</span><span class="s2">&quot;accounting&quot;</span><span class="p">][</span><span class="s2">&quot;distribution&quot;</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
+                    <span class="p">}</span>
+                <span class="p">})</span></div>
 
 
 <div class="viewcode-block" id="UniqueBundleCompany"><a class="viewcode-back" href="../../index.html#company.company.UniqueBundleCompany">[docs]</a><span class="k">class</span> <span class="nc">UniqueBundleCompany</span><span class="p">(</span><span class="n">OKJSONResponse</span><span class="p">,</span> <span class="n">SQLData</span><span class="p">):</span>
@@ -218,56 +231,60 @@
 
 <span class="sd">           :param sql_request: SQL request of the Company data to execute as a string.</span>
 
-<span class="sd">        .. code-block:: json</span>
+<span class="sd">    .. code-block:: json</span>
 
-<span class="sd">           {</span>
-<span class="sd">              &quot;gan&quot; : {</span>
-<span class="sd">                 &quot;value&quot; : 2976860,</span>
-<span class="sd">                 &quot;description&quot; : &quot;Gain d&#39;une companie, actuellement le chiffre d&#39;affaire uniquement FJ&quot;</span>
-<span class="sd">              },</span>
-<span class="sd">              &quot;ape&quot; : {</span>
-<span class="sd">                 &quot;description&quot; : &quot;Code Activité Principale Exercée (NAF)&quot;,</span>
-<span class="sd">                 &quot;value&quot; : &quot;7311Z, Activités des agences de publicité&quot;</span>
-<span class="sd">              },</span>
-<span class="sd">              &quot;di&quot; : {</span>
-<span class="sd">                 &quot;value&quot; : 499,</span>
-<span class="sd">                 &quot;description&quot; : &quot;Résultat de l’exercice (bénéfice ou perte)&quot;</span>
-<span class="sd">              },</span>
-<span class="sd">              &quot;town&quot; : {</span>
-<span class="sd">                 &quot;description&quot; : &quot;Commune&quot;,</span>
-<span class="sd">                 &quot;value&quot; : &quot;ERMONT&quot;</span>
-<span class="sd">              },</span>
-<span class="sd">              &quot;denomination&quot; : {</span>
-<span class="sd">                 &quot;value&quot; : &quot;MRG PROMOTION&quot;,</span>
-<span class="sd">                 &quot;description&quot; : &quot;Dénomination&quot;</span>
-<span class="sd">              },</span>
-<span class="sd">              &quot;siren&quot; : {</span>
-<span class="sd">                 &quot;description&quot; : &quot;SIREN&quot;,</span>
-<span class="sd">                 &quot;value&quot; : &quot;307034421&quot;</span>
-<span class="sd">              },</span>
-<span class="sd">              &quot;devise&quot; : {</span>
-<span class="sd">                 &quot;value&quot; : &quot;EUR&quot;,</span>
-<span class="sd">                 &quot;description&quot; : &quot;Devise&quot;</span>
-<span class="sd">              },</span>
-<span class="sd">              &quot;postal_code&quot; : {</span>
-<span class="sd">                 &quot;description&quot; : &quot;Code Postal&quot;,</span>
-<span class="sd">                 &quot;value&quot; : &quot;95120&quot;</span>
-<span class="sd">              },</span>
-<span class="sd">              &quot;dir&quot; : {</span>
-<span class="sd">                 &quot;value&quot; : 0.01,</span>
-<span class="sd">                 &quot;description&quot; : &quot;Distribution ratio, (FY + HJ) / GAN, i.e pondération de dis par le chiffre d&#39;affaire&quot;</span>
-<span class="sd">              }</span>
-<span class="sd">           }</span>
+<span class="sd">        {</span>
+<span class="sd">            &quot;siren&quot;: {</span>
+<span class="sd">                &quot;value&quot;: &quot;005420120&quot;,</span>
+<span class="sd">                &quot;description&quot;: &quot;SIREN&quot;</span>
+<span class="sd">            },</span>
+<span class="sd">            &quot;denomination&quot;: {</span>
+<span class="sd">                &quot;value&quot;: &quot;STE DES SUCRERIES DU MARQUENTERRE&quot;,</span>
+<span class="sd">                &quot;description&quot;: &quot;Dénomination&quot;</span>
+<span class="sd">            },</span>
+<span class="sd">            &quot;ape&quot;: {</span>
+<span class="sd">                &quot;value&quot;: &quot;Activités des sièes sociaux&quot;,</span>
+<span class="sd">                &quot;description&quot;: &quot;Code Activité Principale Exercée (NAF)&quot;</span>
+<span class="sd">            },</span>
+<span class="sd">            &quot;postal_code&quot;: {</span>
+<span class="sd">                &quot;value&quot;: &quot;62140&quot;,</span>
+<span class="sd">                &quot;description&quot;: &quot;Code Postal&quot;</span>
+<span class="sd">            },</span>
+<span class="sd">            &quot;town&quot;: {</span>
+<span class="sd">                &quot;value&quot;: &quot;MARCONNELLE&quot;,</span>
+<span class="sd">                &quot;description&quot;: &quot;Commune&quot;</span>
+<span class="sd">            },</span>
+<span class="sd">            &quot;devise&quot;: {</span>
+<span class="sd">                &quot;value&quot;: &quot;Euro&quot;,</span>
+<span class="sd">                &quot;description&quot;: &quot;Devise&quot;</span>
+<span class="sd">            },</span>
+<span class="sd">            &quot;financial_data&quot;: [</span>
+<span class="sd">                {</span>
+<span class="sd">                    &quot;di&quot;: {</span>
+<span class="sd">                        &quot;account&quot;: &quot;Compte annuel complet&quot;,</span>
+<span class="sd">                        &quot;value&quot;: -261053.0,</span>
+<span class="sd">                        &quot;description&quot;: &quot;Résultat de l\u2019exercice (bénéfice ou perte)&quot;</span>
+<span class="sd">                    }</span>
+<span class="sd">                },</span>
+<span class="sd">                {</span>
+<span class="sd">                    &quot;fs&quot;: {</span>
+<span class="sd">                        &quot;account&quot;: &quot;Compte annuel complet&quot;,</span>
+<span class="sd">                        &quot;value&quot;: 11836.0,</span>
+<span class="sd">                        &quot;description&quot;: &quot;Achats de marchandises (y compris droits de douane)&quot;</span>
+<span class="sd">                    }</span>
+<span class="sd">                }</span>
+<span class="sd">            ]</span>
+<span class="sd">        }</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">SQLData</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sql_request</span><span class="p">,</span> <span class="n">args</span><span class="p">)</span>
         <span class="k">if</span> <span class="kc">None</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">sql_results</span><span class="p">:</span>
-            <span class="n">OKJSONResponse</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">CompanyIdentity</span><span class="p">(</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">sql_results</span><span class="p">[</span><span class="mi">0</span><span class="p">][:</span><span class="mi">7</span><span class="p">])</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">)</span>
+            <span class="n">OKJSONResponse</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">CompanyIdentity</span><span class="p">(</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">sql_results</span><span class="p">[</span><span class="mi">0</span><span class="p">][:</span><span class="mi">5</span><span class="p">])</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">)</span>
 
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">OKJSONResponse</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="p">{</span><span class="o">**</span><span class="n">CompanyIdentity</span><span class="p">(</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">sql_results</span><span class="p">[</span><span class="mi">0</span><span class="p">][:</span><span class="mi">7</span><span class="p">])</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">,</span>
-                                           <span class="o">**</span><span class="n">Bundle</span><span class="p">(</span><span class="o">*</span><span class="p">[</span><span class="n">bundle</span><span class="p">[</span><span class="mi">7</span><span class="p">:]</span> <span class="k">for</span> <span class="n">bundle</span> <span class="ow">in</span>
-                                                      <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sql_results</span><span class="p">)])</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">[</span>
-                                               <span class="bp">self</span><span class="o">.</span><span class="n">sql_results</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">8</span><span class="p">]]})</span></div>
+            <span class="n">OKJSONResponse</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="p">{</span><span class="o">**</span><span class="n">CompanyIdentity</span><span class="p">(</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">sql_results</span><span class="p">[</span><span class="mi">0</span><span class="p">][:</span><span class="mi">5</span><span class="p">])</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">,</span>
+                                           <span class="o">**</span><span class="p">{</span><span class="s2">&quot;financial_data&quot;</span><span class="p">:</span> <span class="n">Bundle</span><span class="p">(</span><span class="o">*</span><span class="p">[</span><span class="n">bundle</span><span class="p">[</span><span class="mi">5</span><span class="p">:]</span> <span class="k">for</span> <span class="n">bundle</span> <span class="ow">in</span>
+                                                                         <span class="bp">self</span><span class="o">.</span><span class="n">sql_results</span><span class="p">])</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">[</span>
+                                               <span class="bp">self</span><span class="o">.</span><span class="n">sql_results</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">7</span><span class="p">]]}})</span></div>
 
 
 <div class="viewcode-block" id="MultipleBundleCompany"><a class="viewcode-back" href="../../index.html#company.company.MultipleBundleCompany">[docs]</a><span class="k">class</span> <span class="nc">MultipleBundleCompany</span><span class="p">(</span><span class="n">OKJSONResponse</span><span class="p">,</span> <span class="n">SQLData</span><span class="p">):</span>
@@ -277,52 +294,51 @@
 
 <span class="sd">    .. code-block:: json</span>
 
-<span class="sd">       {</span>
-<span class="sd">          &quot;gan&quot; : {</span>
-<span class="sd">             &quot;value&quot; : 2976860,</span>
-<span class="sd">             &quot;description&quot; : &quot;Gain d&#39;une companie, actuellement le chiffre d&#39;affaire uniquement FJ&quot;</span>
-<span class="sd">          },</span>
-<span class="sd">          &quot;ape&quot; : {</span>
-<span class="sd">             &quot;description&quot; : &quot;Code Activité Principale Exercée (NAF)&quot;,</span>
-<span class="sd">             &quot;value&quot; : &quot;7311Z, Activités des agences de publicité&quot;</span>
-<span class="sd">          },</span>
-<span class="sd">          &quot;di&quot; : {</span>
-<span class="sd">             &quot;value&quot; : 499,</span>
-<span class="sd">             &quot;description&quot; : &quot;Résultat de l’exercice (bénéfice ou perte)&quot;</span>
-<span class="sd">          },</span>
-<span class="sd">          &quot;town&quot; : {</span>
-<span class="sd">             &quot;description&quot; : &quot;Commune&quot;,</span>
-<span class="sd">             &quot;value&quot; : &quot;ERMONT&quot;</span>
-<span class="sd">          },</span>
-<span class="sd">          &quot;financial_data&quot; : [</span>
-<span class="sd">              {</span>
-<span class="sd">                 &quot;dir&quot; : {</span>
-<span class="sd">                    &quot;value&quot; : 0.03,</span>
-<span class="sd">                    &quot;description&quot; : &quot;Distribution ratio, (FY + HJ) / GAN, i.e pondération de dis par le chiffre d&#39;affaire&quot;</span>
-<span class="sd">                 },</span>
-<span class="sd">                 &quot;dis&quot; : {</span>
-<span class="sd">                    &quot;value&quot; : 34974,</span>
-<span class="sd">                    &quot;description&quot; : &quot;Somme des distributions, FY + HJ&quot;</span>
-<span class="sd">                 },</span>
-<span class="sd">                 &quot;di&quot; : {</span>
-<span class="sd">                    &quot;description&quot; : &quot;Résultat de l’exercice (bénéfice ou perte)&quot;,</span>
-<span class="sd">                    &quot;value&quot; : -129783</span>
-<span class="sd">                 },</span>
-<span class="sd">                 &quot;gan&quot; : {</span>
-<span class="sd">                    &quot;description&quot; : &quot;Gain d&#39;une companie, actuellement le chiffre d&#39;affaire uniquement FJ&quot;,</span>
-<span class="sd">                    &quot;value&quot; : 1196260</span>
-<span class="sd">                 },</span>
-<span class="sd">                 &quot;declaration&quot; : {</span>
-<span class="sd">                    &quot;value&quot; : 2015,</span>
-<span class="sd">                    &quot;description&quot; : &quot;Année de déclaration&quot;</span>
-<span class="sd">                 }</span>
-<span class="sd">              }</span>
-<span class="sd">           ]</span>
-<span class="sd">       }</span>
-
-
+<span class="sd">        {</span>
+<span class="sd">            &quot;siren&quot;: {</span>
+<span class="sd">                &quot;value&quot;: &quot;005420120&quot;,</span>
+<span class="sd">                &quot;description&quot;: &quot;SIREN&quot;</span>
+<span class="sd">            },</span>
+<span class="sd">            &quot;denomination&quot;: {</span>
+<span class="sd">                &quot;value&quot;: &quot;STE DES SUCRERIES DU MARQUENTERRE&quot;,</span>
+<span class="sd">                &quot;description&quot;: &quot;Dénomination&quot;</span>
+<span class="sd">            },</span>
+<span class="sd">            &quot;ape&quot;: {</span>
+<span class="sd">                &quot;value&quot;: &quot;Activités des sièes sociaux&quot;,</span>
+<span class="sd">                &quot;description&quot;: &quot;Code Activité Principale Exercée (NAF)&quot;</span>
+<span class="sd">            },</span>
+<span class="sd">            &quot;postal_code&quot;: {</span>
+<span class="sd">                &quot;value&quot;: &quot;62140&quot;,</span>
+<span class="sd">                &quot;description&quot;: &quot;Code Postal&quot;</span>
+<span class="sd">            },</span>
+<span class="sd">            &quot;town&quot;: {</span>
+<span class="sd">                &quot;value&quot;: &quot;MARCONNELLE&quot;,</span>
+<span class="sd">                &quot;description&quot;: &quot;Commune&quot;</span>
+<span class="sd">            },</span>
+<span class="sd">            &quot;devise&quot;: {</span>
+<span class="sd">                &quot;value&quot;: &quot;Euro&quot;,</span>
+<span class="sd">                &quot;description&quot;: &quot;Devise&quot;</span>
+<span class="sd">            },</span>
+<span class="sd">            &quot;declarations&quot;: [</span>
+<span class="sd">                {</span>
+<span class="sd">                    &quot;declaration&quot;: {</span>
+<span class="sd">                        &quot;value&quot;: 2016,</span>
+<span class="sd">                        &quot;description&quot;: &quot;Année de déclaration&quot;</span>
+<span class="sd">                    },</span>
+<span class="sd">                    &quot;financial_data&quot;: [</span>
+<span class="sd">                        {</span>
+<span class="sd">                            &quot;di&quot;: {</span>
+<span class="sd">                                &quot;account&quot;: &quot;Compte annuel complet&quot;,</span>
+<span class="sd">                                &quot;value&quot;: -261053.0,</span>
+<span class="sd">                                &quot;description&quot;: &quot;Résultat de l\u2019exercice (bénéfice ou perte)&quot;</span>
+<span class="sd">                            }</span>
+<span class="sd">                        }</span>
+<span class="sd">                    ]</span>
+<span class="sd">                }</span>
+<span class="sd">            ]</span>
+<span class="sd">        }</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;financial_data&#39;</span><span class="p">,)</span>
+    <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;declarations&#39;</span><span class="p">,)</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sql_request</span><span class="p">,</span> <span class="n">args</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -332,19 +348,16 @@
 <span class="sd">           :param sql_request: SQL request of the Company data to execute as a string.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">SQLData</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sql_request</span><span class="p">,</span> <span class="n">args</span><span class="p">)</span>
-        <span class="n">_bundles</span> <span class="o">=</span> <span class="n">Bundle</span><span class="p">(</span><span class="o">*</span><span class="p">[</span><span class="n">bundle</span><span class="p">[</span><span class="mi">7</span><span class="p">:]</span> <span class="k">for</span> <span class="n">bundle</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sql_results</span><span class="p">)])</span><span class="o">.</span><span class="vm">__dict__</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">financial_data</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;financial_data&quot;</span><span class="p">:</span> <span class="p">[]}</span>
-        <span class="k">if</span> <span class="kc">None</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">sql_results</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">sql_results</span><span class="o">.</span><span class="fm">__len__</span><span class="p">():</span>
-            <span class="k">for</span> <span class="n">year</span><span class="p">,</span> <span class="n">_bundle</span> <span class="ow">in</span> <span class="n">_bundles</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-                <span class="k">try</span><span class="p">:</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">financial_data</span><span class="p">[</span><span class="s2">&quot;financial_data&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-                        <span class="p">{</span><span class="o">**</span><span class="p">{</span><span class="s2">&quot;declaration&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">year</span><span class="p">),</span>
-                                            <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;Année de déclaration&quot;</span><span class="p">}},</span>
-                         <span class="o">**</span><span class="n">_bundle</span><span class="p">})</span>
-                <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
-                    <span class="k">continue</span>
+        <span class="n">_bundles</span> <span class="o">=</span> <span class="n">Bundle</span><span class="p">(</span><span class="o">*</span><span class="p">[</span><span class="n">bundle</span><span class="p">[</span><span class="mi">5</span><span class="p">:]</span> <span class="k">for</span> <span class="n">bundle</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">sql_results</span><span class="p">])</span><span class="o">.</span><span class="vm">__dict__</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">declarations</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;declarations&quot;</span><span class="p">:</span> <span class="p">[]}</span>
+        <span class="k">for</span> <span class="n">year</span><span class="p">,</span> <span class="n">_bundle</span> <span class="ow">in</span> <span class="n">_bundles</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">declarations</span><span class="p">[</span><span class="s2">&quot;declarations&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                <span class="p">{</span><span class="s2">&quot;declaration&quot;</span><span class="p">:</span> <span class="p">{</span><span class="n">JSONGenKey</span><span class="o">.</span><span class="n">VALUE</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">year</span><span class="p">),</span>
+                                 <span class="n">JSONGenKey</span><span class="o">.</span><span class="n">DESCRIPTION</span><span class="p">:</span> <span class="s2">&quot;Année de déclaration&quot;</span><span class="p">},</span>
+                 <span class="s2">&quot;financial_data&quot;</span><span class="p">:</span> <span class="n">_bundle</span><span class="p">},</span>
+            <span class="p">)</span>
         <span class="n">OKJSONResponse</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="p">{</span><span class="o">**</span><span class="n">CompanyIdentity</span><span class="p">(</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">sql_results</span><span class="p">[</span><span class="mi">0</span><span class="p">][:</span><span class="mi">7</span><span class="p">])</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">,</span>
-                                       <span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">financial_data</span><span class="p">})</span></div>
+                                       <span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">declarations</span><span class="p">})</span></div>
 </pre></div>
 
           </div>

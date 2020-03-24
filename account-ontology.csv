@@ -1,11 +1,11 @@
 label;code;column;accountability
 Salaires et traitements;FY;3;C
 Résultat de l’exercice (bénéfice ou perte);DI;1;C
-Résultat exceptionnel;HI;1,2;C
+Résultat exceptionnel;HI;1;C
 Participation des salariés aux résultats de l’entreprise;HJ;1;C
 Impôts sur les bénéfices;HK;1;C
 Total des charges;HM;1;C
-Chiffre d’affaires nets;FJ;1,2,3;C
+Chiffre d’affaires nets;FJ;1,3;C
 Subventions d’exploitation;FO;3;C
 Effectif moyen du personnel;YP;1;C
 Impôts, taxes et versements assimilés;VN;3;C
@@ -15,7 +15,7 @@ Impôts sur les bénéfices;306;1;S
 Bénéfice ou perte;310;1;S
 Résultat exceptionnel;HI;1;S
 Participation des salariés aux résultats de l’entreprise;HJ;1;S
-Chiffre d’affaires nets;FJ;1,2,3;S
+Chiffre d’affaires nets;FJ;1,3;S
 Subventions d’exploitation reçues;226;1;S
 Effectif moyen du personnel;376;1;S
 Impôts, taxes et versements assimilés;244;1;S
@@ -25,7 +25,25 @@ Résultat exceptionnel;HI;1;K
 Participation des salariés aux résultats de l’entreprise;HJ;1;K
 Impôts sur les bénéfices;HK;1;K
 Total des charges d’exploitation;GF;3;K
-Chiffre d’affaires nets;FJ;1,2,3;K
+Chiffre d’affaires nets;FJ;1,3;K
 Impôts, taxes et versements assimilés;FX;3;K
 Subventions d’exploitation;FO;3;K
 Résultat Groupe (Résultat net consolidé);R6;1;K
+Achats de marchandises (y compris droits de douane);FS;3;C
+Achats de marchandises (y compris droits de douane);FS;3;K
+Achats de marchandises (y compris droits de douane);234;1;S
+Variation de stock (marchandises);FT;3;C
+Variation de stock (marchandises);236;1;S
+Variation de stock (marchandises);FT;3;K
+Achats de matières premières et autres approvisionnements;FU;3;C
+Achats de matières premières et autres approvisionnements;238;1;S
+Achats de matières premières et autres approvisionnements;FU;3;K
+Variation de stock (matières premières et approvisionnements);FV;3;C
+Variation de stock (matières premières et approvisionnements);FV;3;K
+Résultat d’exploitation;270;1;S
+Resultat Financier;GV;3;C
+Resultat Financier;GV;3;C
+Resultat Financier;GV;3;K
+Charges sociales;FZ;3;C
+Charges sociales;252;1;S
+Charges sociales;FZ;3;K

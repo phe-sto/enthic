@@ -13,6 +13,7 @@ Coding Rules:
 - No output or print, just log and files.
 """
 
+import concurrent.futures
 from inspect import stack
 from json import loads, load
 from os.path import dirname, join
@@ -62,7 +63,8 @@ try:
 except IndexError:
     with application.app_context():
         result.yearly_avg_dir = fetchall("""SELECT declaration, ROUND(AVG(amount))
-                                            FROM bundle where bundle = 'DIR'
+                                            FROM bundle 
+                                            where bundle = 100
                                             GROUP BY declaration;""")
 
 
@@ -176,13 +178,13 @@ def result_array(probe, limit, offset=0):
        :param limit: Integer, the limit of result to return.
        :param offset: Integer, offset of the select SQL request.
     """
-    companies = fetchall("""SELECT siren, denomination, ape, postal_code, town, 
-                    accountability, devise
-                    FROM identity WHERE siren LIKE %s
-                    OR denomination LIKE %s
-                    OR MATCH(denomination) AGAINST (%s IN NATURAL LANGUAGE MODE)
-                    LIMIT %s OFFSET %s;""", ("{0}%".format(probe), "{0}%".format(probe),
-                                             "{0}%".format(probe), limit, offset))
+    with application.app_context():
+        companies = fetchall("""SELECT siren, denomination, ape, postal_code, town
+                        FROM identity WHERE siren = %s
+                        OR denomination LIKE %s
+                        OR MATCH(denomination) AGAINST (%s IN NATURAL LANGUAGE MODE)
+                        LIMIT %s OFFSET %s;""", (probe, "{0}%".format(probe),
+                                                 "{0}%".format(probe), limit, offset))
     return tuple(CompanyIdentity(*company).__dict__ for company in companies)
 
 
@@ -255,12 +257,15 @@ def page_search():
     if per_page < 1:
         ErrorJSONResponse('per_page parameter should be > 0')
     probe = request.args.get('probe', "")
-    results = result_array(probe, per_page, offset=page * per_page)
-    count, = fetchone("""SELECT COUNT(*)
-                        FROM identity WHERE siren LIKE %s
-                        OR denomination LIKE %s
-                        OR MATCH(denomination) AGAINST (%s IN NATURAL LANGUAGE MODE)""", (
-        "{0}%".format(probe), "{0}%".format(probe), "{0}%".format(probe)))
+    with concurrent.futures.ThreadPoolExecutor() as executor:
+        future_list = executor.submit(result_array, probe, per_page, offset=page * per_page)
+        count, = fetchone("""SELECT COUNT(*)
+                            FROM identity WHERE siren = %s
+                            OR denomination LIKE %s
+                            OR MATCH(denomination) AGAINST (%s IN NATURAL LANGUAGE MODE)""",
+                          (probe, "{0}%".format(probe), "{0}%".format(probe)))
+        results = future_list.result()
+
     if count < page * per_page:
         return NotFoundJSONResponse()
     if per_page != 0:

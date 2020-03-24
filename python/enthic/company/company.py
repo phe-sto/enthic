@@ -15,11 +15,10 @@ Coding Rules:
 
 from re import compile
 
-from enthic.ape import ape_code
 from enthic.database.mysql_data import SQLData
-from enthic.ontology import ONTOLOGY
-from enthic.result.result import result
-from enthic.score.classification import DistributionClassification
+from enthic.ontology import ONTOLOGY, APE_CODE
+from enthic.result import result
+from enthic.score.classification import Classification
 from enthic.utils.error_json_response import ErrorJSONResponse
 from enthic.utils.ok_json_response import OKJSONResponse
 from flask import abort
@@ -28,10 +27,20 @@ year_re = compile(r"^\d{4}$")  # REGEX OF A YEAR
 denomination_re = compile(r"^.*$")  # TODO: DEFINE A SAFER REGEX FOR DENOMINATION
 
 
+class JSONGenKey:
+    """
+    Generic keys found in the JSON response
+    """
+    VALUE = "value"
+    DESCRIPTION = "description"
+    ACCOUNT = "account"
+
+
 class YearCompany:
     """
     Company data for a given year.
     """
+
     __slots__ = ('year',)
 
     def __init__(self, year):
@@ -95,25 +104,20 @@ class CompanyIdentity(object):
            :param args: a tuple coming SQL result, each result being
               [[bundle, calculation, amount]...].
         """
-        self.siren = {"value": "%09d" % args[0], "description": "SIREN"}
-        self.denomination = {"value": args[1], "description": "Dénomination"}
+        self.siren = {JSONGenKey.VALUE: "%09d" % args[0], JSONGenKey.DESCRIPTION: "SIREN"}
+        self.denomination = {JSONGenKey.VALUE: args[1], JSONGenKey.DESCRIPTION: "Dénomination"}
         try:
-            self.ape = {
-                "value": "{}, {}".format(args[2], ape_code[args[2]]),
-                "description": "Code Activité Principale Exercée (NAF)"}
+            self.ape = {JSONGenKey.VALUE: APE_CODE[args[2]][1],
+                        JSONGenKey.DESCRIPTION: "Code Activité Principale Exercée (NAF)"}
         except KeyError:
-            self.ape = {"value": "{}, Code APE inconnu".format(args[2]),
-                        "description": "Code Activité Principale Exercée (NAF)"}
-        self.postal_code = {"value": args[3], "description": "Code Postal"}
-        self.town = {"value": args[4], "description": "Commune"}
-        self.accountability = {"value": "{}, {}".format(args[5],
-                                                        ONTOLOGY["accounting"][
-                                                            args[5]]["description"]),
-                               "description": "Type de comptabilité"}
-        self.devise = {"value": args[6], "description": "Devise"}
+            self.ape = {JSONGenKey.VALUE: "{}, Code APE inconnu".format(args[2]),
+                        JSONGenKey.DESCRIPTION: "Code Activité Principale Exercée (NAF)"}
+        self.postal_code = {JSONGenKey.VALUE: args[3], JSONGenKey.DESCRIPTION: "Code Postal"}
+        self.town = {JSONGenKey.VALUE: args[4], JSONGenKey.DESCRIPTION: "Commune"}
+        self.devise = {JSONGenKey.VALUE: "Euro", JSONGenKey.DESCRIPTION: "Devise"}
 
 
-class Bundle:
+class Bundle(object):
     """
     All the bundle declared and scoring of a company. Can be several year, one
     or average
@@ -124,51 +128,60 @@ class Bundle:
         Constructor initialising attributes as value/description pair.
 
            :param args: a tuple coming SQL result, each result being
-              [identity.siren, denomination, ape, postal_code, town,
-              accountability, devise].
+              (accountability, bundle, declaration, amount).
         """
-        bundles = {}
-        declaration = None
-        for tup_bundle in args:
+        _gan, _dis, _dir = (None,) * 3
+        for int_account, int_bundle, declaration, amount in args:
             ####################################################################
-            # BUNDLE FROM DATABASE
-            bundle = str(tup_bundle[0]).lower()
-            if str(tup_bundle[1]) not in bundles:
-                declaration = str(tup_bundle[1])
-                bundles[declaration] = {}
-            try:
-                value = round(tup_bundle[2], 2)
-                for accounting in ONTOLOGY["accounting"].keys():
-                    try:
-                        bundles[declaration][bundle] = {
-                            "value": value,
-                            "description":
-                                ONTOLOGY["accounting"][accounting]["code"][
-                                    bundle]
-                        }
-                    except KeyError:
-                        pass
-                ################################################################
-                # SCORE RELATED CALCULATION
-                if bundle == "dir" and result.avg_dir[1] is not None:
-                    if value > result.avg_dir[1] - result.avg_dir[1] * 0.1:
-                        distribution = DistributionClassification.TIGHT
-                    elif result.avg_dir[1] - result.avg_dir[1] * 0.1 <= value <= \
-                            result.avg_dir[1] + result.avg_dir[1] * 0.1:
-                        distribution = DistributionClassification.AVERAGE
-                    elif result.avg_dir[1] + result.avg_dir[1] * 0.1 > value:
-                        distribution = DistributionClassification.GOOD
-                    else:
-                        distribution = DistributionClassification.UNKNOWN
-                    bundles[declaration][bundle] = {
-                        "value": distribution.value,
-                        "description":
-                            ONTOLOGY["scoring"]["distribution"][
-                                "description"]}
-            except TypeError:  # IN CASE OF NO BUNDLE
-                continue
-        for _declaration, _bundles in bundles.items():
-            setattr(self, _declaration, _bundles)
+            # ACCOUNTING
+            str_declaration = str(declaration)
+            if hasattr(self, str_declaration) is True:
+                att_declaration = object.__getattribute__(self, str_declaration)
+                att_declaration.append({
+                    ONTOLOGY["accounting"][int_account]["code"][int_bundle][0]: {
+                        JSONGenKey.ACCOUNT: ONTOLOGY["accounting"][int_account][1],
+                        JSONGenKey.VALUE: amount,
+                        JSONGenKey.DESCRIPTION:
+                            ONTOLOGY["accounting"][int_account]["code"][int_bundle][
+                                1]
+                    }
+                })
+            else:
+                setattr(self, str(declaration), [{
+                    ONTOLOGY["accounting"][int_account]["code"][int_bundle][0]: {
+                        JSONGenKey.ACCOUNT: ONTOLOGY["accounting"][int_account][1],
+                        JSONGenKey.VALUE: amount,
+                        JSONGenKey.DESCRIPTION:
+                            ONTOLOGY["accounting"][int_account]["code"][int_bundle][
+                                1]
+                    }
+                }])
+            ####################################################################
+            # SCORING
+            # DISTRIBUTION RATIO
+            if int_bundle == 100:
+                _gan = amount
+            elif int_bundle == 101:
+                _dir = amount
+            if _dis is not None and _gan is not None:
+                if declaration == "average":
+                    average_dir = result.average_dir
+                else:
+                    average_dir = result.yearly_average_dir[declaration]
+                if amount > average_dir - average_dir * 0.1:
+                    distribution = Classification.TIGHT
+                elif average_dir - average_dir * 0.1 <= amount <= average_dir + average_dir * 0.1:
+                    distribution = Classification.AVERAGE
+                elif average_dir + average_dir * 0.1 > amount:
+                    distribution = Classification.GOOD
+                else:
+                    distribution = Classification.UNKNOWN
+                setattr(self, str(declaration), {
+                    "distribution_ratio": {
+                        JSONGenKey.VALUE: distribution.value,
+                        JSONGenKey.DESCRIPTION: ONTOLOGY["accounting"]["distribution"][1]
+                    }
+                })
 
 
 class UniqueBundleCompany(OKJSONResponse, SQLData):
@@ -183,56 +196,60 @@ class UniqueBundleCompany(OKJSONResponse, SQLData):
 
            :param sql_request: SQL request of the Company data to execute as a string.
 
-        .. code-block:: json
+    .. code-block:: json
 
-           {
-              "gan" : {
-                 "value" : 2976860,
-                 "description" : "Gain d'une companie, actuellement le chiffre d'affaire uniquement FJ"
-              },
-              "ape" : {
-                 "description" : "Code Activité Principale Exercée (NAF)",
-                 "value" : "7311Z, Activités des agences de publicité"
-              },
-              "di" : {
-                 "value" : 499,
-                 "description" : "Résultat de l’exercice (bénéfice ou perte)"
-              },
-              "town" : {
-                 "description" : "Commune",
-                 "value" : "ERMONT"
-              },
-              "denomination" : {
-                 "value" : "MRG PROMOTION",
-                 "description" : "Dénomination"
-              },
-              "siren" : {
-                 "description" : "SIREN",
-                 "value" : "307034421"
-              },
-              "devise" : {
-                 "value" : "EUR",
-                 "description" : "Devise"
-              },
-              "postal_code" : {
-                 "description" : "Code Postal",
-                 "value" : "95120"
-              },
-              "dir" : {
-                 "value" : 0.01,
-                 "description" : "Distribution ratio, (FY + HJ) / GAN, i.e pondération de dis par le chiffre d'affaire"
-              }
-           }
+        {
+            "siren": {
+                "value": "005420120",
+                "description": "SIREN"
+            },
+            "denomination": {
+                "value": "STE DES SUCRERIES DU MARQUENTERRE",
+                "description": "Dénomination"
+            },
+            "ape": {
+                "value": "Activités des sièes sociaux",
+                "description": "Code Activité Principale Exercée (NAF)"
+            },
+            "postal_code": {
+                "value": "62140",
+                "description": "Code Postal"
+            },
+            "town": {
+                "value": "MARCONNELLE",
+                "description": "Commune"
+            },
+            "devise": {
+                "value": "Euro",
+                "description": "Devise"
+            },
+            "financial_data": [
+                {
+                    "di": {
+                        "account": "Compte annuel complet",
+                        "value": -261053.0,
+                        "description": "Résultat de l\u2019exercice (bénéfice ou perte)"
+                    }
+                },
+                {
+                    "fs": {
+                        "account": "Compte annuel complet",
+                        "value": 11836.0,
+                        "description": "Achats de marchandises (y compris droits de douane)"
+                    }
+                }
+            ]
+        }
         """
         SQLData.__init__(self, sql_request, args)
         if None in self.sql_results:
-            OKJSONResponse.__init__(self, CompanyIdentity(*self.sql_results[0][:7]).__dict__)
+            OKJSONResponse.__init__(self, CompanyIdentity(*self.sql_results[0][:5]).__dict__)
 
         else:
-            OKJSONResponse.__init__(self, {**CompanyIdentity(*self.sql_results[0][:7]).__dict__,
-                                           **Bundle(*[bundle[7:] for bundle in
-                                                      list(self.sql_results)]).__dict__[
-                                               self.sql_results[0][8]]})
+            OKJSONResponse.__init__(self, {**CompanyIdentity(*self.sql_results[0][:5]).__dict__,
+                                           **{"financial_data": Bundle(*[bundle[5:] for bundle in
+                                                                         self.sql_results]).__dict__[
+                                               self.sql_results[0][7]]}})
 
 
 class MultipleBundleCompany(OKJSONResponse, SQLData):
@@ -242,52 +259,51 @@ class MultipleBundleCompany(OKJSONResponse, SQLData):
 
     .. code-block:: json
 
-       {
-          "gan" : {
-             "value" : 2976860,
-             "description" : "Gain d'une companie, actuellement le chiffre d'affaire uniquement FJ"
-          },
-          "ape" : {
-             "description" : "Code Activité Principale Exercée (NAF)",
-             "value" : "7311Z, Activités des agences de publicité"
-          },
-          "di" : {
-             "value" : 499,
-             "description" : "Résultat de l’exercice (bénéfice ou perte)"
-          },
-          "town" : {
-             "description" : "Commune",
-             "value" : "ERMONT"
-          },
-          "financial_data" : [
-              {
-                 "dir" : {
-                    "value" : 0.03,
-                    "description" : "Distribution ratio, (FY + HJ) / GAN, i.e pondération de dis par le chiffre d'affaire"
-                 },
-                 "dis" : {
-                    "value" : 34974,
-                    "description" : "Somme des distributions, FY + HJ"
-                 },
-                 "di" : {
-                    "description" : "Résultat de l’exercice (bénéfice ou perte)",
-                    "value" : -129783
-                 },
-                 "gan" : {
-                    "description" : "Gain d'une companie, actuellement le chiffre d'affaire uniquement FJ",
-                    "value" : 1196260
-                 },
-                 "declaration" : {
-                    "value" : 2015,
-                    "description" : "Année de déclaration"
-                 }
-              }
-           ]
-       }
-
-
+        {
+            "siren": {
+                "value": "005420120",
+                "description": "SIREN"
+            },
+            "denomination": {
+                "value": "STE DES SUCRERIES DU MARQUENTERRE",
+                "description": "Dénomination"
+            },
+            "ape": {
+                "value": "Activités des sièes sociaux",
+                "description": "Code Activité Principale Exercée (NAF)"
+            },
+            "postal_code": {
+                "value": "62140",
+                "description": "Code Postal"
+            },
+            "town": {
+                "value": "MARCONNELLE",
+                "description": "Commune"
+            },
+            "devise": {
+                "value": "Euro",
+                "description": "Devise"
+            },
+            "declarations": [
+                {
+                    "declaration": {
+                        "value": 2016,
+                        "description": "Année de déclaration"
+                    },
+                    "financial_data": [
+                        {
+                            "di": {
+                                "account": "Compte annuel complet",
+                                "value": -261053.0,
+                                "description": "Résultat de l\u2019exercice (bénéfice ou perte)"
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
     """
-    __slots__ = ('financial_data',)
+    __slots__ = ('declarations',)
 
     def __init__(self, sql_request, args):
         """
@@ -297,16 +313,13 @@ class MultipleBundleCompany(OKJSONResponse, SQLData):
            :param sql_request: SQL request of the Company data to execute as a string.
         """
         SQLData.__init__(self, sql_request, args)
-        _bundles = Bundle(*[bundle[7:] for bundle in list(self.sql_results)]).__dict__
-        self.financial_data = {"financial_data": []}
-        if None not in self.sql_results[0] and self.sql_results.__len__():
-            for year, _bundle in _bundles.items():
-                try:
-                    self.financial_data["financial_data"].append(
-                        {**{"declaration": {"value": int(year),
-                                            "description": "Année de déclaration"}},
-                         **_bundle})
-                except ValueError:
-                    continue
+        _bundles = Bundle(*[bundle[5:] for bundle in self.sql_results]).__dict__
+        self.declarations = {"declarations": []}
+        for year, _bundle in _bundles.items():
+            self.declarations["declarations"].append(
+                {"declaration": {JSONGenKey.VALUE: int(year),
+                                 JSONGenKey.DESCRIPTION: "Année de déclaration"},
+                 "financial_data": _bundle},
+            )
         OKJSONResponse.__init__(self, {**CompanyIdentity(*self.sql_results[0][:7]).__dict__,
-                                       **self.financial_data})
+                                       **self.declarations})

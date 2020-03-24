@@ -2,7 +2,7 @@
   "swagger": "2.0",
   "info": {
     "description": "JSON API of French Company Account and Ethical Score",
-    "version": "2020.3.1",
+    "version": "2020.3.2",
     "title": "Swagger French Company Account and Ethical Score",
     "contact": {
       "email": "services@papit.fr"
@@ -347,6 +347,7 @@
             "in": "query",
             "name": "probe",
             "required": false,
+            "default": "",
             "type": "string",
             "description": "Probe (SIREN or denomination) to search for."
           },
@@ -354,6 +355,7 @@
             "in": "query",
             "name": "per_page",
             "required": false,
+            "default": 30,
             "type": "integer",
             "description": "Number of results per page."
           },
@@ -361,6 +363,7 @@
             "in": "query",
             "name": "page",
             "required": false,
+            "default": 1,
             "type": "integer",
             "description": "Page number."
           }

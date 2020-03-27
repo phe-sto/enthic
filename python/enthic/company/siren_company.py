@@ -13,55 +13,77 @@ Coding Rules:
 - No output or print, just log and files.
 """
 
-from re import compile
-
-from enthic.calculation.calculation import BundleCalculation
-from enthic.company.company import Company
-from enthic.utils.error_json_response import ErrorJSONResponse
-from flask import abort
-
-siren_re = compile(r"^\d{9}$")  # REGEX OF A SIREN
+from enthic.company.company import (
+    YearCompany,
+    UniqueBundleCompany,
+    MultipleBundleCompany,
+    SirenCompany
+)
 
 
-class SirenCompany(Company):
+class AllSirenCompany(MultipleBundleCompany, SirenCompany):
     """
-    Class SirenCompany inherit from Company class.
+    Class SirenCompany and MultipleBundleCompany inherit from Company class as
+    it has potentially multiple declarations.
     """
 
-    def __init__(self, mysql, siren, calculation):
+    def __init__(self, siren):
         """
-        Constructor of the DenominationCompany class.
+        Constructor of the SirenCompany class.
 
-           :param mysql: MySQL database to connect.
-           :param siren: The SIREN of the company.
-           :param calculation: Type of data to return, average, a year, all.
-              Must be BundleCalculation enum.
+           :param siren: The official siren of the company.
         """
+        SirenCompany.__init__(self, siren)
+        MultipleBundleCompany.__init__(self, """
+            SELECT identity.siren, denomination, ape, postal_code, town,
+                accountability, bundle, declaration, amount
+            FROM identity LEFT JOIN bundle
+            ON bundle.siren = identity.siren
+            WHERE identity.siren = %s
+            GROUP BY identity.siren, accountability, bundle.bundle, declaration, amount;""", (self.siren,))
 
-        if siren_re.match(siren) is None:  # CHECK SIREN FORMAT
-            abort(ErrorJSONResponse("SIREN for is wrong, must match ^\d{9}$."))
 
-        if calculation == BundleCalculation.AVERAGE:
-            Company.__init__(self, mysql, siren, calculation, """
+class AverageSirenCompany(UniqueBundleCompany, SirenCompany):
+    """
+    Class AverageSirenCompany inherit from UniqueBundleCompany class as
+    it as a unique average bundle. Inherit also YearCompany to check the year.
+    """
+
+    def __init__(self, siren):
+        """
+        Constructor of the AverageSirenCompany class.
+
+           :param siren: The official siren of the company.
+        """
+        SirenCompany.__init__(self, siren)
+        UniqueBundleCompany.__init__(self, """
             SELECT identity.siren, denomination, ape, postal_code, town,
-                accountability, devise, bundle, "average", AVG(amount)
-            FROM bundle LEFT OUTER JOIN identity
+                accountability, bundle, "average", AVG(amount)
+            FROM identity LEFT JOIN bundle
             ON bundle.siren = identity.siren
-            WHERE identity.siren = '%s'
-            GROUP BY bundle.bundle;""")
-        elif calculation == BundleCalculation.ALL:
-            Company.__init__(self, mysql, siren, calculation, """
+            WHERE identity.siren = %s
+            GROUP BY bundle.bundle, accountability;""", (self.siren,))
+
+
+class YearSirenCompany(YearCompany, UniqueBundleCompany, SirenCompany):
+    """
+    Class YearDenominationCompany inherit from UniqueBundleCompany class as
+    it as a unique average bundle. Inherit also YearCompany to check the year.
+    """
+
+    def __init__(self, siren, year):
+        """
+        Constructor of the YearDenominationCompany class.
+
+           :param siren: The official siren of the company.
+           :param year: The declaration to return, i.e. a year.
+        """
+        SirenCompany.__init__(self, siren)
+        YearCompany.__init__(self, year)
+        UniqueBundleCompany.__init__(self, """
             SELECT identity.siren, denomination, ape, postal_code, town,
-                accountability, devise, bundle, declaration, amount
-            FROM bundle LEFT OUTER JOIN identity
+                accountability, bundle, %s, amount
+            FROM identity LEFT JOIN bundle
             ON bundle.siren = identity.siren
-            WHERE identity.siren = '%s'
-            GROUP BY bundle.bundle, declaration, amount;""")
-        else:
-            Company.__init__(self, mysql, siren, calculation, """
-            SELECT identity.siren, denomination, ape, postal_code, town,
-                accountability, devise, bundle, "%s", amount
-            FROM bundle LEFT OUTER JOIN identity
-            ON bundle.siren = identity.siren
-            WHERE identity.siren = '%s'
-            AND declaration = %s;""")
+            WHERE identity.siren = %s
+            AND declaration = %s;""", (self.year, self.siren, self.year))

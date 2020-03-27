@@ -15,10 +15,11 @@ Coding Rules:
 from enum import Enum
 
 
-class DistributionClassification(Enum):
+class Classification(Enum):
     """
-    Classification of company by type of distribution. Their name and value
-    should be self explanatory:
+    Classification of company by my subjective judgement. The goal is to provide
+    IHM UX/UI a generic indicator. Their name and value should be self
+    explanatory:
 
     - TIGHT
     - AVERAGE

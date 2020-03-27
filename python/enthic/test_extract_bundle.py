@@ -99,17 +99,19 @@ def identity_file(config):
 
 def test_result_line_data(result_file):
     """
-    Test the line contain always 4 columns. Check it's type.
+    Test the line contain always 6 columns (with line separator). Check it's
+    type.
 
        :param result_file: Fixture of the CSV result file.
     """
     for line in result_file:
         line = line.split(";")
-        assert len(line) == 5, "NUMBER OF COLUMNS NOT 5"
+        assert len(line) == 6, "NUMBER OF COLUMNS NOT 6"
         assert " " not in line, "BLANK ENTRY"
         assert "" not in line, "EMPTY ENTRY"
         assert line[0].isnumeric() is True, "SIREN NOT NUMERIC"
-        assert len(line[0]) == 9, "SIREN IS NOT 9 CHARACTERS"
+        assert int(line[0]) < 1000000000, " NOT < 1 000 000 000"
+        assert len(line[0]) <= 9, "SIREN IS NOT 9 CHARACTERS"
         assert line[1].isnumeric() is True, "YEAR NOT NUMERIC"
         assert len(line[1]) == 4, "YEAR IS NOT 4 CHARACTERS"
         assert int(line[3]) != 0, "BUNDLE AMOUNT NOT NUMERIC"
@@ -118,22 +120,22 @@ def test_result_line_data(result_file):
 
 def test_identity_line_data(identity_file):
     """
-    Test the line contain always 8 columns. Check it's type.
+    Test the line contain always 6 columns (with line separator). Check it's type.
 
        :param identity_file: Fixture of the CSV result file.
     """
     max_length = 0
     for line in identity_file:
         line = line.split(";")
-        assert len(line) == 8, "NUMBER OF COLUMNS NOT 8"
+        assert len(line) == 6, "NUMBER OF COLUMNS NOT 6"
         assert " " not in line, "BLANK ENTRY"
         assert "" not in line, "EMPTY ENTRY"
         assert line[0].isnumeric() is True, "SIREN NOT NUMERIC"
-        assert len(line[2]) == 5, "APE NOT 5 CHARACTERS"
-        assert line[3].isnumeric() is True, "POSTAL CODE NOT NUMERIC"
-        assert len(line[3]) == 5, "POSTAL CODE NOT 5 CHARACTERS"
-        assert len([5]) == 1, "ACCOUNTABILITY TYPE LENGTH NOT 1"
-        assert line[6] == "EUR", "DEVISE NOT EUR"
+        assert int(line[0]) < 1000000000, " NOT < 1 000 000 000"
+        assert line[2].isnumeric(), "APE IS NOT NUMERIC"
+        assert line[3].isnumeric() is True or line[3] == "UNKNOWN", "POSTAL CODE NOT NUMERIC"
+        assert len(line[2]) <= 5 or line[2
+        ] == "UNKNOWN", "POSTAL CODE NOT 5 CHARACTERS"
         # DENOMINATION LENGTH
         denomination_length = len(line[1])
         if max_length < denomination_length:

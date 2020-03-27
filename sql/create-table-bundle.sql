@@ -1,7 +1,8 @@
 CREATE TABLE IF NOT EXISTS bundle
 (
-    siren CHAR(9) NOT NULL,
+    siren INT NOT NULL,
     declaration YEAR(4) NOT NULL,
-    bundle CHAR(3) NOT NULL,
+    accountability TINYINT NOT NULL,
+    bundle TINYINT NOT NULL,
     amount FLOAT NOT NULL
 );

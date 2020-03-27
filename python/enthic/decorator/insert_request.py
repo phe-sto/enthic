@@ -1,85 +1,57 @@
 # -*- coding: utf-8 -*-
 
 """
-====================================================================
-Decorator inserting data from the incoming request in another thread
-====================================================================
+=================================================================================
+Decorator inserting data from the incoming request after having executed function
+=================================================================================
 """
 from functools import wraps
-from threading import Thread
+
+from flask import current_app as application, request as app_request
 
 
-def insert(*args):
+def insert_request(func):
     """
-    Insert data from the request in the request table.
+    Decorator inserting relevant request data timestamped.
 
-       :param args: A tuple, first element is the database, second is the
-          request data.
-    """
-    try:
-        if args[1].get('data') and args[1]['data'] != b'':
-            request = """INSERT INTO request VALUES ("%s", "%s", "%s", "%s", "%s", "%s", CURRENT_TIMESTAMP)""" % \
-                      (args[1]['environ']['REQUEST_METHOD'],
-                       args[1]['environ']['PATH_INFO'],
-                       args[1]['environ']['REMOTE_ADDR'],
-                       args[1]['environ']['REMOTE_PORT'],
-                       args[1]['environ']['HTTP_USER_AGENT'],
-                       str(args[1]['data']).replace('"', "'"))
-        elif args[1]['view_args'] != {}:
-            request = """INSERT INTO request VALUES ("%s", "%s", "%s", "%s", "%s", "%s", CURRENT_TIMESTAMP)""" % \
-                      (args[1]['environ']['REQUEST_METHOD'],
-                       args[1]['environ']['PATH_INFO'],
-                       args[1]['environ']['REMOTE_ADDR'],
-                       args[1]['environ']['REMOTE_PORT'],
-                       args[1]['environ']['HTTP_USER_AGENT'],
-                       str(args[1]['view_args']).replace('"', "'"))
-        else:
-            request = """INSERT INTO request VALUES ("%s", "%s", "%s", "%s", "%s", NULL, CURRENT_TIMESTAMP)""" % \
-                      (args[1]['environ']['REQUEST_METHOD'],
-                       args[1]['environ']['PATH_INFO'],
-                       args[1]['environ']['REMOTE_ADDR'],
-                       args[1]['environ']['REMOTE_PORT'],
-                       args[1]['environ']['HTTP_USER_AGENT'])
-    except KeyError:
-        pass
-    with args[0].app.app_context():
-        cur = args[0].connection.cursor()
-        cur.execute(request)
-        cur.close()
-        args[0].connection.commit()
-
-
-def insert_request(my_sql_db, request):
-    """
-    Decorator insert request data in database for further analysis using
-    arguments objects of the function.
-
-       :param my_sql_db: The database where the request data is to be inserted.
-       :param request: The request object.
+       :param func: Function decorated.
        :return: The function decorated.
     """
 
-    def insert_request_func(func):
+    @wraps(func)
+    def wrapper(*args, **kwargs):
         """
-        Decorator inserting relevant request data timestamped.
+        Wrapper to the insert in another thread to save time.
 
-           :param func: Function decorated.
+           :param args: Possible arguments.
+           :param kwargs: Possible keyword argument.
            :return: The function decorated.
         """
+        handle_request = func(*args, **kwargs)
+        with application.app_context():
+            from enthic.database.mysql import mysql
+            try:
+                if app_request.__dict__.get('data') and app_request.__dict__['data'] != b'':
+                    sql_request = 'INSERT INTO request VALUES (%s, %s, %s, %s, %s, %s, CURRENT_TIMESTAMP)'
+                    args = (str(app_request.__dict__['data']),)
+                elif app_request.__dict__['view_args'] != {}:
+                    sql_request = 'INSERT INTO request VALUES (%s, %s, %s, %s, %s, %s, CURRENT_TIMESTAMP)'
+                    args = (str(app_request.__dict__['view_args']),)
+                else:
+                    sql_request = 'INSERT INTO request VALUES (%s, %s, %s, %s, %s, NULL, CURRENT_TIMESTAMP)'
+                    args = tuple()
+                cur = mysql.connection.cursor()
+                cur.execute(sql_request, (*(app_request.__dict__['environ']['REQUEST_METHOD'],
+                                            app_request.__dict__['environ']['PATH_INFO'],
+                                            app_request.__dict__['environ']['REMOTE_ADDR'],
+                                            app_request.__dict__['environ']['REMOTE_PORT'],
+                                            app_request.__dict__['environ']['HTTP_USER_AGENT']),
+                                          *args))
+                cur.close()
+                mysql.connection.commit()
+            except KeyError:
+                pass
 
-        @wraps(func)
-        def wrapper(*args, **kwargs):
-            """
-            Wrapper to the insert in another thread to save time.
+        return handle_request
 
-               :param args: Possible arguments.
-               :param kwargs: Possible keyword argument.
-               :return: The function decorated.
-            """
-            Thread(target=insert, args=(my_sql_db, request.__dict__)).start()
-
-            return func(*args, **kwargs)
-
-        return wrapper
-
-    return insert_request_func
+    return wrapper

@@ -6,20 +6,20 @@
   "sortBundleFile": "sort-bundle.tmp",
   "scoreBundleFile": "bundle.csv",
   "gainCodes": [
-    "FJ"
+    6
   ],
   "distributionCodes": [
-    "HJ",
-    "FY"
+    0,
+    3
   ],
   "yearlyBundleFile": "bundle.csv",
   "identityFile": "identity.tmp",
-  "debugLevel": "DEBUG",
+  "debugLevel": "INFO",
   "mySQL": {
     "enthic": {
       "host": "",
-      "user": "",
-      "password": ""
+      "user": "chrichri",
+      "password": "q250685Q"
     }
   },
   "flask": {

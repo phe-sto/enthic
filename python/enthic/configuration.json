@@ -17,9 +17,9 @@
   "debugLevel": "INFO",
   "mySQL": {
     "enthic": {
-      "host": "",
-      "user": "",
-      "password": ""
+      "host": "XXXXX",
+      "user": "YYYYY",
+      "password": "ZZZZZ"
     }
   },
   "flask": {

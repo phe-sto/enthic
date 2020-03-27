@@ -31,6 +31,22 @@ class Result:
         self.yearly_avg_dir = None
 
     @property
+    def avg_dir(self):
+        """
+        avg_dir getter.
+        """
+        return self.__avg_dir
+
+    @avg_dir.setter
+    def avg_dir(self, avg_dir):
+        """
+        avg_dir setter.
+
+           :param avg_dir: New avg_dir value
+        """
+        self.__avg_dir = avg_dir
+
+    @property
     def yearly_avg_dir(self):
         """
         yearly_avg_dir getter.
@@ -46,7 +62,6 @@ class Result:
         """
         try:
             self.__yearly_avg_dir = dict(yearly_avg_dir)
-            self.avg_dir = sum(self.__yearly_avg_dir.keys()) / self.__yearly_avg_dir.__len__()
         except TypeError:
             self.__yearly_avg_dir = None
 

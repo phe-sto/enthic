@@ -13,36 +13,29 @@ Coding Rules:
 - No output or print, just log and files.
 """
 
-import concurrent.futures
 from inspect import stack
 from json import loads, load
 from os.path import dirname, join
 
-from enthic.company.company import CompanyIdentity
-from enthic.company.denomination_company import (
-    YearDenominationCompany,
-    AverageDenominationCompany,
-    AllDenominationCompany
-)
-from enthic.company.siren_company import (
-    YearSirenCompany,
-    AverageSirenCompany,
-    AllSirenCompany
-)
-from enthic.database.fetch import fetchall, fetchone
+from enthic.calculation.calculation import BundleCalculation
+from enthic.company.denomination_company import DenominationCompany
+from enthic.company.siren_company import SirenCompany
+from enthic.decorator.check_sql_injection import check_sql_injection
 from enthic.decorator.insert_request import insert_request
 from enthic.ontology import ONTOLOGY
 from enthic.result.result import result
 from enthic.utils.error_json_response import ErrorJSONResponse
-from enthic.utils.not_found_response import NotFoundJSONResponse
 from enthic.utils.ok_json_response import OKJSONResponse
+from enthic.utils.sql_json_response import SQLJSONResponse
 from flask import Flask, request
 from flask_cors import CORS
+from flask_mysqldb import MySQL
 
 ################################################################################
 # FLASK INITIALISATION
 application = Flask(__name__)
 CORS(application, expose_headers='Authorization', max_age=600, methods=["POST", "GET"])
+mysql = MySQL(application)
 
 ################################################################################
 # CONFIGURE APPLICATION
@@ -57,24 +50,34 @@ application.config['MYSQL_DB'] = 'enthic'
 
 ################################################################################
 # IN ORDER NOT TO CONNECT DATABASE BELOW IF EXECUTED DURING SPHINX IMPORT
-# IF NOT SPHINX CALCULATE SCORES RELATED DATA ONLY IF NOT BUILDING/INSTALLING
 try:
     setup = stack()[6].filename.endswith("autodoc/importer.py")
-except IndexError:
-    with application.app_context():
-        result.yearly_avg_dir = fetchall("""SELECT declaration, ROUND(AVG(amount))
-                                            FROM bundle 
-                                            where bundle = 100
-                                            GROUP BY declaration;""")
+except IndexError as error:
+    setup = False
+################################################################################
+# CALCULATE SCORES RELATED DATA ONLY IF NOT BUILDING/INSTALLING
+
+with application.app_context():
+    if setup is False:
+        cur = mysql.connection.cursor()
+        cur.execute("""SELECT declaration, ROUND(AVG(amount))
+                    FROM bundle where bundle = 'DIR'
+                    GROUP BY declaration;""")
+        result.yearly_avg_dir = cur.fetchall()
+        cur.execute("""SELECT ROUND(AVG(amount), 2)
+                    FROM bundle where bundle = 'DIR';""")
+        result.avg_dir = cur.fetchone()[0]
+        cur.close()
 
 
-@insert_request
-@application.route("/company/siren/<int:siren>/<string:year>", methods=['GET'],
+@application.route("/company/siren/<siren>/<year>", methods=['GET'],
                    strict_slashes=False)
+@check_sql_injection
+@insert_request(mysql, request)
 def company_siren_year(siren, year):
     """
     Retrieve company information by SIREN for a given year. Path is
-    /company/siren/<int:siren> GET method only and no strict slash.
+    /company/siren/<siren> GET method only and no strict slash.
 
        :param siren: SIREN identification, must be an 9 character long,
           numeric only.
@@ -83,81 +86,86 @@ def company_siren_year(siren, year):
        :return: HTTP Response as application/json. Contain all known information
           on that company of an error message if SIREN or YEAR wrongly formatted.
     """
-    return YearSirenCompany(siren, year)
+    return SirenCompany(mysql, siren, year)
 
 
-@insert_request
-@application.route("/company/siren/<int:siren>/average", methods=['GET'], strict_slashes=False)
+@application.route("/company/siren/<siren>/average", methods=['GET'], strict_slashes=False)
+@check_sql_injection
+@insert_request(mysql, request)
 def company_siren_average(siren):
     """
     Retrieve company information by SIREN, calculation of the years average.
-    Path is /company/siren/<int:siren> GET method only and no strict slash.
+    Path is /company/siren/<siren> GET method only and no strict slash.
 
        :param siren: SIREN identification, must be an 9 character long,
           numeric only.
        :return: HTTP Response as application/json. Contain all known information
           on that company of an error message if SIREN wrongly formatted.
     """
-    return AverageSirenCompany(siren)
+    return SirenCompany(mysql, siren, BundleCalculation.AVERAGE)
 
 
-@insert_request
-@application.route("/company/siren/<int:siren>", methods=['GET'], strict_slashes=False)
+@application.route("/company/siren/<siren>", methods=['GET'], strict_slashes=False)
+@check_sql_injection
+@insert_request(mysql, request)
 def company_siren(siren):
     """
     Retrieve company information by SIREN, calculation of all years. Path is
-    /company/siren/<int:siren> GET method only and no strict slash.
+    /company/siren/<siren> GET method only and no strict slash.
 
        :param siren: SIREN identification, must be an 9 character long,
           numeric only.
        :return: HTTP Response as application/json. Contain all known information
           on that company of an error message if SIREN wrongly formatted.
     """
-    return AllSirenCompany(siren)
+    return SirenCompany(mysql, siren, BundleCalculation.ALL)
 
 
-@insert_request
-@application.route("/company/denomination/<string:denomination>/average", methods=['GET'],
+@application.route("/company/denomination/<denomination>/average", methods=['GET'],
                    strict_slashes=False)
+@check_sql_injection
+@insert_request(mysql, request)
 def company_denomination_average(denomination):
     """
     Retrieve company information by company denomination of the years average.
-    Path is /company/denomination/<string:denomination> GET method only and no strict
+    Path is /company/denomination/<denomination> GET method only and no strict
     slash.
 
        :param denomination: String, denomination of the company.
        :return: HTTP Response as application/json. Contain all known information.
     """
-    return AverageDenominationCompany(denomination)
+    return DenominationCompany(mysql, denomination, BundleCalculation.AVERAGE)
 
 
-@insert_request
-@application.route("/company/denomination/<string:denomination>", methods=['GET'],
+@application.route("/company/denomination/<denomination>", methods=['GET'],
                    strict_slashes=False)
+@check_sql_injection
+@insert_request(mysql, request)
 def company_denomination(denomination):
     """
     Retrieve company information by company denomination, calculation of all
-    years. Path is /company/denomination/<string:denomination> GET method only and no strict slash.
+    years. Path is /company/denomination/<denomination> GET method only and no strict slash.
 
        :param denomination: String, denomination of the company.
        :return: HTTP Response as application/json. Contain all known information.
     """
-    return AllDenominationCompany(denomination)
+    return DenominationCompany(mysql, denomination, BundleCalculation.ALL)
 
 
-@insert_request
-@application.route("/company/denomination/<string:denomination>/<string:year>", methods=['GET'],
+@application.route("/company/denomination/<denomination>/<year>", methods=['GET'],
                    strict_slashes=False)
+@check_sql_injection
+@insert_request(mysql, request)
 def company_denomination_year(denomination, year):
     """
     Retrieve company information for a given year by company denomination. Path
-    is /company/denomination/<string:denomination> GET method only and no strict slash.
+    is /company/denomination/<denomination> GET method only and no strict slash.
 
        :param denomination: String, denomination of the company.
        :param year: Year of results to return, default is None.
        :return: HTTP Response as application/json. Contain all known information.
     """
-    return YearDenominationCompany(denomination, year)
+    return DenominationCompany(mysql, denomination, year)
 
 
 @application.route("/company/ontology", methods=['GET'], strict_slashes=False)
@@ -170,26 +178,9 @@ def ontology():
     return OKJSONResponse(ONTOLOGY)
 
 
-def result_array(probe, limit, offset=0):
-    """
-    List the result of the search in the database.
-
-       :param probe: A string to match.
-       :param limit: Integer, the limit of result to return.
-       :param offset: Integer, offset of the select SQL request.
-    """
-    with application.app_context():
-        companies = fetchall("""SELECT siren, denomination, ape, postal_code, town
-                        FROM identity WHERE siren = %s
-                        OR denomination LIKE %s
-                        OR MATCH(denomination) AGAINST (%s IN NATURAL LANGUAGE MODE)
-                        LIMIT %s OFFSET %s;""", (probe, "{0}%".format(probe),
-                                                 "{0}%".format(probe), limit, offset))
-    return tuple(CompanyIdentity(*company).__dict__ for company in companies)
-
-
-@insert_request
 @application.route("/company/search", methods=['POST'], strict_slashes=False)
+@check_sql_injection
+@insert_request(mysql, request)
 def search():
     """
     Search companies by SIREN or denomination. Limited to 1000 results. Path is
@@ -207,31 +198,30 @@ def search():
         ########################################################################
         # WRONG TYPE
         if json_data["limit"].__class__ is not int and \
-                (json_data["probe"].__class__ is not str and json_data[
-                    "probe"].__class__ is not int):
+                json_data["probe"].__class__ is not str:
             return ErrorJSONResponse(
-                "Value limit must be a string or integer and limit an integer."
+                "Value limit must be a string and limit an integer."
             )
         elif json_data["limit"].__class__ is not int:
             return ErrorJSONResponse("Value limit must be an integer.")
-        elif json_data["probe"].__class__ is not str and json_data["probe"].__class__ is not int:
-            return ErrorJSONResponse("Value probe must be a string or integer.")
+        elif json_data["probe"].__class__ is not str:
+            return ErrorJSONResponse("Value probe must be a string.")
         ########################################################################
         # WRONG LIMIT
-        elif json_data["limit"] > 10000:
+        elif int(json_data["limit"]) > 1000:
             return ErrorJSONResponse("Value limit is 1000 maximum.")
         ########################################################################
         # CORRECT JSON
         else:
-            results = result_array(json_data["probe"], json_data["limit"])
-            return OKJSONResponse({
-                "@context": "http://www.w3.org/ns/hydra/context.jsonld",
-                "@id": request.url,
-                "@type": "Collection",
-                "totalItems": results.__len__(),
-                "member":
-                    results
-            })
+            return SQLJSONResponse(mysql, """SELECT siren, denomination
+                                    FROM identity WHERE siren LIKE '%s'
+                                    OR denomination LIKE '%s'
+                                    OR MATCH(denomination) AGAINST ('%s' IN NATURAL LANGUAGE MODE)
+                                    LIMIT %s;""",
+                                   json_data["probe"] + "%",
+                                   json_data["probe"] + "%",
+                                   json_data["probe"] + "%",
+                                   json_data["limit"])
     ############################################################################
     # WRONG JSON KEY
     except KeyError as error:
@@ -242,79 +232,8 @@ def search():
         )
 
 
-@insert_request
-@application.route("/company/search/page", methods=['GET'], strict_slashes=False)
-def page_search():
-    """
-    Return a JSON formatted as page. Try to implement the Hydra
-    hypermedia-driven Web APIs https://www.markus-lanthaler.com/hydra/.
-    """
-
-    page = int(request.args.get('page', '1')) - 1  #  TO COUNT
-    if page < 0:
-        ErrorJSONResponse('page parameter should be > 0')
-    per_page = int(request.args.get('per_page', '30'))
-    if per_page < 1:
-        ErrorJSONResponse('per_page parameter should be > 0')
-    probe = request.args.get('probe', "")
-    with concurrent.futures.ThreadPoolExecutor() as executor:
-        future_list = executor.submit(result_array, probe, per_page, offset=page * per_page)
-        count, = fetchone("""SELECT COUNT(*)
-                            FROM identity WHERE siren = %s
-                            OR denomination LIKE %s
-                            OR MATCH(denomination) AGAINST (%s IN NATURAL LANGUAGE MODE)""",
-                          (probe, "{0}%".format(probe), "{0}%".format(probe)))
-        results = future_list.result()
-
-    if count < page * per_page:
-        return NotFoundJSONResponse()
-    if per_page != 0:
-        last_per_page = count / per_page + 1
-    else:
-        last_per_page = 0
-    ############################################################################
-    # OBJECT STORING RESPONSE
-    obj = {"@context": "http://www.w3.org/ns/hydra/context.jsonld",
-           "@id": request.url,
-           "@type": "Collection",
-           "totalItems": count, "view": {
-            "@id": request.full_path,
-            "@type": "PartialCollectionView",
-            "first": '%s?page=1&per_page=%d&probe=%s' % (request.path,
-                                                         per_page, probe),
-            "last": '%s?page=%d&per_page=%d&probe=%s' % (request.path,
-                                                         last_per_page,
-                                                         per_page,
-                                                         probe)},
-           "member": results
-           }
-    ############################################################################
-    # OBJECT VIEW
-    if page == 0:
-        obj["view"]['previous'] = ''
-    else:
-        obj["view"]['previous'] = '%s?page=%d&per_page=%d&probe=%s' % (request.path,
-                                                                       page,
-                                                                       per_page,
-                                                                       probe)
-    # MAKE NEXT URL
-    if page * per_page + per_page > count:
-        obj["view"]["next"] = ''
-    elif page < last_per_page:
-        obj["view"]["next"] = '%s?page=%d&per_page=%d&probe=%s' % (request.path,
-                                                                   page + 2,
-                                                                   per_page,
-                                                                   probe)
-    else:
-        obj["view"]["next"] = '%s?page=%d&per_page=%d&probe=%s' % (request.path,
-                                                                   page + 2,
-                                                                   per_page,
-                                                                   probe)
-    return OKJSONResponse(obj)
-
-
-@insert_request
 @application.route('/<path:path>', strict_slashes=False)
+@insert_request(mysql, request)
 def static_proxy(path):
     """
     Serve the static files, like the Swagger definition page and the 404.
@@ -325,8 +244,8 @@ def static_proxy(path):
     return application.send_static_file(path)
 
 
-@insert_request
 @application.route("/", strict_slashes=False)
+@insert_request(mysql, request)
 def index():
     """
     Serve the index.html at the base path.
@@ -336,8 +255,8 @@ def index():
     return application.send_static_file("index.html"), 200
 
 
-@insert_request
 @application.errorhandler(404)
+@insert_request(mysql, request)
 def page_not_found(error):
     """
     Page not found and logging.
@@ -349,8 +268,8 @@ def page_not_found(error):
     return application.send_static_file('404.html'), 404
 
 
-@insert_request
 @application.errorhandler(500)
+@insert_request(mysql, request)
 def server_error(error):
     """
     Server error page and logging.

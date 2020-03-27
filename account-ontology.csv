@@ -1,151 +1,31 @@
 label;code;column;accountability
-Compte de résultat ‐ Primes ‐ Cotisations acquises;R1;1;A
-Compte de résultat ‐ Charges des sinistres;R2;1;A
-Compte de résultat ‐ Résultat technique;R3;1;A
-Compte de résultat ‐ Résultat de l’exercice;R4;1;A
-Compte de résultat ‐ Intérêts et produits assimilés;R1;1;B
-Compte de résultat ‐ Intérêts et charges assimilées;R2;1;B
-Compte de résultat ‐ Résultat de l’exercice;R3;1;B
-Autres impôts, taxes et versements assimilés;9Z;1;C
-Ventes de marchandises;FA;3;C
-Production vendue biens;FD;3;C
-Production vendue services;FG;3;C
-Chiffres d’affaires nets;FJ;3;C
-Production stockée;FM;3;C
-Production immobilisée;FN;3;C
-Subventions d’exploitation;FO;3;C
-Reprises sur amortissements et provisions, transfert de charges;FP;3;C
-Autres produits;FQ;3;C
-Total des produits d’exploitation;FR;3;C
-Achats de marchandises (y compris droits de douane);FS;3;C
-Variation de stock (marchandises);FT;3;C
-Achats de matières premières et autres approvisionnements;FU;3;C
-Variation de stock (matières premières et approvisionnements);FV;3;C
-Autres achats et charges externes;FW;3;C
-Impôts, taxes et versements assimilés;FX;3;C
 Salaires et traitements;FY;3;C
-Charges sociales;FZ;3;C
-Autres charges;GE;3;C
-Total des charges d’exploitation;GF;3;C
-Résultat d'exploitation;GG;3;C
-Bénéfice attribué ou perte transférée;GH;3;C
-Perte supportée ou bénéfice transféré;GI;3;C
-Produits financiers de participations;GJ;3;C
-Produits des autres valeurs mobilières et créances de l’actif immobilisé;GK;3;C
-Autres intérêts et produits assimilés;GL;3;C
-Reprises sur provisions et transferts de charges financier;GM;3;C
-Différences positives de change;GN;3;C
-Produits nets sur cessions de valeurs mobilières de placement;GO;3;C
-Total des produits financiers;GP;3;C
-Dotations financières sur amortissements et provisions;GQ;3;C
-Intérêts et charges assimilées;GR;3;C
-Différences négatives de change;GS;3;C
-Charges nettes sur cessions de valeurs mobilières de placement;GT;3;C
-Total des charges financières;GU;3;C
-Résultat financier;GV;3;C
-Résultat en cours avant impôts;GW;3;C
-Produits exceptionnels sur opérations de gestion;HA;1;C
-Produits exceptionnels sur opérations en capital;HB;1;C
-Reprises sur provisions et transferts de charges exceptionnel;HC;1;C
-Total des produits exceptionnels (VII;HD;1;C
-Total des produits exceptionnels;HD;1;C
-Charges exceptionnelles sur opérations de gestion;HE;1;C
-Charges exceptionnelles sur opérations en capital;HF;1;C
-Dotations exceptionnelles aux amortissements et provisions;HG;1;C
-Total des charges exceptionnelles;HH;1;C
-Résultat exceptionnel;HI;1;C
+Résultat de l’exercice (bénéfice ou perte);DI;1;C
+Résultat exceptionnel;HI;1,2;C
 Participation des salariés aux résultats de l’entreprise;HJ;1;C
 Impôts sur les bénéfices;HK;1;C
-Total des produits;HL;1;C
 Total des charges;HM;1;C
-Bénéfices ou perte (Total des produits ‐ Total des charges);HN;1;C
-Impôts différés (compte de résultat);R1;1;C
-Résultat net des sociétés mises en équivalence;R4;1;C
-Résultat net des entreprises intégrées;R5;1;C
-Résultat Groupe (Résultat net consolidé);R6;1;C
-Part des intérêts minoritaires (Résultat hors groupe);R7;1;C
-Résultat net part du groupe (part de la société mère);R8;1;C
-Rémunération d’intermédiaires et honoraires (hors rétrocessions);SS;1;C
-Location, charges locatives et de copropriété;XQ;1;C
+Chiffre d’affaires nets;FJ;1,2,3;C
+Subventions d’exploitation;FO;3;C
 Effectif moyen du personnel;YP;1;C
-Sous‐traitance;YT;1;C
-Personnel extérieur à l’entreprise;YU;1;C
-Rétrocessions d’honoraires, commissions et courtages;YV;1;C
-Taxe professionnelle;YW;1;C
-Montant de la TVA. collectée;YY;1;C
-Total TVA. déductible sur biens et services;YZ;1;C
-Dividendes;ZE;1;C
-Ventes de marchandises;FA;3;K
-Production vendue biens;FD;3;K
-Production vendue services;FG;3;K
-Chiffres d’affaires nets;FJ;3;K
-Production stockée;FM;3;K
-Production immobilisée;FN;3;K
-Subventions d’exploitation;FO;3;K
-Reprises sur amortissements et provisions, transfert de charges;FP;3;K
-Autres produits;FQ;3;K
-Total des produits d’exploitation;FR;3;K
-Achats de marchandises (y compris droits de douane);FS;3;K
-Variation de stock (marchandises);FT;3;K
-Achats de matières premières et autres approvisionnements;FU;3;K
-Variation de stock (matières premières et approvisionnements);FV;3;K
-Autres achats et charges externes;FW;3;K
-Impôts, taxes et versements assimilés;FX;3;K
-Salaires et traitements;FY;3;K
-Charges sociales;FZ;3;K
-Autres charges;GE;3;K
-Total des charges d’exploitation;GF;3;K
-Résultat d'exploitation;GG;3;K
-Bénéfice attribué ou perte transférée;GH;3;K
-Perte supportée ou bénéfice transféré;GI;3;K
-Produits financiers de participations;GJ;3;K
-Produits des autres valeurs mobilières et créances de l’actif immobilisé;GK;3;K
-Autres intérêts et produits assimilés;GL;3;K
-Reprises sur provisions et transferts de charges financier;GM;3;K
-Différences positives de change;GN;3;K
-Produits nets sur cessions de valeurs mobilières de placement;GO;3;K
-Total des produits financiers;GP;3;K
-Dotations financières sur amortissements et provisions;GQ;3;K
-Intérêts et charges assimilées;GR;3;K
-Différences négatives de change;GS;3;K
-Charges nettes sur cessions de valeurs mobilières de placement;GT;3;K
-Total des charges financières;GU;3;K
-Résultat financier;GV;3;K
-Ventes de marchandises – Export;209;1;S
-Ventes de marchandises – France;210;1;S
-Production vendue de biens – France;214;1;S
-Production vendue de biens ‐ Export;215;1;S
-Production vendue de services ‐ Export;217;1;S
-Production vendue de services ‐ France;218;1;S
-Production stockée;222;1;S
-Production immobilisée;224;1;S
-Subventions d’exploitation reçues;226;1;S
-Autres produits;230;1;S
-Total des produits d’exploitation hors T.V.A.;232;1;S
-Achats de marchandises (y compris droits de douane);234;1;S
-Variation de stock (marchandises);236;1;S
-Achats de matières premières et autres approvisionnements (y compris droits de;238;1;S
-Variation de stock (matières premières et approvisionnement);240;1;S
-Autres charges externes*;242;1;S
-Charge taxe professionnelle;243;1;S
-Charge de taxe professionnelle;243;1;S
-Impôts, taxes et versements assimilés;244;1;S
-Rémunérations du personnel;250;1;S
-Charges sociales;252;1;S
-Dotations aux amortissements;254;1;S
-Dotations aux provisions;256;1;S
-Charge provisions fiscales pour implantations commerciales à l’étranger;259;1;S
-Autres charges;262;1;S
+Impôts, taxes et versements assimilés;VN;3;C
+Salaires et traitements;FY;3;S
 Total des charges d’exploitation;264;1;S
-Résultat d’exploitation;270;1;S
-Produits financiers;280;1;S
-Produits exceptionnels;290;1;S
-Charges financières;294;1;S
-Charges exceptionnelles;300;1;S
 Impôts sur les bénéfices;306;1;S
-Impôts sur les bénéfices (compte annuel simplifié);306;1;S
 Bénéfice ou perte;310;1;S
-Rémunération et avantages personnels non déductibles;316;1;S
-Montant de la T.V.A. collectée;374;1;S
+Résultat exceptionnel;HI;1;S
+Participation des salariés aux résultats de l’entreprise;HJ;1;S
+Chiffre d’affaires nets;FJ;1,2,3;S
+Subventions d’exploitation reçues;226;1;S
 Effectif moyen du personnel;376;1;S
-Montant de la T.V.A. déductible sur biens et services;378;1;S
+Impôts, taxes et versements assimilés;244;1;S
+Salaires et traitements;FY;3;K
+Résultat de l’exercice (bénéfice ou perte);DI;1;K
+Résultat exceptionnel;HI;1;K
+Participation des salariés aux résultats de l’entreprise;HJ;1;K
+Impôts sur les bénéfices;HK;1;K
+Total des charges d’exploitation;GF;3;K
+Chiffre d’affaires nets;FJ;1,2,3;K
+Impôts, taxes et versements assimilés;FX;3;K
+Subventions d’exploitation;FO;3;K
+Résultat Groupe (Résultat net consolidé);R6;1;K

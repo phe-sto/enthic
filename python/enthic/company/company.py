@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 """
-============================
-Class representing a company
-============================
+============================================================
+Generic classes representing a company and their function(s)
+============================================================
 
 PROGRAM BY PAPIT SASU, 2020
 
@@ -15,115 +15,313 @@ Coding Rules:
 
 from re import compile
 
-from enthic.ape import ape_code
-from enthic.calculation.calculation import BundleCalculation
-from enthic.ontology import ONTOLOGY
-from enthic.result.result import result
-from enthic.score.classification import DistributionClassification
+from enthic.database.mysql_data import SQLData
+from enthic.ontology import ONTOLOGY, APE_CODE
+from enthic.result import result
+from enthic.score.classification import Classification
 from enthic.utils.error_json_response import ErrorJSONResponse
 from enthic.utils.ok_json_response import OKJSONResponse
 from flask import abort
 
 year_re = compile(r"^\d{4}$")  # REGEX OF A YEAR
+denomination_re = compile(r"^.*$")  # TODO: DEFINE A SAFER REGEX FOR DENOMINATION
 
 
-class Company(OKJSONResponse):
+class JSONGenKey:
     """
-    Company class inherit from OKJSONResponse.
+    Generic keys found in the JSON response
+    """
+    VALUE = "value"
+    DESCRIPTION = "description"
+    ACCOUNT = "account"
+
+
+class YearCompany:
+    """
+    Company data for a given year.
     """
 
-    def __init__(self, mysql, probe, calculation, sql_request):
-        """
-        Constructor of the Company class. Attribute defined based on SQL results.
+    __slots__ = ('year',)
 
-           :param mysql: MySQL database client.
-           :param probe: Either a Siren or a denomination to get in base.
-           :param calculation: Type of data to return, average, a year, all.
-              Must be BundleCalculation enum.
-           :param sql_request: Corresponding request to execute.
+    def __init__(self, year):
         """
-        ########################################################################
-        # EXECUTE SQL REQUEST
-        cur = mysql.connection.cursor()
-        if calculation == BundleCalculation.AVERAGE or calculation == BundleCalculation.ALL:
-            avg_dir = result.avg_dir
-            cur.execute(sql_request % (probe))
+        Constructor, check the format of the year passed. Year set as attribute
+        if correct.
+
+           :param year: String that to match ^\\d{4}$.
+        """
+        if year_re.match(year) is None:  # CHECK YEAR FORMAT
+            abort(ErrorJSONResponse("Year format is not ^\\d{4}$"))
         else:
-            if year_re.match(calculation):  # CHECK YEAR FORMAT
+            self.year = year
 
-                try:
-                    avg_dir = result.yearly_avg_dir[int(calculation)]
-                except KeyError:
-                    avg_dir = None
-                cur.execute(sql_request % (calculation, probe, calculation))
-            else:
-                abort(ErrorJSONResponse("Year format is not ^\d{4}$"))
 
-        sql_results = cur.fetchall()
-        cur.close()
+class DenominationCompany:
+    """
+    Denomination defined company.
+    """
+
+    def __init__(self, denomination):
+        """
+        Constructor, check the format of the denomination passed.
+        Denomination set as attribute if correct.
+
+           :param denomination: String that to match ^.*$.
+        """
+        if denomination_re.match(denomination) is None:  # CHECK denomination FORMAT
+            abort(ErrorJSONResponse("Denomination format is not ^.*$"))
+        else:
+            self.denomination = denomination
+
+
+class SirenCompany:
+    """
+    Siren defined company.
+    """
+
+    def __init__(self, siren):
+        """
+        Constructor, check the the siren passed. Siren set as attribute
+        if correct.
+
+           :param siren: Integer between 0 and 1000000000 (excluded).
+        """
+        if 0 <= siren < 1000000000:  # CHECK SIREN
+            self.siren = siren
+        else:
+            abort(ErrorJSONResponse("SIREN not between 0 and 1000000000 (excluded)"))
+
+
+class CompanyIdentity(object):
+    """
+    Identity data of the Company.
+    """
+
+    def __init__(self, *args):
+        """
+        Constructor initialising attributes as value/description pair.
+
+           :param args: a tuple coming SQL result, each result being
+              [[bundle, calculation, amount]...].
+        """
+        self.siren = {JSONGenKey.VALUE: "%09d" % args[0], JSONGenKey.DESCRIPTION: "SIREN"}
+        self.denomination = {JSONGenKey.VALUE: args[1], JSONGenKey.DESCRIPTION: "Dénomination"}
         try:
-            ####################################################################
-            # IDENTIFICATION RELATED DATA
-            self.siren = {"value": sql_results[0][0], "description": "SIREN"}
-            self.denomination = {"value": sql_results[0][1], "description": "Dénomination"}
-            try:
-                self.ape = {
-                    "value": "{}, {}".format(sql_results[0][2], ape_code[sql_results[0][2]]),
-                    "description": "Code Activité Principale Exercée (NAF)"}
-            except KeyError:
-                self.ape = {"value": "{}, Code APE inconnu".format(sql_results[0][2]),
-                            "description": "Code Activité Principale Exercée (NAF)"}
-            self.postal_code = {"value": sql_results[0][3], "description": "Code Postal"}
-            self.town = {"value": sql_results[0][4], "description": "Commune"}
-            self.accountability = {"value": "{}, {}".format(sql_results[0][5],
-                                                            ONTOLOGY["accounting"][
-                                                                sql_results[0][5]]["description"]),
-                                   "description": "Type de comptabilité"}
-            self.devise = {"value": sql_results[0][6], "description": "Devise"}
-            ####################################################################
-            # BUNDLE RELATED DATA, THEREFORE DYNAMIC
-            bundles = {}
-            declaration = None
-            for line in sql_results:
+            self.ape = {JSONGenKey.VALUE: APE_CODE[args[2]][1],
+                        JSONGenKey.DESCRIPTION: "Code Activité Principale Exercée (NAF)"}
+        except KeyError:
+            self.ape = {JSONGenKey.VALUE: "{}, Code APE inconnu".format(args[2]),
+                        JSONGenKey.DESCRIPTION: "Code Activité Principale Exercée (NAF)"}
+        self.postal_code = {JSONGenKey.VALUE: args[3], JSONGenKey.DESCRIPTION: "Code Postal"}
+        self.town = {JSONGenKey.VALUE: args[4], JSONGenKey.DESCRIPTION: "Commune"}
+        self.devise = {JSONGenKey.VALUE: "Euro", JSONGenKey.DESCRIPTION: "Devise"}
 
-                bundle = str(line[7]).lower()
-                if str(line[8]) not in bundles:
-                    if bundles.__len__() != 0:
-                        setattr(self, declaration, bundles[declaration])
-                    declaration = str(line[8])
-                    bundles[declaration] = {}
-                try:
-                    value = round(line[9], 2)
-                    for accounting in ONTOLOGY["accounting"].keys():
-                        try:
-                            bundles[declaration][bundle] = {
-                                "value": value,
-                                "description":
-                                    ONTOLOGY["accounting"][accounting]["code"][
-                                        bundle]
+
+class Bundle(object):
+    """
+    All the bundle declared and scoring of a company. Can be several year, one
+    or average
+    """
+
+    def __init__(self, *args):
+        """
+        Constructor initialising attributes as value/description pair.
+
+           :param args: a tuple coming SQL result, each result being
+              (accountability, bundle, declaration, amount).
+        """
+        _gan, _dis, _dir = (None,) * 3
+        for int_account, int_bundle, declaration, amount in args:
+            if None in [int_account, int_bundle, declaration, amount]:
+                continue
+            ####################################################################
+            # ACCOUNTING
+            str_declaration = str(declaration)
+            if hasattr(self, str_declaration) is True:
+                att_declaration = object.__getattribute__(self, str_declaration)
+                att_declaration.append({
+                    ONTOLOGY["accounting"][int_account]["code"][int_bundle][0]: {
+                        JSONGenKey.ACCOUNT: ONTOLOGY["accounting"][int_account][1],
+                        JSONGenKey.VALUE: amount,
+                        JSONGenKey.DESCRIPTION:
+                            ONTOLOGY["accounting"][int_account]["code"][int_bundle][
+                                1]
+                    }
+                })
+            else:
+                setattr(self, str(declaration), [{
+                    ONTOLOGY["accounting"][int_account]["code"][int_bundle][0]: {
+                        JSONGenKey.ACCOUNT: ONTOLOGY["accounting"][int_account][1],
+                        JSONGenKey.VALUE: amount,
+                        JSONGenKey.DESCRIPTION:
+                            ONTOLOGY["accounting"][int_account]["code"][int_bundle][
+                                1]
+                    }
+                }])
+            ####################################################################
+            # SCORING
+            # DISTRIBUTION RATIO
+            if int_bundle == 100:
+                _gan = amount
+            elif int_bundle == 101:
+                _dir = amount
+            if _dis is not None and _gan is not None:
+                if declaration == "average":
+                    average_dir = result.average_dir
+                else:
+                    average_dir = result.yearly_average_dir[declaration]
+                if amount > average_dir - average_dir * 0.1:
+                    distribution = Classification.TIGHT
+                elif average_dir - average_dir * 0.1 <= amount <= average_dir + average_dir * 0.1:
+                    distribution = Classification.AVERAGE
+                elif average_dir + average_dir * 0.1 > amount:
+                    distribution = Classification.GOOD
+                else:
+                    distribution = Classification.UNKNOWN
+                setattr(self, str(declaration), {
+                    "distribution_ratio": {
+                        JSONGenKey.VALUE: distribution.value,
+                        JSONGenKey.DESCRIPTION: ONTOLOGY["accounting"]["distribution"][1]
+                    }
+                })
+
+
+class UniqueBundleCompany(OKJSONResponse, SQLData):
+    """
+    Company data returned with a unique bundle as attribute. Inherit from
+    OKJSONResponse to return a JSON and SQLData because of base data..
+    """
+
+    def __init__(self, sql_request, args):
+        """
+        Constructor assigning CompanyIdentity and only Bundle
+
+           :param sql_request: SQL request of the Company data to execute as a string.
+
+    .. code-block:: json
+
+        {
+            "siren": {
+                "value": "005420120",
+                "description": "SIREN"
+            },
+            "denomination": {
+                "value": "STE DES SUCRERIES DU MARQUENTERRE",
+                "description": "Dénomination"
+            },
+            "ape": {
+                "value": "Activités des sièes sociaux",
+                "description": "Code Activité Principale Exercée (NAF)"
+            },
+            "postal_code": {
+                "value": "62140",
+                "description": "Code Postal"
+            },
+            "town": {
+                "value": "MARCONNELLE",
+                "description": "Commune"
+            },
+            "devise": {
+                "value": "Euro",
+                "description": "Devise"
+            },
+            "financial_data": [
+                {
+                    "di": {
+                        "account": "Compte annuel complet",
+                        "value": -261053.0,
+                        "description": "Résultat de l\u2019exercice (bénéfice ou perte)"
+                    }
+                },
+                {
+                    "fs": {
+                        "account": "Compte annuel complet",
+                        "value": 11836.0,
+                        "description": "Achats de marchandises (y compris droits de douane)"
+                    }
+                }
+            ]
+        }
+        """
+        SQLData.__init__(self, sql_request, args)
+        if None in self.sql_results[0]:
+            OKJSONResponse.__init__(self, CompanyIdentity(*self.sql_results[0][:5]).__dict__)
+
+        else:
+            OKJSONResponse.__init__(self, {**CompanyIdentity(*self.sql_results[0][:5]).__dict__,
+                                           **{"financial_data": Bundle(*[bundle[5:] for bundle in
+                                                                         self.sql_results]).__dict__[
+                                               self.sql_results[0][7]]}})
+
+
+class MultipleBundleCompany(OKJSONResponse, SQLData):
+    """
+    Company data returned with array of Bundle for each declaration. Inherit from
+    OKJSONResponse to return a JSON and SQLData because of base data.
+
+    .. code-block:: json
+
+        {
+            "siren": {
+                "value": "005420120",
+                "description": "SIREN"
+            },
+            "denomination": {
+                "value": "STE DES SUCRERIES DU MARQUENTERRE",
+                "description": "Dénomination"
+            },
+            "ape": {
+                "value": "Activités des sièes sociaux",
+                "description": "Code Activité Principale Exercée (NAF)"
+            },
+            "postal_code": {
+                "value": "62140",
+                "description": "Code Postal"
+            },
+            "town": {
+                "value": "MARCONNELLE",
+                "description": "Commune"
+            },
+            "devise": {
+                "value": "Euro",
+                "description": "Devise"
+            },
+            "declarations": [
+                {
+                    "declaration": {
+                        "value": 2016,
+                        "description": "Année de déclaration"
+                    },
+                    "financial_data": [
+                        {
+                            "di": {
+                                "account": "Compte annuel complet",
+                                "value": -261053.0,
+                                "description": "Résultat de l\u2019exercice (bénéfice ou perte)"
                             }
-                        except KeyError:
-                            pass
-                    ############################################################
-                    # SCORE RELATED CALCULATION
-                    if bundle == "dir" and avg_dir is not None:
-                        if value > avg_dir - avg_dir * 0.1:
-                            distribution = DistributionClassification.TIGHT
-                        elif avg_dir - avg_dir * 0.1 <= value <= avg_dir + avg_dir * 0.1:
-                            distribution = DistributionClassification.AVERAGE
-                        elif avg_dir + avg_dir * 0.1 > value:
-                            distribution = DistributionClassification.GOOD
-                        else:
-                            distribution = DistributionClassification.UNKNOWN
-                        bundles[declaration][bundle] = {
-                            "value": distribution.value,
-                            "description":
-                                ONTOLOGY["scoring"]["distribution"][
-                                    "description"]}
+                        }
+                    ]
+                }
+            ]
+        }
+    """
+    __slots__ = ('declarations',)
 
-                except TypeError:  # IN CASE OF NO BUNDLE
-                    continue
-            setattr(self, declaration, bundles[declaration])
-        except IndexError:
-            pass
-        OKJSONResponse.__init__(self, self.__dict__)
+    def __init__(self, sql_request, args):
+        """
+        Constructor assigning CompanyIdentity and an array of
+        Bundles.
+
+           :param sql_request: SQL request of the Company data to execute as a string.
+        """
+        SQLData.__init__(self, sql_request, args)
+        _bundles = Bundle(*[bundle[5:] for bundle in self.sql_results]).__dict__
+        self.declarations = {"declarations": []}
+        for year, _bundle in _bundles.items():
+            self.declarations["declarations"].append(
+                {"declaration": {JSONGenKey.VALUE: int(year),
+                                 JSONGenKey.DESCRIPTION: "Année de déclaration"},
+                 "financial_data": _bundle},
+            )
+        OKJSONResponse.__init__(self, {**CompanyIdentity(*self.sql_results[0][:7]).__dict__,
+                                       **self.declarations})

@@ -132,6 +132,8 @@ class Bundle(object):
         """
         _gan, _dis, _dir = (None,) * 3
         for int_account, int_bundle, declaration, amount in args:
+            if None in [int_account, int_bundle, declaration, amount]:
+                continue
             ####################################################################
             # ACCOUNTING
             str_declaration = str(declaration)
@@ -242,7 +244,7 @@ class UniqueBundleCompany(OKJSONResponse, SQLData):
         }
         """
         SQLData.__init__(self, sql_request, args)
-        if None in self.sql_results:
+        if None in self.sql_results[0]:
             OKJSONResponse.__init__(self, CompanyIdentity(*self.sql_results[0][:5]).__dict__)
 
         else:

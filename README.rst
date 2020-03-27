@@ -142,7 +142,6 @@ Library structure
     │   │   ├── index.rst
     │   │   └── papit.png
     │   ├── enthic
-    │   │   ├── ape.py
     │   │   ├── app.py
     │   │   ├── company
     │   │   │   ├── company.py
@@ -250,6 +249,7 @@ Library structure
     │   │   ├── treat_bundle.py
     │   │   └── utils
     │   │       ├── error_json_response.py
+    │   │       ├── conversion.py
     │   │       ├── __init__.py
     │   │       ├── json_response.py
     │   │       ├── not_found_response.py

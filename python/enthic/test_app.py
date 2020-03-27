@@ -25,10 +25,11 @@ EXISTING_SIREN_EXISTING_YEAR = ((5420120, 2016), (5450119, 2015),
                                 (5541552, 2017), (5720644, 2016),
                                 (5580113, 2016), (5580501, 2016),
                                 (5580683, 2016), (5620034, 2016),
-                                (5620117, 2017), (5620190, 2016),
+                                (5420120, 2017), (5620190, 2016),
                                 (5650031, 2016), (5650148, 2016),
                                 (5650189, 2016), (5680541, 2016),
-                                (5720164, 2016), (5720552, 2016),
+                                (5720164, 2016), (5720552, 2018),
+                                (5720602, 2016), (5720610, 2016),
                                 (5720602, 2016), (5720610, 2016),
                                 (5580113, 2016))
 
@@ -46,16 +47,12 @@ EXISTING_DENOMINATION_EXISTING_YEAR = (
     ("AESTETYPE", 2018),
     ("AESTHESIS", 2016),
     ("AESTHETIC", 2017),
-    ("AESTHETIC ANATOMY ASSOCIATION OU 3A", 2016),
     ("L'ABRI FAMILIAL", 2016),
-    ("AESTHETIC GROUP", 2016),
-    ('AESTHETIC MODELINE EN ABREGE "AE MODELINE"', 2017),
     ("AESTHETIC ROMY D", 2015),
     ("AESTHETIC SOLUTIONS TECHNOLOGIES", 2016),
     ("AESUS", 2016),
     ("AET", 2017),
     ("AET CONSULTING", 2017),
-    ("AET DESTINATION", 2016),
     ("AET DEVELOPPEMENT", 2016),
     ("AET TECHNOLOGIES", 2016),
     ("AETA AUDIO SYSTEMS", 2016),
@@ -68,17 +65,39 @@ EXISTING_DENOMINATION_EXISTING_YEAR = (
     ("AETH", 2016),
     ("AETHER", 2017),
     ("AETHER FINANCIAL SERVICES", 2016),
-    ("AETHER PARFUM", 2017),
     ("AETHER STUDIO", 2016),
     ("AETHICA", 2016))
 
 EXISTING_DENOMINATION_NO_BUNDLE = ("ETABLISSEMENTS GAETAN COPPIER ET FILS",
                                    "SOCIETE RIQUIER ET CIE",
                                    "EMILE BARNEAUD ET FILS",
-                                   "SARL BAS ALPINE D AUTOCARS")
+                                   "SARL BAS ALPINE D AUTOCARS",
+                                   "2GS SECURITE",
+                                   "2GS SERVICES",
+                                   "2GSI",
+                                   "2GSL CONSEILS",
+                                   "2GT",)
 
-EXISTING_SIREN_NO_BUNDLE = (5450093, 5550108, 5620174, 5620364)
-
+EXISTING_SIREN_NO_BUNDLE = (5450093,
+                            5550108,
+                            5620174,
+                            5620364,
+                            638201871,
+                            500206172,
+                            353135718,
+                            350655205,
+                            423419704,
+                            509430609,
+                            329490510,
+                            352688758,
+                            487800070,
+                            338688591,
+                            451644868,
+                            339933715,
+                            391969623,
+                            327743977,
+                            328612247,
+                            509412177)
 EXISTING_DENOMINATION = tuple(
     denomination[0] for denomination in EXISTING_DENOMINATION_EXISTING_YEAR)
 

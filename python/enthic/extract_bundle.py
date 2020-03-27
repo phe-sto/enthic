@@ -189,7 +189,7 @@ def main():
                                                                               str(CON_BUN[CON_ACC[
                                                                                   acc_type]][
                                                                                       bundle.attrib[
-                                                                                          "code"].lower()]),
+                                                                                          "code"]]),
                                                                               str(int(
                                                                                   bundle.attrib[
                                                                                       amount_code]
@@ -200,7 +200,7 @@ def main():
                                                     key_error,
                                                     acc_type,
                                                     bundle.attrib[
-                                                        "code"].lower()
+                                                        "code"]
                                                 ))
                     except UnicodeDecodeError as error:
                         debug(key_error)

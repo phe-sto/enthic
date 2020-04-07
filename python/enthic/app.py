@@ -308,11 +308,6 @@ def page_search():
     # MAKE NEXT URL
     if page * per_page + per_page > count:
         obj["view"]["next"] = ''
-    elif page < last_per_page:
-        obj["view"]["next"] = '%s?page=%d&per_page=%d&probe=%s' % (request.path,
-                                                                   page + 2,
-                                                                   per_page,
-                                                                   probe)
     else:
         obj["view"]["next"] = '%s?page=%d&per_page=%d&probe=%s' % (request.path,
                                                                    page + 2,

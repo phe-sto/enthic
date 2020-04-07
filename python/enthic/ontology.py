@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 """
-=========================================
-Ontology of the data retrieved by the API
-=========================================
+=========================================================
+Ontology of the accounts and APE code returned by the API
+=========================================================
 
 In complement, explanation of the data retrieved by the API. Combining data
 endpoints and the ontology endpoint should avoid multiplication and backward
@@ -82,14 +82,7 @@ ONTOLOGY = {"accounting": {
             65: {0: "YW", 1: "Taxe professionnelle"},
             66: {0: "YY", 1: "Montant de la TVA. collectée"},
             67: {0: "YZ", 1: "Total TVA. déductible sur biens et services"},
-            68: {0: "ZE", 1: "Dividendes"},
-            ####################################################################
-            #  SCORING RELATED ALWAYS > 100
-            100: {0: "GAN",
-                  1: "Gain d'une companie, actuellement le chiffre d'affaire uniquement FJ"},
-            101: {0: "DIS", 1: "Somme des distributions, FY + HJ"},
-            102: {0: "DIR",
-                  1: "Distribution ratio, (FY + HJ) / GAN, i.e pondération de dis par le chiffre d'affaire"}}
+            68: {0: "ZE", 1: "Dividendes"}}
         },
     1: {0: "S",
         1: "Compte annuel simplifié",
@@ -133,14 +126,7 @@ ONTOLOGY = {"accounting": {
             34: {0: "316", 1: "Rémunération et avantages personnels non déductibles"},
             35: {0: "374", 1: "Montant de la T.V.A. collectée"},
             36: {0: "376", 1: "Effectif moyen du personnel"},
-            37: {0: "378", 1: "Montant de la T.V.A. déductible sur biens et services"},
-            ####################################################################
-            #  SCORING RELATED ALWAYS > 100
-            100: {0: "GAN",
-                  1: "Gain d'une companie, actuellement le chiffre d'affaire uniquement FJ"},
-            101: {0: "DIS", 1: "Somme des distributions, FY + HJ"},
-            102: {0: "DIR",
-                  1: "Distribution ratio, (FY + HJ) / GAN, i.e pondération de dis par le chiffre d'affaire"}}
+            37: {0: "378", 1: "Montant de la T.V.A. déductible sur biens et services"}}
         },
     2: {0: "K",
         1: "Compte annuel consolidé",
@@ -181,14 +167,7 @@ ONTOLOGY = {"accounting": {
             32: {0: "GS", 1: "Différences négatives de change"},
             33: {0: "GT", 1: "Charges nettes sur cessions de valeurs mobilières de placement"},
             34: {0: "GU", 1: "Total des charges financières"},
-            35: {0: "GV", 1: "Résultat financier"},
-            ####################################################################
-            #  SCORING RELATED ALWAYS > 100
-            100: {0: "GAN",
-                  1: "Gain d'une companie, actuellement le chiffre d'affaire uniquement FJ"},
-            101: {0: "DIS", 1: "Somme des distributions, FY + HJ"},
-            102: {0: "DIR",
-                  1: "Distribution ratio, (FY + HJ) / GAN, i.e pondération de dis par le chiffre d'affaire"}}
+            35: {0: "GV", 1: "Résultat financier"}}
         },
     3: {0: "A", 1: "Compte annuel d'assurance", "code": {
         0: {0: "R1", 1: "Compte de résultat ‐ Primes ‐ Cotisations acquises"},
@@ -201,15 +180,7 @@ ONTOLOGY = {"accounting": {
         1: {0: "R2", 1: "Compte de résultat ‐ Intérêts et charges assimilées"},
         2: {0: "R3", 1: "Compte de résultat ‐ Résultat de l’exercice"},
     }},
-},
-    "scoring": {
-        "distribution": {
-            "type": "enum",
-            "values": ["TIGHT", "AVERAGE", "GOOD", "UNKNOWN"],
-            1: "Classification d'une companie basée sur le ratio de redistribution DIR. GOOD est 10% en dessous de la moyenne, TIGHT est 10% au dessus, AVERAGE entre les deux. UNKNOWN si impossible à calculer."
-        }
-    }
-}
+}}
 
 APE_CODE = {
     0: {0: '1020Z', 1: 'Transform. & conserv. poisson, crustacés & mollusques'},

@@ -26,7 +26,6 @@ def test_config(config):
     assert config.__class__ is dict, "CONFIGURATION NOT A VALID DICTIONARY"
     assert config['inputPath'].__class__ is str, "INPUT PATH CONF NOT A STRING"
     assert config['outputPath'].__class__ is str, "OUTPUT PATH CONF NOT A STRING"
-    assert config['sortBundleFile'].__class__ is str, "SORTED RESULT FILENAME CONF NOT A STRING"
 
 
 ################################################################################

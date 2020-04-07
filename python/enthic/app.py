@@ -14,7 +14,6 @@ Coding Rules:
 """
 
 import concurrent.futures
-from inspect import stack
 from json import loads, load
 from os.path import dirname, join
 
@@ -31,8 +30,7 @@ from enthic.company.siren_company import (
 )
 from enthic.database.fetch import fetchall, fetchone
 from enthic.decorator.insert_request import insert_request
-from enthic.ontology import ONTOLOGY
-from enthic.result.result import result
+from enthic.ontology import ONTOLOGY, APE_CODE
 from enthic.utils.error_json_response import ErrorJSONResponse
 from enthic.utils.not_found_response import NotFoundJSONResponse
 from enthic.utils.ok_json_response import OKJSONResponse
@@ -55,22 +53,10 @@ application.config['MYSQL_PASSWORD'] = config["mySQL"]["enthic"]["password"]
 application.config['CACHE_TYPE'] = 'simple'
 application.config['MYSQL_DB'] = 'enthic'
 
-################################################################################
-# IN ORDER NOT TO CONNECT DATABASE BELOW IF EXECUTED DURING SPHINX IMPORT
-# IF NOT SPHINX CALCULATE SCORES RELATED DATA ONLY IF NOT BUILDING/INSTALLING
-try:
-    setup = stack()[6].filename.endswith("autodoc/importer.py")
-except IndexError:
-    with application.app_context():
-        result.yearly_avg_dir = fetchall("""SELECT declaration, ROUND(AVG(amount))
-                                            FROM bundle 
-                                            where bundle = 100
-                                            GROUP BY declaration;""")
 
-
-@insert_request
 @application.route("/company/siren/<int:siren>/<string:year>", methods=['GET'],
                    strict_slashes=False)
+@insert_request
 def company_siren_year(siren, year):
     """
     Retrieve company information by SIREN for a given year. Path is
@@ -86,8 +72,8 @@ def company_siren_year(siren, year):
     return YearSirenCompany(siren, year)
 
 
-@insert_request
 @application.route("/company/siren/<int:siren>/average", methods=['GET'], strict_slashes=False)
+@insert_request
 def company_siren_average(siren):
     """
     Retrieve company information by SIREN, calculation of the years average.
@@ -101,8 +87,8 @@ def company_siren_average(siren):
     return AverageSirenCompany(siren)
 
 
-@insert_request
 @application.route("/company/siren/<int:siren>", methods=['GET'], strict_slashes=False)
+@insert_request
 def company_siren(siren):
     """
     Retrieve company information by SIREN, calculation of all years. Path is
@@ -116,9 +102,9 @@ def company_siren(siren):
     return AllSirenCompany(siren)
 
 
-@insert_request
 @application.route("/company/denomination/<string:denomination>/average", methods=['GET'],
                    strict_slashes=False)
+@insert_request
 def company_denomination_average(denomination):
     """
     Retrieve company information by company denomination of the years average.
@@ -131,9 +117,9 @@ def company_denomination_average(denomination):
     return AverageDenominationCompany(denomination)
 
 
-@insert_request
 @application.route("/company/denomination/<string:denomination>", methods=['GET'],
                    strict_slashes=False)
+@insert_request
 def company_denomination(denomination):
     """
     Retrieve company information by company denomination, calculation of all
@@ -145,9 +131,9 @@ def company_denomination(denomination):
     return AllDenominationCompany(denomination)
 
 
-@insert_request
 @application.route("/company/denomination/<string:denomination>/<string:year>", methods=['GET'],
                    strict_slashes=False)
+@insert_request
 def company_denomination_year(denomination, year):
     """
     Retrieve company information for a given year by company denomination. Path
@@ -161,6 +147,7 @@ def company_denomination_year(denomination, year):
 
 
 @application.route("/company/ontology", methods=['GET'], strict_slashes=False)
+@insert_request
 def ontology():
     """
     Return the ontology used to extract accountability data.
@@ -168,6 +155,27 @@ def ontology():
        :return: HTTP Response as application/json. the ontology as JSON.
     """
     return OKJSONResponse(ONTOLOGY)
+
+
+@application.route("/company/ape", methods=['GET'], strict_slashes=False)
+@insert_request
+def ape():
+    """
+    Return the all the known APE code.
+
+       :return: HTTP Response as application/json. the ontology as JSON.
+    """
+    return OKJSONResponse(APE_CODE)
+
+
+def pre_cast_integer(probe):
+    """
+    A str that cannot be casted as integer is set to 0 in MySQL. This Function
+    return None (NULL SQL equivalent) if not castable.
+
+       :param probe: SQL probe to cast or not.
+    """
+    return str(probe) if probe.__class__ is int else probe if probe.isnumeric() is True else None
 
 
 def result_array(probe, limit, offset=0):
@@ -183,13 +191,13 @@ def result_array(probe, limit, offset=0):
                         FROM identity WHERE siren = %s
                         OR denomination LIKE %s
                         OR MATCH(denomination) AGAINST (%s IN NATURAL LANGUAGE MODE)
-                        LIMIT %s OFFSET %s;""", (probe, "{0}%".format(probe),
+                        LIMIT %s OFFSET %s;""", (pre_cast_integer(probe), "{0}%".format(probe),
                                                  "{0}%".format(probe), limit, offset))
     return tuple(CompanyIdentity(*company).__dict__ for company in companies)
 
 
-@insert_request
 @application.route("/company/search", methods=['POST'], strict_slashes=False)
+@insert_request
 def search():
     """
     Search companies by SIREN or denomination. Limited to 1000 results. Path is
@@ -242,8 +250,8 @@ def search():
         )
 
 
-@insert_request
 @application.route("/company/search/page", methods=['GET'], strict_slashes=False)
+@insert_request
 def page_search():
     """
     Return a JSON formatted as page. Try to implement the Hydra
@@ -263,7 +271,7 @@ def page_search():
                             FROM identity WHERE siren = %s
                             OR denomination LIKE %s
                             OR MATCH(denomination) AGAINST (%s IN NATURAL LANGUAGE MODE)""",
-                          (probe, "{0}%".format(probe), "{0}%".format(probe)))
+                          (pre_cast_integer(probe), "{0}%".format(probe), "{0}%".format(probe)))
         results = future_list.result()
 
     if count < page * per_page:
@@ -313,8 +321,8 @@ def page_search():
     return OKJSONResponse(obj)
 
 
-@insert_request
 @application.route('/<path:path>', strict_slashes=False)
+@insert_request
 def static_proxy(path):
     """
     Serve the static files, like the Swagger definition page and the 404.
@@ -325,8 +333,8 @@ def static_proxy(path):
     return application.send_static_file(path)
 
 
-@insert_request
 @application.route("/", strict_slashes=False)
+@insert_request
 def index():
     """
     Serve the index.html at the base path.
@@ -336,8 +344,8 @@ def index():
     return application.send_static_file("index.html"), 200
 
 
-@insert_request
 @application.errorhandler(404)
+@insert_request
 def page_not_found(error):
     """
     Page not found and logging.
@@ -349,8 +357,8 @@ def page_not_found(error):
     return application.send_static_file('404.html'), 404
 
 
-@insert_request
 @application.errorhandler(500)
+@insert_request
 def server_error(error):
     """
     Server error page and logging.

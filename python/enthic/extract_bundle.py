@@ -77,7 +77,7 @@ def main():
 
     ############################################################################
     # CREATING THE OUTPUT FILES FOR RESULT AND IDENTITY
-    bundle_file = open(join(CONFIG['outputPath'], CONFIG['bundleFile']), "a")
+    bundle_file = open(join(CONFIG['outputPath'], CONFIG['tmpBundleFile']), "a")
     identity_file = open(join(CONFIG['outputPath'], CONFIG['identityFile']), "a")
     ############################################################################
     # CREATING A LIST OF THE BUNDLE XML CODES, ZIP ARE READ IN BtesIO, IN ORDER
@@ -130,27 +130,27 @@ def main():
                                             except TypeError as error:
                                                 debug("{0}: {1}".format(str(error),
                                                                         str(identity.text)))
-                                                postal_code, town = ('UNKNOWN',) * 2
+                                                postal_code, town = ('INCOG',) * 2
                                             except AttributeError as error:
                                                 try:
                                                     debug("{0}: {1}".format(str(error),
                                                                             str(identity.text)))
                                                     m = re_town.match(identity.text)
                                                     town = m.group(1).upper()
-                                                    postal_code = 'UNKNOWN'
+                                                    postal_code = 'INCOG'
                                                 except AttributeError as error:
                                                     try:
                                                         debug(
                                                             "{0}: {1}".format(str(error),
                                                                               str(identity.text)))
                                                         m = re_postal_code.match(identity.text)
-                                                        town = 'UNKNOWN'
+                                                        town = 'INCOG'
                                                         postal_code = m.group(1)
                                                     except AttributeError as error:
                                                         debug(
                                                             "{0}: {1}".format(str(error),
                                                                               str(identity.text)))
-                                                        postal_code, town = ('UNKNOWN',) * 2
+                                                        postal_code, town = ('INCOG',) * 2
                                         elif identity.tag == '{fr:inpi:odrncs:bilansSaisisXML}code_activite':
                                             try:
                                                 ape = str(CON_APE[identity.text])

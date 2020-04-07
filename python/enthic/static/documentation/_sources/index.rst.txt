@@ -43,9 +43,6 @@ Following module relates to Flask server.
 .. automodule:: utils.conversion
    :members:
 
-.. automodule:: result.result
-   :members:
-
 .. automodule:: company.siren_company
    :members:
 
@@ -62,7 +59,4 @@ Following module relates to Flask server.
    :members:
 
 .. automodule:: database.mysql_data
-   :members:
-
-.. automodule:: score.classification
    :members:

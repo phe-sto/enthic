@@ -135,7 +135,7 @@ def host():
     Fixture of the API host.
        :return: String representing the host address.
     """
-    return "127.0.0.1:5000"
+    return "api.enthic.fr"
 
 
 @pytest.mark.parametrize("siren", EXISTING_SIREN + EXISTING_SIREN_NO_BUNDLE)

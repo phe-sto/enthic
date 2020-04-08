@@ -7,8 +7,9 @@ Decorator inserting data from the incoming request after having executed functio
 """
 from functools import wraps
 
-from flask import current_app as application, request as app_request
 from MySQLdb._exceptions import DataError
+from flask import current_app as application, request as app_request
+
 
 def insert_request(func):
     """
@@ -46,6 +47,14 @@ def insert_request(func):
                                             app_request.__dict__['environ']['REMOTE_ADDR'],
                                             app_request.__dict__['environ']['REMOTE_PORT'],
                                             app_request.__dict__['environ']['HTTP_USER_AGENT']),
+                                          *args))
+            except KeyError:  # FOR PROXY
+                cur.execute(sql_request, (*(app_request.__dict__['environ']['HTTP_REQUEST_METHOD'],
+                                            app_request.__dict__['environ']['PATH_INFO'],
+                                            app_request.__dict__['environ']['REMOTE_ADDR'],
+                                            app_request.__dict__['environ']['SERVER_PORT'],
+                                            app_request.__dict__['environ'][
+                                                'HTTP_HTTP_USER_AGENT']),
                                           *args))
             except DataError:
                 pass

@@ -42,8 +42,9 @@
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">wraps</span>
 
-<span class="kn">from</span> <span class="nn">flask</span> <span class="kn">import</span> <span class="n">current_app</span> <span class="k">as</span> <span class="n">application</span><span class="p">,</span> <span class="n">request</span> <span class="k">as</span> <span class="n">app_request</span>
 <span class="kn">from</span> <span class="nn">MySQLdb._exceptions</span> <span class="kn">import</span> <span class="n">DataError</span>
+<span class="kn">from</span> <span class="nn">flask</span> <span class="kn">import</span> <span class="n">current_app</span> <span class="k">as</span> <span class="n">application</span><span class="p">,</span> <span class="n">request</span> <span class="k">as</span> <span class="n">app_request</span>
+
 
 <div class="viewcode-block" id="insert_request"><a class="viewcode-back" href="../../index.html#decorator.insert_request.insert_request">[docs]</a><span class="k">def</span> <span class="nf">insert_request</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
@@ -81,6 +82,13 @@
                                             <span class="n">app_request</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">[</span><span class="s1">&#39;environ&#39;</span><span class="p">][</span><span class="s1">&#39;REMOTE_ADDR&#39;</span><span class="p">],</span>
                                             <span class="n">app_request</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">[</span><span class="s1">&#39;environ&#39;</span><span class="p">][</span><span class="s1">&#39;REMOTE_PORT&#39;</span><span class="p">],</span>
                                             <span class="n">app_request</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">[</span><span class="s1">&#39;environ&#39;</span><span class="p">][</span><span class="s1">&#39;HTTP_USER_AGENT&#39;</span><span class="p">]),</span>
+                                          <span class="o">*</span><span class="n">args</span><span class="p">))</span>
+            <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>  <span class="c1"># FOR PROXY</span>
+                <span class="n">cur</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">sql_request</span><span class="p">,</span> <span class="p">(</span><span class="o">*</span><span class="p">(</span><span class="n">app_request</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">[</span><span class="s1">&#39;REQUEST_METHOD&#39;</span><span class="p">],</span>
+                                            <span class="n">app_request</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">[</span><span class="s1">&#39;PATH_INFO&#39;</span><span class="p">],</span>
+                                            <span class="n">app_request</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">[</span><span class="s1">&#39;REMOTE_ADDR&#39;</span><span class="p">],</span>
+                                            <span class="n">app_request</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">[</span><span class="s1">&#39;SERVER_PORT&#39;</span><span class="p">],</span>
+                                            <span class="n">app_request</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">[</span><span class="s1">&#39;HTTP_HTTP_USER_AGENT&#39;</span><span class="p">]),</span>
                                           <span class="o">*</span><span class="n">args</span><span class="p">))</span>
             <span class="k">except</span> <span class="n">DataError</span><span class="p">:</span>
                 <span class="k">pass</span>

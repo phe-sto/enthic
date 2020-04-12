@@ -131,6 +131,7 @@ Library structure
     ├── account-ontology.csv
     ├── bilans-saisis-v1.1.xsd
     ├── .gitignore
+    ├── enthic.dbdiagram.io
     ├── input
     ├── LICENSE.md
     ├── output

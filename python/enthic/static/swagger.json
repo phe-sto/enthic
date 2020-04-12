@@ -2,7 +2,7 @@
   "swagger": "2.0",
   "info": {
     "description": "JSON API of French Company Account and Ethical Score",
-    "version": "2020.4.1",
+    "version": "2020.4.2",
     "title": "Swagger French Company Account and Ethical Score",
     "contact": {
       "email": "services@papit.fr"

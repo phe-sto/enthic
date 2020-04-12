@@ -23,10 +23,7 @@ TABLE bundle
 Ref: "bundle"."siren" > "identity"."siren"
 TABLE request
 {
-  method CHAR(6) [not null]
   uri VARCHAR(100) [not null]
-  remote_address CHAR(15) [not null]
-  remote_port INT [not null]
   agent VARCHAR(200) [not null]
   parameter VARCHAR(100)
   created TIMESTAMP [default: `now()`]

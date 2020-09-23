@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 """
-=========================================
-Ontology of the data retrieved by the API
-=========================================
+=========================================================
+Ontology of the accounts and APE code returned by the API
+=========================================================
 
 In complement, explanation of the data retrieved by the API. Combining data
 endpoints and the ontology endpoint should avoid multiplication and backward
@@ -55,41 +55,33 @@ ONTOLOGY = {"accounting": {
             38: {0: "HA", 1: "Produits exceptionnels sur opérations de gestion"},
             39: {0: "HB", 1: "Produits exceptionnels sur opérations en capital"},
             40: {0: "HC", 1: "Reprises sur provisions et transferts de charges exceptionnel"},
-            41: {0: "HD", 1: "Total des produits exceptionnels (VII"},
-            42: {0: "HD", 1: "Total des produits exceptionnels"},
-            43: {0: "HE", 1: "Charges exceptionnelles sur opérations de gestion"},
-            44: {0: "HF", 1: "Charges exceptionnelles sur opérations en capital"},
-            45: {0: "HG", 1: "Dotations exceptionnelles aux amortissements et provisions"},
-            46: {0: "HH", 1: "Total des charges exceptionnelles"},
-            47: {0: "HI", 1: "Résultat exceptionnel"},
-            48: {0: "HJ", 1: "Participation des salariés aux résultats de l’entreprise"},
-            49: {0: "HK", 1: "Impôts sur les bénéfices"},
-            50: {0: "HL", 1: "Total des produits"},
-            51: {0: "HM", 1: "Total des charges"},
-            52: {0: "HN", 1: "Bénéfices ou perte (Total des produits ‐ Total des charges)"},
-            53: {0: "R1", 1: "Impôts différés (compte de résultat)"},
-            54: {0: "R4", 1: "Résultat net des sociétés mises en équivalence"},
-            55: {0: "R5", 1: "Résultat net des entreprises intégrées"},
-            56: {0: "R6", 1: "Résultat Groupe (Résultat net consolidé)"},
-            57: {0: "R7", 1: "Part des intérêts minoritaires (Résultat hors groupe)"},
-            58: {0: "R8", 1: "Résultat net part du groupe (part de la société mère)"},
-            59: {0: "SS", 1: "Rémunération d’intermédiaires et honoraires (hors rétrocessions)"},
-            60: {0: "XQ", 1: "Location, charges locatives et de copropriété"},
-            61: {0: "YP", 1: "Effectif moyen du personnel"},
-            62: {0: "YT", 1: "Sous‐traitance"},
-            63: {0: "YU", 1: "Personnel extérieur à l’entreprise"},
-            64: {0: "YV", 1: "Rétrocessions d’honoraires, commissions et courtages"},
-            65: {0: "YW", 1: "Taxe professionnelle"},
-            66: {0: "YY", 1: "Montant de la TVA. collectée"},
-            67: {0: "YZ", 1: "Total TVA. déductible sur biens et services"},
-            68: {0: "ZE", 1: "Dividendes"},
-            ####################################################################
-            #  SCORING RELATED ALWAYS > 100
-            100: {0: "GAN",
-                  1: "Gain d'une companie, actuellement le chiffre d'affaire uniquement FJ"},
-            101: {0: "DIS", 1: "Somme des distributions, FY + HJ"},
-            102: {0: "DIR",
-                  1: "Distribution ratio, (FY + HJ) / GAN, i.e pondération de dis par le chiffre d'affaire"}}
+            41: {0: "HD", 1: "Total des produits exceptionnels"},
+            42: {0: "HE", 1: "Charges exceptionnelles sur opérations de gestion"},
+            43: {0: "HF", 1: "Charges exceptionnelles sur opérations en capital"},
+            44: {0: "HG", 1: "Dotations exceptionnelles aux amortissements et provisions"},
+            45: {0: "HH", 1: "Total des charges exceptionnelles"},
+            46: {0: "HI", 1: "Résultat exceptionnel"},
+            47: {0: "HJ", 1: "Participation des salariés aux résultats de l’entreprise"},
+            48: {0: "HK", 1: "Impôts sur les bénéfices"},
+            49: {0: "HL", 1: "Total des produits"},
+            50: {0: "HM", 1: "Total des charges"},
+            51: {0: "HN", 1: "Bénéfices ou perte (Total des produits ‐ Total des charges)"},
+            52: {0: "R1", 1: "Impôts différés (compte de résultat)"},
+            53: {0: "R4", 1: "Résultat net des sociétés mises en équivalence"},
+            54: {0: "R5", 1: "Résultat net des entreprises intégrées"},
+            55: {0: "R6", 1: "Résultat Groupe (Résultat net consolidé)"},
+            56: {0: "R7", 1: "Part des intérêts minoritaires (Résultat hors groupe)"},
+            57: {0: "R8", 1: "Résultat net part du groupe (part de la société mère)"},
+            58: {0: "SS", 1: "Rémunération d’intermédiaires et honoraires (hors rétrocessions)"},
+            59: {0: "XQ", 1: "Location, charges locatives et de copropriété"},
+            60: {0: "YP", 1: "Effectif moyen du personnel"},
+            61: {0: "YT", 1: "Sous‐traitance"},
+            62: {0: "YU", 1: "Personnel extérieur à l’entreprise"},
+            63: {0: "YV", 1: "Rétrocessions d’honoraires, commissions et courtages"},
+            64: {0: "YW", 1: "Taxe professionnelle"},
+            65: {0: "YY", 1: "Montant de la TVA. collectée"},
+            66: {0: "YZ", 1: "Total TVA. déductible sur biens et services"},
+            67: {0: "ZE", 1: "Dividendes"}}
         },
     1: {0: "S",
         1: "Compte annuel simplifié",
@@ -133,14 +125,7 @@ ONTOLOGY = {"accounting": {
             34: {0: "316", 1: "Rémunération et avantages personnels non déductibles"},
             35: {0: "374", 1: "Montant de la T.V.A. collectée"},
             36: {0: "376", 1: "Effectif moyen du personnel"},
-            37: {0: "378", 1: "Montant de la T.V.A. déductible sur biens et services"},
-            ####################################################################
-            #  SCORING RELATED ALWAYS > 100
-            100: {0: "GAN",
-                  1: "Gain d'une companie, actuellement le chiffre d'affaire uniquement FJ"},
-            101: {0: "DIS", 1: "Somme des distributions, FY + HJ"},
-            102: {0: "DIR",
-                  1: "Distribution ratio, (FY + HJ) / GAN, i.e pondération de dis par le chiffre d'affaire"}}
+            37: {0: "378", 1: "Montant de la T.V.A. déductible sur biens et services"}}
         },
     2: {0: "K",
         1: "Compte annuel consolidé",
@@ -181,14 +166,7 @@ ONTOLOGY = {"accounting": {
             32: {0: "GS", 1: "Différences négatives de change"},
             33: {0: "GT", 1: "Charges nettes sur cessions de valeurs mobilières de placement"},
             34: {0: "GU", 1: "Total des charges financières"},
-            35: {0: "GV", 1: "Résultat financier"},
-            ####################################################################
-            #  SCORING RELATED ALWAYS > 100
-            100: {0: "GAN",
-                  1: "Gain d'une companie, actuellement le chiffre d'affaire uniquement FJ"},
-            101: {0: "DIS", 1: "Somme des distributions, FY + HJ"},
-            102: {0: "DIR",
-                  1: "Distribution ratio, (FY + HJ) / GAN, i.e pondération de dis par le chiffre d'affaire"}}
+            35: {0: "GV", 1: "Résultat financier"}}
         },
     3: {0: "A", 1: "Compte annuel d'assurance", "code": {
         0: {0: "R1", 1: "Compte de résultat ‐ Primes ‐ Cotisations acquises"},
@@ -201,15 +179,7 @@ ONTOLOGY = {"accounting": {
         1: {0: "R2", 1: "Compte de résultat ‐ Intérêts et charges assimilées"},
         2: {0: "R3", 1: "Compte de résultat ‐ Résultat de l’exercice"},
     }},
-},
-    "scoring": {
-        "distribution": {
-            "type": "enum",
-            "values": ["TIGHT", "AVERAGE", "GOOD", "UNKNOWN"],
-            1: "Classification d'une companie basée sur le ratio de redistribution DIR. GOOD est 10% en dessous de la moyenne, TIGHT est 10% au dessus, AVERAGE entre les deux. UNKNOWN si impossible à calculer."
-        }
-    }
-}
+}}
 
 APE_CODE = {
     0: {0: '1020Z', 1: 'Transform. & conserv. poisson, crustacés & mollusques'},

@@ -17,8 +17,6 @@ from re import compile
 
 from enthic.database.mysql_data import SQLData
 from enthic.ontology import ONTOLOGY, APE_CODE
-from enthic.result import result
-from enthic.score.classification import Classification
 from enthic.utils.error_json_response import ErrorJSONResponse
 from enthic.utils.ok_json_response import OKJSONResponse
 from flask import abort
@@ -149,7 +147,7 @@ class Bundle(object):
                     }
                 })
             else:
-                setattr(self, str(declaration), [{
+                setattr(self, str_declaration, [{
                     ONTOLOGY["accounting"][int_account]["code"][int_bundle][0]: {
                         JSONGenKey.ACCOUNT: ONTOLOGY["accounting"][int_account][1],
                         JSONGenKey.VALUE: amount,
@@ -158,32 +156,6 @@ class Bundle(object):
                                 1]
                     }
                 }])
-            ####################################################################
-            # SCORING
-            # DISTRIBUTION RATIO
-            if int_bundle == 100:
-                _gan = amount
-            elif int_bundle == 101:
-                _dir = amount
-            if _dis is not None and _gan is not None:
-                if declaration == "average":
-                    average_dir = result.average_dir
-                else:
-                    average_dir = result.yearly_average_dir[declaration]
-                if amount > average_dir - average_dir * 0.1:
-                    distribution = Classification.TIGHT
-                elif average_dir - average_dir * 0.1 <= amount <= average_dir + average_dir * 0.1:
-                    distribution = Classification.AVERAGE
-                elif average_dir + average_dir * 0.1 > amount:
-                    distribution = Classification.GOOD
-                else:
-                    distribution = Classification.UNKNOWN
-                setattr(self, str(declaration), {
-                    "distribution_ratio": {
-                        JSONGenKey.VALUE: distribution.value,
-                        JSONGenKey.DESCRIPTION: ONTOLOGY["accounting"]["distribution"][1]
-                    }
-                })
 
 
 class UniqueBundleCompany(OKJSONResponse, SQLData):

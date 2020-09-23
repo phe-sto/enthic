@@ -22,4 +22,4 @@ cd $DIST || exit;
 $PYTHON -m pip uninstall enthic -y
 ################################################################################
 # 6) INSTALL FORMERLY CREATED enthic wheel
-$PYTHON -m pip install enthic-2020.3.2-py3-none-any.whl
+$PYTHON -m pip install enthic-2020.4.2-py3-none-any.whl

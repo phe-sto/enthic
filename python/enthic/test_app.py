@@ -195,7 +195,7 @@ def test_siren_wrong_method(host, method):
 
 
 @pytest.mark.parametrize("siren", EXISTING_SIREN)
-def test_existing_siren_average(host, siren):
+def test_siren_average(host, siren):
     """
     Test the /company/siren/average endpoint. Should return a JSON and RC 200.
 
@@ -208,7 +208,7 @@ def test_existing_siren_average(host, siren):
 
 
 @pytest.mark.parametrize("siren", NOT_EXISTING_SIREN)
-def test_not_existing_siren_average(host, siren):
+def test_not_siren_average(host, siren):
     """
     Test the /company/siren/average endpoint. Should return a JSON and RC 404.
 
@@ -235,7 +235,7 @@ def test_siren_wrong_method_average(host, method):
 
 
 @pytest.mark.parametrize("siren,year", EXISTING_SIREN_NOT_EXISTING_YEAR)
-def test_existing_siren_not_existing_year(host, siren, year):
+def test_siren_not_existing_year(host, siren, year):
     """
     Test the /company/siren/year endpoint. Should return a JSON  and RC 404.
 
@@ -249,7 +249,7 @@ def test_existing_siren_not_existing_year(host, siren, year):
 
 
 @pytest.mark.parametrize("siren,year", EXISTING_SIREN_EXISTING_YEAR)
-def test_existing_siren_existing_year(host, siren, year):
+def test_siren_existing_year(host, siren, year):
     """
     Test the /company/siren/year endpoint. Should return a JSON  and RC 20.
 
@@ -416,6 +416,31 @@ def test_denomination_wrong_year(host, denomination, year):
     response = get("http://" + host + "/company/denomination/" + denomination + "/" + str(year))
     assert response.status_code == 400, "WRONG HTTP RETURN CODE"
     assert loads(response.text) is not None, "NOT RETURNING A JSON"
+
+
+def test_ape(host):
+    """
+    Test the GET of the APE codes on the URL /company/ape.
+
+       :param host: Fixture of the API host.
+    """
+    response = get("http://" + host + "/company/ape")
+    assert response.status_code == 200, "WRONG HTTP RETURN CODE"
+    assert loads(response.text) is not None, "NOT RETURNING A JSON"
+
+
+@pytest.mark.parametrize("method", (put,
+                                    delete,
+                                    post))
+def test_ape_wrong_method(host, method):
+    """
+    Test the GET of APE codes on the URL /company/ape endpoint with the wrong
+    method. Should return a JSON and a 405 status.
+
+       :param host: Fixture of the API host.the wrong method to test.
+    """
+    response = method("http://" + host + "/company/ape")
+    assert response.status_code == 405, "WRONG HTTP RETURN CODE"
 
 
 def test_ontology(host):

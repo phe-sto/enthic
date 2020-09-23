@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>French societies accountability extraction and treatment by PapIT &#8212; enthic 2020.3.2 documentation</title>
+    <title>French societies accountability extraction and treatment by PapIT &#8212; enthic 2020.4.2 documentation</title>
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
@@ -142,6 +142,7 @@ build the doc at the same time.</p>
 ├── account-ontology.csv
 ├── bilans-saisis-v1.1.xsd
 ├── .gitignore
+├── enthic.dbdiagram.io
 ├── input
 ├── LICENSE.md
 ├── output
@@ -153,7 +154,6 @@ build the doc at the same time.</p>
 │   │   ├── index.rst
 │   │   └── papit.png
 │   ├── enthic
-│   │   ├── ape.py
 │   │   ├── app.py
 │   │   ├── company
 │   │   │   ├── company.py
@@ -174,12 +174,6 @@ build the doc at the same time.</p>
 │   │   ├── extract_bundle.py
 │   │   ├── __init__.py
 │   │   ├── ontology.py
-│   │   ├── result
-│   │   │   ├── __init__.py
-│   │   │   └── result.py
-│   │   ├── score
-│   │   │   ├── classification.py
-│   │   │   └── __init__.py
 │   │   ├── static
 │   │   │   ├── <span class="m">404</span>.html
 │   │   │   ├── <span class="m">500</span>.html
@@ -200,8 +194,6 @@ build the doc at the same time.</p>
 │   │   │   │   │   │   ├── check_sql_injection.html
 │   │   │   │   │   │   └── insert_request.html
 │   │   │   │   │   ├── index.html
-│   │   │   │   │   ├── score
-│   │   │   │   │   │   └── classification.html
 │   │   │   │   │   └── utils
 │   │   │   │   │       ├── error_json_response.html
 │   │   │   │   │       ├── json_response.html
@@ -261,6 +253,7 @@ build the doc at the same time.</p>
 │   │   ├── treat_bundle.py
 │   │   └── utils
 │   │       ├── error_json_response.py
+│   │       ├── conversion.py
 │   │       ├── __init__.py
 │   │       ├── json_response.py
 │   │       ├── not_found_response.py
@@ -432,16 +425,6 @@ application/json and HTTP return code 404. Formatted as hydra JSON-LD.</p>
 </div>
 <span class="target" id="module-utils.conversion"></span><div class="section" id="set-of-function-converting-the-ontology-from-inpi-format-to-base-integer-format">
 <h2>Set of function converting the ontology from INPI format to base integer format<a class="headerlink" href="#set-of-function-converting-the-ontology-from-inpi-format-to-base-integer-format" title="Permalink to this headline">¶</a></h2>
-<p>PROGRAM BY PAPIT SASU, 2020</p>
-<p>Coding Rules:</p>
-<ul class="simple">
-<li>Snake case for variables.</li>
-<li>Only argument is configuration file.</li>
-<li>No output or print, just log and files.</li>
-</ul>
-</div>
-<span class="target" id="module-result.result"></span><div class="section" id="class-result-singleton">
-<h2>Class Result Singleton<a class="headerlink" href="#class-result-singleton" title="Permalink to this headline">¶</a></h2>
 <p>PROGRAM BY PAPIT SASU, 2020</p>
 <p>Coding Rules:</p>
 <ul class="simple">
@@ -711,30 +694,6 @@ OKJSONResponse to return a JSON and SQLData because of base data..</p>
 </dd></dl>
 
 </div>
-<span class="target" id="module-score.classification"></span><div class="section" id="enum-of-divers-classification">
-<h2>Enum of divers classification<a class="headerlink" href="#enum-of-divers-classification" title="Permalink to this headline">¶</a></h2>
-<p>PROGRAM BY PAPIT SASU, 2020</p>
-<p>Coding Rules:</p>
-<ul class="simple">
-<li>Snake case for variables.</li>
-<li>Only argument is configuration file.</li>
-<li>No output or print, just log and files.</li>
-</ul>
-<dl class="class">
-<dt id="score.classification.Classification">
-<em class="property">class </em><code class="descclassname">score.classification.</code><code class="descname">Classification</code><a class="reference internal" href="_modules/score/classification.html#Classification"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#score.classification.Classification" title="Permalink to this definition">¶</a></dt>
-<dd><p>Classification of company by my subjective judgement. The goal is to provide
-IHM UX/UI a generic indicator. Their name and value should be self
-explanatory:</p>
-<ul class="simple">
-<li>TIGHT</li>
-<li>AVERAGE</li>
-<li>GOOD</li>
-<li>UNKNOWN</li>
-</ul>
-</dd></dl>
-
-</div>
 </div>
 
 
@@ -790,14 +749,12 @@ explanatory:</p>
 <li><a class="reference internal" href="#error-json-response-class">Error JSON response Class</a></li>
 <li><a class="reference internal" href="#not-found-json-response-class">Not found JSON response Class</a></li>
 <li><a class="reference internal" href="#set-of-function-converting-the-ontology-from-inpi-format-to-base-integer-format">Set of function converting the ontology from INPI format to base integer format</a></li>
-<li><a class="reference internal" href="#class-result-singleton">Class Result Singleton</a></li>
 <li><a class="reference internal" href="#class-representing-a-company-constructed-with-a-siren">Class representing a company, constructed with a SIREN</a></li>
 <li><a class="reference internal" href="#class-representing-a-company-constructed-with-a-denomination">Class representing a company, constructed with a denomination</a></li>
 <li><a class="reference internal" href="#generic-classes-representing-a-company-and-their-function-s">Generic classes representing a company and their function(s)</a></li>
 <li><a class="reference internal" href="#flask-mysql-initialisation">Flask MySQL initialisation</a></li>
 <li><a class="reference internal" href="#fetch-results-on-the-mysql-database">Fetch results on the MySQL database</a></li>
 <li><a class="reference internal" href="#sql-data-object">SQL data object</a></li>
-<li><a class="reference internal" href="#enum-of-divers-classification">Enum of divers classification</a></li>
 </ul>
 </li>
 </ul>

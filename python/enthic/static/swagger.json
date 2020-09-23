@@ -2,7 +2,7 @@
   "swagger": "2.0",
   "info": {
     "description": "JSON API of French Company Account and Ethical Score",
-    "version": "2020.3.2",
+    "version": "2020.4.2",
     "title": "Swagger French Company Account and Ethical Score",
     "contact": {
       "email": "services@papit.fr"
@@ -384,11 +384,32 @@
     "/ontology": {
       "get": {
         "tags": [
-          "Accountability Ontology"
+          "Accountability Ontology."
         ],
         "summary": "Return a JSON explaining the french complicated account types and results.",
         "description": "",
         "operationId": "ontology",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation, company information is returned in JSON"
+          }
+        }
+      }
+    },
+    "/ape": {
+      "get": {
+        "tags": [
+          "Ape code known in the data base."
+        ],
+        "summary": "Return all the known APE in this database.",
+        "description": "",
+        "operationId": "ape",
         "consumes": [
           "application/json"
         ],

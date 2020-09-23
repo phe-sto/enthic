@@ -131,6 +131,7 @@ Library structure
     ├── account-ontology.csv
     ├── bilans-saisis-v1.1.xsd
     ├── .gitignore
+    ├── enthic.dbdiagram.io
     ├── input
     ├── LICENSE.md
     ├── output
@@ -162,12 +163,6 @@ Library structure
     │   │   ├── extract_bundle.py
     │   │   ├── __init__.py
     │   │   ├── ontology.py
-    │   │   ├── result
-    │   │   │   ├── __init__.py
-    │   │   │   └── result.py
-    │   │   ├── score
-    │   │   │   ├── classification.py
-    │   │   │   └── __init__.py
     │   │   ├── static
     │   │   │   ├── 404.html
     │   │   │   ├── 500.html
@@ -188,8 +183,6 @@ Library structure
     │   │   │   │   │   │   ├── check_sql_injection.html
     │   │   │   │   │   │   └── insert_request.html
     │   │   │   │   │   ├── index.html
-    │   │   │   │   │   ├── score
-    │   │   │   │   │   │   └── classification.html
     │   │   │   │   │   └── utils
     │   │   │   │   │       ├── error_json_response.html
     │   │   │   │   │       ├── json_response.html

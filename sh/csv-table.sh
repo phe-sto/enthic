@@ -19,5 +19,5 @@ python3 enthic/treat_bundle.py -c ../configuration.json
 # 5) MOVE TO LOAD DIRECTORY FOR MYSQL 8 COMPATIBILITY
 mv ${OUPUT_DIR}/*.csv /var/lib/mysql
 ################################################################################
-# 6) CLEAN UP OUTPUT DIRECTY
+# 6) CLEAN UP OUTPUT DIRECTORY
 rm -rf ${OUPUT_DIR}*.tmp;

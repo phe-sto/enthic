@@ -227,7 +227,7 @@ def search():
         ########################################################################
         # WRONG LIMIT
         elif json_data["limit"] > 10000:
-            return ErrorJSONResponse("Value limit is 1000 maximum.")
+            return ErrorJSONResponse("Value limit is 10000 maximum.")
         ########################################################################
         # CORRECT JSON
         else:

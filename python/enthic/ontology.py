@@ -81,7 +81,11 @@ ONTOLOGY = {"accounting": {
             64: {0: "YW", 1: "Taxe professionnelle"},
             65: {0: "YY", 1: "Montant de la TVA. collectée"},
             66: {0: "YZ", 1: "Total TVA. déductible sur biens et services"},
-            67: {0: "ZE", 1: "Dividendes"}}
+            67: {0: "ZE", 1: "Dividendes"},
+            68: {0: "GA", 1: "Dotations d’exploitation - Dotations aux amortissements"},
+            69: {0: "GB", 1: "Dotations d’exploitation - Dotations aux provisions"},
+            70: {0: "GC", 1: "Dotations d’exploitation - Sur actif circulant : dotations aux provisions"},
+            71: {0: "GD", 1: "Dotations d’exploitation - Pour risques et charges : dotations aux provisions"}}
         },
     1: {0: "S",
         1: "Compte annuel simplifié",

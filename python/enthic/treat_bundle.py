@@ -26,7 +26,7 @@ with open(join(dirname(__file__), "configuration.json")) as json_configuration_f
 if isdir(CONFIG['outputPath']) is False:
     raise NotADirectoryError(
         "Configuration output path {} does not exist".format(
-            CONFIG['inputPath'])
+            CONFIG['outputPath'])
     )
 
 ################################################################################

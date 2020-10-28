@@ -46,7 +46,7 @@ if isdir(CONFIG['inputPath']) is False:
 if isdir(CONFIG['outputPath']) is False:
     raise NotADirectoryError(
         "Configuration output path {} does not exist".format(
-            CONFIG['inputPath'])
+            CONFIG['outputPath'])
     )
 
 ################################################################################

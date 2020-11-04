@@ -6,6 +6,7 @@
   "sortTmpBundleFile": "sort-bundle.tmp",
   "bundleFile": "bundle.csv",
   "identityFile": "identity.tmp",
+  "metadataFile": "metadata.tmp",
   "debugLevel": "INFO",
   "mySQL": {
     "enthic": {

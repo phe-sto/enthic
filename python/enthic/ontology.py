@@ -1832,3 +1832,25 @@ APE_CODE = {
     1670: {0: '9525', 1: "Réparation d'articles d'horlogerie et de bijouterie"},
     1671: {0: '3211', 1: 'Frappe de monnaie'},
     1672: {0: '0000', 1: 'Inconnu'}}
+
+CODE_MOTIF = {
+    "0" : "Comptes annuels saisis sans anomalie",
+    "1" : "Comptes annuels saisis avec des incohérences comptables à la source du document",
+    "1A": "Comptes annuels saisis avec des données manquantes à la source du document",
+    "6" : "Comptes annuels saisis - Reçus en double exemplaire (bilan «rescanné »)"
+}
+
+CODE_CONFIDENTIALITE = {
+    0 : "comptes annuels non confidentiels",
+    1 : "comptes annuels confidentiels",
+    2 : "compte de résultat confidentiel"
+}
+
+# WARNING : info_traitement can contain more than one value for a given xml file
+INFO_TRAITEMENT = {
+    "A1" : "Comptes annuels saisis à partir d’un document relivré",
+    "A2" : "Comptes annuels saisis sans contrôle BODACC possible",
+    "A3" : "Incohérence avec référentiel BODACC",
+    "A4" : "Incohérence entre la page de garde et le contenu de la liasse",
+    "A5" : "Doute sur le type de déclaration de confidentialité"
+}

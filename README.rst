@@ -1,23 +1,23 @@
 **French societies accountability extraction and treatment by PapIT**
 =====================================================================
 
-Project than treat data from opendata-rncs.inpi.fr. They contain xml
+Project that treats data from opendata-rncs.inpi.fr. They contain xml
 files of the account declaration of all french societies. The overall project
 is meant to be low-code and open source. Aim to provide ethical indicators on companies.
 Information media is a MySQL database, CSV files, web visualisation and a
-swagger API. The search engine endpoint return a JSON-LD (Hydra) complaint JSON.
-Company JSON cannot conform to JSON-LD Organization type  due to lack of data
+swagger API. The search engine endpoint return a JSON-LD (Hydra) compliant JSON.
+Company JSON cannot conform to JSON-LD Organization type due to lack of data
 (contact for instance).
 Score and indicators are calculated by batch, sql and why not using
 fancy libraries. Help in data treatment to improve scoring would be appreciated.
-Scoring, AI, data scrapping for segmentation. Shell and python are to launch be
+Scoring, AI, data scrapping for segmentation. Shell and python must be launched
 from their corresponding directory ``./sh`` and ``./py``.
 
 **Install dependencies and python package**
 -------------------------------------------
 
 Synaptic packages have to be installed ``libxml2-utils mysql-server tree python3``.
-Pip packages as well has to be installed for development purpose.
+Pip packages as well have to be installed for development purpose.
 
 .. code-block:: bash
 
@@ -35,8 +35,9 @@ To install the enthic python package only.
 Extract data from zip
 ---------------------
 
-Data are stored in zip files on opendata-rncs.inpi.fr, group by month. Each XML
-is in a zip. The first step is then to extract the XML files.
+Data are stored in zip files on opendata-rncs.inpi.fr, group by day. Each XML
+is in a zip. The first step is then to read the XML files and convert data into "bundle.tmp" and "identity.tmp"
+You must create folders 'input' and 'output' at the root of the project, and put some daily zipfile named like "bilans_saisis_<date>.zip" in 'input' folder.
 
 .. code-block:: bash
 

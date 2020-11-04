@@ -25,6 +25,10 @@ Autres achats et charges externes;FW;3;C
 Impôts, taxes et versements assimilés;FX;3;C
 Salaires et traitements;FY;3;C
 Charges sociales;FZ;3;C
+Dotations d’exploitation - Dotations aux amortissements;GA;3;C
+Dotations d’exploitation - Dotations aux provisions;GB;3;C
+Dotations d’exploitation - Sur actif circulant : dotations aux provisions;GC;3;C
+Dotations d’exploitation - Pour risques et charges : dotations aux provisions;GD;3;C
 Autres charges;GE;3;C
 Total des charges d’exploitation;GF;3;C
 Résultat d'exploitation;GG;3;C

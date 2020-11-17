@@ -15,10 +15,10 @@ jobs:
         python-version: 3.8
     - name: Install dependencies
       run: |
+        pip install pylint sphinx
         # Original Github way of installing dependencies
         # python -m pip install --upgrade pip
         python python/setup.py install
-        pip install pylint
     - name: Analysing the code with pylint
       run: |
         pylint `ls -R|grep .py$|xargs`

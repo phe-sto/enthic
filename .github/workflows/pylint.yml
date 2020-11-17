@@ -18,7 +18,8 @@ jobs:
         pip install pylint sphinx
         # Original Github way of installing dependencies
         # python -m pip install --upgrade pip
-        python python/setup.py install
+        cd ./python
+        python setup.py install
     - name: Analysing the code with pylint
       run: |
         pylint `ls -R|grep .py$|xargs`

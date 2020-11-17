@@ -15,7 +15,8 @@ jobs:
         python-version: 3.8
     - name: Install dependencies
       run: |
-        pip install pylint sphinx
+        # Flask is added due to pipeline artifact, better than modify the actual code to make the CI work.
+        pip install pylint sphinx flask
         # Original Github way of installing dependencies
         # python -m pip install --upgrade pip
         cd ./python

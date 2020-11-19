@@ -178,23 +178,38 @@ def pre_cast_integer(probe):
     return str(probe) if probe.__class__ is int else probe if probe.isnumeric() is True else None
 
 
-def result_array(probe, limit, offset=0):
+def result_array(probe, limit, ape, offset=0):
     """
     List the result of the search in the database.
 
        :param probe: A string to match.
        :param limit: Integer, the limit of result to return.
+       :param ape: An integer to match
        :param offset: Integer, offset of the select SQL request.
     """
+    
     with application.app_context():
+        
+        ## I modified the sql request by adding ape filter
         companies = fetchall("""SELECT siren, denomination, ape, postal_code, town
+                        FROM identity WHERE (siren = %s and ape regexp %s)
+                        OR (denomination LIKE %s and ape regexp %s)
+                        OR (MATCH(denomination) AGAINST (%s IN NATURAL LANGUAGE MODE) and ape regexp %s)
+                        LIMIT %s OFFSET %s;""", (pre_cast_integer(probe),"^{0}".format(ape), "{0}%".format(probe),"^{0}".format(ape),
+                                                 "{0}%".format(probe),"^{0}".format(ape), limit, offset))
+        
+    
+        companies_noape = fetchall("""SELECT siren, denomination, ape, postal_code, town
                         FROM identity WHERE siren = %s
                         OR denomination LIKE %s
                         OR MATCH(denomination) AGAINST (%s IN NATURAL LANGUAGE MODE)
+                        AND ape = %s
                         LIMIT %s OFFSET %s;""", (pre_cast_integer(probe), "{0}%".format(probe),
-                                                 "{0}%".format(probe), limit, offset))
+                                                 "{0}%".format(probe),pre_cast_integer(ape), limit, offset))
     return tuple(CompanyIdentity(*company).__dict__ for company in companies)
 
+
+## 
 
 @application.route("/company/search", methods=['POST'], strict_slashes=False)
 @insert_request
@@ -216,14 +231,22 @@ def search():
         # WRONG TYPE
         if json_data["limit"].__class__ is not int and \
                 (json_data["probe"].__class__ is not str and json_data[
-                    "probe"].__class__ is not int):
+                    "probe"].__class__ is not int) and \
+                        json_data['ape'].__class__ is not int:
             return ErrorJSONResponse(
-                "Value limit must be a string or integer and limit an integer."
+                # Value probe must be ...
+                "Value limit must be a string or integer and limit an integer and value ape an integer" 
             )
         elif json_data["limit"].__class__ is not int:
             return ErrorJSONResponse("Value limit must be an integer.")
         elif json_data["probe"].__class__ is not str and json_data["probe"].__class__ is not int:
             return ErrorJSONResponse("Value probe must be a string or integer.")
+       
+       
+        ## adding APE filter checking
+        
+        elif json_data["ape"].__class__ is not int:
+            return ErrorJSONResponse("Value ape must be an integer.")
         ########################################################################
         # WRONG LIMIT
         elif json_data["limit"] > 10000:
@@ -231,7 +254,7 @@ def search():
         ########################################################################
         # CORRECT JSON
         else:
-            results = result_array(json_data["probe"], json_data["limit"])
+            results = result_array(json_data["probe"], json_data["limit"], json_data["ape"])
             return OKJSONResponse({
                 "@context": "http://www.w3.org/ns/hydra/context.jsonld",
                 "@id": request.url,
@@ -257,7 +280,7 @@ def page_search():
     Return a JSON formatted as page. Try to implement the Hydra
     hypermedia-driven Web APIs https://www.markus-lanthaler.com/hydra/.
     """
-
+    ## adding ape options
     page = int(request.args.get('page', '1')) - 1  #  TO COUNT
     if page < 0:
         ErrorJSONResponse('page parameter should be > 0')
@@ -265,13 +288,26 @@ def page_search():
     if per_page < 1:
         ErrorJSONResponse('per_page parameter should be > 0')
     probe = request.args.get('probe', "")
+    ape = request.args.get('ape',"")
     with concurrent.futures.ThreadPoolExecutor() as executor:
-        future_list = executor.submit(result_array, probe, per_page, offset=page * per_page)
+        future_list = executor.submit(result_array, probe, per_page, ape, offset=page * per_page)
+        
         count, = fetchone("""SELECT COUNT(*)
+                        FROM identity WHERE (siren = %s and ape regexp %s)
+                        OR (denomination LIKE %s and ape regexp %s)
+                        OR (MATCH(denomination) AGAINST (%s IN NATURAL LANGUAGE MODE) and ape regexp %s)""",
+                        (pre_cast_integer(probe), "^{0}".format(ape), "{0}%".format(probe), "^{0}".format(ape),
+                                                 "{0}%".format(probe), "^{0}".format(ape)))
+        
+        count_2, = fetchone("""SELECT COUNT(*)
                             FROM identity WHERE siren = %s
                             OR denomination LIKE %s
-                            OR MATCH(denomination) AGAINST (%s IN NATURAL LANGUAGE MODE)""",
-                          (pre_cast_integer(probe), "{0}%".format(probe), "{0}%".format(probe)))
+                            OR MATCH(denomination) AGAINST (%s IN NATURAL LANGUAGE MODE)
+                            AND ape = %s""",
+                            (pre_cast_integer(probe), "{0}%".format(probe), "{0}%".format(probe), pre_cast_integer(ape)))
+        
+        
+        
         results = future_list.result()
 
     if count < page * per_page:
@@ -288,12 +324,12 @@ def page_search():
            "totalItems": count, "view": {
             "@id": request.full_path,
             "@type": "PartialCollectionView",
-            "first": '%s?page=1&per_page=%d&probe=%s' % (request.path,
-                                                         per_page, probe),
-            "last": '%s?page=%d&per_page=%d&probe=%s' % (request.path,
-                                                         last_per_page,
-                                                         per_page,
-                                                         probe)},
+            "first": '%s?page=1&per_page=%d&probe=%s&ape=%s' % (request.path,
+                                                                 per_page, probe, ape),
+            "last": '%s?page=%d&per_page=%d&probe=%s&ape=%s' % (request.path,
+                                                                 last_per_page,
+                                                                 per_page,
+                                                                 probe, ape)},
            "member": results
            }
     ############################################################################
@@ -301,18 +337,18 @@ def page_search():
     if page == 0:
         obj["view"]['previous'] = ''
     else:
-        obj["view"]['previous'] = '%s?page=%d&per_page=%d&probe=%s' % (request.path,
+        obj["view"]['previous'] = '%s?page=%d&per_page=%d&probe=%s&ape=%s' % (request.path,
                                                                        page,
                                                                        per_page,
-                                                                       probe)
+                                                                       probe, ape)
     # MAKE NEXT URL
     if page * per_page + per_page > count:
         obj["view"]["next"] = ''
     else:
-        obj["view"]["next"] = '%s?page=%d&per_page=%d&probe=%s' % (request.path,
-                                                                   page + 2,
-                                                                   per_page,
-                                                                   probe)
+        obj["view"]["next"] = '%s?page=%d&per_page=%d&probe=%s&ape=%s' % (request.path,
+                                                                     page + 2,
+                                                                     per_page,
+                                                                      probe, ape)
     return OKJSONResponse(obj)
 
 

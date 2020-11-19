@@ -178,7 +178,7 @@ def pre_cast_integer(probe):
     return str(probe) if probe.__class__ is int else probe if probe.isnumeric() is True else None
 
 
-def result_array(probe, limit, ape, offset=0):
+def result_array(probe, limit, apecode, offset=0):
     """
     List the result of the search in the database.
 
@@ -187,23 +187,16 @@ def result_array(probe, limit, ape, offset=0):
        :param ape: An integer to match
        :param offset: Integer, offset of the select SQL request.
     """
-    
     with application.app_context():
-        
-        ## I modified the sql request by adding ape filter
         companies = fetchall("""SELECT siren, denomination, ape, postal_code, town
                         FROM identity WHERE (siren = %s and ape regexp %s)
                         OR (denomination LIKE %s and ape regexp %s)
                         OR (MATCH(denomination) AGAINST (%s IN NATURAL LANGUAGE MODE) and ape regexp %s)
-                        LIMIT %s OFFSET %s;""", (pre_cast_integer(probe),"^{0}".format(ape), "{0}%".format(probe),"^{0}".format(ape),
-                                                 "{0}%".format(probe),"^{0}".format(ape), limit, offset))
-        
-    
-        
+                        LIMIT %s OFFSET %s;""", (pre_cast_integer(probe),"^{0}".format(apecode),
+                        "{0}%".format(probe),"^{0}".format(apecode),"{0}%".format(probe),
+                        "^{0}".format(apecode), limit, offset))
     return tuple(CompanyIdentity(*company).__dict__ for company in companies)
 
-
-## 
 
 @application.route("/company/search", methods=['POST'], strict_slashes=False)
 @insert_request
@@ -228,17 +221,13 @@ def search():
                     "probe"].__class__ is not int) and \
                         json_data['ape'].__class__ is not int:
             return ErrorJSONResponse(
-                # Value probe must be ...
-                "Value limit must be a string or integer and limit an integer and value ape an integer" 
+                "Value limit must be a string or integer and limit an integer\
+                and value ape an integer"
             )
         elif json_data["limit"].__class__ is not int:
             return ErrorJSONResponse("Value limit must be an integer.")
         elif json_data["probe"].__class__ is not str and json_data["probe"].__class__ is not int:
             return ErrorJSONResponse("Value probe must be a string or integer.")
-       
-       
-        ## adding APE filter checking
-        
         elif json_data["ape"].__class__ is not int:
             return ErrorJSONResponse("Value ape must be an integer.")
         ########################################################################
@@ -274,7 +263,6 @@ def page_search():
     Return a JSON formatted as page. Try to implement the Hydra
     hypermedia-driven Web APIs https://www.markus-lanthaler.com/hydra/.
     """
-    ## adding ape options
     page = int(request.args.get('page', '1')) - 1  #  TO COUNT
     if page < 0:
         ErrorJSONResponse('page parameter should be > 0')
@@ -282,21 +270,16 @@ def page_search():
     if per_page < 1:
         ErrorJSONResponse('per_page parameter should be > 0')
     probe = request.args.get('probe', "")
-    ape = request.args.get('ape',"")
+    apecode = request.args.get('ape', "")
     with concurrent.futures.ThreadPoolExecutor() as executor:
         future_list = executor.submit(result_array, probe, per_page, ape, offset=page * per_page)
-        
         count, = fetchone("""SELECT COUNT(*)
                         FROM identity WHERE (siren = %s and ape regexp %s)
                         OR (denomination LIKE %s and ape regexp %s)
-                        OR (MATCH(denomination) AGAINST (%s IN NATURAL LANGUAGE MODE) and ape regexp %s)""",
-                        (pre_cast_integer(probe), "^{0}".format(ape), "{0}%".format(probe), "^{0}".format(ape),
-                                                 "{0}%".format(probe), "^{0}".format(ape)))
-        
-        
-        
-        
-        
+                        OR (MATCH(denomination) AGAINST (%s IN NATURAL LANGUAGE MODE) 
+                        and ape regexp %s)""", (pre_cast_integer(probe), "^{0}".format(apecode),
+                        "{0}%".format(probe), "^{0}".format(apecode), "{0}%".format(probe),
+                        "^{0}".format(ape)))
         results = future_list.result()
 
     if count < page * per_page:

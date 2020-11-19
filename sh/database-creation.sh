@@ -7,6 +7,13 @@ readonly SQL_DIR="../sql/";
 ################################################################################
 # 1) CREATE A DATABASE AFTER DROP IT IF EXIST
 mysql < ${SQL_DIR}create-database-enthic.sql "$1";
+mysqlCommandResult=$?
+if [ $mysqlCommandResult != 0 ]
+then
+  echo "database creation error : are you using the correct database user, and have you provided the correct password through --password argument ?"
+  exit
+fi
+
 ################################################################################
 # 2) CREATE A TABLE OF THE IDENTITY INFORMATION
 mysql enthic < ${SQL_DIR}create-table-identity.sql "$1";

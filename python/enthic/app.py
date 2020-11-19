@@ -199,13 +199,7 @@ def result_array(probe, limit, ape, offset=0):
                                                  "{0}%".format(probe),"^{0}".format(ape), limit, offset))
         
     
-        companies_noape = fetchall("""SELECT siren, denomination, ape, postal_code, town
-                        FROM identity WHERE siren = %s
-                        OR denomination LIKE %s
-                        OR MATCH(denomination) AGAINST (%s IN NATURAL LANGUAGE MODE)
-                        AND ape = %s
-                        LIMIT %s OFFSET %s;""", (pre_cast_integer(probe), "{0}%".format(probe),
-                                                 "{0}%".format(probe),pre_cast_integer(ape), limit, offset))
+        
     return tuple(CompanyIdentity(*company).__dict__ for company in companies)
 
 
@@ -299,12 +293,7 @@ def page_search():
                         (pre_cast_integer(probe), "^{0}".format(ape), "{0}%".format(probe), "^{0}".format(ape),
                                                  "{0}%".format(probe), "^{0}".format(ape)))
         
-        count_2, = fetchone("""SELECT COUNT(*)
-                            FROM identity WHERE siren = %s
-                            OR denomination LIKE %s
-                            OR MATCH(denomination) AGAINST (%s IN NATURAL LANGUAGE MODE)
-                            AND ape = %s""",
-                            (pre_cast_integer(probe), "{0}%".format(probe), "{0}%".format(probe), pre_cast_integer(ape)))
+        
         
         
         

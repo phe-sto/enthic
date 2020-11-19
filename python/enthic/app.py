@@ -14,23 +14,17 @@ Coding Rules:
 """
 
 import concurrent.futures
-from json import loads, load
+import re
+from json import load, loads
 from os.path import dirname, join
 
 from enthic.company.company import CompanyIdentity
-from enthic.company.denomination_company import (
-    YearDenominationCompany,
-    AverageDenominationCompany,
-    AllDenominationCompany
-)
-from enthic.company.siren_company import (
-    YearSirenCompany,
-    AverageSirenCompany,
-    AllSirenCompany
-)
+from enthic.company.denomination_company import AllDenominationCompany, AverageDenominationCompany, \
+    YearDenominationCompany
+from enthic.company.siren_company import AllSirenCompany, AverageSirenCompany, YearSirenCompany
 from enthic.database.fetch import fetchall, fetchone
 from enthic.decorator.insert_request import insert_request
-from enthic.ontology import ONTOLOGY, APE_CODE
+from enthic.ontology import APE_CODE, ONTOLOGY
 from enthic.utils.error_json_response import ErrorJSONResponse
 from enthic.utils.not_found_response import NotFoundJSONResponse
 from enthic.utils.ok_json_response import OKJSONResponse
@@ -178,23 +172,73 @@ def pre_cast_integer(probe):
     return str(probe) if probe.__class__ is int else probe if probe.isnumeric() is True else None
 
 
-def result_array(probe, limit, offset=0):
+def ape_list(ape_code):
+    """
+    APE code are not save in the original format.
+    This function returns the corresponding code in MySQL or None
+    if the code does not exist
+
+        :param ape_code : the list of APE for he filter
+        :param APE_CODE : all known APE code
+
+        :return: list of corresponding  APE_CODE in MySQL
+    """
+    ape = list()
+    for ap in ape_code.split(","):
+        for i in APE_CODE:
+            if re.match(ap,APE_CODE[i][0]):
+                ape.append(i)
+    if len(ape) == 0:
+        return None
+    return ape
+
+
+
+
+def result_array(probe, limit, ape_code, offset=0):
     """
     List the result of the search in the database.
 
        :param probe: A string to match.
        :param limit: Integer, the limit of result to return.
+       :param ape_code: A string to match
        :param offset: Integer, offset of the select SQL request.
     """
     with application.app_context():
-        companies = fetchall("""SELECT siren, denomination, ape, postal_code, town
-                        FROM identity WHERE siren = %s
-                        OR denomination LIKE %s
-                        OR MATCH(denomination) AGAINST (%s IN NATURAL LANGUAGE MODE)
-                        LIMIT %s OFFSET %s;""", (pre_cast_integer(probe), "{0}%".format(probe),
-                                                 "{0}%".format(probe), limit, offset))
-    return tuple(CompanyIdentity(*company).__dict__ for company in companies)
-
+        ape_code = ape_list(ape_code)
+        if ape_code is None:
+            sql_query ="""SELECT siren, denomination, ape, postal_code, town
+                            FROM identity 
+                            WHERE siren = %s
+                            OR denomination LIKE %s
+                            OR MATCH(denomination) AGAINST (%s IN NATURAL LANGUAGE MODE)
+                            LIMIT %s  OFFSET %s;"""
+            companies = fetchall(sql_query,(pre_cast_integer(probe),"{0}%".format(probe),
+                                "{0}%".format(probe),limit, offset ))
+            return tuple(CompanyIdentity(*company).__dict__ for company in companies)
+        else:
+            sql_query ="""SELECT  siren, denomination, ape, postal_code, town
+              FROM identity WHERE 1 = CASE
+                                            WHEN  siren IS NULL THEN 1
+                                            WHEN siren = %s THEN 1
+                                            ELSE 0
+                                       END
+                            OR 1 = CASE
+                                            WHEN  denomination IS NULL THEN 1
+                                            WHEN  (denomination LIKE %s 
+                                            OR MATCH(denomination) AGAINST (%s IN NATURAL LANGUAGE MODE)) THEN 1 
+                                            ELSE 0 
+                                       END  
+                            AND 1=CASE 
+                                            WHEN ape IS NULL THEN 1
+                                            WHEN ape = %s THEN 1
+                                            ELSE 0
+                                   END 
+                            LIMIT %s  OFFSET %s;  
+                        """
+            companies = fetchall(sql_query,(pre_cast_integer(probe),"{0}%".format(probe),
+                                "{0}%".format(probe), ape_code,limit, offset ))
+            return tuple(CompanyIdentity(*company).__dict__ for company in companies)
 
 @application.route("/company/search", methods=['POST'], strict_slashes=False)
 @insert_request
@@ -216,14 +260,18 @@ def search():
         # WRONG TYPE
         if json_data["limit"].__class__ is not int and \
                 (json_data["probe"].__class__ is not str and json_data[
-                    "probe"].__class__ is not int):
+                    "probe"].__class__ is not int) and \
+                        json_data['ape'].__class__ is not str:
             return ErrorJSONResponse(
-                "Value limit must be a string or integer and limit an integer."
+                "Value limit must be a string or integer and limit an integer\
+                and value ape a string"
             )
         elif json_data["limit"].__class__ is not int:
             return ErrorJSONResponse("Value limit must be an integer.")
         elif json_data["probe"].__class__ is not str and json_data["probe"].__class__ is not int:
             return ErrorJSONResponse("Value probe must be a string or integer.")
+        elif json_data["ape"].__class__ is not str:
+            return ErrorJSONResponse("Value ape must be a string.")
         ########################################################################
         # WRONG LIMIT
         elif json_data["limit"] > 10000:
@@ -231,7 +279,7 @@ def search():
         ########################################################################
         # CORRECT JSON
         else:
-            results = result_array(json_data["probe"], json_data["limit"])
+            results = result_array(json_data["probe"], json_data["limit"], json_data["ape"])
             return OKJSONResponse({
                 "@context": "http://www.w3.org/ns/hydra/context.jsonld",
                 "@id": request.url,
@@ -257,7 +305,6 @@ def page_search():
     Return a JSON formatted as page. Try to implement the Hydra
     hypermedia-driven Web APIs https://www.markus-lanthaler.com/hydra/.
     """
-
     page = int(request.args.get('page', '1')) - 1  #  TO COUNT
     if page < 0:
         ErrorJSONResponse('page parameter should be > 0')
@@ -265,13 +312,41 @@ def page_search():
     if per_page < 1:
         ErrorJSONResponse('per_page parameter should be > 0')
     probe = request.args.get('probe', "")
+    ape_code = request.args.get('ape', "")
     with concurrent.futures.ThreadPoolExecutor() as executor:
-        future_list = executor.submit(result_array, probe, per_page, offset=page * per_page)
-        count, = fetchone("""SELECT COUNT(*)
-                            FROM identity WHERE siren = %s
+        future_list = executor.submit(result_array, probe, per_page, ape_code,
+                                      offset=page * per_page)
+        ape_code = ape_list(ape_code)
+        if ape_code is None:
+            sql_query_count ="""SELECT COUNT(*)
+                            FROM identity 
+                            WHERE siren = %s
                             OR denomination LIKE %s
-                            OR MATCH(denomination) AGAINST (%s IN NATURAL LANGUAGE MODE)""",
-                          (pre_cast_integer(probe), "{0}%".format(probe), "{0}%".format(probe)))
+                            OR MATCH(denomination) AGAINST (%s IN NATURAL LANGUAGE MODE)
+                """
+            count, = fetchone(sql_query_count,(pre_cast_integer(probe),"{0}%".format(probe),
+                                "{0}%".format(probe)))
+        else:
+            sql_query_count ="""SELECT  COUNT(*)
+              FROM identity WHERE 1 = CASE
+                                            WHEN  siren IS NULL THEN 1
+                                            WHEN siren = %s THEN 1
+                                            ELSE 0
+                                       END
+                            OR 1 = CASE
+                                            WHEN  denomination IS NULL THEN 1
+                                            WHEN  (denomination LIKE %s 
+                                            OR MATCH(denomination) AGAINST (%s IN NATURAL LANGUAGE MODE)) THEN 1 
+                                            ELSE 0 
+                                       END  
+                            AND 1=CASE 
+                                            WHEN ape IS NULL THEN 1
+                                            WHEN ape = %s THEN 1
+                                            ELSE 0
+                                   END  
+                        """
+            count, = fetchone(sql_query_count,(pre_cast_integer(probe),"{0}%".format(probe),
+                                "{0}%".format(probe), ape_code))
         results = future_list.result()
 
     if count < page * per_page:
@@ -288,12 +363,12 @@ def page_search():
            "totalItems": count, "view": {
             "@id": request.full_path,
             "@type": "PartialCollectionView",
-            "first": '%s?page=1&per_page=%d&probe=%s' % (request.path,
-                                                         per_page, probe),
-            "last": '%s?page=%d&per_page=%d&probe=%s' % (request.path,
-                                                         last_per_page,
-                                                         per_page,
-                                                         probe)},
+            "first": '%s?page=1&per_page=%d&probe=%s&ape=%s' % (request.path,
+                                                                 per_page, probe, ape_code),
+            "last": '%s?page=%d&per_page=%d&probe=%s&ape=%s' % (request.path,
+                                                                 last_per_page,
+                                                                 per_page,
+                                                                 probe, ape_code)},
            "member": results
            }
     ############################################################################
@@ -301,18 +376,18 @@ def page_search():
     if page == 0:
         obj["view"]['previous'] = ''
     else:
-        obj["view"]['previous'] = '%s?page=%d&per_page=%d&probe=%s' % (request.path,
+        obj["view"]['previous'] = '%s?page=%d&per_page=%d&probe=%s&ape=%s' % (request.path,
                                                                        page,
                                                                        per_page,
-                                                                       probe)
+                                                                       probe, ape_code)
     # MAKE NEXT URL
     if page * per_page + per_page > count:
         obj["view"]["next"] = ''
     else:
-        obj["view"]["next"] = '%s?page=%d&per_page=%d&probe=%s' % (request.path,
-                                                                   page + 2,
-                                                                   per_page,
-                                                                   probe)
+        obj["view"]["next"] = '%s?page=%d&per_page=%d&probe=%s&ape=%s' % (request.path,
+                                                                     page + 2,
+                                                                     per_page,
+                                                                     probe, ape_code)
     return OKJSONResponse(obj)
 
 

@@ -24,7 +24,7 @@ from zipfile import ZipFile, BadZipFile
 
 from enthic.utils.conversion import CON_APE, CON_ACC, CON_BUN
 
-RE_MULTIPLE_WHITESPACE = compile(r"\s+")  # NOT AN OBVIOUS PERFORMANCE GAIN...
+RE_DENOMINATION = compile(r'\s+|[\t\n]')  # NOT AN OBVIOUS PERFORMANCE GAIN...
 RE_POSTAL_CODE_TOWN = compile(r"([0-9]+)[ -]?([a-zA-Z0-9_ \'\"-\.\(\)\-]+)")
 RE_TOWN = compile(r"([a-zA-Z0-9_ \'\"-\.\(\)\-]+)")
 RE_POSTAL_CODE = compile(r"([0-9]+)")
@@ -78,11 +78,8 @@ def read_identity_data(identity_xml_item):
         elif identity.tag == '{fr:inpi:odrncs:bilansSaisisXML}code_type_bilan':
             acc_type = identity.text
         elif identity.tag == '{fr:inpi:odrncs:bilansSaisisXML}denomination':
-            # REMOVE MULTIPLE WHITESPACES, SWITCH TO UPPER CASE, REMOVE EOF
-            denomination = sub(RE_MULTIPLE_WHITESPACE, " ",
-                               identity.text.replace("\n",
-                                                     " ").upper()
-                               ).strip(" ")
+            # REMOVE MULTIPLE WHITESPACES, TABULATION, NEW LINE, THEN SWITCH TO UPPER CASE
+            denomination = sub(RE_DENOMINATION, " ", identity.text).strip(" ").upper()
         elif identity.tag == '{fr:inpi:odrncs:bilansSaisisXML}code_motif':
             code_motif = identity.text
         elif identity.tag == '{fr:inpi:odrncs:bilansSaisisXML}code_confidentialite':
@@ -177,12 +174,12 @@ def main():
                                     # KNOWN
                                     if acc_type in ACC_ONT.keys():
                                         identity_file.write(
-                                            ";".join(
+                                            "\t".join(
                                                 (siren, denomination, str(ape),
                                                  postal_code, town, "\n")))
                                         identity_writen = True
                                         metadata_file.write(
-                                            ";".join(
+                                            "\t".join(
                                                 (siren, year, code_motif, code_confidentialite, info_traitement, "\n")))
                                 ################################################
                                 # BUNDLE TAGS IN PAGES TO ITERATE WITH BUNDLE CODES
@@ -200,7 +197,7 @@ def main():
                                                             # WRITE RESULTS FILE
                                                             if identity_writen is True:
                                                                 bundle_file.write(
-                                                                    ";".join((siren, year,
+                                                                    "\t".join((siren, year,
                                                                               str(CON_ACC[acc_type]),
                                                                               str(CON_BUN[CON_ACC[
                                                                                   acc_type]][

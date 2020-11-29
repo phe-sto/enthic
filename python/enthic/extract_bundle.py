@@ -21,6 +21,7 @@ from os import listdir
 from os.path import dirname, join, isdir
 from re import sub, compile
 from zipfile import ZipFile, BadZipFile
+from .ontology import CODE, ONTOLOGY
 
 from enthic.utils.conversion import CON_APE, CON_ACC, CON_BUN
 
@@ -51,17 +52,22 @@ if isdir(CONFIG['outputPath']) is False:
 
 ################################################################################
 # READ THE CODES TO EXTRACT
-ACC_ONT = {}  # EMPTY OBJECT STORING DATA TO EXTRACT
-with open(CONFIG['accountOntologyCSV'], mode='r') as infile:
-    _reader = reader(infile, delimiter=';')
-    next(_reader, None)  # SKIP FIRST LINE, HEADER OF THE CSV
-    for rows in _reader:  # ITERATES ALL THE LINES
+
+################################################################################
+# Usin ONTOLOGY at the place of account-ontology.csv
+ACCOUNTING = ONTOLOGY['accounting']
+ACC_ONT = dict() # EMPTY OBJECT STORING DATA TO EXTRACT
+for key in ACCOUNTING:
+    ACC_ONT[ACCOUNTING[key][0]] = {"bundleCodeAtt":[]}
+    for y in ACCOUNTING[key]['code']:
         try:
-            ACC_ONT[rows[3]]["bundleCodeAtt"].append(
-                {rows[1]: rows[2].split(",")}
+            ACC_ONT[ACCOUNTING[key][0]]["bundleCodeAtt"].append(
+                {ACCOUNTING[key]['code'][y][0]: str(CODE[ACCOUNTING[key]['code'][y][0]]).split(",")}
             )
         except KeyError:
-            ACC_ONT[rows[3]] = {"bundleCodeAtt": []}
+            continue
+
+
 
 ################################################################################
 # SET LOG LEVEL
@@ -203,7 +209,7 @@ def main():
                                                         "code"]
                                                 ))
                     except UnicodeDecodeError as error:
-                        debug(key_error)
+                        debug(error)
             except BadZipFile as error:  #  TODO REPORT ERROR TO INPI
                 debug(error)
     ############################################################################

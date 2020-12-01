@@ -63,3 +63,5 @@ mysql enthic < ${SQL_DIR}create-table-metadata.sql "$1";
 mysql enthic < ${SQL_DIR}insert-metadata.sql "$1";
 #11) CREATE A TABLE FOR SCORING COMPUTATION
 mysql enthic < ${SQL_DIR}create-table-statistics.sql "$1";
+#12) CREATE A TABLE FOR STATISTICS BY APE
+mysql enthic < ${SQL_DIR}create-table-ape-stats.sql "$1";

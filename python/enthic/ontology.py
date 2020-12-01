@@ -1854,3 +1854,9 @@ INFO_TRAITEMENT = {
     "A4" : "Incohérence entre la page de garde et le contenu de la liasse",
     "A5" : "Doute sur le type de déclaration de confidentialité"
 }
+
+SCORE_DESCRIPTION = {
+    1 : "Pourcentage du résultat d'exploitation distribué en participation et impôts",
+    2 : "Pourcentage de la masse salariale dans le total des charges d'exploitation",
+    3 : "Ratio entre les cotisation sociales et les salaires"
+}

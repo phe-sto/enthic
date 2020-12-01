@@ -14,7 +14,7 @@ Coding Rules:
 """
 
 import concurrent.futures
-import re
+import numpy
 from json import loads, load
 from os.path import dirname, join
 from math import isnan
@@ -35,9 +35,10 @@ from enthic.company.siren_company import (
 from enthic.compute_stats import compute_company_statistics
 from enthic.database.fetch import fetchall
 from enthic.decorator.insert_request import insert_request
-from enthic.ontology import ONTOLOGY, APE_CODE
+from enthic.ontology import ONTOLOGY, APE_CODE, SCORE_DESCRIPTION
 from enthic.utils.error_json_response import ErrorJSONResponse
 from enthic.utils.ok_json_response import OKJSONResponse
+from enthic.utils.conversion import CON_APE, get_corresponding_ape_codes
 
 ################################################################################
 # FLASK INITIALISATION
@@ -180,27 +181,6 @@ def pre_cast_integer(probe):
     return str(probe) if probe.__class__ is int else probe if probe.isnumeric() is True else None
 
 
-def get_corresponding_ape_codes(ape_code):
-    """
-    APE codes are not saved in the original format.
-    This function returns codes that are in the database
-    and corresponds to the given APE code or it's sub-categories
-    It returns None if the given APE code does not exist
-
-        :param ape_code : the list of APE for the filter, comma separated
-
-        :return: list of corresponding APE_CODE in database
-    """
-    result = list()
-    for one_code in ape_code.split(","):
-        for i in APE_CODE:
-            if re.match(one_code, APE_CODE[i][0]):
-                result.append(i)
-    if not result:
-        return None
-    return result
-
-
 def result_array(probe, limit, ape_code=[], offset=0):
     """
     List the result of the search in the database.
@@ -237,6 +217,7 @@ def result_array(probe, limit, ape_code=[], offset=0):
         companies = fetchall(sql_query_select_part + sql_query_condition + sql_query_limit_and_offset, args=sql_arguments)
         return count[0][0], tuple(CompanyIdentity(*company).__dict__ for company in companies)
 
+
 def get_siren(first_letters):
     """
     Get siren of companies whose denomination starts with the given first letters
@@ -252,6 +233,7 @@ def get_siren(first_letters):
                         WHERE denomination LIKE %s LIMIT 1000000""", (first_letters,))
 
     return siren_list
+
 
 @application.route("/company/search", methods=['POST'], strict_slashes=False)
 @insert_request
@@ -383,6 +365,7 @@ def page_search():
 
     return OKJSONResponse(obj)
 
+
 @application.route("/compute/<string:first_letters>", methods=['GET'], strict_slashes=False)
 @insert_request
 def compute(first_letters):
@@ -398,7 +381,7 @@ def compute(first_letters):
     for siren in get_siren(first_letters):
         company_data = company_siren(siren[0])
         scores = compute_company_statistics(company_data)
-        result_list.append({"siren" : siren[0], "scores" : scores})
+        result_list.append({"siren": siren[0], "scores": scores})
         for score in scores:
             if not isnan(score["share_score"]):
                 result.append((siren[0], score["year"], 1, score["share_score"]))
@@ -416,6 +399,69 @@ def compute(first_letters):
         mysql.connection.commit()
         cur.close()
     return OKJSONResponse(result)
+
+
+@application.route("/compute_ape/<string:real_ape>/<int:year>/<int:score>", methods=['GET'], strict_slashes=False)
+@insert_request
+def compute_ape(real_ape, year, score):
+    """
+    Computes decile for each score for the given year, score and APE (including APE part of the given one) and saves them into the database.
+
+       :param real_ape: decile will be computed for companies from this APE code.
+       :param year: decile will be computed for the given year.
+       :param score: decile wil be computed for the given score type (see SCORE_DESCRIPTION in ontology).
+
+       :return: HTTP Response as application/json
+    """
+    # Fetch all score of a given type, and for specified economic sector (APE)
+    ape_stringlist = get_corresponding_ape_codes(real_ape)
+    sql_args = {"ape_list": tuple(ape_stringlist),
+                "score": score,
+                "year": year}
+    sql_result = fetchall("""SELECT identity.siren, ape, stats_type, declaration, value
+                             FROM identity
+                             RIGHT JOIN annual_statistics ON annual_statistics.siren = identity.siren
+                             WHERE identity.ape IN %(ape_list)s AND annual_statistics.stats_type = %(score)s AND annual_statistics.declaration = %(year)s;""",
+                          sql_args)
+    score_values = []
+    for result in sql_result:
+        score_values.append(result[4])
+
+    score_values.sort()
+    new_data = []
+    percentiles_needed = [25, 50, 75]
+    count = len(score_values)
+    if count > 0:
+        print("scores : ", score_values)
+        percentile_values = numpy.percentile(score_values, percentiles_needed)
+        print("numpy percentiles ", percentile_values)
+        i = 0
+        for percentile in percentiles_needed:
+            new_data.append({"ape": CON_APE[real_ape],
+                             "year": year,
+                             "score": score,
+                             "percentile": percentile,
+                             "value": percentile_values[i],
+                             "count": count})
+            print("percentile", percentile, " : ", percentile_values[i])
+            i = i + 1
+    else :
+        return ErrorJSONResponse("No data for APE {}, year {} and score '{}'({})".format(real_ape, year, SCORE_DESCRIPTION[score], score))
+
+    with application.app_context():
+        from enthic.database.mysql import mysql
+        cur = mysql.connection.cursor()
+        request = """REPLACE INTO `annual_ape_statistics`(`ape`, `declaration`, `stats_type`, `percentile`, `value`, `count`)
+        VALUES (%(ape)s, %(year)s, %(score)s, %(percentile)s, %(value)s, %(count)s);"""
+        values = tuple(new_data)
+        print("request : ", request)
+        print("values : ", values)
+        cur.executemany(request, values)
+        mysql.connection.commit()
+        cur.close()
+
+    return OKJSONResponse(new_data)
+
 
 @application.route('/<path:path>', strict_slashes=False)
 @insert_request

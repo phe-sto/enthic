@@ -332,7 +332,7 @@ def page_search():
     with concurrent.futures.ThreadPoolExecutor() as executor:
         future_list = executor.submit(result_array, probe, per_page, ape_code,
                                       offset=page * per_page)
-        ape_code = ape_list(ape_code)
+        ape_code_list = ape_list(ape_code)
         if ape_code is None:
             sql_query_count ="""SELECT COUNT(*)
                             FROM identity 
@@ -362,7 +362,7 @@ def page_search():
                                    END  
                         """
             count, = fetchone(sql_query_count,(pre_cast_integer(probe),"{0}%".format(probe),
-                                "{0}%".format(probe), ape_code))
+                                "{0}%".format(probe), ape_code_list))
         results = future_list.result()
 
     if count < page * per_page:

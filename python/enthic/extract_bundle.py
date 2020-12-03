@@ -85,7 +85,7 @@ def read_identity_data(identity_xml_item):
         elif identity.tag == '{fr:inpi:odrncs:bilansSaisisXML}code_confidentialite':
             code_confidentialite = identity.text
         elif identity.tag == '{fr:inpi:odrncs:bilansSaisisXML}info_traitement':
-            info_traitement = identity.text if identity.text else "Absent"
+            info_traitement = identity.text if identity.text else "rien"
         elif identity.tag == '{fr:inpi:odrncs:bilansSaisisXML}date_cloture_exercice':
             year = identity.text[:4]
         elif identity.tag == '{fr:inpi:odrncs:bilansSaisisXML}adresse':

@@ -46,7 +46,7 @@ def main():
     ############################################################################
     # READ THE INPUT FILE AND bundle_file.write THE OUTPUT
     with open(join(CONFIG['outputPath'], CONFIG['sortTmpBundleFile']), mode='r') as infile:
-        _reader = reader(infile, delimiter=';')  # READER OF THE INPUT CSV FILE
+        _reader = reader(infile, delimiter='\t')  # READER OF THE INPUT CSV FILE
         key, bundle_sum, gain, distribution = (None,) * 4
         for rows in _reader:  # ITERATE EACH LINE
             if key is not None and key < rows[0:4]:  # KEY BREAK ON BUNDLE CODE

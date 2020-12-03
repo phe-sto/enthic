@@ -197,7 +197,16 @@ def ape_converting(ape_code):
             return i
     return None
 
-
+def ape_list(ape_code): 
+    import re
+    ape = list()
+    for ap in ape_code.split(","):  
+        for i in APE_CODE: 
+            if bool(re.match(ap,APE_CODE[i][0])): 
+                ape.append(i)
+    if len(ape) ==0 : 
+        return None
+    return ape
 
 
 
@@ -212,7 +221,7 @@ def result_array(probe, limit, ape_code, offset=0):
        :param offset: Integer, offset of the select SQL request.
     """
     with application.app_context():
-        ape_code = ape_converting(ape_code)
+        ape_code = ape_list(ape_code)
         if ape_code is None:
             sql_query ="""SELECT siren, denomination, ape, postal_code, town
                             FROM identity 
@@ -238,7 +247,7 @@ def result_array(probe, limit, ape_code, offset=0):
                                        END  
                             AND 1=CASE 
                                             WHEN ape IS NULL THEN 1
-                                            WHEN ape = %s THEN 1
+                                            WHEN ape in %s THEN 1
                                             ELSE 0
                                    END 
                             LIMIT %s  OFFSET %s;  
@@ -323,7 +332,7 @@ def page_search():
     with concurrent.futures.ThreadPoolExecutor() as executor:
         future_list = executor.submit(result_array, probe, per_page, ape_code,
                                       offset=page * per_page)
-        ape_code = ape_converting(ape_code)
+        ape_code = ape_list(ape_code)
         if ape_code is None:
             sql_query_count ="""SELECT COUNT(*)
                             FROM identity 
@@ -348,7 +357,7 @@ def page_search():
                                        END  
                             AND 1=CASE 
                                             WHEN ape IS NULL THEN 1
-                                            WHEN ape = %s THEN 1
+                                            WHEN ape in %s THEN 1
                                             ELSE 0
                                    END  
                         """

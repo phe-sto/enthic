@@ -21,6 +21,7 @@ from os import listdir
 from os.path import dirname, join, isdir
 from re import sub, compile
 from zipfile import ZipFile, BadZipFile
+from enthic.ontology import ONTOLOGY
 
 from enthic.utils.conversion import CON_APE, CON_ACC, CON_BUN
 
@@ -51,17 +52,132 @@ if isdir(CONFIG['outputPath']) is False:
 
 ################################################################################
 # READ THE CODES TO EXTRACT
-ACC_ONT = {}  # EMPTY OBJECT STORING DATA TO EXTRACT
-with open(CONFIG['accountOntologyCSV'], mode='r') as infile:
-    _reader = reader(infile, delimiter=';')
-    next(_reader, None)  # SKIP FIRST LINE, HEADER OF THE CSV
-    for rows in _reader:  # ITERATES ALL THE LINES
+
+################################################################################
+# Usin ONTOLOGY at the place of account-ontology.csv
+code =  {'FW': 3,
+        'GU': 3,
+        '242': 1,
+        '262': 1,
+        'FY': 3,
+        '252': 1,
+        'FP': 3,
+        'FV': 3,
+        'GV': 3,
+        '378': 1,
+        '376': 1,
+        'XQ': 1,
+        '306': 1,
+        'HI': 1,
+        'HF': 1,
+        'R7': 1,
+        'R6': 1,
+        '210': 1,
+        '290': 1,
+        'R8': 1,
+        '316': 1,
+        'R2': 1,
+        '280': 1,
+        '270': 1,
+        'FA': 3,
+        'FO': 3,
+        '215': 1,
+        'FR': 3,
+        '9Z': 1,
+        'FM': 3,
+        'GD': 3,
+        'GO': 3,
+        'YT': 1,
+        'GA': 3,
+        '243': 1,
+        'FX': 3,
+        'YU': 1,
+        'GI': 3,
+        '236': 1,
+        'SS': 1,
+        '209': 1,
+        'R5': 1,
+        'GP': 3,
+        'GL': 3,
+        '256': 1,
+        'GT': 3,
+        'FN': 3,
+        'FU': 3,
+        'GB': 3,
+        'HE': 1,
+        '226': 1,
+        '250': 1,
+        'HH': 1,
+        'R4': 1,
+        'HB': 1,
+        '230': 1,
+        '238': 1,
+        '217': 1,
+        '218': 1,
+        'HK': 1,
+        '232': 1,
+        'HC': 1,
+        'FJ': 3,
+        'YW': 1,
+        '214': 1,
+        '310': 1,
+        '234': 1,
+        'YY': 1,
+        'ZE': 1,
+        'FQ': 3,
+        '264': 1,
+        '259': 1,
+        'R1': 1,
+        '300': 1,
+        'GK': 3,
+        'HN': 1,
+        'FD': 3,
+        'FT': 3,
+        'GJ': 3,
+        'GG': 3,
+        '240': 1,
+        'YZ': 1,
+        'GR': 3,
+        'GH': 3,
+        'HD': 1,
+        'GW': 3,
+        'YP': 1,
+        'R3': 1,
+        '224': 1,
+        'GN': 3,
+        'FZ': 3,
+        'HL': 1,
+        'FS': 3,
+        'HG': 1,
+        '244': 1,
+        'HM': 1,
+        'YV': 1,
+        'GM': 3,
+        'GS': 3,
+        'HA': 1,
+        'GE': 3,
+        'GQ': 3,
+        'HJ': 1,
+        '254': 1,
+        'GC': 3,
+        'FG': 3,
+        'GF': 3,
+        '222': 1,
+        '294': 1,
+        '374': 1
+        }
+
+ACCOUNTING = ONTOLOGY['accounting']
+ACC_ONT = dict() # EMPTY OBJECT STORING DATA TO EXTRACT
+for key in ACCOUNTING:
+    ACC_ONT[ACCOUNTING[key][0]] = {"bundleCodeAtt":[]}
+    for y in ACCOUNTING[key]['code']:
         try:
-            ACC_ONT[rows[3]]["bundleCodeAtt"].append(
-                {rows[1]: rows[2].split(",")}
+            ACC_ONT[ACCOUNTING[key][0]]["bundleCodeAtt"].append(
+                {ACCOUNTING[key]['code'][y][0]: str(code[ACCOUNTING[key]['code'][y][0]]).split(",")}
             )
         except KeyError:
-            ACC_ONT[rows[3]] = {"bundleCodeAtt": []}
+            continue
 
 ################################################################################
 # SET LOG LEVEL
@@ -203,7 +319,7 @@ def main():
                                                         "code"]
                                                 ))
                     except UnicodeDecodeError as error:
-                        debug(key_error)
+                        debug(error)
             except BadZipFile as error:  #  TODO REPORT ERROR TO INPI
                 debug(error)
     ############################################################################

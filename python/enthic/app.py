@@ -18,6 +18,9 @@ import re
 from json import loads, load
 from os.path import dirname, join
 
+from flask import Flask, request
+from flask_cors import CORS
+
 from enthic.company.company import CompanyIdentity
 from enthic.company.denomination_company import (
     YearDenominationCompany,
@@ -29,14 +32,11 @@ from enthic.company.siren_company import (
     AverageSirenCompany,
     AllSirenCompany
 )
-from enthic.database.fetch import fetchall, fetchone
+from enthic.database.fetch import fetchall
 from enthic.decorator.insert_request import insert_request
 from enthic.ontology import ONTOLOGY, APE_CODE
 from enthic.utils.error_json_response import ErrorJSONResponse
-from enthic.utils.not_found_response import NotFoundJSONResponse
 from enthic.utils.ok_json_response import OKJSONResponse
-from flask import Flask, request
-from flask_cors import CORS
 
 ################################################################################
 # FLASK INITIALISATION
@@ -181,22 +181,23 @@ def pre_cast_integer(probe):
 
 def get_corresponding_ape_codes(ape_code):
     """
-    APE code are not save in the original format.
-    This function returns codes in the database corresponding to the given APE code or it's sub-categories
+    APE codes are not saved in the original format.
+    This function returns codes that are in the database
+    and corresponds to the given APE code or it's sub-categories
     It returns None if the given APE code does not exist
 
         :param ape_code : the list of APE for the filter, comma separated
 
         :return: list of corresponding APE_CODE in database
     """
-    ape = list()
-    for ap in ape_code.split(","):
+    result = list()
+    for one_code in ape_code.split(","):
         for i in APE_CODE:
-            if re.match(ap,APE_CODE[i][0]):
-                ape.append(i)
-    if not ape:
+            if re.match(one_code,APE_CODE[i][0]):
+                result.append(i)
+    if not result:
         return None
-    return ape
+    return result
 
 def result_array(probe, limit, ape_code, offset=0):
     """
@@ -271,7 +272,7 @@ def search():
                 "@context": "http://www.w3.org/ns/hydra/context.jsonld",
                 "@id": request.url,
                 "@type": "Collection",
-                "totalItems": results.__len__(),
+                "totalItems": count,
                 "member":
                     results
             })
@@ -346,7 +347,8 @@ def page_search():
     else:
         obj["view"]['previous'] = '%s?page=%d&per_page=%d&probe=%s%s' % (request.path,
                                                                          page,
-                                                                         per_page,                                                                       probe,
+                                                                         per_page,
+                                                                         probe,
                                                                          ape_arg_for_url)
     # MAKE NEXT URL
     if page * per_page + per_page > count:

@@ -212,7 +212,7 @@ def result_array(probe, limit, ape_code, offset=0):
     sql_query_count = "SELECT  COUNT(*) FROM identity"
 
     sql_query_probe_condition = '1'
-    if probe :
+    if probe:
         sql_query_probe_condition = "denomination LIKE {} OR MATCH(denomination) AGAINST ({} IN NATURAL LANGUAGE MODE)".format(
                                     "'{0}%'".format(probe),
                                     "'{0}%'".format(probe))
@@ -221,8 +221,10 @@ def result_array(probe, limit, ape_code, offset=0):
             sql_query_probe_condition = "siren = {} OR ".format(pre_cast_integer(probe)) + sql_query_probe_condition
 
     sql_query_ape_code_condition = "1"
-    if ape_code:
-        sql_query_ape_code_condition = " ape IN {}".format(tuple(ape_code))
+    if len(ape_code) > 1:
+        sql_query_ape_code_condition = "ape IN {}".format(tuple(ape_code))
+    elif len(ape_code) == 1:
+        sql_query_ape_code_condition = "ape = {}".format(ape_code[0])
 
     sql_query_condition = " WHERE (" + sql_query_probe_condition + ") AND (" + sql_query_ape_code_condition + ") "
     sql_query_limit_and_offset = " LIMIT {} OFFSET {};".format(limit, offset)

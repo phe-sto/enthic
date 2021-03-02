@@ -193,13 +193,14 @@ def get_corresponding_ape_codes(ape_code):
     result = list()
     for one_code in ape_code.split(","):
         for i in APE_CODE:
-            if re.match(one_code,APE_CODE[i][0]):
+            if re.match(one_code, APE_CODE[i][0]):
                 result.append(i)
     if not result:
         return None
     return result
 
-def result_array(probe, limit, ape_code, offset=0):
+
+def result_array(probe, limit, ape_code=[], offset=0):
     """
     List the result of the search in the database.
 
@@ -216,8 +217,8 @@ def result_array(probe, limit, ape_code, offset=0):
         sql_query_probe_condition = "denomination LIKE {} OR MATCH(denomination) AGAINST ({} IN NATURAL LANGUAGE MODE)".format(
                                     "'{0}%'".format(probe),
                                     "'{0}%'".format(probe))
-        #If probe is an interger, it might be a siren number, so we add this condition to the query
-        if pre_cast_integer(probe) :
+        # If probe is an interger, it might be a siren number, so we add this condition to the query
+        if pre_cast_integer(probe):
             sql_query_probe_condition = "siren = {} OR ".format(pre_cast_integer(probe)) + sql_query_probe_condition
 
     sql_query_ape_code_condition = "1"
@@ -233,6 +234,7 @@ def result_array(probe, limit, ape_code, offset=0):
         count = fetchall(sql_query_count + sql_query_condition)
         companies = fetchall(sql_query_select_part + sql_query_condition + sql_query_limit_and_offset)
         return count[0][0], tuple(CompanyIdentity(*company).__dict__ for company in companies)
+
 
 @application.route("/company/search", methods=['POST'], strict_slashes=False)
 @insert_request
@@ -269,7 +271,7 @@ def search():
         ########################################################################
         # CORRECT JSON
         else:
-            count, results = result_array(json_data["probe"], json_data["limit"], None)
+            count, results = result_array(json_data["probe"], json_data["limit"])
             return OKJSONResponse({
                 "@context": "http://www.w3.org/ns/hydra/context.jsonld",
                 "@id": request.url,
@@ -304,13 +306,13 @@ def page_search():
         return ErrorJSONResponse('per_page parameter should be > 0')
     probe = request.args.get('probe', "")
 
-    #Check consistency of 'ape' argument, and convert it to corresponding database ape codes
+    # Check consistency of 'ape' argument, and convert it to corresponding database ape codes
     requested_ape_codes = request.args.get('ape', "")
-    ape_code = None
+    ape_code = list()
     ape_arg_for_url = ''
     if requested_ape_codes:
         ape_code = get_corresponding_ape_codes(requested_ape_codes)
-        if not ape_code :
+        if not ape_code:
             return ErrorJSONResponse("ape parameter's value doesn't correspond to any known APE code")
         ape_arg_for_url = "&ape={}".format(requested_ape_codes)
 
@@ -320,7 +322,7 @@ def page_search():
         count, results = future_list.result()
 
     if count < page * per_page:
-        return ErrorJSONResponse("Page number {} exceed number of page given result per page is {} and result count is {}".format(page+1, per_page, count))
+        return ErrorJSONResponse("Page number {} exceed number of page given result per page is {} and result count is {}".format(page + 1, per_page, count))
 
     last_page = (count / per_page) + 1
     ############################################################################
@@ -329,17 +331,17 @@ def page_search():
            "@id": request.url,
            "@type": "Collection",
            "totalItems": count, "view": {
-            "@id": request.full_path,
-            "@type": "PartialCollectionView",
-            "first": '%s?page=1&per_page=%d&probe=%s%s' % (request.path,
-                                                           per_page,
-                                                           probe,
-                                                           ape_arg_for_url),
-            "last": '%s?page=%d&per_page=%d&probe=%s%s' % (request.path,
-                                                           last_page,
-                                                           per_page,
-                                                           probe,
-                                                           ape_arg_for_url)},
+               "@id": request.full_path,
+               "@type": "PartialCollectionView",
+               "first": '%s?page=1&per_page=%d&probe=%s%s' % (request.path,
+                                                              per_page,
+                                                              probe,
+                                                              ape_arg_for_url),
+               "last": '%s?page=%d&per_page=%d&probe=%s%s' % (request.path,
+                                                              last_page,
+                                                              per_page,
+                                                              probe,
+                                                              ape_arg_for_url)},
            "member": results
            }
     ############################################################################
@@ -361,7 +363,6 @@ def page_search():
                                                                      per_page,
                                                                      probe,
                                                                      ape_arg_for_url)
-
 
     return OKJSONResponse(obj)
 

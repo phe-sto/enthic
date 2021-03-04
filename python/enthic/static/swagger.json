@@ -353,6 +353,14 @@
           },
           {
             "in": "query",
+            "name": "ape",
+            "required": false,
+            "default": "",
+            "type": "string",
+            "description": "Comma separated list of APE codes for filtering result."
+          },
+          {
+            "in": "query",
             "name": "per_page",
             "required": false,
             "default": 30,

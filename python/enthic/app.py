@@ -14,8 +14,12 @@ Coding Rules:
 """
 
 import concurrent.futures
+import re
 from json import loads, load
 from os.path import dirname, join
+
+from flask import Flask, request
+from flask_cors import CORS
 
 from enthic.company.company import CompanyIdentity
 from enthic.company.denomination_company import (
@@ -28,14 +32,11 @@ from enthic.company.siren_company import (
     AverageSirenCompany,
     AllSirenCompany
 )
-from enthic.database.fetch import fetchall, fetchone
+from enthic.database.fetch import fetchall
 from enthic.decorator.insert_request import insert_request
 from enthic.ontology import ONTOLOGY, APE_CODE
 from enthic.utils.error_json_response import ErrorJSONResponse
-from enthic.utils.not_found_response import NotFoundJSONResponse
 from enthic.utils.ok_json_response import OKJSONResponse
-from flask import Flask, request
-from flask_cors import CORS
 
 ################################################################################
 # FLASK INITIALISATION
@@ -161,7 +162,7 @@ def ontology():
 @insert_request
 def ape():
     """
-    Return the all the known APE code.
+    Return all known APE codes.
 
        :return: HTTP Response as application/json. the ontology as JSON.
     """
@@ -178,22 +179,61 @@ def pre_cast_integer(probe):
     return str(probe) if probe.__class__ is int else probe if probe.isnumeric() is True else None
 
 
-def result_array(probe, limit, offset=0):
+def get_corresponding_ape_codes(ape_code):
+    """
+    APE codes are not saved in the original format.
+    This function returns codes that are in the database
+    and corresponds to the given APE code or it's sub-categories
+    It returns None if the given APE code does not exist
+
+        :param ape_code : the list of APE for the filter, comma separated
+
+        :return: list of corresponding APE_CODE in database
+    """
+    result = list()
+    for one_code in ape_code.split(","):
+        for i in APE_CODE:
+            if re.match(one_code, APE_CODE[i][0]):
+                result.append(i)
+    if not result:
+        return None
+    return result
+
+
+def result_array(probe, limit, ape_code=[], offset=0):
     """
     List the result of the search in the database.
 
        :param probe: A string to match.
        :param limit: Integer, the limit of result to return.
+       :param ape_code: List of APE codes to match or None
        :param offset: Integer, offset of the select SQL request.
     """
+    sql_query_select_part = "SELECT siren, denomination, ape, postal_code, town FROM identity"
+    sql_query_count = "SELECT  COUNT(*) FROM identity"
+
+    sql_query_probe_condition = '1'
+    if probe:
+        sql_query_probe_condition = "denomination LIKE {} OR MATCH(denomination) AGAINST ({} IN NATURAL LANGUAGE MODE)".format(
+                                    "'{0}%'".format(probe),
+                                    "'{0}%'".format(probe))
+        # If probe is an interger, it might be a siren number, so we add this condition to the query
+        if pre_cast_integer(probe):
+            sql_query_probe_condition = "siren = {} OR ".format(pre_cast_integer(probe)) + sql_query_probe_condition
+
+    sql_query_ape_code_condition = "1"
+    if len(ape_code) > 1:
+        sql_query_ape_code_condition = "ape IN {}".format(tuple(ape_code))
+    elif len(ape_code) == 1:
+        sql_query_ape_code_condition = "ape = {}".format(ape_code[0])
+
+    sql_query_condition = " WHERE (" + sql_query_probe_condition + ") AND (" + sql_query_ape_code_condition + ") "
+    sql_query_limit_and_offset = " LIMIT {} OFFSET {};".format(limit, offset)
+
     with application.app_context():
-        companies = fetchall("""SELECT siren, denomination, ape, postal_code, town
-                        FROM identity WHERE siren = %s
-                        OR denomination LIKE %s
-                        OR MATCH(denomination) AGAINST (%s IN NATURAL LANGUAGE MODE)
-                        LIMIT %s OFFSET %s;""", (pre_cast_integer(probe), "{0}%".format(probe),
-                                                 "{0}%".format(probe), limit, offset))
-    return tuple(CompanyIdentity(*company).__dict__ for company in companies)
+        count = fetchall(sql_query_count + sql_query_condition)
+        companies = fetchall(sql_query_select_part + sql_query_condition + sql_query_limit_and_offset)
+        return count[0][0], tuple(CompanyIdentity(*company).__dict__ for company in companies)
 
 
 @application.route("/company/search", methods=['POST'], strict_slashes=False)
@@ -231,12 +271,12 @@ def search():
         ########################################################################
         # CORRECT JSON
         else:
-            results = result_array(json_data["probe"], json_data["limit"])
+            count, results = result_array(json_data["probe"], json_data["limit"])
             return OKJSONResponse({
                 "@context": "http://www.w3.org/ns/hydra/context.jsonld",
                 "@id": request.url,
                 "@type": "Collection",
-                "totalItems": results.__len__(),
+                "totalItems": count,
                 "member":
                     results
             })
@@ -260,40 +300,48 @@ def page_search():
 
     page = int(request.args.get('page', '1')) - 1  #  TO COUNT
     if page < 0:
-        ErrorJSONResponse('page parameter should be > 0')
+        return ErrorJSONResponse('page parameter should be > 0')
     per_page = int(request.args.get('per_page', '30'))
     if per_page < 1:
-        ErrorJSONResponse('per_page parameter should be > 0')
+        return ErrorJSONResponse('per_page parameter should be > 0')
     probe = request.args.get('probe', "")
+
+    # Check consistency of 'ape' argument, and convert it to corresponding database ape codes
+    requested_ape_codes = request.args.get('ape', "")
+    ape_code = list()
+    ape_arg_for_url = ''
+    if requested_ape_codes:
+        ape_code = get_corresponding_ape_codes(requested_ape_codes)
+        if not ape_code:
+            return ErrorJSONResponse("ape parameter's value doesn't correspond to any known APE code")
+        ape_arg_for_url = "&ape={}".format(requested_ape_codes)
+
     with concurrent.futures.ThreadPoolExecutor() as executor:
-        future_list = executor.submit(result_array, probe, per_page, offset=page * per_page)
-        count, = fetchone("""SELECT COUNT(*)
-                            FROM identity WHERE siren = %s
-                            OR denomination LIKE %s
-                            OR MATCH(denomination) AGAINST (%s IN NATURAL LANGUAGE MODE)""",
-                          (pre_cast_integer(probe), "{0}%".format(probe), "{0}%".format(probe)))
-        results = future_list.result()
+        future_list = executor.submit(result_array, probe, per_page, ape_code,
+                                      offset=page * per_page)
+        count, results = future_list.result()
 
     if count < page * per_page:
-        return NotFoundJSONResponse()
-    if per_page != 0:
-        last_per_page = count / per_page + 1
-    else:
-        last_per_page = 0
+        return ErrorJSONResponse("Page number {} exceed number of page given result per page is {} and result count is {}".format(page + 1, per_page, count))
+
+    last_page = (count / per_page) + 1
     ############################################################################
     # OBJECT STORING RESPONSE
     obj = {"@context": "http://www.w3.org/ns/hydra/context.jsonld",
            "@id": request.url,
            "@type": "Collection",
            "totalItems": count, "view": {
-            "@id": request.full_path,
-            "@type": "PartialCollectionView",
-            "first": '%s?page=1&per_page=%d&probe=%s' % (request.path,
-                                                         per_page, probe),
-            "last": '%s?page=%d&per_page=%d&probe=%s' % (request.path,
-                                                         last_per_page,
-                                                         per_page,
-                                                         probe)},
+               "@id": request.full_path,
+               "@type": "PartialCollectionView",
+               "first": '%s?page=1&per_page=%d&probe=%s%s' % (request.path,
+                                                              per_page,
+                                                              probe,
+                                                              ape_arg_for_url),
+               "last": '%s?page=%d&per_page=%d&probe=%s%s' % (request.path,
+                                                              last_page,
+                                                              per_page,
+                                                              probe,
+                                                              ape_arg_for_url)},
            "member": results
            }
     ############################################################################
@@ -301,18 +349,21 @@ def page_search():
     if page == 0:
         obj["view"]['previous'] = ''
     else:
-        obj["view"]['previous'] = '%s?page=%d&per_page=%d&probe=%s' % (request.path,
-                                                                       page,
-                                                                       per_page,
-                                                                       probe)
+        obj["view"]['previous'] = '%s?page=%d&per_page=%d&probe=%s%s' % (request.path,
+                                                                         page,
+                                                                         per_page,
+                                                                         probe,
+                                                                         ape_arg_for_url)
     # MAKE NEXT URL
     if page * per_page + per_page > count:
         obj["view"]["next"] = ''
     else:
-        obj["view"]["next"] = '%s?page=%d&per_page=%d&probe=%s' % (request.path,
-                                                                   page + 2,
-                                                                   per_page,
-                                                                   probe)
+        obj["view"]["next"] = '%s?page=%d&per_page=%d&probe=%s%s' % (request.path,
+                                                                     page + 2,
+                                                                     per_page,
+                                                                     probe,
+                                                                     ape_arg_for_url)
+
     return OKJSONResponse(obj)
 
 

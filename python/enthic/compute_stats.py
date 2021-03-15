@@ -11,17 +11,20 @@ Coding Rules:
 - No output or print, just log and files.
 """
 import math
-from enthic.arbre_compte_de_resultat import TREE_VIEW
+from enthic.tree_french_compte_de_resultat import TREE_VIEW
+
 
 def convert_data_to_tree(raw_data):
     """
-    Returns given data as a tree like "arbre_compte_de_resultat"
+    Returns given data as a tree like "tree_french_compte_de_resultat"
+
         :param raw_data : data as enthic API returns it
         :return: given data as a tree
     """
     new_tree = TREE_VIEW
     recursive_fill_tree(new_tree, raw_data)
     return new_tree
+
 
 def recursive_fill_tree(tree_item, raw_data):
     """
@@ -30,7 +33,7 @@ def recursive_fill_tree(tree_item, raw_data):
         :param raw_data : data in Enthic API format
     """
 
-    # Begin to fill children if there is children
+    # Begin to fill children if there are children
     if 'children' in tree_item:
         for child_name in tree_item["children"]:
             recursive_fill_tree(tree_item["children"][child_name], raw_data)
@@ -47,10 +50,12 @@ def recursive_fill_tree(tree_item, raw_data):
                 break
         i = i + 1
 
+
 def check_tree_data(tree_item):
     """
     Check and complete data in the given tree_item
-        :param tree_item : item of a tree like the one in "arbre_compte_de_resultat.json" file,
+
+        :param tree_item : item of a tree like the one in "tree_french_compte_de_resultat.py" file,
            where every child should have been filled with data, which consist of a new member like :
             data = {
               code : string,
@@ -61,10 +66,10 @@ def check_tree_data(tree_item):
     """
     if 'data' not in tree_item:
         tree_item['data'] = {
-            "code" : tree_item['codeLiasses'],
-            "description" : "non fourni",
-            "value" : float('nan'),
-            "status" : "missing"}
+            "code": tree_item['codeLiasses'],
+            "description": "non fourni",
+            "value": float('nan'),
+            "status": "missing"}
 
     if "sign" not in tree_item:
         tree_item['sign'] = 1
@@ -80,10 +85,10 @@ def check_tree_data(tree_item):
     absolute_error = 10
 
     # Compute ourself tree_item's value from its children
-    computed_sum = 0 # Result from official children's value
-    computed_sum_from_computed = 0 # Result from computed children's value
-    computed_sum_without_sign = 0 # Result by adding all children (no substraction)
-    child_missing_count = 0 # Count of child without value officially given
+    computed_sum = 0  # Result from official children's value
+    computed_sum_from_computed = 0  # Result from computed children's value
+    computed_sum_without_sign = 0  # Result by adding all children (no substraction)
+    child_missing_count = 0  # Count of child without value officially given
     for child_name in tree_item['children']:
         child = tree_item['children'][child_name]
         if math.isnan(child['data']['value']):
@@ -97,11 +102,11 @@ def check_tree_data(tree_item):
 
     if not math.isnan(tree_item['data']['value']):
         value = tree_item['data']['value']
-        if value == 0 :
+        if value == 0:
             value = 0.01
         # If official value match computed value from official children's value with less than 0.5% error
         if (abs((computed_sum - value) / value) < relative_error
-             or abs(computed_sum - value) < absolute_error):
+                or abs(computed_sum - value) < absolute_error):
             tree_item['data']['status'] = "checked"
             # Fix children values if needed
             if child_missing_count > 0:
@@ -149,9 +154,11 @@ def check_tree_data(tree_item):
     if computed_sum != tree_item['data']['value']:
         tree_item['data']['computedValue'] = computed_sum_from_computed
 
+
 def set_to_zero_computed(tree_item):
     """
     set value of given item and it's children to zero when it hasn't another value
+    
         :param tree_item : item to set to zero
     """
     if math.isnan(tree_item['data']['value']) and ('computedValue' not in tree_item['data'] or tree_item['data']['computedValue'] == 0):
@@ -161,18 +168,22 @@ def set_to_zero_computed(tree_item):
             for child_name in tree_item['children']:
                 set_to_zero_computed(tree_item['children'][child_name])
 
+
 def flip_sign(item):
     """
     Flip sign of given item
+
         :param item : item to flip
     """
     if item['sign'] == -1:
         item['data']['value'] = -item['data']['value']
         item['data']['status'] = "signFlipped"
 
+
 def compute_annual_share_score(tree):
     """
     Computes the share score of given data
+
         :param tree: data from which compute the score
     """
     # Retrieve needed values
@@ -195,6 +206,7 @@ def compute_annual_share_score(tree):
 
     return float('nan')
 
+
 def compute_salary_scores(tree):
     """
     Computes some scores related to salary
@@ -213,6 +225,7 @@ def compute_salary_scores(tree):
             salary_percent = (cotisations_sociales + salaires) / charges['data']['value']
 
     return salary_level, salary_percent
+
 
 def compute_company_statistics(company_data):
     """

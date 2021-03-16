@@ -11,12 +11,12 @@ Coding Rules:
 - No output or print, just log and files.
 """
 import math
-from enthic.tree_french_compte_de_resultat import TREE_VIEW
+from enthic.tree_french_income_statement import TREE_VIEW
 
 
 def convert_data_to_tree(raw_data):
     """
-    Returns given data as a tree like "tree_french_compte_de_resultat"
+    Returns given data as a tree like "tree_french_income_statement"
 
         :param raw_data : data as enthic API returns it
         :return: given data as a tree
@@ -28,7 +28,7 @@ def convert_data_to_tree(raw_data):
 
 def recursive_fill_tree(tree_item, raw_data):
     """
-    Fill the given item with data from raw_data
+    Fill the given tree_item with data from raw_data
         :param tree_item : item to fill, and its children
         :param raw_data : data in Enthic API format
     """
@@ -55,7 +55,7 @@ def check_tree_data(tree_item):
     """
     Check and complete data in the given tree_item
 
-        :param tree_item : item of a tree like the one in "tree_french_compte_de_resultat.py" file,
+        :param tree_item : item of a tree like the one in "tree_french_income_statement.py" file,
            where every child should have been filled with data, which consist of a new member like :
             data = {
               code : string,
@@ -158,7 +158,7 @@ def check_tree_data(tree_item):
 def set_to_zero_computed(tree_item):
     """
     set value of given item and it's children to zero when it hasn't another value
-    
+
         :param tree_item : item to set to zero
     """
     if math.isnan(tree_item['data']['value']) and ('computedValue' not in tree_item['data'] or tree_item['data']['computedValue'] == 0):
@@ -185,6 +185,7 @@ def compute_annual_share_score(tree):
     Computes the share score of given data
 
         :param tree: data from which compute the score
+        :return: share score value, or NaN if it cannot be computed
     """
     # Retrieve needed values
     participation = tree['children']['ParticipationSalariesAuxResultats']['data']['value']
@@ -210,7 +211,9 @@ def compute_annual_share_score(tree):
 def compute_salary_scores(tree):
     """
     Computes some scores related to salary
+
         :param tree: data from which compute the score
+        :return: two values corresponding to salary scores, or NaN if they cannot be computed
     """
     charges = tree['children']['ResultatAvantImpot']['children']['ResultatExploitation']['children']['ChargesExploitation']
 
@@ -230,7 +233,9 @@ def compute_salary_scores(tree):
 def compute_company_statistics(company_data):
     """
     Computes some statistics and scores from the given company's data
+
         :param company_data: data from which compute statistics and score
+        :return: structured data containing company's computed scores
     """
     result_list = []
     for one_year_data in company_data.json['declarations']:
@@ -239,9 +244,9 @@ def compute_company_statistics(company_data):
         check_tree_data(tree)
         share_score = compute_annual_share_score(tree)
         salary_level, salary_percent = compute_salary_scores(tree)
-        result_list.append({"year" : one_year_data['declaration']['value'],
-                            "share_score" : share_score,
-                            "salary_level" : salary_level,
-                            "salary_percent" : salary_percent})
+        result_list.append({"year": one_year_data['declaration']['value'],
+                            "share_score": share_score,
+                            "salary_level": salary_level,
+                            "salary_percent": salary_percent})
 
     return result_list

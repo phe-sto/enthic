@@ -137,7 +137,15 @@ class Bundle(object):
             str_declaration = str(declaration)
             if hasattr(self, str_declaration) is True:
                 att_declaration = object.__getattribute__(self, str_declaration)
-                att_declaration.append({
+                att_declaration[ONTOLOGY["accounting"][int_account]["code"][int_bundle][0]] = {
+                        JSONGenKey.ACCOUNT: ONTOLOGY["accounting"][int_account][1],
+                        JSONGenKey.VALUE: amount,
+                        JSONGenKey.DESCRIPTION:
+                            ONTOLOGY["accounting"][int_account]["code"][int_bundle][
+                                1]
+                    }
+            else:
+                setattr(self, str_declaration, {
                     ONTOLOGY["accounting"][int_account]["code"][int_bundle][0]: {
                         JSONGenKey.ACCOUNT: ONTOLOGY["accounting"][int_account][1],
                         JSONGenKey.VALUE: amount,
@@ -146,16 +154,6 @@ class Bundle(object):
                                 1]
                     }
                 })
-            else:
-                setattr(self, str_declaration, [{
-                    ONTOLOGY["accounting"][int_account]["code"][int_bundle][0]: {
-                        JSONGenKey.ACCOUNT: ONTOLOGY["accounting"][int_account][1],
-                        JSONGenKey.VALUE: amount,
-                        JSONGenKey.DESCRIPTION:
-                            ONTOLOGY["accounting"][int_account]["code"][int_bundle][
-                                1]
-                    }
-                }])
 
 
 class UniqueBundleCompany(OKJSONResponse, SQLData):
@@ -197,22 +195,18 @@ class UniqueBundleCompany(OKJSONResponse, SQLData):
                 "value": "Euro",
                 "description": "Devise"
             },
-            "financial_data": [
-                {
-                    "di": {
-                        "account": "Compte annuel complet",
-                        "value": -261053.0,
-                        "description": "Résultat de l\u2019exercice (bénéfice ou perte)"
-                    }
+            "financial_data": {
+                "di": {
+                    "account": "Compte annuel complet",
+                    "value": -261053.0,
+                    "description": "Résultat de l\u2019exercice (bénéfice ou perte)"
                 },
-                {
-                    "fs": {
-                        "account": "Compte annuel complet",
-                        "value": 11836.0,
-                        "description": "Achats de marchandises (y compris droits de douane)"
-                    }
+                "fs": {
+                    "account": "Compte annuel complet",
+                    "value": 11836.0,
+                    "description": "Achats de marchandises (y compris droits de douane)"
                 }
-            ]
+            }
         }
         """
         SQLData.__init__(self, sql_request, args)
@@ -258,21 +252,15 @@ class MultipleBundleCompany(OKJSONResponse, SQLData):
                 "value": "Euro",
                 "description": "Devise"
             },
-            "declarations": [
-                {
-                    "declaration": {
-                        "value": 2016,
-                        "description": "Année de déclaration"
-                    },
-                    "financial_data": [
-                        {
-                            "di": {
-                                "account": "Compte annuel complet",
-                                "value": -261053.0,
-                                "description": "Résultat de l\u2019exercice (bénéfice ou perte)"
-                            }
+            "declarations": {
+                "2016" : {
+                    "financial_data": {
+                        "di": {
+                            "account": "Compte annuel complet",
+                            "value": -261053.0,
+                            "description": "Résultat de l\u2019exercice (bénéfice ou perte)"
                         }
-                    ]
+                    }
                 }
             ]
         }
@@ -288,12 +276,8 @@ class MultipleBundleCompany(OKJSONResponse, SQLData):
         """
         SQLData.__init__(self, sql_request, args)
         _bundles = Bundle(*[bundle[5:] for bundle in self.sql_results]).__dict__
-        self.declarations = {"declarations": []}
+        self.declarations = {"declarations": {}}
         for year, _bundle in _bundles.items():
-            self.declarations["declarations"].append(
-                {"declaration": {JSONGenKey.VALUE: int(year),
-                                 JSONGenKey.DESCRIPTION: "Année de déclaration"},
-                 "financial_data": _bundle},
-            )
+            self.declarations["declarations"][year] = {"financial_data": _bundle}
         OKJSONResponse.__init__(self, {**CompanyIdentity(*self.sql_results[0][:7]).__dict__,
                                        **self.declarations})

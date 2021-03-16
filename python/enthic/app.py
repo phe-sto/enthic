@@ -239,6 +239,10 @@ def result_array(probe, limit, ape_code=[], offset=0):
 def get_siren(first_letters):
     """
     Get siren of companies whose denomination starts with the given first letters
+
+        :param first_letters: A string to match companies name.
+
+        :return: list of siren number of companies found
     """
     first_letters += '%'
     with application.app_context():
@@ -383,6 +387,8 @@ def page_search():
 def compute(first_letters):
     """
     Computes scores and saves them into the database.
+
+       :param first_letters: A string to match companies name.
 
        :return: HTTP Response as application/json
     """

@@ -13,13 +13,15 @@ Coding Rules:
 - No output or print, just log and files.
 """
 
+from flask import abort
 from re import compile
 
 from enthic.database.mysql_data import SQLData
-from enthic.ontology import ONTOLOGY, APE_CODE
+from enthic.ontology import ONTOLOGY, APE_CODE, CODE_MOTIF, CODE_CONFIDENTIALITE, INFO_TRAITEMENT
 from enthic.utils.error_json_response import ErrorJSONResponse
+from enthic.utils.INPI_data_enhancer import decrypt_code_motif
 from enthic.utils.ok_json_response import OKJSONResponse
-from flask import abort
+
 
 year_re = compile(r"^\d{4}$")  # REGEX OF A YEAR
 denomination_re = compile(r"^.*$")  # TODO: DEFINE A SAFER REGEX FOR DENOMINATION
@@ -157,6 +159,45 @@ class Bundle(object):
                     }
                 })
 
+def get_accountability_metadata(siren):
+    """
+    Return all Accountability Metadata for the matching company
+
+        :param siren : siren to look for the corresponding company_siren
+        :return: company's metadata in a nice JSON-like structure
+    """
+    sql_request = """
+        SELECT declaration, code_motif, code_confidentialite, info_traitement
+        FROM `accountability_metadata`
+        WHERE siren = %s"""
+    raw_results = SQLData(sql_request, (siren,)).sql_results
+
+    pretty_results =  {}
+    for declaration, code_motif, code_confidentialite, info_traitement in raw_results:
+        str_year = str(declaration)
+        decrypted_code_motif = decrypt_code_motif(code_motif)
+        pretty_results[str_year] = {
+            "code_motif" : {
+                JSONGenKey.VALUE: decrypted_code_motif
+            },
+            "code_confidentialite" : {
+                JSONGenKey.VALUE: code_confidentialite,
+                JSONGenKey.DESCRIPTION:CODE_CONFIDENTIALITE[code_confidentialite]
+            }
+        }
+
+        if decrypted_code_motif in CODE_MOTIF:
+            pretty_results[str_year]["code_motif"][JSONGenKey.DESCRIPTION] = CODE_MOTIF[decrypted_code_motif]
+
+        if info_traitement != "rien" :
+            pretty_results[str_year]["info_traitement"] = {
+                JSONGenKey.VALUE: info_traitement
+            }
+            if info_traitement in INFO_TRAITEMENT:
+                pretty_results[str_year]["info_traitement"][JSONGenKey.DESCRIPTION] = INFO_TRAITEMENT[info_traitement]
+
+    return pretty_results
+
 
 class UniqueBundleCompany(OKJSONResponse, SQLData):
     """
@@ -281,5 +322,14 @@ class MultipleBundleCompany(OKJSONResponse, SQLData):
         self.declarations = {"declarations": {}}
         for year, _bundle in _bundles.items():
             self.declarations["declarations"][year] = {"financial_data": _bundle}
+
+        # Add metadata to company's data structure
+        accountability_metadata = get_accountability_metadata(self.sql_results[0][0])
+        for year, metadata in accountability_metadata.items():
+            if year in self.declarations["declarations"]:
+                self.declarations["declarations"][year]["metadata"] = metadata
+            else:
+                self.declarations["declarations"][year] = { "metadata" : metadata}
+
         OKJSONResponse.__init__(self, {**CompanyIdentity(*self.sql_results[0][:7]).__dict__,
                                        **self.declarations})

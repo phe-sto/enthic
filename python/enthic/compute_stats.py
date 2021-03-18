@@ -235,14 +235,15 @@ def compute_company_statistics(company_data):
     """
     result_list = []
     for year in company_data.json['declarations']:
-        financial_data = company_data.json['declarations'][year]['financial_data']
-        tree = convert_data_to_tree(financial_data)
-        check_tree_data(tree)
-        share_score = compute_annual_share_score(tree)
-        salary_level, salary_percent = compute_salary_scores(tree)
-        result_list.append({"year": year,
-                            "share_score": share_score,
-                            "salary_level": salary_level,
-                            "salary_percent": salary_percent})
+        if 'financial_data' in company_data.json['declarations'][year] :
+            financial_data = company_data.json['declarations'][year]['financial_data']
+            tree = convert_data_to_tree(financial_data)
+            check_tree_data(tree)
+            share_score = compute_annual_share_score(tree)
+            salary_level, salary_percent = compute_salary_scores(tree)
+            result_list.append({"year": year,
+                                "share_score": share_score,
+                                "salary_level": salary_level,
+                                "salary_percent": salary_percent})
 
     return result_list

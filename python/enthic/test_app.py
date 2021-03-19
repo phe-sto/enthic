@@ -104,6 +104,14 @@ EXISTING_DENOMINATION = tuple(
 NOT_EXISTING_DENOMINATION = tuple(
     denomination + "ZzzzzzZ99996666" for denomination in EXISTING_DENOMINATION)
 
+LETTERS_COUPLE_LIST = []
+for first_letter in range(97,123):
+    for second_letter in range(97,123):
+        for third_letter in range(97,123):
+            LETTERS_COUPLE_LIST.append(chr(first_letter) + chr(second_letter) + chr(third_letter))
+
+# Comment this line to launch compute annual statistics for the whole database
+LETTERS_COUPLE_LIST = ['aa', 'aba', 'abb', 'abc', 'abd', 'abe', 'abf' ]
 
 def test_ok_json_response():
     """
@@ -383,7 +391,7 @@ def test_denomination_year(host, denomination, year):
        :param year: Parametrise fixture of the year to return.
     """
     response = get("http://" + host + "/company/denomination/" + denomination + "/" + str(year))
-    assert response.status_code == 200, "WRONG HTTP RETURN CODE"
+    assert response.status_code == 200, "WRONG HTTP RETURN CODE %s INSTEAD OF 200" % response.status_code
     assert loads(response.text) is not None, "NOT RETURNING A JSON"
 
 
@@ -415,6 +423,20 @@ def test_denomination_wrong_year(host, denomination, year):
     """
     response = get("http://" + host + "/company/denomination/" + denomination + "/" + str(year))
     assert response.status_code == 400, "WRONG HTTP RETURN CODE"
+    assert loads(response.text) is not None, "NOT RETURNING A JSON"
+
+
+@pytest.mark.parametrize("first_letters", LETTERS_COUPLE_LIST)
+def test_compute_annual_statistics(host, first_letters):
+    """
+    Test the /company/denomination/year endpoint. Should return a JSON and RC 200.
+
+       :param host: Fixture of the API host.
+       :param denomination: Parametrise fixture of a company official name.
+       :param year: Parametrise fixture of the year to return.
+    """
+    response = get("http://" + host + "/compute/" + first_letters)
+    assert response.status_code == 200, "WRONG HTTP RETURN CODE %s INSTEAD OF 200" % response.status_code
     assert loads(response.text) is not None, "NOT RETURNING A JSON"
 
 
@@ -535,7 +557,7 @@ def test_search_wrong_type(host, body):
     assert loads(response.text) is not None, "NOT RETURNING A JSON"
 
 
-@pytest.mark.parametrize("probe,per_page", [(probe, randint(0, 40)) for probe in
+@pytest.mark.parametrize("probe,per_page", [(probe, randint(1, 40)) for probe in
                                             EXISTING_DENOMINATION + EXISTING_SIREN +
                                             NOT_EXISTING_SIREN + NOT_EXISTING_DENOMINATION])
 def test_search_page(host, probe, per_page):
@@ -550,7 +572,7 @@ def test_search_page(host, probe, per_page):
     response = get(
         "http://" + host + "/company/search/page?probe=%s&per_page=%s" % (probe, per_page))
     assert loads(response.text) is not None, "NOT RETURNING A JSON, INSTEAD: %s" % response.text
-    assert response.status_code == 200, "WRONG HTTP RETURN CODE"
+    assert response.status_code == 200, "WRONG HTTP RETURN CODE, got %s with comment : %s" % (response.status_code, response.text)
 
 
 @pytest.mark.parametrize("probe", EXISTING_DENOMINATION + EXISTING_SIREN)

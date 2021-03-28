@@ -17,7 +17,7 @@ import concurrent.futures
 import re
 from json import loads, load
 from os.path import dirname, join
-
+from math import isnan
 from flask import Flask, request
 from flask_cors import CORS
 
@@ -32,6 +32,7 @@ from enthic.company.siren_company import (
     AverageSirenCompany,
     AllSirenCompany
 )
+from enthic.compute_stats import compute_company_statistics
 from enthic.database.fetch import fetchall
 from enthic.decorator.insert_request import insert_request
 from enthic.ontology import ONTOLOGY, APE_CODE
@@ -235,6 +236,21 @@ def result_array(probe, limit, ape_code=[], offset=0):
         companies = fetchall(sql_query_select_part + sql_query_condition + sql_query_limit_and_offset)
         return count[0][0], tuple(CompanyIdentity(*company).__dict__ for company in companies)
 
+def get_siren(first_letters):
+    """
+    Get siren of companies whose denomination starts with the given first letters
+
+        :param first_letters: A string to match companies name.
+
+        :return: list of siren number of companies found
+    """
+    first_letters += '%'
+    with application.app_context():
+        siren_list = fetchall("""SELECT siren
+                        FROM identity
+                        WHERE denomination LIKE %s LIMIT 1000000""", (first_letters,))
+
+    return siren_list
 
 @application.route("/company/search", methods=['POST'], strict_slashes=False)
 @insert_request
@@ -366,6 +382,39 @@ def page_search():
 
     return OKJSONResponse(obj)
 
+@application.route("/compute/<string:first_letters>", methods=['GET'], strict_slashes=False)
+@insert_request
+def compute(first_letters):
+    """
+    Computes scores and saves them into the database.
+
+       :param first_letters: A string to match companies name.
+
+       :return: HTTP Response as application/json
+    """
+    result_list = []
+    result = []
+    for siren in get_siren(first_letters):
+        company_data = company_siren(siren[0])
+        scores = compute_company_statistics(company_data)
+        result_list.append({"siren" : siren[0], "scores" : scores})
+        for score in scores:
+            if not isnan(score["share_score"]):
+                result.append((siren[0], score["year"], 1, score["share_score"]))
+            if not isnan(score["salary_level"]):
+                result.append((siren[0], score["year"], 3, score["salary_level"]))
+            if not isnan(score["salary_percent"]):
+                result.append((siren[0], score["year"], 2, score["salary_percent"]))
+
+    with application.app_context():
+        from enthic.database.mysql import mysql
+        cur = mysql.connection.cursor()
+        sql_replace_query = "REPLACE INTO `annual_statistics`(`siren`, `declaration`, `stats_type`, `value`) VALUES (%s, %s, %s, %s)"
+        values = tuple(result)
+        cur.executemany(sql_replace_query, values)
+        mysql.connection.commit()
+        cur.close()
+    return OKJSONResponse(result)
 
 @application.route('/<path:path>', strict_slashes=False)
 @insert_request

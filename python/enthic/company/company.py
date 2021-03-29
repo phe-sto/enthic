@@ -32,6 +32,7 @@ class JSONGenKey:
     VALUE = "value"
     DESCRIPTION = "description"
     ACCOUNT = "account"
+    CODE = "code"
 
 
 class YearCompany:
@@ -105,8 +106,9 @@ class CompanyIdentity(object):
         self.siren = {JSONGenKey.VALUE: "%09d" % args[0], JSONGenKey.DESCRIPTION: "SIREN"}
         self.denomination = {JSONGenKey.VALUE: args[1], JSONGenKey.DESCRIPTION: "Dénomination"}
         try:
-            self.ape = {JSONGenKey.VALUE: APE_CODE[args[2]][1],
-                        JSONGenKey.DESCRIPTION: "Code Activité Principale Exercée (NAF)"}
+            self.ape = {JSONGenKey.VALUE: APE_CODE[args[2]][1] + " (" + str(APE_CODE[args[2]][0]) + ")",
+                        JSONGenKey.DESCRIPTION: "Code Activité Principale Exercée (NAF)",
+                        JSONGenKey.CODE: APE_CODE[args[2]][0]}
         except KeyError:
             self.ape = {JSONGenKey.VALUE: "{}, Code APE inconnu".format(args[2]),
                         JSONGenKey.DESCRIPTION: "Code Activité Principale Exercée (NAF)"}

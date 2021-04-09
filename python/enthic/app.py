@@ -214,13 +214,14 @@ def result_array(probe, limit, ape_code=[], offset=0):
     sql_query_count = "SELECT  COUNT(*) FROM identity"
 
     sql_query_probe_condition = '1'
+    sql_arguments = {}
     if probe:
-        sql_query_probe_condition = "denomination LIKE {} OR MATCH(denomination) AGAINST ({} IN NATURAL LANGUAGE MODE)".format(
-                                    "'{0}%'".format(probe),
-                                    "'{0}%'".format(probe))
+        sql_query_probe_condition = "denomination LIKE %(probe)s OR MATCH(denomination) AGAINST (%(probe)s IN NATURAL LANGUAGE MODE)"
+        sql_arguments['probe'] = str(probe) + '%'
         # If probe is an interger, it might be a siren number, so we add this condition to the query
         if pre_cast_integer(probe):
-            sql_query_probe_condition = "siren = {} OR ".format(pre_cast_integer(probe)) + sql_query_probe_condition
+            sql_query_probe_condition = "siren = %(siren)s OR " + sql_query_probe_condition
+            sql_arguments['siren'] = int(probe)
 
     sql_query_ape_code_condition = "1"
     if len(ape_code) > 1:
@@ -232,8 +233,8 @@ def result_array(probe, limit, ape_code=[], offset=0):
     sql_query_limit_and_offset = " LIMIT {} OFFSET {};".format(limit, offset)
 
     with application.app_context():
-        count = fetchall(sql_query_count + sql_query_condition)
-        companies = fetchall(sql_query_select_part + sql_query_condition + sql_query_limit_and_offset)
+        count = fetchall(sql_query_count + sql_query_condition, args=sql_arguments)
+        companies = fetchall(sql_query_select_part + sql_query_condition + sql_query_limit_and_offset, args=sql_arguments)
         return count[0][0], tuple(CompanyIdentity(*company).__dict__ for company in companies)
 
 def get_siren(first_letters):

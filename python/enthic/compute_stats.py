@@ -39,17 +39,13 @@ def recursive_fill_tree(tree_item, raw_data):
             recursive_fill_tree(tree_item["children"][child_name], raw_data)
 
     # Find corresponding value from raw_data to add to tree_item
-    i = 0
-    while i < len(raw_data):
-        for code in raw_data[i]:
-            if code in tree_item["codeLiasses"]:
-                tree_item['data'] = raw_data[i][code]
-                tree_item['data']["status"] = "official"
-                tree_item['data']['code'] = code
-                del raw_data[i]
-                break
-        i = i + 1
-
+    for code in raw_data:
+        if code in tree_item["codeLiasses"]:
+            tree_item['data'] = raw_data[code]
+            tree_item['data']["status"] = "official"
+            tree_item['data']['code'] = code
+            del raw_data[code]
+            break
 
 def check_tree_data(tree_item):
     """
@@ -238,13 +234,13 @@ def compute_company_statistics(company_data):
         :return: structured data containing company's computed scores
     """
     result_list = []
-    for one_year_data in company_data.json['declarations']:
-        financial_data = one_year_data['financial_data']
+    for year in company_data.json['declarations']:
+        financial_data = company_data.json['declarations'][year]['financial_data']
         tree = convert_data_to_tree(financial_data)
         check_tree_data(tree)
         share_score = compute_annual_share_score(tree)
         salary_level, salary_percent = compute_salary_scores(tree)
-        result_list.append({"year": one_year_data['declaration']['value'],
+        result_list.append({"year": year,
                             "share_score": share_score,
                             "salary_level": salary_level,
                             "salary_percent": salary_percent})

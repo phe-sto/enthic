@@ -503,8 +503,8 @@ def test_search(host, probe, limit):
        :param limit: Parametrize fixture of limit of result to return.
     """
     response = post("http://" + host + "/company/search/", dumps({"probe": probe, "limit": limit}))
+    assert response.status_code == 200, "WRONG HTTP RETURN CODE FOR PROBE = {}, LIMIT = {}" % (probe, limit)
     assert loads(response.text) is not None, "NOT RETURNING A JSON, INSTEAD: %s" % response.text
-    assert response.status_code == 200, "WRONG HTTP RETURN CODE"
 
 
 @pytest.mark.parametrize("probe,limit", [(choice(digits), randint(0, 1000)) for _ in range(0, 100)])
@@ -516,10 +516,9 @@ def test_search_random_letter(host, probe, limit):
        :param limit: Parametrize fixture of limit of result to return.
        :param host: Fixture of the API host.
     """
-    letter = choice(ascii_letters)
     response = post("http://" + host + "/company/search/", dumps({"probe": probe,
                                                                   "limit": limit}))
-    assert response.status_code == 200, "WRONG HTTP RETURN CODE WITH PUN {}".format(letter)
+    assert response.status_code == 200, "WRONG HTTP RETURN CODE WITH PROBE = {}, LIMIT = {}".format(letter, probe, limit)
     assert loads(response.text) is not None, "NOT RETURNING A JSON"
 
 

@@ -1841,6 +1841,7 @@ CODE_MOTIF = {
 }
 
 CODE_CONFIDENTIALITE = {
+    -1 : "code non fourni",
     0 : "comptes annuels non confidentiels",
     1 : "comptes annuels confidentiels",
     2 : "compte de résultat confidentiel"

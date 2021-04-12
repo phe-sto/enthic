@@ -69,9 +69,19 @@ basicConfig(level=CONFIG['debugLevel'],
             format="%(asctime)s [%(levelname)8s] %(message)s (%(filename)s:%(lineno)s)")
 
 def read_identity_data(identity_xml_item):
+    """
+    Read the xml's identity item, to extract useful data from it
+
+       :param identity_xml_item: the identity XMl object
+       :return: extracted data as a tuple
+    """
     acc_type, siren, denomination, year, ape, \
     postal_code, town, code_motif, \
     code_confidentialite, info_traitement = (None,) * 10
+
+    # -1 is defined as default value in CODE_CONFIDENTIALITE in ontology.py
+    code_confidentialite = "-1"
+
     for identity in identity_xml_item:  # identite LEVEL
         if identity.tag == '{fr:inpi:odrncs:bilansSaisisXML}siren':
             siren = identity.text
@@ -90,12 +100,11 @@ def read_identity_data(identity_xml_item):
             year = identity.text[:4]
         elif identity.tag == '{fr:inpi:odrncs:bilansSaisisXML}adresse':
             ####################################
-            # PARSING THE 'adresse' FIELD, MANY
-            # DATA-CAPTURE ERROR.
+            # PARSING THE 'adresse' FIELD, MANY DATA-CAPTURE ERROR.
             try:
-                m = RE_POSTAL_CODE_TOWN.match(identity.text)
-                postal_code = m.group(1)
-                town = m.group(2).upper()
+                regex_match = RE_POSTAL_CODE_TOWN.match(identity.text)
+                postal_code = regex_match.group(1)
+                town = regex_match.group(2).upper()
             except TypeError as error:
                 debug("{0}: {1}".format(str(error),
                                         str(identity.text)))
@@ -104,17 +113,17 @@ def read_identity_data(identity_xml_item):
                 try:
                     debug("{0}: {1}".format(str(error),
                                             str(identity.text)))
-                    m = RE_TOWN.match(identity.text)
-                    town = m.group(1).upper()
+                    regex_match = RE_TOWN.match(identity.text)
+                    town = regex_match.group(1).upper()
                     postal_code = 'INCOG'
                 except AttributeError as error:
                     try:
                         debug(
                             "{0}: {1}".format(str(error),
                                               str(identity.text)))
-                        m = RE_POSTAL_CODE.match(identity.text)
+                        regex_match = RE_POSTAL_CODE.match(identity.text)
                         town = 'INCOG'
-                        postal_code = m.group(1)
+                        postal_code = regex_match.group(1)
                     except AttributeError as error:
                         debug(
                             "{0}: {1}".format(str(error),
@@ -144,6 +153,7 @@ def main():
     # CREATING A LIST OF THE BUNDLE XML CODES, ZIP ARE READ IN BtesIO, IN ORDER
     # TO BREAK FILE SYSTEM. TOO MUCH ZIP DISTURB THE FS.
     for file in listdir(CONFIG['inputPath']):  # LIST INPUT FILES
+        print("processing INPI daily zip file", file)
         if file.endswith(".zip"):  # ON RETAIN ZIP FILES
             try:  # SOME BAD ZIP FILE ARE IN HE DATASET
                 input_zip = ZipFile(join(CONFIG['inputPath'], file))

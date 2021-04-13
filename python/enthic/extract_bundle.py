@@ -16,7 +16,7 @@ import xml.etree.ElementTree as ElementTree
 from csv import reader
 from io import BytesIO
 from json import load
-from logging import debug, basicConfig
+from logging import info, debug, basicConfig
 from os import listdir
 from os.path import dirname, join, isdir
 from re import sub, compile
@@ -153,7 +153,7 @@ def main():
     # CREATING A LIST OF THE BUNDLE XML CODES, ZIP ARE READ IN BtesIO, IN ORDER
     # TO BREAK FILE SYSTEM. TOO MUCH ZIP DISTURB THE FS.
     for file in listdir(CONFIG['inputPath']):  # LIST INPUT FILES
-        print("processing INPI daily zip file", file)
+        info("processing INPI daily zip file %s", file)
         if file.endswith(".zip"):  # ON RETAIN ZIP FILES
             try:  # SOME BAD ZIP FILE ARE IN HE DATASET
                 input_zip = ZipFile(join(CONFIG['inputPath'], file))

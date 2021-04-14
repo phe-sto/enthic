@@ -18,6 +18,8 @@ import pytest
 from enthic.utils.error_json_response import ErrorJSONResponse
 from enthic.utils.json_response import JSONResponse
 from enthic.utils.ok_json_response import OKJSONResponse
+from enthic.utils.conversion import CON_APE
+from enthic.ontology import SCORE_DESCRIPTION
 from requests import get, post, delete, put
 
 EXISTING_SIREN_EXISTING_YEAR = ((5420120, 2016), (5450119, 2015),
@@ -105,13 +107,34 @@ NOT_EXISTING_DENOMINATION = tuple(
     denomination + "ZzzzzzZ99996666" for denomination in EXISTING_DENOMINATION)
 
 LETTERS_COUPLE_LIST = []
-for first_letter in range(97,123):
-    for second_letter in range(97,123):
-        for third_letter in range(97,123):
-            LETTERS_COUPLE_LIST.append(chr(first_letter) + chr(second_letter) + chr(third_letter))
+for first_letter in range(97, 123):
+    for second_letter in range(97, 123):
+        for third_letter in range(97, 123):
+            LETTERS_COUPLE_LIST.append(
+                chr(first_letter) + chr(second_letter) + chr(third_letter))
 
 # Comment this line to launch compute annual statistics for the whole database
-LETTERS_COUPLE_LIST = ['aa', 'aba', 'abb', 'abc', 'abd', 'abe', 'abf' ]
+LETTERS_COUPLE_LIST = ['aa', 'aba', 'abb', 'abc', 'abd', 'abe', 'abf']
+
+APE_YEAR_SCORE_LIST = []
+for ape in CON_APE:
+    for year in range(2010, 2020):
+        for score in SCORE_DESCRIPTION:
+            APE_YEAR_SCORE_LIST.append((ape, year, score))
+
+# Comment these lines to launch compute ape deciles everything
+APE_YEAR_SCORE_LIST = [('6820', 2017, 1),
+                       ('6820', 2017, 2),
+                       ('6820', 2017, 3),
+                       ('6820', 2018, 1),
+                       ('6820', 2018, 2),
+                       ('6820', 2018, 3),
+                       ('6820', 2019, 1),
+                       ('6820', 2019, 2),
+                       ('6820', 2019, 3),
+                       ('6820', 2020, 1),
+                       ('6820', 2020, 2)]
+
 
 def test_ok_json_response():
     """
@@ -429,14 +452,28 @@ def test_denomination_wrong_year(host, denomination, year):
 @pytest.mark.parametrize("first_letters", LETTERS_COUPLE_LIST)
 def test_compute_annual_statistics(host, first_letters):
     """
-    Test the /company/denomination/year endpoint. Should return a JSON and RC 200.
+    Test the /compute/ endpoint. Should return a JSON and RC 200.
+
+       :param host: Fixture of the API host.
+       :param first_letters: Filter to compute only on companies whose denomination begin with these letters.
+    """
+    response = get("http://" + host + "/compute/" + first_letters)
+    assert response.status_code == 200, "WRONG HTTP RETURN CODE %s INSTEAD OF 200" % response.status_code
+    assert loads(response.text) is not None, "NOT RETURNING A JSON"
+
+
+@pytest.mark.parametrize("ape,year,score", APE_YEAR_SCORE_LIST)
+def test_compute_ape_deciles(host, ape, year, score):
+    """
+    Test the compute_ape/6820/2000/2 endpoint. Should return a JSON and RC 200.
 
        :param host: Fixture of the API host.
        :param denomination: Parametrise fixture of a company official name.
        :param year: Parametrise fixture of the year to return.
     """
-    response = get("http://" + host + "/compute/" + first_letters)
-    assert response.status_code == 200, "WRONG HTTP RETURN CODE %s INSTEAD OF 200" % response.status_code
+    url = "http://" + host + "/compute_ape/" + ape + "/" + str(year) + "/" + str(score)
+    response = get(url)
+    assert response.status_code == 200 or response.status_code == 400 , "WRONG HTTP RETURN CODE %s INSTEAD OF 200 or 400 on url %s" % (response.status_code, url)
     assert loads(response.text) is not None, "NOT RETURNING A JSON"
 
 

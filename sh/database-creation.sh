@@ -16,39 +16,19 @@ fi
 
 ################################################################################
 # 2) CREATE A TABLE OF THE IDENTITY INFORMATION
-mysql enthic < ${SQL_DIR}create-table-identity.sql "$1";
-if [ $? != 0 ]
-then
-  echo "error when creating table identity"
-fi
+mysql enthic < ${SQL_DIR}create-table-identity.sql "$1" || echo "error when creating table identity"
 ################################################################################
 # 3) CREATE AN HISTORIC FOR BUNDLE TABLE siren COLUMN REQUESTS
-mysql enthic < ${SQL_DIR}create-table-request.sql "$1";
-if [ $? != 0 ]
-then
-  echo "error when creating table request"
-fi
+mysql enthic < ${SQL_DIR}create-table-request.sql "$1" || echo "error when creating table request"
 ################################################################################
 # 4) INSERT DATA INTO IDNETITY TABLE
-mysql enthic < ${SQL_DIR}insert-identity.sql "$1";
-if [ $? != 0 ]
-then
-  echo "error when filling table identity"
-fi
+mysql enthic < ${SQL_DIR}insert-identity.sql "$1" || echo "error when filling table identity"
 ################################################################################
 # 5) CREATE A TABLE OF THE BUNDLE INFORMATION
-mysql enthic < ${SQL_DIR}create-table-bundle.sql "$1";
-if [ $? != 0 ]
-then
-  echo "error when creating table request"
-fi
+mysql enthic < ${SQL_DIR}create-table-bundle.sql "$1" || echo "error when creating table request"
 ################################################################################
 # 6) INSERT DATA INTO BUNDLE TABLE
-mysql enthic < ${SQL_DIR}insert-bundle.sql "$1";
-if [ $? != 0 ]
-then
-  echo "error when filling table bundle"
-fi
+mysql enthic < ${SQL_DIR}insert-bundle.sql "$1" || echo "error when filling table bundle"
 ################################################################################
 # 7) CREATE AN FOR IDENTITY TABLE denomination COLUMN
 mysql enthic < ${SQL_DIR}create-index-identity.sql "$1";

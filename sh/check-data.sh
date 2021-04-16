@@ -5,7 +5,6 @@
 # CONSTANTS
 readonly DATA_DIR="../input/qualification/";
 readonly XSD="../bilans-saisis-v1.1.xsd";
-readonly STEP_SEP="#";
 ################################################################################
 # PRINT A COMMAND DESCRIPTION
 printf "\nCOMPARE ALL %s XML CONFORMITY TO %s\n" "$DATA_DIR" "$XSD";

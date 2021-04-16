@@ -76,6 +76,7 @@ with open(CONFIG['accountOntologyCSV'], mode='r') as infile:
 basicConfig(level=CONFIG['debugLevel'],
             format="%(asctime)s [%(levelname)8s] %(message)s (%(filename)s:%(lineno)s)")
 
+
 def read_identity_data(identity_xml_item):
     """
     Read the xml's identity item, to extract useful data from it
@@ -84,7 +85,7 @@ def read_identity_data(identity_xml_item):
        :return: extracted data as a tuple
     """
     acc_type, siren, denomination, year, ape, \
-    postal_code, town, code_motif, info_traitement,\
+    postal_code, town, code_motif, info_traitement, \
     code_confidentialite = (ModifiedData.ABSENT.value,) * 10
 
     for identity in identity_xml_item:  # identite LEVEL
@@ -104,7 +105,7 @@ def read_identity_data(identity_xml_item):
         elif identity.tag == '{fr:inpi:odrncs:bilansSaisisXML}date_cloture_exercice':
             year = identity.text[:4]
         elif identity.tag == '{fr:inpi:odrncs:bilansSaisisXML}adresse':
-            ####################################
+            ####################################################################
             # PARSING THE 'adresse' FIELD, MANY DATA-CAPTURE ERROR.
             try:
                 regex_match = RE_POSTAL_CODE_TOWN.match(identity.text)
@@ -143,6 +144,7 @@ def read_identity_data(identity_xml_item):
 
     return acc_type, siren, denomination, year, ape, postal_code, town, \
            code_motif, code_confidentialite, info_traitement
+
 
 def main():
     """
@@ -191,12 +193,13 @@ def main():
                                     if acc_type in ACC_ONT.keys():
                                         identity_file.write(
                                             "\t".join(
-                                                (siren, denomination, str(ape),
-                                                 postal_code, town, "\n")))
+                                                (str(siren), str(denomination), str(ape),
+                                                 str(postal_code), str(town), "\n")))
                                         identity_writen = True
                                         metadata_file.write(
                                             "\t".join(
-                                                (siren, year, code_motif, code_confidentialite, info_traitement, "\n")))
+                                                (str(siren), str(year), str(code_motif),
+                                                 str(code_confidentialite), str(info_traitement), "\n")))
                                 ################################################
                                 # BUNDLE TAGS IN PAGES TO ITERATE WITH BUNDLE CODES
                                 # AND AMOUNT
@@ -214,16 +217,16 @@ def main():
                                                             if identity_writen is True:
                                                                 bundle_file.write(
                                                                     "\t".join((siren, year,
-                                                                              str(CON_ACC[acc_type]),
-                                                                              str(CON_BUN[CON_ACC[
-                                                                                  acc_type]][
-                                                                                      bundle.attrib[
-                                                                                          "code"]]),
-                                                                              str(int(
-                                                                                  bundle.attrib[
-                                                                                      amount_code]
-                                                                              )),
-                                                                              "\n")))
+                                                                               str(CON_ACC[acc_type]),
+                                                                               str(CON_BUN[CON_ACC[
+                                                                                   acc_type]][
+                                                                                       bundle.attrib[
+                                                                                           "code"]]),
+                                                                               str(int(
+                                                                                   bundle.attrib[
+                                                                                       amount_code]
+                                                                               )),
+                                                                               "\n")))
                                             except KeyError as key_error:
                                                 debug("{} in account {} bundle {}".format(
                                                     key_error,
@@ -240,6 +243,7 @@ def main():
     bundle_file.close()
     identity_file.close()
     metadata_file.close()
+
 
 if __name__ == '__main__':
     main()  # ONLY IF EXECUTED NOT WHEN IMPORTED

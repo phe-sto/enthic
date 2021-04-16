@@ -2,8 +2,6 @@
 ################################################################################
 # PROGRAM BY PAPIT SASU, INSTALL THE REQUIRED DEPENDENCIES
 ################################################################################
-# CONSTANTS
-readonly PYTHON="python3";
 # 1) INSTALL DISTANT SYNAPTIC PACKAGES
 apt-get -y install libxml2-utils mysql-server tree libmysqlclient-dev python3-pip
 ################################################################################

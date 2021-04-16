@@ -1841,10 +1841,9 @@ CODE_MOTIF = {
 }
 
 CODE_CONFIDENTIALITE = {
-    -1 : "code non fourni",
-    0 : "comptes annuels non confidentiels",
-    1 : "comptes annuels confidentiels",
-    2 : "compte de résultat confidentiel"
+    0: "comptes annuels non confidentiels",
+    1: "comptes annuels confidentiels",
+    2: "compte de résultat confidentiel"
 }
 
 # WARNING : info_traitement can contain more than one value for a given xml file

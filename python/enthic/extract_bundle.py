@@ -14,6 +14,7 @@ Coding Rules:
 """
 import xml.etree.ElementTree as ElementTree
 from csv import reader
+from enum import Enum, auto
 from io import BytesIO
 from json import load
 from logging import info, debug, basicConfig
@@ -23,6 +24,13 @@ from re import sub, compile
 from zipfile import ZipFile, BadZipFile
 
 from enthic.utils.conversion import CON_APE, CON_ACC, CON_BUN
+
+
+class ModifiedData(Enum):
+    """Enum used to replace or insert data in CSV"""
+    ABSENT = auto()
+    WRONG_FORMAT = auto()
+
 
 RE_DENOMINATION = compile(r'\s+|[\t\n]')  # NOT AN OBVIOUS PERFORMANCE GAIN...
 RE_POSTAL_CODE_TOWN = compile(r"([0-9]+)[ -]?([a-zA-Z0-9_ \'\"-\.\(\)\-]+)")
@@ -76,11 +84,8 @@ def read_identity_data(identity_xml_item):
        :return: extracted data as a tuple
     """
     acc_type, siren, denomination, year, ape, \
-    postal_code, town, code_motif, \
-    code_confidentialite, info_traitement = (None,) * 10
-
-    # -1 is defined as default value in CODE_CONFIDENTIALITE in ontology.py
-    code_confidentialite = "-1"
+    postal_code, town, code_motif, info_traitement,\
+    code_confidentialite = (ModifiedData.ABSENT.value,) * 10
 
     for identity in identity_xml_item:  # identite LEVEL
         if identity.tag == '{fr:inpi:odrncs:bilansSaisisXML}siren':
@@ -108,27 +113,28 @@ def read_identity_data(identity_xml_item):
             except TypeError as error:
                 debug("{0}: {1}".format(str(error),
                                         str(identity.text)))
-                postal_code, town = ('INCOG',) * 2
+                postal_code, town = (ModifiedData.WRONG_FORMAT.value,) * 2
             except AttributeError as error:
                 try:
                     debug("{0}: {1}".format(str(error),
                                             str(identity.text)))
                     regex_match = RE_TOWN.match(identity.text)
                     town = regex_match.group(1).upper()
-                    postal_code = 'INCOG'
+                    postal_code = ModifiedData.WRONG_FORMAT.value
                 except AttributeError as error:
                     try:
                         debug(
                             "{0}: {1}".format(str(error),
                                               str(identity.text)))
                         regex_match = RE_POSTAL_CODE.match(identity.text)
-                        town = 'INCOG'
+                        town = ModifiedData.WRONG_FORMAT.value
                         postal_code = regex_match.group(1)
                     except AttributeError as error:
                         debug(
                             "{0}: {1}".format(str(error),
                                               str(identity.text)))
-                        postal_code, town = ('INCOG',) * 2
+                        postal_code, town = \
+                            (ModifiedData.WRONG_FORMAT.value,) * 2
         elif identity.tag == '{fr:inpi:odrncs:bilansSaisisXML}code_activite':
             try:
                 ape = str(CON_APE[identity.text])
@@ -226,7 +232,7 @@ def main():
                                                         "code"]
                                                 ))
                     except UnicodeDecodeError as error:
-                        debug(key_error)
+                        debug(error)
             except BadZipFile as error:  #  TODO REPORT ERROR TO INPI
                 debug(error)
     ############################################################################

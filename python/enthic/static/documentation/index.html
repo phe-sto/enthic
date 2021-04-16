@@ -1,19 +1,17 @@
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
   <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>French societies accountability extraction and treatment by PapIT &#8212; enthic 2020.4.2 documentation</title>
-    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-    <script type="text/javascript" src="_static/jquery.js"></script>
-    <script type="text/javascript" src="_static/underscore.js"></script>
-    <script type="text/javascript" src="_static/doctools.js"></script>
-    <script type="text/javascript" src="_static/language_data.js"></script>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
    
@@ -34,21 +32,21 @@
             
   <div class="section" id="french-societies-accountability-extraction-and-treatment-by-papit">
 <h1><strong>French societies accountability extraction and treatment by PapIT</strong><a class="headerlink" href="#french-societies-accountability-extraction-and-treatment-by-papit" title="Permalink to this headline">¶</a></h1>
-<p>Project than treat data from opendata-rncs.inpi.fr. They contain xml
+<p>Project that treats data from opendata-rncs.inpi.fr. They contain xml
 files of the account declaration of all french societies. The overall project
 is meant to be low-code and open source. Aim to provide ethical indicators on companies.
 Information media is a MySQL database, CSV files, web visualisation and a
-swagger API. The search engine endpoint return a JSON-LD (Hydra) complaint JSON.
-Company JSON cannot conform to JSON-LD Organization type  due to lack of data
+swagger API. The search engine endpoint return a JSON-LD (Hydra) compliant JSON.
+Company JSON cannot conform to JSON-LD Organization type due to lack of data
 (contact for instance).
 Score and indicators are calculated by batch, sql and why not using
 fancy libraries. Help in data treatment to improve scoring would be appreciated.
-Scoring, AI, data scrapping for segmentation. Shell and python are to launch be
+Scoring, AI, data scrapping for segmentation. Shell and python must be launched
 from their corresponding directory <code class="docutils literal notranslate"><span class="pre">./sh</span></code> and <code class="docutils literal notranslate"><span class="pre">./py</span></code>.</p>
 <div class="section" id="install-dependencies-and-python-package">
 <h2><strong>Install dependencies and python package</strong><a class="headerlink" href="#install-dependencies-and-python-package" title="Permalink to this headline">¶</a></h2>
 <p>Synaptic packages have to be installed <code class="docutils literal notranslate"><span class="pre">libxml2-utils</span> <span class="pre">mysql-server</span> <span class="pre">tree</span> <span class="pre">python3</span></code>.
-Pip packages as well has to be installed for development purpose.</p>
+Pip packages as well have to be installed for development purpose.</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ sh ./install-dependencies.sh
 </pre></div>
 </div>
@@ -62,8 +60,9 @@ Pip packages as well has to be installed for development purpose.</p>
 </div>
 <div class="section" id="extract-data-from-zip">
 <h2>Extract data from zip<a class="headerlink" href="#extract-data-from-zip" title="Permalink to this headline">¶</a></h2>
-<p>Data are stored in zip files on opendata-rncs.inpi.fr, group by month. Each XML
-is in a zip. The first step is then to extract the XML files.</p>
+<p>Data are stored in zip files on opendata-rncs.inpi.fr, group by day. Each XML
+is in a zip. The first step is then to read the XML files and convert data into “bundle.tmp” and “identity.tmp”
+You must create folders ‘input’ and ‘output’ at the root of the project, and put some daily zipfile named like “bilans_saisis_&lt;date&gt;.zip” in ‘input’ folder.</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ sh ./clear-data.sh
 </pre></div>
 </div>
@@ -78,17 +77,16 @@ XSD. XML not following this XSD have their filename printed out.</p>
 </div>
 <div class="section" id="format-xml">
 <h2>Format XML<a class="headerlink" href="#format-xml" title="Permalink to this headline">¶</a></h2>
-<p>Create two CSV based on XML. One for each table, the identity and the bundles of
-the company.</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ sh ./table-csv.sh
+<p>Create two CSV based on the output generated by <cite>clear-data.sh</cite>. One for each table, identity and bundle.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ sh ./csv-table.sh
 </pre></div>
 </div>
 </div>
 <div class="section" id="create-mysql-database">
 <h2>Create MySQL database<a class="headerlink" href="#create-mysql-database" title="Permalink to this headline">¶</a></h2>
 <p>Create database, tables and indexes. The content of the two tables come from the
-previous CSV files.</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ sh ./database-creation.sh
+previously generated CSV files.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ sh ./database-creation.sh --password<span class="o">=</span>&lt;your mysql password&gt;
 </pre></div>
 </div>
 </div>
@@ -109,14 +107,14 @@ previous CSV files.</p>
 <div class="section" id="development-and-coding-rules">
 <h2>Development and Coding Rules<a class="headerlink" href="#development-and-coding-rules" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
-<li>snake_case for variables, definition and CamelCase for classes.</li>
-<li>Only argument is configuration file for python.</li>
-<li>No output or print information (just raw results authorized), just log and files.</li>
-<li>Sonar Qube integration.</li>
-<li>Pytest python and API testing.</li>
-<li>Autodocumentation using Sphinx 1.8.5.</li>
-<li>Benchmark of CPython VS Pypy.</li>
-<li>Common sens and clean code.</li>
+<li><p>snake_case for variables, definition and CamelCase for classes.</p></li>
+<li><p>Only argument is configuration file for python.</p></li>
+<li><p>No output or print information (just raw results authorized), just log and files.</p></li>
+<li><p>Sonar Qube integration.</p></li>
+<li><p>Pytest python and API testing.</p></li>
+<li><p>Autodocumentation using Sphinx 1.8.5.</p></li>
+<li><p>Benchmark of CPython VS Pypy.</p></li>
+<li><p>Common sens and clean code.</p></li>
 </ul>
 </div>
 <div class="section" id="build-and-install-python-enthic-package">
@@ -295,9 +293,9 @@ build the doc at the same time.</p>
 <div class="section" id="indices-and-tables">
 <h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline">¶</a></h1>
 <ul class="simple">
-<li><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></li>
-<li><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></li>
-<li><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></li>
+<li><p><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></p></li>
+<li><p><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></p></li>
+<li><p><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></p></li>
 </ul>
 </div>
 <div class="section" id="documentation-of-the-python-code">
@@ -308,9 +306,9 @@ build the doc at the same time.</p>
 <p>PROGRAM BY PAPIT SASU, 2019</p>
 <p>Coding Rules:</p>
 <ul class="simple">
-<li>Snake case for variables.</li>
-<li>Only argument is configuration file.</li>
-<li>No output or print, just log and files.</li>
+<li><p>Snake case for variables.</p></li>
+<li><p>Only argument is configuration file.</p></li>
+<li><p>No output or print, just log and files.</p></li>
 </ul>
 </div>
 <span class="target" id="module-treat_bundle"></span><div class="section" id="sum-all-the-bundle-of-the-year-for-one-company-from-a-csv-sorted-file">
@@ -318,9 +316,9 @@ build the doc at the same time.</p>
 <p>PROGRAM BY PAPIT SASU, 2019</p>
 <p>Coding Rules:</p>
 <ul class="simple">
-<li>Snake case for variables.</li>
-<li>Only argument is configuration file.</li>
-<li>No output or bundle_file.write, just log and files.</li>
+<li><p>Snake case for variables.</p></li>
+<li><p>Only argument is configuration file.</p></li>
+<li><p>No output or bundle_file.write, just log and files.</p></li>
 </ul>
 </div>
 <p>Following module relates to Flask server.</p>
@@ -329,28 +327,26 @@ build the doc at the same time.</p>
 <p>PROGRAM BY PAPIT SASU, 2019</p>
 <p>Coding Rules:</p>
 <ul class="simple">
-<li>Snake case for variables.</li>
-<li>Only argument is configuration file.</li>
-<li>No output or print, just log and files.</li>
+<li><p>Snake case for variables.</p></li>
+<li><p>Only argument is configuration file.</p></li>
+<li><p>No output or print, just log and files.</p></li>
 </ul>
 </div>
 <span class="target" id="module-decorator.insert_request"></span><div class="section" id="decorator-inserting-data-from-the-incoming-request-after-having-executed-function">
 <h2>Decorator inserting data from the incoming request after having executed function<a class="headerlink" href="#decorator-inserting-data-from-the-incoming-request-after-having-executed-function" title="Permalink to this headline">¶</a></h2>
-<dl class="function">
+<dl class="py function">
 <dt id="decorator.insert_request.insert_request">
-<code class="descclassname">decorator.insert_request.</code><code class="descname">insert_request</code><span class="sig-paren">(</span><em>func</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/decorator/insert_request.html#insert_request"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#decorator.insert_request.insert_request" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">decorator.insert_request.</span></code><code class="sig-name descname"><span class="pre">insert_request</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">func</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/decorator/insert_request.html#insert_request"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#decorator.insert_request.insert_request" title="Permalink to this definition">¶</a></dt>
 <dd><p>Decorator inserting relevant request data timestamped.</p>
 <blockquote>
-<div><table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">param func:</th><td class="field-body">Function decorated.</td>
-</tr>
-<tr class="field-even field"><th class="field-name">return:</th><td class="field-body">The function decorated.</td>
-</tr>
-</tbody>
-</table>
+<div><dl class="field-list simple">
+<dt class="field-odd">param func</dt>
+<dd class="field-odd"><p>Function decorated.</p>
+</dd>
+<dt class="field-even">return</dt>
+<dd class="field-even"><p>The function decorated.</p>
+</dd>
+</dl>
 </div></blockquote>
 </dd></dl>
 
@@ -360,13 +356,13 @@ build the doc at the same time.</p>
 <p>PROGRAM BY PAPIT SASU, 2020</p>
 <p>Coding Rules:</p>
 <ul class="simple">
-<li>Snake case for variables.</li>
-<li>Only argument is configuration file.</li>
-<li>No output or print, just log and files.</li>
+<li><p>Snake case for variables.</p></li>
+<li><p>Only argument is configuration file.</p></li>
+<li><p>No output or print, just log and files.</p></li>
 </ul>
-<dl class="class">
+<dl class="py class">
 <dt id="utils.json_response.JSONResponse">
-<em class="property">class </em><code class="descclassname">utils.json_response.</code><code class="descname">JSONResponse</code><span class="sig-paren">(</span><em>object_response</em>, <em>status=200</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/utils/json_response.html#JSONResponse"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#utils.json_response.JSONResponse" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">utils.json_response.</span></code><code class="sig-name descname"><span class="pre">JSONResponse</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">object_response</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">status</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">200</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/utils/json_response.html#JSONResponse"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#utils.json_response.JSONResponse" title="Permalink to this definition">¶</a></dt>
 <dd><p>Abstraction on top of the flask Response class, as most Response will be
 application/json and HTTP default return code 200, but can be changed.</p>
 </dd></dl>
@@ -377,13 +373,13 @@ application/json and HTTP default return code 200, but can be changed.</p>
 <p>PROGRAM BY PAPIT SASU, 2020</p>
 <p>Coding Rules:</p>
 <ul class="simple">
-<li>Snake case for variables.</li>
-<li>Only argument is configuration file.</li>
-<li>No output or print, just log and files.</li>
+<li><p>Snake case for variables.</p></li>
+<li><p>Only argument is configuration file.</p></li>
+<li><p>No output or print, just log and files.</p></li>
 </ul>
-<dl class="class">
+<dl class="py class">
 <dt id="utils.ok_json_response.OKJSONResponse">
-<em class="property">class </em><code class="descclassname">utils.ok_json_response.</code><code class="descname">OKJSONResponse</code><span class="sig-paren">(</span><em>object_response</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/utils/ok_json_response.html#OKJSONResponse"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#utils.ok_json_response.OKJSONResponse" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">utils.ok_json_response.</span></code><code class="sig-name descname"><span class="pre">OKJSONResponse</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">object_response</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/utils/ok_json_response.html#OKJSONResponse"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#utils.ok_json_response.OKJSONResponse" title="Permalink to this definition">¶</a></dt>
 <dd><p>Abstraction on top of the Enthic JSONResponse class, as most Response will be
 application/json and HTTP return code 200.</p>
 </dd></dl>
@@ -394,13 +390,13 @@ application/json and HTTP return code 200.</p>
 <p>PROGRAM BY PAPIT SASU, 2020</p>
 <p>Coding Rules:</p>
 <ul class="simple">
-<li>Snake case for variables.</li>
-<li>Only argument is configuration file.</li>
-<li>No output or print, just log and files.</li>
+<li><p>Snake case for variables.</p></li>
+<li><p>Only argument is configuration file.</p></li>
+<li><p>No output or print, just log and files.</p></li>
 </ul>
-<dl class="class">
+<dl class="py class">
 <dt id="utils.error_json_response.ErrorJSONResponse">
-<em class="property">class </em><code class="descclassname">utils.error_json_response.</code><code class="descname">ErrorJSONResponse</code><span class="sig-paren">(</span><em>error_message</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/utils/error_json_response.html#ErrorJSONResponse"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#utils.error_json_response.ErrorJSONResponse" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">utils.error_json_response.</span></code><code class="sig-name descname"><span class="pre">ErrorJSONResponse</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">error_message</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/utils/error_json_response.html#ErrorJSONResponse"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#utils.error_json_response.ErrorJSONResponse" title="Permalink to this definition">¶</a></dt>
 <dd><p>Abstraction on top of the flask JSON Response class, for error JSON,
 application/json and HTTP return code 400. Formatted as hydra JSON-LD.</p>
 </dd></dl>
@@ -411,13 +407,13 @@ application/json and HTTP return code 400. Formatted as hydra JSON-LD.</p>
 <p>PROGRAM BY PAPIT SASU, 2020</p>
 <p>Coding Rules:</p>
 <ul class="simple">
-<li>Snake case for variables.</li>
-<li>Only argument is configuration file.</li>
-<li>No output or print, just log and files.</li>
+<li><p>Snake case for variables.</p></li>
+<li><p>Only argument is configuration file.</p></li>
+<li><p>No output or print, just log and files.</p></li>
 </ul>
-<dl class="class">
+<dl class="py class">
 <dt id="utils.not_found_response.NotFoundJSONResponse">
-<em class="property">class </em><code class="descclassname">utils.not_found_response.</code><code class="descname">NotFoundJSONResponse</code><a class="reference internal" href="_modules/utils/not_found_response.html#NotFoundJSONResponse"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#utils.not_found_response.NotFoundJSONResponse" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">utils.not_found_response.</span></code><code class="sig-name descname"><span class="pre">NotFoundJSONResponse</span></code><a class="reference internal" href="_modules/utils/not_found_response.html#NotFoundJSONResponse"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#utils.not_found_response.NotFoundJSONResponse" title="Permalink to this definition">¶</a></dt>
 <dd><p>Abstraction on top of the flask JSON Response class, for not found data JSON,
 application/json and HTTP return code 404. Formatted as hydra JSON-LD.</p>
 </dd></dl>
@@ -428,9 +424,9 @@ application/json and HTTP return code 404. Formatted as hydra JSON-LD.</p>
 <p>PROGRAM BY PAPIT SASU, 2020</p>
 <p>Coding Rules:</p>
 <ul class="simple">
-<li>Snake case for variables.</li>
-<li>Only argument is configuration file.</li>
-<li>No output or print, just log and files.</li>
+<li><p>Snake case for variables.</p></li>
+<li><p>Only argument is configuration file.</p></li>
+<li><p>No output or print, just log and files.</p></li>
 </ul>
 </div>
 <span class="target" id="module-company.siren_company"></span><div class="section" id="class-representing-a-company-constructed-with-a-siren">
@@ -438,27 +434,27 @@ application/json and HTTP return code 404. Formatted as hydra JSON-LD.</p>
 <p>PROGRAM BY PAPIT SASU, 2020</p>
 <p>Coding Rules:</p>
 <ul class="simple">
-<li>Snake case for variables.</li>
-<li>Only argument is configuration file.</li>
-<li>No output or print, just log and files.</li>
+<li><p>Snake case for variables.</p></li>
+<li><p>Only argument is configuration file.</p></li>
+<li><p>No output or print, just log and files.</p></li>
 </ul>
-<dl class="class">
+<dl class="py class">
 <dt id="company.siren_company.AllSirenCompany">
-<em class="property">class </em><code class="descclassname">company.siren_company.</code><code class="descname">AllSirenCompany</code><span class="sig-paren">(</span><em>siren</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/company/siren_company.html#AllSirenCompany"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#company.siren_company.AllSirenCompany" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">company.siren_company.</span></code><code class="sig-name descname"><span class="pre">AllSirenCompany</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">siren</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/company/siren_company.html#AllSirenCompany"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#company.siren_company.AllSirenCompany" title="Permalink to this definition">¶</a></dt>
 <dd><p>Class SirenCompany and MultipleBundleCompany inherit from Company class as
 it has potentially multiple declarations.</p>
 </dd></dl>
 
-<dl class="class">
+<dl class="py class">
 <dt id="company.siren_company.AverageSirenCompany">
-<em class="property">class </em><code class="descclassname">company.siren_company.</code><code class="descname">AverageSirenCompany</code><span class="sig-paren">(</span><em>siren</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/company/siren_company.html#AverageSirenCompany"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#company.siren_company.AverageSirenCompany" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">company.siren_company.</span></code><code class="sig-name descname"><span class="pre">AverageSirenCompany</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">siren</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/company/siren_company.html#AverageSirenCompany"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#company.siren_company.AverageSirenCompany" title="Permalink to this definition">¶</a></dt>
 <dd><p>Class AverageSirenCompany inherit from UniqueBundleCompany class as
 it as a unique average bundle. Inherit also YearCompany to check the year.</p>
 </dd></dl>
 
-<dl class="class">
+<dl class="py class">
 <dt id="company.siren_company.YearSirenCompany">
-<em class="property">class </em><code class="descclassname">company.siren_company.</code><code class="descname">YearSirenCompany</code><span class="sig-paren">(</span><em>siren</em>, <em>year</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/company/siren_company.html#YearSirenCompany"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#company.siren_company.YearSirenCompany" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">company.siren_company.</span></code><code class="sig-name descname"><span class="pre">YearSirenCompany</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">siren</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">year</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/company/siren_company.html#YearSirenCompany"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#company.siren_company.YearSirenCompany" title="Permalink to this definition">¶</a></dt>
 <dd><p>Class YearDenominationCompany inherit from UniqueBundleCompany class as
 it as a unique average bundle. Inherit also YearCompany to check the year.</p>
 </dd></dl>
@@ -469,27 +465,27 @@ it as a unique average bundle. Inherit also YearCompany to check the year.</p>
 <p>PROGRAM BY PAPIT SASU, 2020</p>
 <p>Coding Rules:</p>
 <ul class="simple">
-<li>Snake case for variables.</li>
-<li>Only argument is configuration file.</li>
-<li>No output or print, just log and files.</li>
+<li><p>Snake case for variables.</p></li>
+<li><p>Only argument is configuration file.</p></li>
+<li><p>No output or print, just log and files.</p></li>
 </ul>
-<dl class="class">
+<dl class="py class">
 <dt id="company.denomination_company.AllDenominationCompany">
-<em class="property">class </em><code class="descclassname">company.denomination_company.</code><code class="descname">AllDenominationCompany</code><span class="sig-paren">(</span><em>denomination</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/company/denomination_company.html#AllDenominationCompany"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#company.denomination_company.AllDenominationCompany" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">company.denomination_company.</span></code><code class="sig-name descname"><span class="pre">AllDenominationCompany</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">denomination</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/company/denomination_company.html#AllDenominationCompany"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#company.denomination_company.AllDenominationCompany" title="Permalink to this definition">¶</a></dt>
 <dd><p>Class AllDenominationCompany inherit from MultipleBundleCompany,
 DenominationCompany class as it has multiple bundles.</p>
 </dd></dl>
 
-<dl class="class">
+<dl class="py class">
 <dt id="company.denomination_company.AverageDenominationCompany">
-<em class="property">class </em><code class="descclassname">company.denomination_company.</code><code class="descname">AverageDenominationCompany</code><span class="sig-paren">(</span><em>denomination</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/company/denomination_company.html#AverageDenominationCompany"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#company.denomination_company.AverageDenominationCompany" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">company.denomination_company.</span></code><code class="sig-name descname"><span class="pre">AverageDenominationCompany</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">denomination</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/company/denomination_company.html#AverageDenominationCompany"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#company.denomination_company.AverageDenominationCompany" title="Permalink to this definition">¶</a></dt>
 <dd><p>Class AverageDenominationCompany inherit from UniqueBundleCompany,
 DenominationCompany class as it as a unique average bundle.</p>
 </dd></dl>
 
-<dl class="class">
+<dl class="py class">
 <dt id="company.denomination_company.YearDenominationCompany">
-<em class="property">class </em><code class="descclassname">company.denomination_company.</code><code class="descname">YearDenominationCompany</code><span class="sig-paren">(</span><em>denomination</em>, <em>year</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/company/denomination_company.html#YearDenominationCompany"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#company.denomination_company.YearDenominationCompany" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">company.denomination_company.</span></code><code class="sig-name descname"><span class="pre">YearDenominationCompany</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">denomination</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">year</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/company/denomination_company.html#YearDenominationCompany"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#company.denomination_company.YearDenominationCompany" title="Permalink to this definition">¶</a></dt>
 <dd><p>Class YearDenominationCompany inherit from YearCompany, UniqueBundleCompany,
 DenominationCompany class as it as a unique average bundle. Inherit also
 YearCompany to check the year.</p>
@@ -501,38 +497,38 @@ YearCompany to check the year.</p>
 <p>PROGRAM BY PAPIT SASU, 2020</p>
 <p>Coding Rules:</p>
 <ul class="simple">
-<li>Snake case for variables.</li>
-<li>Only argument is configuration file.</li>
-<li>No output or print, just log and files.</li>
+<li><p>Snake case for variables.</p></li>
+<li><p>Only argument is configuration file.</p></li>
+<li><p>No output or print, just log and files.</p></li>
 </ul>
-<dl class="class">
+<dl class="py class">
 <dt id="company.company.Bundle">
-<em class="property">class </em><code class="descclassname">company.company.</code><code class="descname">Bundle</code><span class="sig-paren">(</span><em>*args</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/company/company.html#Bundle"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#company.company.Bundle" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">company.company.</span></code><code class="sig-name descname"><span class="pre">Bundle</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/company/company.html#Bundle"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#company.company.Bundle" title="Permalink to this definition">¶</a></dt>
 <dd><p>All the bundle declared and scoring of a company. Can be several year, one
 or average</p>
 </dd></dl>
 
-<dl class="class">
+<dl class="py class">
 <dt id="company.company.CompanyIdentity">
-<em class="property">class </em><code class="descclassname">company.company.</code><code class="descname">CompanyIdentity</code><span class="sig-paren">(</span><em>*args</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/company/company.html#CompanyIdentity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#company.company.CompanyIdentity" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">company.company.</span></code><code class="sig-name descname"><span class="pre">CompanyIdentity</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/company/company.html#CompanyIdentity"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#company.company.CompanyIdentity" title="Permalink to this definition">¶</a></dt>
 <dd><p>Identity data of the Company.</p>
 </dd></dl>
 
-<dl class="class">
+<dl class="py class">
 <dt id="company.company.DenominationCompany">
-<em class="property">class </em><code class="descclassname">company.company.</code><code class="descname">DenominationCompany</code><span class="sig-paren">(</span><em>denomination</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/company/company.html#DenominationCompany"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#company.company.DenominationCompany" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">company.company.</span></code><code class="sig-name descname"><span class="pre">DenominationCompany</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">denomination</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/company/company.html#DenominationCompany"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#company.company.DenominationCompany" title="Permalink to this definition">¶</a></dt>
 <dd><p>Denomination defined company.</p>
 </dd></dl>
 
-<dl class="class">
+<dl class="py class">
 <dt id="company.company.JSONGenKey">
-<em class="property">class </em><code class="descclassname">company.company.</code><code class="descname">JSONGenKey</code><a class="reference internal" href="_modules/company/company.html#JSONGenKey"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#company.company.JSONGenKey" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">company.company.</span></code><code class="sig-name descname"><span class="pre">JSONGenKey</span></code><a class="reference internal" href="_modules/company/company.html#JSONGenKey"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#company.company.JSONGenKey" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generic keys found in the JSON response</p>
 </dd></dl>
 
-<dl class="class">
+<dl class="py class">
 <dt id="company.company.MultipleBundleCompany">
-<em class="property">class </em><code class="descclassname">company.company.</code><code class="descname">MultipleBundleCompany</code><span class="sig-paren">(</span><em>sql_request</em>, <em>args</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/company/company.html#MultipleBundleCompany"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#company.company.MultipleBundleCompany" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">company.company.</span></code><code class="sig-name descname"><span class="pre">MultipleBundleCompany</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sql_request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/company/company.html#MultipleBundleCompany"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#company.company.MultipleBundleCompany" title="Permalink to this definition">¶</a></dt>
 <dd><p>Company data returned with array of Bundle for each declaration. Inherit from
 OKJSONResponse to return a JSON and SQLData because of base data.</p>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
@@ -582,22 +578,22 @@ OKJSONResponse to return a JSON and SQLData because of base data.</p>
 </div>
 </dd></dl>
 
-<dl class="class">
+<dl class="py class">
 <dt id="company.company.SirenCompany">
-<em class="property">class </em><code class="descclassname">company.company.</code><code class="descname">SirenCompany</code><span class="sig-paren">(</span><em>siren</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/company/company.html#SirenCompany"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#company.company.SirenCompany" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">company.company.</span></code><code class="sig-name descname"><span class="pre">SirenCompany</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">siren</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/company/company.html#SirenCompany"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#company.company.SirenCompany" title="Permalink to this definition">¶</a></dt>
 <dd><p>Siren defined company.</p>
 </dd></dl>
 
-<dl class="class">
+<dl class="py class">
 <dt id="company.company.UniqueBundleCompany">
-<em class="property">class </em><code class="descclassname">company.company.</code><code class="descname">UniqueBundleCompany</code><span class="sig-paren">(</span><em>sql_request</em>, <em>args</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/company/company.html#UniqueBundleCompany"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#company.company.UniqueBundleCompany" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">company.company.</span></code><code class="sig-name descname"><span class="pre">UniqueBundleCompany</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sql_request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/company/company.html#UniqueBundleCompany"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#company.company.UniqueBundleCompany" title="Permalink to this definition">¶</a></dt>
 <dd><p>Company data returned with a unique bundle as attribute. Inherit from
 OKJSONResponse to return a JSON and SQLData because of base data..</p>
 </dd></dl>
 
-<dl class="class">
+<dl class="py class">
 <dt id="company.company.YearCompany">
-<em class="property">class </em><code class="descclassname">company.company.</code><code class="descname">YearCompany</code><span class="sig-paren">(</span><em>year</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/company/company.html#YearCompany"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#company.company.YearCompany" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">company.company.</span></code><code class="sig-name descname"><span class="pre">YearCompany</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">year</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/company/company.html#YearCompany"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#company.company.YearCompany" title="Permalink to this definition">¶</a></dt>
 <dd><p>Company data for a given year.</p>
 </dd></dl>
 
@@ -607,9 +603,9 @@ OKJSONResponse to return a JSON and SQLData because of base data..</p>
 <p>PROGRAM BY PAPIT SASU, 2019</p>
 <p>Coding Rules:</p>
 <ul class="simple">
-<li>Snake case for variables.</li>
-<li>Only argument is configuration file.</li>
-<li>No output or print, just log and files.</li>
+<li><p>Snake case for variables.</p></li>
+<li><p>Only argument is configuration file.</p></li>
+<li><p>No output or print, just log and files.</p></li>
 </ul>
 </div>
 <span class="target" id="module-database.fetch"></span><div class="section" id="fetch-results-on-the-mysql-database">
@@ -617,63 +613,58 @@ OKJSONResponse to return a JSON and SQLData because of base data..</p>
 <p>PROGRAM BY PAPIT SASU, 2019</p>
 <p>Coding Rules:</p>
 <ul class="simple">
-<li>Snake case for variables.</li>
-<li>Only argument is configuration file.</li>
-<li>No output or print, just log and files.</li>
+<li><p>Snake case for variables.</p></li>
+<li><p>Only argument is configuration file.</p></li>
+<li><p>No output or print, just log and files.</p></li>
 </ul>
-<dl class="function">
+<dl class="py function">
 <dt id="database.fetch.fetchall">
-<code class="descclassname">database.fetch.</code><code class="descname">fetchall</code><span class="sig-paren">(</span><em>request</em>, <em>args=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/database/fetch.html#fetchall"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#database.fetch.fetchall" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">database.fetch.</span></code><code class="sig-name descname"><span class="pre">fetchall</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">args</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/database/fetch.html#fetchall"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#database.fetch.fetchall" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return a fetchall for a given SQL request on the application MySQL database</p>
 <blockquote>
-<div><table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">param request:</th><td class="field-body">SQL request to execute as a string.</td>
-</tr>
-<tr class="field-even field"><th class="field-name">param args:</th><td class="field-body">SQL argument to pass the request. Default is None.</td>
-</tr>
-</tbody>
-</table>
+<div><dl class="field-list simple">
+<dt class="field-odd">param request</dt>
+<dd class="field-odd"><p>SQL request to execute as a string.</p>
+</dd>
+<dt class="field-even">param args</dt>
+<dd class="field-even"><p>SQL argument to pass the request. Default is None.</p>
+</dd>
+</dl>
 </div></blockquote>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="database.fetch.fetchone">
-<code class="descclassname">database.fetch.</code><code class="descname">fetchone</code><span class="sig-paren">(</span><em>request</em>, <em>args=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/database/fetch.html#fetchone"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#database.fetch.fetchone" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">database.fetch.</span></code><code class="sig-name descname"><span class="pre">fetchone</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">args</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/database/fetch.html#fetchone"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#database.fetch.fetchone" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return a fetchone for a given SQL request on the application MySQL database</p>
 <blockquote>
-<div><table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">param request:</th><td class="field-body">SQL request to execute as a string.</td>
-</tr>
-<tr class="field-even field"><th class="field-name">param args:</th><td class="field-body">SQL argument to pass the request. Default is None.</td>
-</tr>
-</tbody>
-</table>
+<div><dl class="field-list simple">
+<dt class="field-odd">param request</dt>
+<dd class="field-odd"><p>SQL request to execute as a string.</p>
+</dd>
+<dt class="field-even">param args</dt>
+<dd class="field-even"><p>SQL argument to pass the request. Default is None.</p>
+</dd>
+</dl>
 </div></blockquote>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="database.fetch.get_results">
-<code class="descclassname">database.fetch.</code><code class="descname">get_results</code><span class="sig-paren">(</span><em>request</em>, <em>args</em>, <em>sql_func</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/database/fetch.html#get_results"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#database.fetch.get_results" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">database.fetch.</span></code><code class="sig-name descname"><span class="pre">get_results</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sql_func</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/database/fetch.html#get_results"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#database.fetch.get_results" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return a fetchall for a given SQL request on the application MySQL database</p>
 <blockquote>
-<div><table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">param request:</th><td class="field-body">SQL request to execute as a string.</td>
-</tr>
-<tr class="field-even field"><th class="field-name">param args:</th><td class="field-body">SQL argument to pass the request.</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">param request:</th><td class="field-body">Cursor callable attribute to call.</td>
-</tr>
-</tbody>
-</table>
+<div><dl class="field-list simple">
+<dt class="field-odd">param request</dt>
+<dd class="field-odd"><p>SQL request to execute as a string.</p>
+</dd>
+<dt class="field-even">param args</dt>
+<dd class="field-even"><p>SQL argument to pass the request.</p>
+</dd>
+<dt class="field-odd">param request</dt>
+<dd class="field-odd"><p>Cursor callable attribute to call.</p>
+</dd>
+</dl>
 </div></blockquote>
 </dd></dl>
 
@@ -683,13 +674,13 @@ OKJSONResponse to return a JSON and SQLData because of base data..</p>
 <p>PROGRAM BY PAPIT SASU, 2019</p>
 <p>Coding Rules:</p>
 <ul class="simple">
-<li>Snake case for variables.</li>
-<li>Only argument is configuration file.</li>
-<li>No output or print, just log and files.</li>
+<li><p>Snake case for variables.</p></li>
+<li><p>Only argument is configuration file.</p></li>
+<li><p>No output or print, just log and files.</p></li>
 </ul>
-<dl class="class">
+<dl class="py class">
 <dt id="database.mysql_data.SQLData">
-<em class="property">class </em><code class="descclassname">database.mysql_data.</code><code class="descname">SQLData</code><span class="sig-paren">(</span><em>sql_request</em>, <em>args</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/database/mysql_data.html#SQLData"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#database.mysql_data.SQLData" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">database.mysql_data.</span></code><code class="sig-name descname"><span class="pre">SQLData</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sql_request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/database/mysql_data.html#SQLData"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#database.mysql_data.SQLData" title="Permalink to this definition">¶</a></dt>
 <dd><p>Execute a request and store data as attribute. Response 404 if no data retrieved</p>
 </dd></dl>
 
@@ -707,17 +698,15 @@ OKJSONResponse to return a JSON and SQLData because of base data..</p>
               <img class="logo" src="_static/papit.png" alt="Logo"/>
             </a></p>
 <div id="searchbox" style="display: none" role="search">
-  <h3>Quick search</h3>
+  <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
     <form class="search" action="search.html" method="get">
-      <input type="text" name="q" />
+      <input type="text" name="q" aria-labelledby="searchlabel" />
       <input type="submit" value="Go" />
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
     </form>
     </div>
 </div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
+<script>$('#searchbox').show(0);</script>
   <h3><a href="#">Table of Contents</a></h3>
   <ul>
 <li><a class="reference internal" href="#"><strong>French societies accountability extraction and treatment by PapIT</strong></a><ul>
@@ -773,7 +762,7 @@ OKJSONResponse to return a JSON and SQLData because of base data..</p>
       &copy;2019, Christophe Brun, PapIT.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.5</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.5.1</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

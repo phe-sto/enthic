@@ -12,7 +12,7 @@ Coding Rules:
 """
 from json import loads, dumps
 from random import randint, choice
-from string import ascii_letters, digits
+from string import digits
 
 import pytest
 from enthic.utils.error_json_response import ErrorJSONResponse
@@ -429,11 +429,10 @@ def test_denomination_wrong_year(host, denomination, year):
 @pytest.mark.parametrize("first_letters", LETTERS_COUPLE_LIST)
 def test_compute_annual_statistics(host, first_letters):
     """
-    Test the /company/denomination/year endpoint. Should return a JSON and RC 200.
+    Test the /compute/ endpoint. Should return a JSON and RC 200.
 
        :param host: Fixture of the API host.
-       :param denomination: Parametrise fixture of a company official name.
-       :param year: Parametrise fixture of the year to return.
+       :param first_letters: Filter to compute only on companies whose denomination begin with these letters.
     """
     response = get("http://" + host + "/compute/" + first_letters)
     assert response.status_code == 200, "WRONG HTTP RETURN CODE %s INSTEAD OF 200" % response.status_code
@@ -503,8 +502,8 @@ def test_search(host, probe, limit):
        :param limit: Parametrize fixture of limit of result to return.
     """
     response = post("http://" + host + "/company/search/", dumps({"probe": probe, "limit": limit}))
+    assert response.status_code == 200, "WRONG HTTP RETURN CODE FOR PROBE = {}, LIMIT = {}" % (probe, limit)
     assert loads(response.text) is not None, "NOT RETURNING A JSON, INSTEAD: %s" % response.text
-    assert response.status_code == 200, "WRONG HTTP RETURN CODE"
 
 
 @pytest.mark.parametrize("probe,limit", [(choice(digits), randint(0, 1000)) for _ in range(0, 100)])
@@ -516,10 +515,9 @@ def test_search_random_letter(host, probe, limit):
        :param limit: Parametrize fixture of limit of result to return.
        :param host: Fixture of the API host.
     """
-    letter = choice(ascii_letters)
     response = post("http://" + host + "/company/search/", dumps({"probe": probe,
                                                                   "limit": limit}))
-    assert response.status_code == 200, "WRONG HTTP RETURN CODE WITH PUN {}".format(letter)
+    assert response.status_code == 200, "WRONG HTTP RETURN CODE WITH PROBE = {}, LIMIT = {}".format(letter, probe, limit)
     assert loads(response.text) is not None, "NOT RETURNING A JSON"
 
 

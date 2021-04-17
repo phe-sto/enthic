@@ -24,6 +24,7 @@ from re import sub, compile
 from zipfile import ZipFile, BadZipFile
 
 from enthic.utils.conversion import CON_APE, CON_ACC, CON_BUN
+from enthic.utils.INPI_data_enhancer import decrypt_code_motif
 
 
 class ModifiedData(Enum):
@@ -97,7 +98,7 @@ def read_identity_data(identity_xml_item):
             # REMOVE MULTIPLE WHITESPACES, TABULATION, NEW LINE, THEN SWITCH TO UPPER CASE
             denomination = sub(RE_DENOMINATION, " ", identity.text).strip(" ").upper()
         elif identity.tag == '{fr:inpi:odrncs:bilansSaisisXML}code_motif':
-            code_motif = identity.text
+            code_motif = decrypt_code_motif(identity.text)
         elif identity.tag == '{fr:inpi:odrncs:bilansSaisisXML}code_confidentialite':
             code_confidentialite = identity.text
         elif identity.tag == '{fr:inpi:odrncs:bilansSaisisXML}info_traitement':

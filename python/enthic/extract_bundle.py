@@ -14,15 +14,23 @@ Coding Rules:
 """
 import xml.etree.ElementTree as ElementTree
 from csv import reader
+from enum import Enum, auto
 from io import BytesIO
 from json import load
-from logging import debug, basicConfig
+from logging import info, debug, basicConfig
 from os import listdir
 from os.path import dirname, join, isdir
 from re import sub, compile
 from zipfile import ZipFile, BadZipFile
 
 from enthic.utils.conversion import CON_APE, CON_ACC, CON_BUN
+
+
+class ModifiedData(Enum):
+    """Enum used to replace or insert data in CSV"""
+    ABSENT = auto()
+    WRONG_FORMAT = auto()
+
 
 RE_DENOMINATION = compile(r'\s+|[\t\n]')  # NOT AN OBVIOUS PERFORMANCE GAIN...
 RE_POSTAL_CODE_TOWN = compile(r"([0-9]+)[ -]?([a-zA-Z0-9_ \'\"-\.\(\)\-]+)")
@@ -68,10 +76,18 @@ with open(CONFIG['accountOntologyCSV'], mode='r') as infile:
 basicConfig(level=CONFIG['debugLevel'],
             format="%(asctime)s [%(levelname)8s] %(message)s (%(filename)s:%(lineno)s)")
 
+
 def read_identity_data(identity_xml_item):
+    """
+    Read the xml's identity item, to extract useful data from it
+
+       :param identity_xml_item: the identity XMl object
+       :return: extracted data as a tuple
+    """
     acc_type, siren, denomination, year, ape, \
-    postal_code, town, code_motif, \
-    code_confidentialite, info_traitement = (None,) * 10
+    postal_code, town, code_motif, info_traitement, \
+    code_confidentialite = (ModifiedData.ABSENT.value,) * 10
+
     for identity in identity_xml_item:  # identite LEVEL
         if identity.tag == '{fr:inpi:odrncs:bilansSaisisXML}siren':
             siren = identity.text
@@ -85,41 +101,41 @@ def read_identity_data(identity_xml_item):
         elif identity.tag == '{fr:inpi:odrncs:bilansSaisisXML}code_confidentialite':
             code_confidentialite = identity.text
         elif identity.tag == '{fr:inpi:odrncs:bilansSaisisXML}info_traitement':
-            info_traitement = identity.text if identity.text else "rien"
+            info_traitement = identity.text if identity.text else ModifiedData.ABSENT.value
         elif identity.tag == '{fr:inpi:odrncs:bilansSaisisXML}date_cloture_exercice':
             year = identity.text[:4]
         elif identity.tag == '{fr:inpi:odrncs:bilansSaisisXML}adresse':
-            ####################################
-            # PARSING THE 'adresse' FIELD, MANY
-            # DATA-CAPTURE ERROR.
+            ####################################################################
+            # PARSING THE 'adresse' FIELD, MANY DATA-CAPTURE ERROR.
             try:
-                m = RE_POSTAL_CODE_TOWN.match(identity.text)
-                postal_code = m.group(1)
-                town = m.group(2).upper()
+                regex_match = RE_POSTAL_CODE_TOWN.match(identity.text)
+                postal_code = regex_match.group(1)
+                town = regex_match.group(2).upper()
             except TypeError as error:
                 debug("{0}: {1}".format(str(error),
                                         str(identity.text)))
-                postal_code, town = ('INCOG',) * 2
+                postal_code, town = (ModifiedData.WRONG_FORMAT.value,) * 2
             except AttributeError as error:
                 try:
                     debug("{0}: {1}".format(str(error),
                                             str(identity.text)))
-                    m = RE_TOWN.match(identity.text)
-                    town = m.group(1).upper()
-                    postal_code = 'INCOG'
+                    regex_match = RE_TOWN.match(identity.text)
+                    town = regex_match.group(1).upper()
+                    postal_code = ModifiedData.WRONG_FORMAT.value
                 except AttributeError as error:
                     try:
                         debug(
                             "{0}: {1}".format(str(error),
                                               str(identity.text)))
-                        m = RE_POSTAL_CODE.match(identity.text)
-                        town = 'INCOG'
-                        postal_code = m.group(1)
+                        regex_match = RE_POSTAL_CODE.match(identity.text)
+                        town = ModifiedData.WRONG_FORMAT.value
+                        postal_code = regex_match.group(1)
                     except AttributeError as error:
                         debug(
                             "{0}: {1}".format(str(error),
                                               str(identity.text)))
-                        postal_code, town = ('INCOG',) * 2
+                        postal_code, town = \
+                            (ModifiedData.WRONG_FORMAT.value,) * 2
         elif identity.tag == '{fr:inpi:odrncs:bilansSaisisXML}code_activite':
             try:
                 ape = str(CON_APE[identity.text])
@@ -128,6 +144,7 @@ def read_identity_data(identity_xml_item):
 
     return acc_type, siren, denomination, year, ape, postal_code, town, \
            code_motif, code_confidentialite, info_traitement
+
 
 def main():
     """
@@ -144,6 +161,7 @@ def main():
     # CREATING A LIST OF THE BUNDLE XML CODES, ZIP ARE READ IN BtesIO, IN ORDER
     # TO BREAK FILE SYSTEM. TOO MUCH ZIP DISTURB THE FS.
     for file in listdir(CONFIG['inputPath']):  # LIST INPUT FILES
+        info("processing INPI daily zip file %s", file)
         if file.endswith(".zip"):  # ON RETAIN ZIP FILES
             try:  # SOME BAD ZIP FILE ARE IN HE DATASET
                 input_zip = ZipFile(join(CONFIG['inputPath'], file))
@@ -175,12 +193,13 @@ def main():
                                     if acc_type in ACC_ONT.keys():
                                         identity_file.write(
                                             "\t".join(
-                                                (siren, denomination, str(ape),
-                                                 postal_code, town, "\n")))
+                                                (str(siren), str(denomination), str(ape),
+                                                 str(postal_code), str(town), "\n")))
                                         identity_writen = True
                                         metadata_file.write(
                                             "\t".join(
-                                                (siren, year, code_motif, code_confidentialite, info_traitement, "\n")))
+                                                (str(siren), str(year), str(code_motif),
+                                                 str(code_confidentialite), str(info_traitement), "\n")))
                                 ################################################
                                 # BUNDLE TAGS IN PAGES TO ITERATE WITH BUNDLE CODES
                                 # AND AMOUNT
@@ -198,16 +217,16 @@ def main():
                                                             if identity_writen is True:
                                                                 bundle_file.write(
                                                                     "\t".join((siren, year,
-                                                                              str(CON_ACC[acc_type]),
-                                                                              str(CON_BUN[CON_ACC[
-                                                                                  acc_type]][
-                                                                                      bundle.attrib[
-                                                                                          "code"]]),
-                                                                              str(int(
-                                                                                  bundle.attrib[
-                                                                                      amount_code]
-                                                                              )),
-                                                                              "\n")))
+                                                                               str(CON_ACC[acc_type]),
+                                                                               str(CON_BUN[CON_ACC[
+                                                                                   acc_type]][
+                                                                                       bundle.attrib[
+                                                                                           "code"]]),
+                                                                               str(int(
+                                                                                   bundle.attrib[
+                                                                                       amount_code]
+                                                                               )),
+                                                                               "\n")))
                                             except KeyError as key_error:
                                                 debug("{} in account {} bundle {}".format(
                                                     key_error,
@@ -216,7 +235,7 @@ def main():
                                                         "code"]
                                                 ))
                     except UnicodeDecodeError as error:
-                        debug(key_error)
+                        debug(error)
             except BadZipFile as error:  #  TODO REPORT ERROR TO INPI
                 debug(error)
     ############################################################################
@@ -224,6 +243,7 @@ def main():
     bundle_file.close()
     identity_file.close()
     metadata_file.close()
+
 
 if __name__ == '__main__':
     main()  # ONLY IF EXECUTED NOT WHEN IMPORTED

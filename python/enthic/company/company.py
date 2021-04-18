@@ -13,12 +13,14 @@ Coding Rules:
 - No output or print, just log and files.
 """
 
-from flask import abort
 from re import compile
+from flask import abort
 
+from enthic.database.fetch import fetchall
 from enthic.database.mysql_data import SQLData
-from enthic.ontology import ONTOLOGY, APE_CODE
+from enthic.ontology import ONTOLOGY, APE_CODE, CODE_MOTIF, CODE_CONFIDENTIALITE, INFO_TRAITEMENT, SCORE_DESCRIPTION
 from enthic.utils.error_json_response import ErrorJSONResponse
+from enthic.utils.INPI_data_enhancer import decrypt_code_motif
 from enthic.utils.ok_json_response import OKJSONResponse
 
 
@@ -92,7 +94,7 @@ class SirenCompany:
             abort(ErrorJSONResponse("SIREN not between 0 and 1000000000 (excluded)"))
 
 
-class CompanyIdentity(object):
+class CompanyIdentity():
     """
     Identity data of the Company.
     """
@@ -118,7 +120,7 @@ class CompanyIdentity(object):
         self.devise = {JSONGenKey.VALUE: "Euro", JSONGenKey.DESCRIPTION: "Devise"}
 
 
-class Bundle(object):
+class Bundle():
     """
     All the bundle declared and scoring of a company. Can be several year, one
     or average
@@ -157,6 +159,70 @@ class Bundle(object):
                                 1]
                     }
                 })
+
+def get_accountability_metadata(siren):
+    """
+    Return all Accountability Metadata for the matching company
+
+        :param siren : siren to look for the corresponding company_siren
+        :return: company's metadata in a nice JSON-like structure
+    """
+    sql_request = """
+        SELECT declaration, code_motif, code_confidentialite, info_traitement
+        FROM `accountability_metadata`
+        WHERE siren = %s"""
+    raw_results = fetchall(sql_request, (siren,))
+
+    pretty_results =  {}
+    for declaration, code_motif, code_confidentialite, info_traitement in raw_results:
+        str_year = str(declaration)
+        decrypted_code_motif = decrypt_code_motif(code_motif)
+        pretty_results[str_year] = {
+            "code_motif" : {
+                JSONGenKey.VALUE: decrypted_code_motif
+            },
+            "code_confidentialite" : {
+                JSONGenKey.VALUE: code_confidentialite,
+                JSONGenKey.DESCRIPTION:CODE_CONFIDENTIALITE[code_confidentialite]
+            }
+        }
+
+        if decrypted_code_motif in CODE_MOTIF:
+            pretty_results[str_year]["code_motif"][JSONGenKey.DESCRIPTION] = CODE_MOTIF[decrypted_code_motif]
+
+        if info_traitement != "rien" :
+            pretty_results[str_year]["info_traitement"] = {
+                JSONGenKey.VALUE: info_traitement
+            }
+            if info_traitement in INFO_TRAITEMENT:
+                pretty_results[str_year]["info_traitement"][JSONGenKey.DESCRIPTION] = INFO_TRAITEMENT[info_traitement]
+
+    return pretty_results
+
+
+def get_company_annual_stats(siren):
+    """
+    Return all annual statistics available for the matching company
+
+        :param siren : siren to look for the corresponding company_siren
+        :return: company's metadata in a nice JSON-like structure
+    """
+    sql_request = """
+        SELECT declaration, value, stats_type
+        FROM `annual_statistics`
+        WHERE annual_statistics.siren = %s;"""
+    raw_results = fetchall(sql_request, (siren,))
+
+    pretty_results =  {}
+    for declaration, value, stats_type in raw_results:
+        str_year = str(declaration)
+        pretty_results[str_year] = {
+            stats_type : {
+                JSONGenKey.VALUE : value,
+                JSONGenKey.DESCRIPTION : SCORE_DESCRIPTION[stats_type]
+            }
+        }
+    return pretty_results
 
 
 class UniqueBundleCompany(OKJSONResponse, SQLData):
@@ -282,5 +348,23 @@ class MultipleBundleCompany(OKJSONResponse, SQLData):
         self.declarations = {"declarations": {}}
         for year, _bundle in _bundles.items():
             self.declarations["declarations"][year] = {"financial_data": _bundle}
+
+        # Add annual statistics to company's data structure, if there is (i.e if there is financial data)
+        if _bundles:
+            annual_stats = get_company_annual_stats(self.sql_results[0][0])
+            for year, statsdata in annual_stats.items():
+                if year in self.declarations["declarations"]:
+                    self.declarations["declarations"][year]["statistics"] = statsdata
+                else:
+                    self.declarations["declarations"][year] = { "statistics" : statsdata}
+
+        # Add metadata to company's data structure
+        accountability_metadata = get_accountability_metadata(self.sql_results[0][0])
+        for year, metadata in accountability_metadata.items():
+            if year in self.declarations["declarations"]:
+                self.declarations["declarations"][year]["metadata"] = metadata
+            else:
+                self.declarations["declarations"][year] = { "metadata" : metadata}
+
         OKJSONResponse.__init__(self, {**CompanyIdentity(*self.sql_results[0][:7]).__dict__,
                                        **self.declarations})

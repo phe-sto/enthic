@@ -43,3 +43,5 @@ mysql enthic < ${SQL_DIR}create-table-metadata.sql --password="$1";
 mysql enthic < ${SQL_DIR}insert-metadata.sql --password="$1";
 #11) CREATE A TABLE FOR SCORING COMPUTATION
 mysql enthic < ${SQL_DIR}create-table-statistics.sql --password="$1";
+#12) CREATE A TABLE FOR STATISTICS BY APE
+mysql enthic < ${SQL_DIR}create-table-ape-stats.sql --password="$1";

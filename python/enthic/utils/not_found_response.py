@@ -12,8 +12,9 @@ Coding Rules:
 - Only argument is configuration file.
 - No output or print, just log and files.
 """
-from enthic.utils.json_response import JSONResponse
 from flask import request
+
+from enthic.utils.json_response import JSONResponse
 
 
 class NotFoundJSONResponse(JSONResponse):

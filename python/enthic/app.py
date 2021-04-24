@@ -32,13 +32,14 @@ from enthic.company.siren_company import (
     AverageSirenCompany,
     AllSirenCompany
 )
-from enthic.compute_stats import compute_company_statistics
+from enthic.scoring.compute_stats import compute_company_statistics
 from enthic.database.fetch import fetchall
 from enthic.decorator.insert_request import insert_request
 from enthic.ontology import ONTOLOGY, APE_CODE, SCORE_DESCRIPTION
 from enthic.utils.error_json_response import ErrorJSONResponse
 from enthic.utils.ok_json_response import OKJSONResponse
 from enthic.utils.conversion import CON_APE, get_corresponding_ape_codes
+from enthic.scoring.main import get_percentiles
 
 ################################################################################
 # FLASK INITIALISATION
@@ -364,6 +365,27 @@ def page_search():
                                                                      ape_arg_for_url)
 
     return OKJSONResponse(obj)
+
+
+@application.route("/statistics/<string:real_ape>/<int:year>/<int:score>", methods=['GET'], strict_slashes=False)
+@application.route("/statistics/<string:real_ape>/<int:year>", methods=['GET'], strict_slashes=False)
+@application.route("/statistics/<string:real_ape>", methods=['GET'], strict_slashes=False)
+@insert_request
+def statistics(real_ape, year=None, score=None):
+    """
+    Return stored statistics about the given APE code as json
+
+        :param real_ape: official APE code asked for
+        :param year : year asked for
+        :param score : score type asked for
+    """
+
+    result = get_percentiles(real_ape, year, score)
+
+    if not result:
+        return ErrorJSONResponse("No data for APE {}, year {} and score '{}'({})".format(real_ape, year, SCORE_DESCRIPTION[score], score))
+
+    return OKJSONResponse(result)
 
 
 @application.route("/compute/<string:first_letters>", methods=['GET'], strict_slashes=False)

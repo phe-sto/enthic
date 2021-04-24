@@ -11,7 +11,7 @@ Coding Rules:
 - No output or print, just log and files.
 """
 import math
-from enthic.tree_french_income_statement import TREE_VIEW
+from enthic.scoring.tree_french_income_statement import TREE_VIEW
 
 
 def convert_data_to_tree(raw_data):

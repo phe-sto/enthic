@@ -23,8 +23,8 @@ from os.path import dirname, join, isdir
 from re import sub, compile
 from zipfile import ZipFile, BadZipFile
 
-from enthic.utils.conversion import CON_APE, CON_ACC, CON_BUN
 from enthic.utils.INPI_data_enhancer import decrypt_code_motif
+from enthic.utils.conversion import CON_APE, CON_ACC, CON_BUN
 
 
 class ModifiedData(Enum):
@@ -78,6 +78,8 @@ basicConfig(level=CONFIG['debugLevel'],
             format="%(asctime)s [%(levelname)8s] %(message)s (%(filename)s:%(lineno)s)")
 
 KNOWN_ADDRESS_ERRORS = ["0 | Durée de L'exercice précédentI"]
+
+
 def read_address_data(address_xml_item, xml_file_name):
     """
     Read the xml's identity's address item, to extract postal_code and town from it
@@ -92,11 +94,8 @@ def read_address_data(address_xml_item, xml_file_name):
         regex_match = RE_POSTAL_CODE_TOWN.match(address_xml_item.text)
         postal_code = regex_match.group(1)
         town = regex_match.group(2).upper()
-        if not town.strip() :
-            if address_xml_item.text in KNOWN_ADDRESS_ERRORS:
-                postal_code, town = (ModifiedData.WRONG_FORMAT.value,) * 2
-            else:
-                raise Exception("In file {}. No town found in {}, maybe there is a special character that should be added to regex".format(xml_file_name, address_xml_item.text))
+        if not town.strip():
+            postal_code, town = (ModifiedData.WRONG_FORMAT.value,) * 2
     except TypeError as error:
         debug("{0}: {1}".format(str(error),
                                 str(address_xml_item.text)))
@@ -164,6 +163,7 @@ def read_identity_data(identity_xml_item, xml_file_name):
     return acc_type, siren, denomination, year, ape, postal_code, town, \
            code_motif, code_confidentialite, info_traitement
 
+
 def process_daily_zip_file(daily_zip_file_path):
     ############################################################################
     # OPEN OUTPUT FILES TO APPEND NEW DATA
@@ -226,16 +226,16 @@ def process_daily_zip_file(daily_zip_file_path):
                                                     if identity_writen is True:
                                                         bundle_file.write(
                                                             csv_separator.join((siren, year,
-                                                                       str(CON_ACC[acc_type]),
-                                                                       str(CON_BUN[CON_ACC[
-                                                                           acc_type]][
-                                                                               bundle.attrib[
-                                                                                   "code"]]),
-                                                                       str(int(
-                                                                           bundle.attrib[
-                                                                               amount_code]
-                                                                       )),
-                                                                       "\n")))
+                                                                                str(CON_ACC[acc_type]),
+                                                                                str(CON_BUN[CON_ACC[
+                                                                                    acc_type]][
+                                                                                        bundle.attrib[
+                                                                                            "code"]]),
+                                                                                str(int(
+                                                                                    bundle.attrib[
+                                                                                        amount_code]
+                                                                                )),
+                                                                                "\n")))
                                     except KeyError as key_error:
                                         debug("{} in account {} bundle {}".format(
                                             key_error,
@@ -254,6 +254,7 @@ def process_daily_zip_file(daily_zip_file_path):
     identity_file.close()
     metadata_file.close()
 
+
 def main():
     """
     Based on the configuration storing the input file path. All the xml are
@@ -265,7 +266,7 @@ def main():
     for file in listdir(CONFIG['inputPath']):  # LIST INPUT FILES
         info("processing INPI daily zip file %s", file)
         if file.endswith(".zip"):  # ONLY PROCESS ZIP FILES
-                process_daily_zip_file(join(CONFIG['inputPath'], file))
+            process_daily_zip_file(join(CONFIG['inputPath'], file))
 
 
 if __name__ == '__main__':

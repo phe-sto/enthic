@@ -8,6 +8,7 @@
   "identityFile": "identity.tmp",
   "metadataFile": "metadata.csv",
   "debugLevel": "INFO",
+  "csvSeparator" : "\t",
   "mySQL": {
     "enthic": {
       "host": "localhost",

@@ -83,7 +83,7 @@ def result_file(config):
        :param config: Fixture of the JSON configuration file.
        :return: The file object.
     """
-    return open(join(config['outputPath'], config['bundleFile']), "r")
+    return open(join(config['outputPath'], config['tmpBundleFile']), "r")
 
 
 @pytest.fixture()
@@ -105,7 +105,7 @@ def test_result_line_data(result_file):
        :param result_file: Fixture of the CSV result file.
     """
     for line in result_file:
-        line = line.split(";")
+        line = line.split("\t")
         assert len(line) == 6, "NUMBER OF COLUMNS NOT 6"
         assert " " not in line, "BLANK ENTRY"
         assert "" not in line, "EMPTY ENTRY"
@@ -126,7 +126,7 @@ def test_identity_line_data(identity_file):
     """
     max_length = 0
     for line in identity_file:
-        line = line.split(";")
+        line = line.split("\t")
         assert len(line) == 6, "NUMBER OF COLUMNS NOT 6"
         assert " " not in line, "BLANK ENTRY"
         assert "" not in line, "EMPTY ENTRY"

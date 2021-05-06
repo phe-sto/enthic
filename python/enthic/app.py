@@ -217,7 +217,7 @@ def result_array(probe, limit, ape_code=[], offset=0):
         return count[0][0], tuple(CompanyIdentity(*company).__dict__ for company in companies)
 
 
-def get_siren(first_letters):
+def get_siren(first_letters, limit):
     """
     Get siren of companies whose denomination starts with the given first letters
 
@@ -229,7 +229,7 @@ def get_siren(first_letters):
     with application.app_context():
         siren_list = fetchall("""SELECT siren
                         FROM identity
-                        WHERE denomination LIKE %s LIMIT 1000000""", (first_letters,))
+                        WHERE denomination LIKE %s LIMIT %s""", (first_letters, limit))
 
     return siren_list
 
@@ -377,7 +377,7 @@ def compute(first_letters):
     """
     result_list = []
     result = []
-    for siren in get_siren(first_letters):
+    for siren in get_siren(first_letters, 100):
         company_data = company_siren(siren[0])
         scores = compute_company_statistics(company_data)
         result_list.append({"siren" : siren[0], "scores" : scores})

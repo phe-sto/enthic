@@ -105,13 +105,14 @@ NOT_EXISTING_DENOMINATION = tuple(
     denomination + "ZzzzzzZ99996666" for denomination in EXISTING_DENOMINATION)
 
 LETTERS_COUPLE_LIST = []
-for first_letter in range(97,123):
-    for second_letter in range(97,123):
-        for third_letter in range(97,123):
-            LETTERS_COUPLE_LIST.append(chr(first_letter) + chr(second_letter) + chr(third_letter))
+for first_letter in range(97, 123):
+    for second_letter in range(97, 123):
+        for third_letter in range(97, 123):
+            for fourth_letter in range(97, 123):
+                LETTERS_COUPLE_LIST.append(chr(first_letter) + chr(second_letter) + chr(third_letter) + chr(fourth_letter))
 
 # Comment this line to launch compute annual statistics for the whole database
-LETTERS_COUPLE_LIST = ['aa', 'aba', 'abb', 'abc', 'abd', 'abe', 'abf' ]
+LETTERS_COUPLE_LIST = LETTERS_COUPLE_LIST[0:6]
 
 def test_ok_json_response():
     """

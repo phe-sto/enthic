@@ -14,11 +14,14 @@ Coding Rules:
 """
 
 import concurrent.futures
+import csv
+import io
+import codecs
 from json import loads, load
 from os.path import dirname, join
 from math import isnan
 import numpy
-from flask import Flask, request
+from flask import Flask, request, send_file
 from flask_cors import CORS
 
 from enthic.company.company import CompanyIdentity
@@ -480,6 +483,39 @@ def compute_ape(real_ape, year, score):
 
     return OKJSONResponse(new_data)
 
+@application.route("/csv/<int:siren>", methods=['GET'], strict_slashes=False)
+@insert_request
+def serve_csv_file(siren):
+    """
+    Get all data from the given company and returns it as csv file
+
+       :param siren: A company's siren
+
+       :return: HTTP Response as csv file
+    """
+
+    # Get data
+    sql_arguments = {"siren" : siren}
+    sql_query = "SELECT * FROM `bundle` WHERE siren = %(siren)s"
+    result = fetchall(sql_query, args=sql_arguments)
+
+    # Open bytes stream
+    stream = io.BytesIO()
+    stream_writer = codecs.getwriter('utf-8')
+    # Convert to String stream
+    buffer = stream_writer(stream)
+    # Write data
+    writer = csv.writer(buffer, delimiter=';')
+    writer.writerow(["siren", "annee", "type de comptabilite", "code compta", "valeur"])
+    writer.writerows(result)
+
+    # Send data to client
+    stream.seek(0)
+    return send_file(
+        stream,
+        mimetype="text/csv",
+        attachment_filename="export.csv",
+    )
 
 @application.route('/<path:path>', strict_slashes=False)
 @insert_request

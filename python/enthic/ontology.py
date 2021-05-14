@@ -1852,7 +1852,8 @@ INFO_TRAITEMENT = {
     "A2" : "Comptes annuels saisis sans contrôle BODACC possible",
     "A3" : "Incohérence avec référentiel BODACC",
     "A4" : "Incohérence entre la page de garde et le contenu de la liasse",
-    "A5" : "Doute sur le type de déclaration de confidentialité"
+    "A5" : "Doute sur le type de déclaration de confidentialité",
+    "A6" : "Comptes annuels saisis après correction d’un pdf non conforme"
 }
 
 SCORE_DESCRIPTION = {

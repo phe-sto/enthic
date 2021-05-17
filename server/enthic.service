@@ -1,0 +1,13 @@
+[Unit]
+Description=Gunicorn instance to serve Enthic
+After=network.target
+
+[Service]
+User=root
+Group=www-data
+
+WorkingDirectory=/root/enthic/python/enthic
+ExecStart=/bin/gunicorn3 --workers 3 --bind 0.0.0.0:5432 app:application
+
+[Install]
+WantedBy=multi-user.target

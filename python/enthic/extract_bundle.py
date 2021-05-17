@@ -164,14 +164,92 @@ def read_identity_data(identity_xml_item, xml_file_name):
            code_motif, code_confidentialite, info_traitement
 
 
-def process_daily_zip_file(daily_zip_file_path):
+def process_xml_file(xml_stream, xml_name):
+    """
+    Process an xml file already opened
+    """
     ############################################################################
     # OPEN OUTPUT FILES TO APPEND NEW DATA
     bundle_file = open(join(CONFIG['outputPath'], CONFIG['tmpBundleFile']), "a")
     identity_file = open(join(CONFIG['outputPath'], CONFIG['identityFile']), "a")
     metadata_file = open(join(CONFIG['outputPath'], CONFIG['metadataFile']), "a")
     csv_separator = CONFIG['csvSeparator']
+    ####################################################
+    # XML PARSER
+    try :
+        tree = ElementTree.parse(xml_stream)
+    except ElementTree.ParseError as error :
+        error("Error processing XML " + xml_name + " : " + error)
+        return
+    root = tree.getroot()
+    ####################################################
+    # XML RELATED VARIABLES
+    acc_type, siren, year = (None,) * 3
+    identity_writen = False
+    ####################################################
+    # ITERATE ALL TAGS
+    for child in root[0]:
+        ################################################
+        # IDENTITY TAGS, SIREN AND TYPE OF ACCOUNTABILITY
+        if child.tag == "{fr:inpi:odrncs:bilansSaisisXML}identite":
+            acc_type, siren, denomination, year, ape, \
+            postal_code, town, code_motif, \
+            code_confidentialite, info_traitement = read_identity_data(child, xml_name)
+            ############################################
+            # WRITE IDENTITY FILE IF ACCOUNT TYPE IS
+            # KNOWN
+            if acc_type in ACC_ONT.keys():
+                identity_file.write(
+                    csv_separator.join(
+                        (str(siren), str(denomination), str(ape),
+                         str(postal_code), str(town), "\n")))
+                identity_writen = True
+                metadata_file.write(
+                    csv_separator.join(
+                        (str(siren), str(year), str(code_motif),
+                         str(code_confidentialite), str(info_traitement), "\n")))
+        ################################################
+        # BUNDLE TAGS IN PAGES TO ITERATE WITH BUNDLE CODES
+        # AND AMOUNT
+        elif child.tag == "{fr:inpi:odrncs:bilansSaisisXML}detail":
+            for page in child:
+                for bundle in page:
+                    try:
+                        for bundle_code in \
+                                ACC_ONT[acc_type]['bundleCodeAtt']:
+                            if bundle.attrib["code"] in bundle_code.keys():
+                                for amount_code in bundle_code[bundle.attrib["code"]]:
+                                    amount_code = "m{0}".format(amount_code)
+                                    ####################
+                                    # WRITE RESULTS FILE
+                                    if identity_writen is True:
+                                        bundle_file.write(
+                                            csv_separator.join((siren, year,
+                                                                str(CON_ACC[acc_type]),
+                                                                str(CON_BUN[CON_ACC[
+                                                                    acc_type]][
+                                                                        bundle.attrib[
+                                                                            "code"]]),
+                                                                str(int(
+                                                                    bundle.attrib[
+                                                                        amount_code]
+                                                                )),
+                                                                "\n")))
+                    except KeyError as key_error:
+                        debug("{} in account {} bundle {}".format(
+                            key_error,
+                            acc_type,
+                            bundle.attrib[
+                                "code"]
+                        ))
+    ############################################################################
+    # CLOSES FILES
+    bundle_file.close()
+    identity_file.close()
+    metadata_file.close()
 
+
+def process_daily_zip_file(daily_zip_file_path):
     try:  # SOME BAD ZIP FILE ARE IN HE DATASET
         input_zip = ZipFile(daily_zip_file_path)
         for zipped_xml_name in input_zip.namelist():  # LIST ARCHIVES IN ZIP
@@ -179,80 +257,11 @@ def process_daily_zip_file(daily_zip_file_path):
                 zipped_xml = ZipFile(BytesIO(input_zip.read(zipped_xml_name)))
                 # SUPPOSED ONLY ONE XML BUT ITERATE TO BE SURE
                 for xml in zipped_xml.namelist():
-                    ####################################################
-                    # XML PARSER
-                    tree = ElementTree.parse(BytesIO(zipped_xml.open(xml).read()))
-                    root = tree.getroot()
-                    ####################################################
-                    # XML RELATED VARIABLES
-                    acc_type, siren, year = (None,) * 3
-                    identity_writen = False
-                    ####################################################
-                    # ITERATE ALL TAGS
-                    for child in root[0]:
-                        ################################################
-                        # IDENTITY TAGS, SIREN AND TYPE OF ACCOUNTABILITY
-                        if child.tag == "{fr:inpi:odrncs:bilansSaisisXML}identite":
-                            acc_type, siren, denomination, year, ape, \
-                            postal_code, town, code_motif, \
-                            code_confidentialite, info_traitement = read_identity_data(child, zipped_xml_name)
-                            ############################################
-                            # WRITE IDENTITY FILE IF ACCOUNT TYPE IS
-                            # KNOWN
-                            if acc_type in ACC_ONT.keys():
-                                identity_file.write(
-                                    csv_separator.join(
-                                        (str(siren), str(denomination), str(ape),
-                                         str(postal_code), str(town), "\n")))
-                                identity_writen = True
-                                metadata_file.write(
-                                    csv_separator.join(
-                                        (str(siren), str(year), str(code_motif),
-                                         str(code_confidentialite), str(info_traitement), "\n")))
-                        ################################################
-                        # BUNDLE TAGS IN PAGES TO ITERATE WITH BUNDLE CODES
-                        # AND AMOUNT
-                        elif child.tag == "{fr:inpi:odrncs:bilansSaisisXML}detail":
-                            for page in child:
-                                for bundle in page:
-                                    try:
-                                        for bundle_code in \
-                                                ACC_ONT[acc_type]['bundleCodeAtt']:
-                                            if bundle.attrib["code"] in bundle_code.keys():
-                                                for amount_code in bundle_code[bundle.attrib["code"]]:
-                                                    amount_code = "m{0}".format(amount_code)
-                                                    ####################
-                                                    # WRITE RESULTS FILE
-                                                    if identity_writen is True:
-                                                        bundle_file.write(
-                                                            csv_separator.join((siren, year,
-                                                                                str(CON_ACC[acc_type]),
-                                                                                str(CON_BUN[CON_ACC[
-                                                                                    acc_type]][
-                                                                                        bundle.attrib[
-                                                                                            "code"]]),
-                                                                                str(int(
-                                                                                    bundle.attrib[
-                                                                                        amount_code]
-                                                                                )),
-                                                                                "\n")))
-                                    except KeyError as key_error:
-                                        debug("{} in account {} bundle {}".format(
-                                            key_error,
-                                            acc_type,
-                                            bundle.attrib[
-                                                "code"]
-                                        ))
+                    process_xml_file(BytesIO(zipped_xml.open(xml).read()), zipped_xml_name)
             except UnicodeDecodeError as error:
                 debug(error)
     except BadZipFile as error:  #  TODO REPORT ERROR TO INPI
         debug(error)
-
-    ############################################################################
-    # CLOSES FILES
-    bundle_file.close()
-    identity_file.close()
-    metadata_file.close()
 
 
 def main():

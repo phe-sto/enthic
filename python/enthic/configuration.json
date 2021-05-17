@@ -16,6 +16,10 @@
       "password": "enthic"
     }
   },
+  "INPI": {
+    "user": "INPIOpenDataUser",
+    "password": "INPIOpenDataPassword"
+  },
   "flask": {
     "debug": false,
     "host": "127.0.0.1",

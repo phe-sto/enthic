@@ -9,6 +9,7 @@
   "metadataFile": "metadata.csv",
   "debugLevel": "INFO",
   "csvSeparator" : "\t",
+  "importHistoricFile" : "../input/importHistoric.txt",
   "mySQL": {
     "enthic": {
       "host": "localhost",

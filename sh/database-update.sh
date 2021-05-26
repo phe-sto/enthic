@@ -12,4 +12,4 @@ mkdir -p ../input
 mkdir -p ../output
 
 # Start downloading and importing data
-python3 ../python/enthic/download_from_INPI.py -q 6 -f "/public/"
+python3 ../python/enthic/download_from_INPI.py 6 "/public/"

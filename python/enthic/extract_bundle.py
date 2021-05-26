@@ -179,8 +179,8 @@ def process_xml_file(xml_stream, xml_name):
     try :
         tree = ElementTree.parse(xml_stream)
     except ElementTree.ParseError as error :
-        error("Error processing XML " + xml_name + " : " + error)
-        return
+        info("Error processing XML " + xml_name + " : {}".format(error))
+        return False
     root = tree.getroot()
     ####################################################
     # XML RELATED VARIABLES
@@ -247,6 +247,7 @@ def process_xml_file(xml_stream, xml_name):
     bundle_file.close()
     identity_file.close()
     metadata_file.close()
+    return True
 
 
 def process_daily_zip_file(daily_zip_file_path):

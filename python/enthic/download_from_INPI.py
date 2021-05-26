@@ -36,9 +36,9 @@ with open(join(dirname(__file__), "configuration.json")) as json_configuration_f
 
 FTP_MAX_VOLUME = 6 * 1024 * 1024 * 1024  # Default is 6 GigaBytes
 FTP_VOLUME_USED = 0  # Bytes
+IMPORT_HISTORIC = []
 
-
-def add_data_to_database(file_path):
+def add_data_to_database(file_path, date_processed):
     """
         Add data contained in the given file into MySQL database
         then delete temporary files if it's a success
@@ -65,6 +65,9 @@ def add_data_to_database(file_path):
         os.remove(join(CONFIG['outputPath'], CONFIG['identityFile']))
         os.remove(join(CONFIG['outputPath'], CONFIG['metadataFile']))
         os.remove(file_path)
+        IMPORT_HISTORIC.append(date_processed)
+        with open(CONFIG["importHistoricFile"], 'a') as import_historic_file:
+            import_historic_file.write(date_processed + "\n")
 
 
 def explore_and_process_FTP_folder(folderToExplore):
@@ -112,8 +115,11 @@ def explore_and_process_CQuest_mirror():
     for year in range(2017, 2021):
         url = 'http://data.cquest.org/inpi_rncs/comptes/' + str(year) + '/'
         for month in range(1, 12):
-            for day in range(2, 31):
-                file_name = 'bilans_saisis_' + str(year) + str(month).zfill(2) + str(day).zfill(2) + ".7z"
+            for day in range(1, 31):
+                date = str(year) + str(month).zfill(2) + str(day).zfill(2)
+                if date in IMPORT_HISTORIC :
+                    continue
+                file_name = 'bilans_saisis_' + date + ".7z"
                 print("downloading : ", url + file_name)
                 localfile_path = join(CONFIG['inputPath'], basename(file_name))
                 try:
@@ -127,17 +133,9 @@ def explore_and_process_CQuest_mirror():
                         xml_file_opened = open(xml_path, "rb")
                         bytes_io = BytesIO(xml_file_opened.read())
                         process_xml_file(bytes_io, filename)
-                    add_data_to_database(localfile_path)
+                    add_data_to_database(localfile_path, date)
                 except urllib.error.HTTPError as error:
                     print(url + file_name + " doesn't exist : ", error)
-
-
-def help():
-    """
-    Print help about script arguments
-    """
-    info('usage is : %s -q <number of GigaBytes> -f <FTP folder to explore>',
-         basename(__file__))
 
 
 def main():
@@ -145,6 +143,7 @@ def main():
     Download INPI's daily file into input folder, as stated in configuration file.
     """
     global FTP_MAX_VOLUME
+    global IMPORT_HISTORIC
 
     parser = ArgumentParser(description='Download data and add it to Enthic database')
     parser.add_argument('quota',
@@ -160,7 +159,14 @@ def main():
     args = parser.parse_args()
     FTP_MAX_VOLUME = args.quota * 1024 * 1024 * 1024
 
-    explore_and_process_CQuest_mirror("dummy")
+    try :
+        with open(CONFIG["importHistoricFile"], 'r') as import_historic_file:
+            for line in import_historic_file:
+                IMPORT_HISTORIC.append(line.strip())
+    except FileNotFoundError:
+        open(CONFIG["importHistoricFile"], 'x') # Create file
+
+    explore_and_process_CQuest_mirror()
     # explore_and_process_FTP_folder(args.folder)
 
 

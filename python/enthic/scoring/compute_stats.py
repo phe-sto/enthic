@@ -226,24 +226,20 @@ def compute_salary_scores(tree):
     return salary_level, salary_percent
 
 
-def compute_company_statistics(company_data):
+def compute_company_statistics(financial_data):
     """
     Computes some statistics and scores from the given company's data
 
-        :param company_data: data from which compute statistics and score
+        :param financial_data: data from which compute statistics and score
         :return: structured data containing company's computed scores
     """
     result_list = []
-    for year in company_data.json['declarations']:
-        if 'financial_data' in company_data.json['declarations'][year] :
-            financial_data = company_data.json['declarations'][year]['financial_data']
-            tree = convert_data_to_tree(financial_data)
-            check_tree_data(tree)
-            share_score = compute_annual_share_score(tree)
-            salary_level, salary_percent = compute_salary_scores(tree)
-            result_list.append({"year": year,
-                                "share_score": share_score,
-                                "salary_level": salary_level,
-                                "salary_percent": salary_percent})
+    tree = convert_data_to_tree(financial_data)
+    check_tree_data(tree)
+    share_score = compute_annual_share_score(tree)
+    salary_level, salary_percent = compute_salary_scores(tree)
+    result_list.append({"share_score": share_score,
+                        "salary_level": salary_level,
+                        "salary_percent": salary_percent})
 
     return result_list

@@ -10,32 +10,29 @@ Coding Rules:
 - Only argument is configuration file.
 - No output or print, just log and files.
 """
+from argparse import ArgumentParser
 from json import loads
 from requests import get
-from argparse import ArgumentParser
 
 from enthic.utils.conversion import CON_APE
 from enthic.ontology import SCORE_DESCRIPTION
 
 
-def compute_companies_statistics(host, year):
+def compute_companies_statistics(host, year, limit):
     """
     Compute indicators for each companies
 
         :param host: API address IP + port
     """
     indicators_count = 0
-    for first_letter in range(97, 123):
-        for second_letter in range(97, 123):
-            for third_letter in range(97, 123):
-                for fourth_letter in range(97, 123):
-                    name_begin = chr(first_letter) + chr(second_letter) + chr(third_letter) + chr(fourth_letter)
-                    response = get("http://" + host + "/compute/" + name_begin + "/" + str(year))
-                    assert response.status_code == 200, "WRONG HTTP RETURN CODE %s INSTEAD OF 200" % response.status_code
-                    results = loads(response.text)
-                    assert results is not None, "NOT RETURNING A JSON"
-                    indicators_count += len(results)
-                    print("computed indicators for companies starting with " + name_begin + ". Total of " + str(indicators_count) + " computed")
+    for i in range(1600000):
+        offset = i * limit
+        response = get("http://" + host + "/compute_all/" + str(year) + "/" + str(offset) + "/" + str(limit))
+        assert response.status_code == 200, "WRONG HTTP RETURN CODE %s INSTEAD OF 200" % response.status_code
+        results = loads(response.text)
+        assert results is not None, "NOT RETURNING A JSON"
+        indicators_count += len(results)
+        print("For " + str(offset + limit) + " companies for year " + str(year) + ", " + str(indicators_count) + " indicators computed")
 
 
 def compute_ape_deciles(host, year):
@@ -64,11 +61,16 @@ def main():
                         metavar='Host',
                         type=ascii,
                         help='API address IP + port')
+    parser.add_argument('batch_size',
+                        metavar='batch size',
+                        type=int,
+                        help='API address IP + port')
+
 
     args = parser.parse_args()
     host = args.host.replace("'","")
-    for year in range(2017, 2021):
-        compute_companies_statistics(host, year)
+    for year in range(2017, 2022):
+        compute_companies_statistics(host, year, args.batch_size)
         compute_ape_deciles(host, year)
 
 if __name__ == '__main__':

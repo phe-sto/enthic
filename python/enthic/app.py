@@ -17,15 +17,13 @@ import concurrent.futures
 import csv
 import io
 import codecs
-import datetime
 from json import loads, load
 from os.path import dirname, join
-from math import isnan
 import numpy
 from flask import Flask, request, send_file
 from flask_cors import CORS
 
-from enthic.company.company import CompanyIdentity, Bundle
+from enthic.company.company import CompanyIdentity
 from enthic.company.denomination_company import (
     YearDenominationCompany,
     AverageDenominationCompany,
@@ -36,14 +34,13 @@ from enthic.company.siren_company import (
     AverageSirenCompany,
     AllSirenCompany
 )
-from enthic.scoring.compute_stats import compute_company_statistics
 from enthic.database.fetch import fetchall
 from enthic.decorator.insert_request import insert_request
 from enthic.ontology import ONTOLOGY, APE_CODE, SCORE_DESCRIPTION
 from enthic.utils.error_json_response import ErrorJSONResponse
 from enthic.utils.ok_json_response import OKJSONResponse
 from enthic.utils.conversion import CON_APE, get_corresponding_ape_codes
-from enthic.scoring.main import get_percentiles
+from enthic.scoring.main import get_percentiles, compute_score
 
 ################################################################################
 # FLASK INITIALISATION
@@ -405,34 +402,35 @@ def compute(first_letters, year):
     """
     result = []
     for siren in get_siren(first_letters):
-        sql_results = fetchall("""
-            SELECT accountability, bundle, declaration, amount
-            FROM bundle
-            WHERE bundle.siren = %s AND declaration = %s;""",
-            (siren[0], year))
-        print("sql_results : ", sql_results)
-        if not sql_results :
-            continue
-        financial_data = Bundle(*[bundle[:] for bundle in sql_results])
-        scores = compute_company_statistics(financial_data.__dict__[str(year)])
-        for score in scores:
-            if not isnan(score["share_score"]):
-                result.append((siren[0], year, 1, score["share_score"]))
-            if not isnan(score["salary_level"]):
-                result.append((siren[0], year, 3, score["salary_level"]))
-            if not isnan(score["salary_percent"]):
-                result.append((siren[0], year, 2, score["salary_percent"]))
-
-    with application.app_context():
-        from enthic.database.mysql import mysql
-        cur = mysql.connection.cursor()
-        sql_replace_query = "REPLACE INTO `annual_statistics`(`siren`, `declaration`, `stats_type`, `value`) VALUES (%s, %s, %s, %s)"
-        values = tuple(result)
-        cur.executemany(sql_replace_query, values)
-        mysql.connection.commit()
-        cur.close()
+        result += compute_score(siren[0], year)
     return OKJSONResponse(result)
 
+
+@application.route("/compute_all/<int:year>/<int:offset>/<int:limit>", methods=['GET'], strict_slashes=False)
+@insert_request
+def compute_all(year, offset, limit):
+    """
+    Computes bundle's scores and saves them into the database.
+
+       :param year: year on which compute indicators
+       :param offset: offset in database to compute.
+       :param limit: limit of score to compute
+
+       :return: HTTP Response as application/json
+    """
+    sql_args = {"year": year,
+                "limit": limit,
+                "offset": offset}
+    siren_to_compute = fetchall(""" SELECT siren
+                                    FROM `identity`
+                                    LIMIT %(limit)s
+                                    OFFSET %(offset)s""",
+                                    sql_args)
+
+    result = []
+    for siren in siren_to_compute:
+        result += compute_score(siren[0], year)
+    return OKJSONResponse(result)
 
 @application.route("/compute_ape/<string:real_ape>/<int:year>/<int:score>", methods=['GET'], strict_slashes=False)
 @insert_request

@@ -4,5 +4,5 @@ CREATE TABLE IF NOT EXISTS annual_statistics
     declaration YEAR(4) NOT NULL,
     stats_type TINYINT,
     value FLOAT,
-    UNIQUE( `siren`, `declaration`)
+    UNIQUE( `siren`, `declaration`, `stats_type`)
 );

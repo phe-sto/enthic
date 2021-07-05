@@ -384,7 +384,12 @@ def statistics(real_ape, year=None, score=None):
     result = get_percentiles(real_ape, year, score)
 
     if not result:
-        return ErrorJSONResponse("No data for APE {}, year {} and score '{}'({})".format(real_ape, year, SCORE_DESCRIPTION[score], score))
+        error_msg = "No data for APE {}".format(real_ape)
+        if year :
+            error_msg += ", year {}".format(year)
+        if score:
+            error_msg += "and score '{}'({})".format(SCORE_DESCRIPTION[score], score)
+        return ErrorJSONResponse(error_msg)
 
     return OKJSONResponse(result)
 

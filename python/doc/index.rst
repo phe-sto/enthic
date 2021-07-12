@@ -18,8 +18,6 @@ Those two python scripts are used in shell ``script table-csv.sh``.
 
 .. automodule:: extract_bundle
 
-.. automodule:: treat_bundle
-
 Following module relates to Flask server.
 
 .. automodule:: app

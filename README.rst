@@ -212,8 +212,6 @@ Library structure
     │   │   │   └── swagger-ui-standalone-preset.js.map
     │   │   ├── test_app.py
     │   │   ├── test_extract_bundle.py
-    │   │   ├── test_treat_bundle.py
-    │   │   ├── treat_bundle.py
     │   │   └── utils
     │   │       ├── error_json_response.py
     │   │       ├── conversion.py

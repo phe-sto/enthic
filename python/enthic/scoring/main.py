@@ -94,30 +94,34 @@ def get_percentiles(real_ape, year=None, score=None):
     }
     return result
 
-def compute_score(siren, year):
+def compute_score(siren, year = None):
     """
     Compute given company's score for given year and store them into database
 
         :param siren: siren's company
         :param year : year asked for
     """
-    sql_results = fetchall("""
+    sql_request = """
         SELECT accountability, bundle, declaration, amount
         FROM bundle
-        WHERE bundle.siren = %s AND declaration = %s;""",
-        (siren, year))
+        WHERE bundle.siren = %(siren)s"""
+    if year:
+        sql_request += " AND declaration = %(year)s"
+    sql_request += ";"
+    sql_results = fetchall(sql_request, {"siren": siren, "year" : year})
     if not sql_results :
         return []
-    financial_data = Bundle(*[bundle[:] for bundle in sql_results])
-    scores = compute_company_statistics(financial_data.__dict__[str(year)])
+    financial_data = Bundle(*[bundle[:] for bundle in sql_results]).__dict__
     result = []
-    for score in scores:
-        if not isnan(score["share_score"]):
-            result.append((siren, year, 1, score["share_score"]))
-        if not isnan(score["salary_level"]):
-            result.append((siren, year, 3, score["salary_level"]))
-        if not isnan(score["salary_percent"]):
-            result.append((siren, year, 2, score["salary_percent"]))
+    for existing_year in financial_data:
+        scores = compute_company_statistics(financial_data[existing_year])
+        for score in scores:
+            if not isnan(score["share_score"]):
+                result.append((siren, existing_year, 1, score["share_score"]))
+            if not isnan(score["salary_level"]):
+                result.append((siren, existing_year, 3, score["salary_level"]))
+            if not isnan(score["salary_percent"]):
+                result.append((siren, existing_year, 2, score["salary_percent"]))
 
     with application.app_context():
         from enthic.database.mysql import mysql

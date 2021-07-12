@@ -394,14 +394,15 @@ def statistics(real_ape, year=None, score=None):
     return OKJSONResponse(result)
 
 
-@application.route("/compute/<string:first_letters>/<int:year>", methods=['GET'], strict_slashes=False)
+@application.route("/compute/company/<string:first_letters>/<int:year>", methods=['GET'], strict_slashes=False)
+@application.route("/compute/company/<string:first_letters>/", methods=['GET'], strict_slashes=False)
 @insert_request
-def compute(first_letters, year):
+def compute(first_letters, year=None):
     """
     Computes scores and saves them into the database.
 
        :param first_letters: A string to match companies name.
-       :param year: year on which compute indicators
+       :param year: year on which compute indicators. None for all available years
 
        :return: HTTP Response as application/json
     """
@@ -411,20 +412,20 @@ def compute(first_letters, year):
     return OKJSONResponse(result)
 
 
-@application.route("/compute_all/<int:year>/<int:offset>/<int:limit>", methods=['GET'], strict_slashes=False)
+@application.route("/compute/company/all/<int:offset>/<int:limit>/<int:year>", methods=['GET'], strict_slashes=False)
+@application.route("/compute/company/all/<int:offset>/<int:limit>", methods=['GET'], strict_slashes=False)
 @insert_request
-def compute_all(year, offset, limit):
+def compute_all(offset, limit, year=None):
     """
     Computes bundle's scores and saves them into the database.
 
-       :param year: year on which compute indicators
        :param offset: offset in database to compute.
        :param limit: limit of score to compute
+       :param year: year on which compute indicators. None for all available years
 
        :return: HTTP Response as application/json
     """
-    sql_args = {"year": year,
-                "limit": limit,
+    sql_args = {"limit": limit,
                 "offset": offset}
     siren_to_compute = fetchall(""" SELECT siren
                                     FROM `identity`
@@ -437,7 +438,7 @@ def compute_all(year, offset, limit):
         result += compute_score(siren[0], year)
     return OKJSONResponse(result)
 
-@application.route("/compute_ape/<string:real_ape>/<int:year>/<int:score>", methods=['GET'], strict_slashes=False)
+@application.route("/compute/ape/<string:real_ape>/<int:year>/<int:score>", methods=['GET'], strict_slashes=False)
 @insert_request
 def compute_ape(real_ape, year, score):
     """

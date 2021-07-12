@@ -47,14 +47,15 @@ def compute_ape_deciles(host, year):
 
         :param host: API address IP + port
     """
-    for ape in CON_APE:
+    for ape in sorted(CON_APE):
         print("percentiles computed for ", ape)
-        for score in SCORE_DESCRIPTION:
-            url = "http://" + host + "/compute/ape/" + ape + "/" + str(year) + "/" + str(score)
-            response = get(url)
-            assert response.status_code == 200 or response.status_code == 400 , "WRONG HTTP RETURN CODE %s INSTEAD OF 200 or 400 on url %s" % (response.status_code, url)
-            results = loads(response.text)
-            assert results is not None, "NOT RETURNING A JSON"
+        url = "http://" + host + "/compute/ape/" + ape
+        if year:
+            url += "/" + str(year)
+        response = get(url)
+        assert response.status_code == 200 or response.status_code == 400 , "WRONG HTTP RETURN CODE %s INSTEAD OF 200 or 400 on url %s" % (response.status_code, url)
+        results = loads(response.text)
+        assert results is not None, "NOT RETURNING A JSON"
 
 
 def main():

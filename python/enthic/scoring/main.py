@@ -123,13 +123,4 @@ def compute_score(siren, year = None):
             if not isnan(score["salary_percent"]):
                 result.append((siren, existing_year, 2, score["salary_percent"]))
 
-    with application.app_context():
-        from enthic.database.mysql import mysql
-        cur = mysql.connection.cursor()
-        sql_replace_query = "REPLACE INTO `annual_statistics` (`siren`, `declaration`, `stats_type`, `value`) VALUES (%s, %s, %s, %s)"
-        values = tuple(result)
-        cur.executemany(sql_replace_query, values)
-        mysql.connection.commit()
-        cur.close()
-
     return result

@@ -436,11 +436,22 @@ def compute_all(offset, limit, year=None):
     result = []
     for siren in siren_to_compute:
         result += compute_score(siren[0], year)
+
+    with application.app_context():
+        from enthic.database.mysql import mysql
+        cur = mysql.connection.cursor()
+        sql_replace_query = "REPLACE INTO `annual_statistics` (`siren`, `declaration`, `stats_type`, `value`) VALUES (%s, %s, %s, %s)"
+        values = tuple(result)
+        cur.executemany(sql_replace_query, values)
+        mysql.connection.commit()
+        cur.close()
     return OKJSONResponse(result)
 
 @application.route("/compute/ape/<string:real_ape>/<int:year>/<int:score>", methods=['GET'], strict_slashes=False)
+@application.route("/compute/ape/<string:real_ape>/<int:year>", methods=['GET'], strict_slashes=False)
+@application.route("/compute/ape/<string:real_ape>", methods=['GET'], strict_slashes=False)
 @insert_request
-def compute_ape(real_ape, year, score):
+def compute_ape(real_ape, year = None, score = None):
     """
     Computes decile for each score for the given year, score and APE (including APE part of the given one) and saves them into the database.
 
@@ -452,35 +463,63 @@ def compute_ape(real_ape, year, score):
     """
     # Fetch all score of a given type, and for specified economic sector (APE)
     ape_stringlist = get_corresponding_ape_codes(real_ape)
+    dict_scores = {}
     sql_args = {"ape_list": tuple(ape_stringlist),
                 "score": score,
                 "year": year}
-    sql_result = fetchall("""SELECT identity.siren, ape, stats_type, declaration, value
-                             FROM identity
-                             RIGHT JOIN annual_statistics ON annual_statistics.siren = identity.siren
-                             WHERE identity.ape IN %(ape_list)s AND annual_statistics.stats_type = %(score)s AND annual_statistics.declaration = %(year)s;""",
-                          sql_args)
-    score_values = []
-    for result in sql_result:
-        score_values.append(result[4])
+    sql_request = """SELECT stats_type, declaration, value
+                     FROM identity
+                     RIGHT JOIN annual_statistics ON annual_statistics.siren = identity.siren
+                     WHERE identity.ape IN %(ape_list)s"""
 
-    score_values.sort()
+    if score:
+        sql_request += " AND annual_statistics.stats_type = %(score)s"
+    else:
+        for existing_score in SCORE_DESCRIPTION:
+            dict_scores[existing_score] = {}
+
+    if year:
+        sql_request += " AND annual_statistics.declaration = %(year)s"
+        for existing_score in dict_scores:
+            dict_scores[existing_score][year] = []
+    else:
+        for existing_score in dict_scores:
+            for possible_year in range(1980,2022):
+                dict_scores[existing_score][possible_year] = []
+    sql_request += ";"
+
+    sql_result = fetchall(sql_request, sql_args)
+
+    if len(sql_result) == 0:
+        error_msg = "No data for APE {}".format(real_ape)
+        if year :
+            error_msg += ", year {}".format(year)
+        if score:
+            error_msg += "and score '{}'({})".format(SCORE_DESCRIPTION[score], score)
+        return ErrorJSONResponse(error_msg)
+
+    for score_line in sql_result:
+        dict_scores[score_line[0]][score_line[1]].append(score_line[2])
+
     new_data = []
     percentiles_needed = [10, 20, 30, 40, 50, 60, 70, 80, 90]
-    count = len(score_values)
-    if count > 0:
-        percentile_values = numpy.percentile(score_values, percentiles_needed)
-        i = 0
-        for percentile in percentiles_needed:
-            new_data.append({"ape": CON_APE[real_ape],
-                             "year": year,
-                             "score": score,
-                             "percentile": percentile,
-                             "value": percentile_values[i],
-                             "count": count})
-            i = i + 1
-    else :
-        return ErrorJSONResponse("No data for APE {}, year {} and score '{}'({})".format(real_ape, year, SCORE_DESCRIPTION[score], score))
+
+    for k_score in dict_scores:
+        for k_year in dict_scores[k_score]:
+            score_values = dict_scores[k_score][k_year]
+            score_values.sort()
+            count = len(score_values)
+            if count > 0:
+                percentile_values = numpy.percentile(score_values, percentiles_needed)
+                i = 0
+                for percentile in percentiles_needed:
+                    new_data.append({"ape": CON_APE[real_ape],
+                                     "year": k_year,
+                                     "score": k_score,
+                                     "percentile": percentile,
+                                     "value": percentile_values[i],
+                                     "count": count})
+                    i = i + 1
 
     with application.app_context():
         from enthic.database.mysql import mysql

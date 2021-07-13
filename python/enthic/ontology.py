@@ -1857,7 +1857,18 @@ INFO_TRAITEMENT = {
 }
 
 SCORE_DESCRIPTION = {
-    1 : "Pourcentage du résultat d'exploitation distribué en participation et impôts",
-    2 : "Pourcentage de la masse salariale dans le total des charges d'exploitation",
-    3 : "Ratio entre les cotisation sociales et les salaires"
+    1 : {"description" : "Part du résultat d'exploitation distribuée en participation et impôts",
+        "function" : "compute_exploitation_share"},
+    2 : {"description" : "Part de la masse salariale dans le total des charges d'exploitation",
+        "function" : "compute_overall_wages_weight"},
+    3 : {"description" : "Ratio entre les cotisations sociales et les salaires",
+        "function" : "compute_wage_quality"},
+    4 : {"description" : "Salaire moyen",
+        "function" : "compute_average_wage"},
+    5 : {"description" : "Part des 3 résultats (exploitation, financier et exceptionnel) distribuée en participation et impôts",
+        "function" : "compute_profit_sharing"},
+    6 : {"description" : "Part de la partie 'exploitation' dans le total du compte de résultat",
+        "function" : "compute_exploitation_part"},
+    7 : {"description" : "Indicateur de bon remplissage de la déclaration comptable",
+        "function" : "compute_data_availability"}
 }

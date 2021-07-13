@@ -36,7 +36,7 @@ from enthic.company.siren_company import (
 )
 from enthic.database.fetch import fetchall
 from enthic.decorator.insert_request import insert_request
-from enthic.ontology import ONTOLOGY, APE_CODE, SCORE_DESCRIPTION
+from enthic.ontology import ONTOLOGY, APE_CODE, SCORE_DESCRIPTION, CODE_MOTIF, CODE_CONFIDENTIALITE, INFO_TRAITEMENT
 from enthic.utils.error_json_response import ErrorJSONResponse
 from enthic.utils.ok_json_response import OKJSONResponse
 from enthic.utils.conversion import CON_APE, get_corresponding_ape_codes
@@ -151,7 +151,8 @@ def company_denomination_year(denomination, year):
     return YearDenominationCompany(denomination, year)
 
 
-@application.route("/company/ontology", methods=['GET'], strict_slashes=False)
+@application.route("/ontology/bundles", methods=['GET'], strict_slashes=False)
+@application.route("/ontology/bundle", methods=['GET'], strict_slashes=False)
 @insert_request
 def ontology():
     """
@@ -162,7 +163,7 @@ def ontology():
     return OKJSONResponse(ONTOLOGY)
 
 
-@application.route("/company/ape", methods=['GET'], strict_slashes=False)
+@application.route("/ontology/ape", methods=['GET'], strict_slashes=False)
 @insert_request
 def ape():
     """
@@ -171,6 +172,31 @@ def ape():
        :return: HTTP Response as application/json. the ontology as JSON.
     """
     return OKJSONResponse(APE_CODE)
+
+
+@application.route("/ontology/scores", methods=['GET'], strict_slashes=False)
+@application.route("/ontology/score", methods=['GET'], strict_slashes=False)
+@insert_request
+def scores():
+    """
+    Return description of all scores computed.
+
+       :return: HTTP Response as application/json. the ontology as JSON.
+    """
+    return OKJSONResponse(SCORE_DESCRIPTION)
+
+
+@application.route("/ontology/metadata", methods=['GET'], strict_slashes=False)
+@insert_request
+def metadata():
+    """
+    Return description of INPI's metadata.
+
+       :return: HTTP Response as application/json. the ontology as JSON.
+    """
+    return OKJSONResponse({"CODE_MOTIF" : CODE_MOTIF,
+                           "CODE_CONFIDENTIALITE" : CODE_CONFIDENTIALITE,
+                           "INFO_TRAITEMENT" : INFO_TRAITEMENT})
 
 
 def pre_cast_integer(probe):

@@ -220,9 +220,9 @@ def get_company_annual_stats(siren):
             pretty_results[str_year] = {}
 
         pretty_results[str_year][stats_type] = {
-                JSONGenKey.VALUE : value,
-                JSONGenKey.DESCRIPTION : SCORE_DESCRIPTION[stats_type]
+                JSONGenKey.VALUE : value
             }
+        pretty_results[str_year][stats_type].update(SCORE_DESCRIPTION[stats_type])
     return pretty_results
 
 

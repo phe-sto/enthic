@@ -175,71 +175,34 @@ def flip_sign(item):
         item['data']['value'] = -item['data']['value']
         item['data']['status'] = "signFlipped"
 
+def gather_data_to_compute(tree, raw):
+    root = tree['children']
+    resultat_avant_impot = root['ResultatAvantImpot']['children']
+    result = {
+        "participation" : root['ParticipationSalariesAuxResultats']['data']['value'],
+        "impot" : root['ImpotsSurLesBenefices']['data']['value'],
+        "resultat_exceptionnel" : root['ResultatExceptionnel']['data']['value'],
+        "produits_exceptionnel" : root['ResultatExceptionnel']['children']['ProduitsExceptionnels']['data']['value'],
+        "charges_exceptionnel" : root['ResultatExceptionnel']['children']['ChargesExceptionnelles']['data']['value'],
+        "resultat_financier" : resultat_avant_impot['ResultatFinancier']['data']['value'],
+        "produits_financier" : resultat_avant_impot['ResultatFinancier']['children']['ProduitsFinanciers']['data']['value'],
+        "charges_financier" : resultat_avant_impot['ResultatFinancier']['children']['ChargesFinancieres']['data']['value'],
+        "resultat_exploitation" : resultat_avant_impot['ResultatExploitation']['data']['value'],
+        "produits_exploitation" : resultat_avant_impot['ResultatExploitation']['children']['ProduitsExploitation']['data']['value'],
+        "charges_exploitation" : resultat_avant_impot['ResultatExploitation']['children']['ChargesExploitation']['data']['value'],
+    }
 
-def compute_annual_share_score(tree):
-    """
-    Computes the share score of given data
+    charges = resultat_avant_impot['ResultatExploitation']['children']['ChargesExploitation']
 
-        :param tree: data from which compute the score
-        :return: share score value, or NaN if it cannot be computed
-    """
-    # Retrieve needed values
-    participation = tree['children']['ParticipationSalariesAuxResultats']['data']['value']
-    impot = tree['children']['ImpotsSurLesBenefices']['data']['value']
-    resultat_financier = tree['children']['ResultatExceptionnel']['data']['value']
-    resultat_exceptionnel = tree['children']['ResultatAvantImpot']['children']['ResultatFinancier']['data']['value']
-    resultat_exploitation = tree['children']['ResultatAvantImpot']['children']['ResultatExploitation']['data']['value']
+    result["charges"] = charges['data']['value']
+    result["cotisations_sociales"] = charges['children']['ChargesSociales']['data']['value']
+    result["salaires"] = charges['children']['SalairesEtTraitements']['data']['value']
 
-    # If any values unknown, cannot compute score
-    if any(math.isnan(value) for value in [participation, impot, resultat_financier, resultat_exceptionnel, resultat_exploitation]):
-        return float('nan')
+    if "YP" in raw :
+        result["effectifs"] = raw["YP"]["value"]
+    elif "376" in raw :
+        result["effectifs"] = raw["376"]["value"]
+    else:
+        result["effectifs"] = float('nan')
 
-    # Compute score if possible
-    shared_part = participation + impot
-    resultat_capitaux = resultat_financier + resultat_exceptionnel
-    if shared_part >= 0:
-        if resultat_capitaux <= 0 and resultat_exploitation != 0:
-            return shared_part / resultat_exploitation
-
-    return float('nan')
-
-
-def compute_salary_scores(tree):
-    """
-    Computes some scores related to salary
-
-        :param tree: data from which compute the score
-        :return: two values corresponding to salary scores, or NaN if they cannot be computed
-    """
-    charges = tree['children']['ResultatAvantImpot']['children']['ResultatExploitation']['children']['ChargesExploitation']
-
-    cotisations_sociales = charges['children']['ChargesSociales']['data']['value']
-    salaires = charges['children']['SalairesEtTraitements']['data']['value']
-
-    salary_level = float('nan')
-    salary_percent = float('nan')
-    if not any(math.isnan(value) for value in [cotisations_sociales, salaires]) and salaires > 0:
-        salary_level = cotisations_sociales / salaires
-        if not math.isnan(charges['data']['value']):
-            salary_percent = (cotisations_sociales + salaires) / charges['data']['value']
-
-    return salary_level, salary_percent
-
-
-def compute_company_statistics(financial_data):
-    """
-    Computes some statistics and scores from the given company's data
-
-        :param financial_data: data from which compute statistics and score
-        :return: structured data containing company's computed scores
-    """
-    result_list = []
-    tree = convert_data_to_tree(financial_data)
-    check_tree_data(tree)
-    share_score = compute_annual_share_score(tree)
-    salary_level, salary_percent = compute_salary_scores(tree)
-    result_list.append({"share_score": share_score,
-                        "salary_level": salary_level,
-                        "salary_percent": salary_percent})
-
-    return result_list
+    return result

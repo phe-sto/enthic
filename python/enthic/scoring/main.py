@@ -16,7 +16,8 @@ from math import isnan
 from enthic.company.company import Bundle
 from enthic.database.fetch import fetchall
 from enthic.ontology import APE_CODE, SCORE_DESCRIPTION
-from enthic.scoring.compute_stats import compute_company_statistics
+from enthic.scoring.compute_stats import convert_data_to_tree, check_tree_data, gather_data_to_compute
+from enthic.scoring import scoring_functions
 from enthic.utils.conversion import CON_APE
 
 
@@ -114,14 +115,14 @@ def compute_score(siren, year = None):
     financial_data = Bundle(*[bundle[:] for bundle in sql_results]).__dict__
     result = []
     for existing_year in financial_data:
-        scores = compute_company_statistics(financial_data[existing_year])
-        for score in scores:
-            if not isnan(score["share_score"]):
-                result.append((siren, existing_year, 1, score["share_score"]))
-            if not isnan(score["salary_level"]):
-                result.append((siren, existing_year, 3, score["salary_level"]))
-            if not isnan(score["salary_percent"]):
-                result.append((siren, existing_year, 2, score["salary_percent"]))
+        tree = convert_data_to_tree(financial_data[existing_year])
+        check_tree_data(tree)
+        needed_data = gather_data_to_compute(tree, financial_data[existing_year])
+        for score_type in SCORE_DESCRIPTION :
+            scoring_function = getattr(scoring_functions, SCORE_DESCRIPTION[score_type]["function"])
+            score = scoring_function(needed_data)
+            if not isnan(score):
+                result.append((siren, existing_year, score_type, score))
 
     return result
 

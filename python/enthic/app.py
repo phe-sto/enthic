@@ -40,7 +40,7 @@ from enthic.ontology import ONTOLOGY, APE_CODE, SCORE_DESCRIPTION
 from enthic.utils.error_json_response import ErrorJSONResponse
 from enthic.utils.ok_json_response import OKJSONResponse
 from enthic.utils.conversion import CON_APE, get_corresponding_ape_codes
-from enthic.scoring.main import get_percentiles, compute_score
+from enthic.scoring.main import get_percentiles, compute_score, save_score_in_database
 
 ################################################################################
 # FLASK INITIALISATION
@@ -409,6 +409,9 @@ def compute(first_letters, year=None):
     result = []
     for siren in get_siren(first_letters):
         result += compute_score(siren[0], year)
+
+    save_score_in_database(result)
+
     return OKJSONResponse(result)
 
 
@@ -437,14 +440,8 @@ def compute_all(offset, limit, year=None):
     for siren in siren_to_compute:
         result += compute_score(siren[0], year)
 
-    with application.app_context():
-        from enthic.database.mysql import mysql
-        cur = mysql.connection.cursor()
-        sql_replace_query = "REPLACE INTO `annual_statistics` (`siren`, `declaration`, `stats_type`, `value`) VALUES (%s, %s, %s, %s)"
-        values = tuple(result)
-        cur.executemany(sql_replace_query, values)
-        mysql.connection.commit()
-        cur.close()
+    save_score_in_database(result)
+
     return OKJSONResponse(result)
 
 @application.route("/compute/ape/<string:real_ape>/<int:year>/<int:score>", methods=['GET'], strict_slashes=False)

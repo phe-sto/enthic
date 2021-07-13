@@ -6,5 +6,5 @@ CREATE TABLE IF NOT EXISTS annual_ape_statistics
     percentile TINYINT,
     value FLOAT,
     count INT,
-    UNIQUE( `ape`, `declaration`, `percentile`)
+    UNIQUE( `ape`, `declaration`, `stats_type`, `percentile`)
 );

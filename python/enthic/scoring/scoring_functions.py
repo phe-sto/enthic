@@ -64,7 +64,7 @@ def compute_wage_quality(data):
     cotisations_sociales = data["cotisations_sociales"]
     salaires = data["salaires"]
 
-    if math.isnan(salaires):
+    if math.isnan(salaires) or salaires == 0 :
         return float('nan')
 
     return cotisations_sociales / salaires
@@ -81,10 +81,10 @@ def compute_average_wage(data):
     salaires = data["salaires"]
     effectifs = data["effectifs"]
 
-    if math.isnan(effectifs) or (math.isnan(cotisations_sociales) and math.isnan(salaires)):
+    if math.isnan(effectifs) or effectifs == 0 or (math.isnan(cotisations_sociales) and math.isnan(salaires)):
         return float('nan')
 
-    return effectifs / (salaires + cotisations_sociales)
+    return (salaires + cotisations_sociales) / effectifs
 
 
 def compute_profit_sharing(data):

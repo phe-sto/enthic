@@ -10,7 +10,7 @@ Coding Rules:
 - Only argument is configuration file.
 - No output or print, just log and files.
 """
-import math
+from math import isnan
 
 
 def compute_exploitation_share(data):
@@ -26,9 +26,11 @@ def compute_exploitation_share(data):
     resultat_exploitation = data["resultat_exploitation"]
 
     # If any values unknown, cannot compute score
-    if any(math.isnan(value) for value in [participation, impot, resultat_exploitation]):
+    if any(isnan(value) for value in [impot, resultat_exploitation]) or resultat_exploitation < 0:
         return float('nan')
 
+    if isnan(participation):
+        participation = 0
     # Compute score if possible
     shared_part = participation + impot
     if resultat_exploitation > 0:
@@ -48,8 +50,13 @@ def compute_overall_wages_weight(data):
     salaires = data["salaires"]
     charges = data["charges"]
 
-    if math.isnan(charges) or math.isnan(salaires) and math.isnan(cotisations_sociales):
+    if isnan(charges) or (isnan(salaires) and isnan(cotisations_sociales)):
         return float('nan')
+
+    if isnan(salaires):
+        salaires = 0
+    elif isnan(cotisations_sociales):
+        cotisations_sociales = 0
 
     return (salaires + cotisations_sociales) / charges
 
@@ -64,7 +71,7 @@ def compute_wage_quality(data):
     cotisations_sociales = data["cotisations_sociales"]
     salaires = data["salaires"]
 
-    if math.isnan(salaires) or salaires == 0 :
+    if isnan(salaires) or salaires == 0 or isnan(cotisations_sociales) or cotisations_sociales == 0 :
         return float('nan')
 
     return cotisations_sociales / salaires
@@ -81,8 +88,13 @@ def compute_average_wage(data):
     salaires = data["salaires"]
     effectifs = data["effectifs"]
 
-    if math.isnan(effectifs) or effectifs == 0 or (math.isnan(cotisations_sociales) and math.isnan(salaires)):
+    if isnan(effectifs) or effectifs == 0 or (isnan(cotisations_sociales) and isnan(salaires)):
         return float('nan')
+
+    if isnan(cotisations_sociales):
+        cotisations_sociales = 0
+    elif isnan(salaires):
+        salaires = 0
 
     return (salaires + cotisations_sociales) / effectifs
 
@@ -100,11 +112,14 @@ def compute_profit_sharing(data):
     resultat_financier = data["resultat_financier"]
     resultat_exploitation = data["resultat_exploitation"]
 
-    if any(math.isnan(value) for value in [participation, impot, resultat_financier, resultat_exceptionnel, resultat_exploitation]):
+    if any(isnan(value) for value in [impot, resultat_financier, resultat_exceptionnel, resultat_exploitation]):
         return float('nan')
 
     if (resultat_financier + resultat_exploitation + resultat_exceptionnel) == 0:
         return float('nan')
+
+    if isnan(participation):
+        participation = 0
 
     return (participation + impot) / (resultat_financier + resultat_exploitation + resultat_exceptionnel)
 
@@ -116,6 +131,12 @@ def compute_exploitation_part(data):
     :param data: dictionary containing all needed values
     :return: part of exploitation, or NaN if it cannot be computed
     """
+
+    if any(isnan(value) for value in [data["produits_exploitation"], data["charges_exploitation"], data["produits_exceptionnel"], data["charges_exceptionnel"], data["produits_financier"], data["charges_financier"]]):
+        return float('nan')
+
+    if (data["produits_exploitation"] + data["charges_exploitation"] + data["produits_exceptionnel"] + data["charges_exceptionnel"] + data["produits_financier"] + data["charges_financier"]) == 0:
+        return float('nan')
 
     return (data["produits_exploitation"] + data["charges_exploitation"]) / (data["produits_exploitation"] + data["charges_exploitation"] + data["produits_exceptionnel"] + data["charges_exceptionnel"] + data["produits_financier"] + data["charges_financier"])
 
@@ -130,7 +151,7 @@ def compute_data_availability(data):
 
     data_available = 0
     for datum in data :
-        if not math.isnan(data[datum]):
+        if not isnan(data[datum]):
             data_available += 1
 
     return data_available / len(data)

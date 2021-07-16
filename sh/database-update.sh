@@ -4,8 +4,8 @@
 ################################################################################
 
 # Move to script directory
-script_dir=`dirname "$0"`
-cd ${script_dir}
+script_dir=$(dirname "$0")
+cd "${script_dir}" || { echo "Couldn't cd to ${script_dir}"; exit 1; }
 
 # Create mandatory folder if they don't exist
 mkdir -p ../input

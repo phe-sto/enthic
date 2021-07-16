@@ -218,8 +218,7 @@ def result_array(probe, limit, ape_code=[], offset=0):
        :param ape_code: List of APE codes to match or None
        :param offset: Integer, offset of the select SQL request.
     """
-    sql_query_select_part = "SELECT siren, denomination, ape, postal_code, town FROM identity"
-    sql_query_count = "SELECT  COUNT(*) FROM identity"
+    sql_query_select_part = "SELECT SQL_CALC_FOUND_ROWS siren, denomination, ape, postal_code, town FROM identity"
 
     sql_query_probe_condition = '1'
     sql_arguments = {}
@@ -241,8 +240,8 @@ def result_array(probe, limit, ape_code=[], offset=0):
     sql_query_limit_and_offset = " LIMIT {} OFFSET {};".format(limit, offset)
 
     with application.app_context():
-        count = fetchall(sql_query_count + sql_query_condition, args=sql_arguments)
         companies = fetchall(sql_query_select_part + sql_query_condition + sql_query_limit_and_offset, args=sql_arguments)
+        count = fetchall("SELECT FOUND_ROWS()")
         return count[0][0], tuple(CompanyIdentity(*company).__dict__ for company in companies)
 
 

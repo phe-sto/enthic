@@ -23,7 +23,7 @@ certbot --nginx
 # 3) INSTALL DAILY UPDATE CRON (TODO fix it)
 touch /etc/cron.daily/enthic
 
-script_dir=`dirname "$0"`
+script_dir=$(dirname "$0")
 
 daily_cron_task="0 2 * * * /bin/sh ${script_dir}/database-update.sh"
-echo ${daily_cron_task} > /etc/cron.daily/enthic
+echo "${daily_cron_task}" > /etc/cron.daily/enthic

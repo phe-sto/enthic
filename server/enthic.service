@@ -7,7 +7,7 @@ User=root
 Group=www-data
 
 WorkingDirectory=/root/enthic/python/enthic
-ExecStart=/bin/gunicorn3 --workers 3 --bind unix:/var/www/enthic/enthic.sock app:application
+ExecStart=/bin/gunicorn3 --timeout 90 --workers 3 --bind unix:/var/www/enthic/enthic.sock app:application
 
 [Install]
 WantedBy=multi-user.target

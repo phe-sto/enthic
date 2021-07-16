@@ -218,7 +218,7 @@ def result_array(probe, limit, ape_code=[], offset=0):
        :param ape_code: List of APE codes to match or None
        :param offset: Integer, offset of the select SQL request.
     """
-    sql_query_select_part = "SELECT SQL_CALC_FOUND_ROWS siren, denomination, ape, postal_code, town FROM identity"
+    sql_query_select_part = "SELECT siren, denomination, ape, postal_code, town FROM identity"
 
     sql_query_probe_condition = '1'
     sql_arguments = {}
@@ -241,8 +241,17 @@ def result_array(probe, limit, ape_code=[], offset=0):
 
     with application.app_context():
         companies = fetchall(sql_query_select_part + sql_query_condition + sql_query_limit_and_offset, args=sql_arguments)
-        count = fetchall("SELECT FOUND_ROWS()")
-        return count[0][0], tuple(CompanyIdentity(*company).__dict__ for company in companies)
+        result_count = len(companies)
+        if result_count < limit:
+            total_count = offset + result_count
+        else:
+            total_count = fetchall("SELECT COUNT(siren) FROM identity " + sql_query_condition + ";", args=sql_arguments)[0][0]
+            # Sometimes, COUNT request doesn't return an exact count and we don't know why (cache or estimation maybe?)
+            # This code handle the case where SQL return a count less than the real one, to be able to still request last pages
+            if total_count < (result_count + offset):
+                print("Error total_count({}) < (result_count({})+offset({})".format(total_count, result_count, offset))
+                total_count = result_count + offset + limit
+        return total_count, tuple(CompanyIdentity(*company).__dict__ for company in companies)
 
 
 def get_siren(first_letters):

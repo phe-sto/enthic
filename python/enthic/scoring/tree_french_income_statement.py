@@ -158,37 +158,31 @@ TREE_VIEW = {
                     "252"
                   ]
                 },
-                "DotationExploitation": {
-                  "name": "DOTATIONS D'EXPLOITATION ",
-                  "codeLiasses": [],
-                  "children": {
-                    "DotationAmortissementImmobilisations": {
-                      "name": "Sur immobilisations : dotations aux amortissements ",
-                      "codeLiasses": [
-                        "GA",
-                        "254"
-                      ]
-                    },
-                    "DotationDepreciationImmobilisations": {
-                      "name": "Sur immobilisations : dotations aux dépréciations ",
-                      "codeLiasses": [
-                        "GB"
-                      ]
-                    },
-                    "DotationDepreciationActifCirculant": {
-                      "name": "Sur actif circulant : dotations aux dépréciations ",
-                      "codeLiasses": [
-                        "GC"
-                      ]
-                    },
-                    "DotationProvisions": {
-                      "name": "Dotations aux provisions ",
-                      "codeLiasses": [
-                        "GD",
-                        "256"
-                      ]
-                    }
-                  }
+                "DotationAmortissementImmobilisations": {
+                  "name": "Sur immobilisations : dotations aux amortissements ",
+                  "codeLiasses": [
+                    "GA",
+                    "254"
+                  ]
+                },
+                "DotationDepreciationImmobilisations": {
+                  "name": "Sur immobilisations : dotations aux dépréciations ",
+                  "codeLiasses": [
+                    "GB"
+                  ]
+                },
+                "DotationDepreciationActifCirculant": {
+                  "name": "Sur actif circulant : dotations aux dépréciations ",
+                  "codeLiasses": [
+                    "GC"
+                  ]
+                },
+                "DotationProvisions": {
+                  "name": "Dotations aux provisions ",
+                  "codeLiasses": [
+                    "GD",
+                    "256"
+                  ]
                 },
                 "AutresCharges": {
                   "name": "Autres charges ",

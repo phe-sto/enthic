@@ -62,12 +62,17 @@ def get_percentiles(real_ape, year=None, score=None):
     if year :
         statistics[year] = year_data
     else:
-        for fictitious_year in range(1990, 2100):
+        for fictitious_year in range(2013, 2022):
             statistics[fictitious_year] = deepcopy(year_data)
 
     for row in sql_result :
-        statistics[row[0]][row[1]]["percentiles"][row[2]] = row[3]
-        statistics[row[0]][row[1]]["total_count"] = row[4]
+        try :
+            statistics[row[0]][row[1]]["percentiles"][row[2]] = row[3]
+            statistics[row[0]][row[1]]["total_count"] = row[4]
+        except KeyError as error: # Error because corresponding year was not intialized in 'statistics'
+            statistics[row[0]] = deepcopy(year_data)
+            statistics[row[0]][row[1]]["percentiles"][row[2]] = row[3]
+            statistics[row[0]][row[1]]["total_count"] = row[4]
 
     years_to_delete = []
     for k_year in statistics :

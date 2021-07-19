@@ -84,19 +84,13 @@ def compute_average_wage(data):
     :param data: dictionary containing all needed values
     :return: average wage value, or NaN if it cannot be computed
     """
-    cotisations_sociales = data["cotisations_sociales"]
     salaires = data["salaires"]
     effectifs = data["effectifs"]
 
-    if isnan(effectifs) or effectifs == 0 or (isnan(cotisations_sociales) and isnan(salaires)):
+    if isnan(effectifs) or effectifs == 0 or isnan(salaires):
         return float('nan')
 
-    if isnan(cotisations_sociales):
-        cotisations_sociales = 0
-    elif isnan(salaires):
-        salaires = 0
-
-    return (salaires + cotisations_sociales) / effectifs
+    return salaires / effectifs
 
 
 def compute_profit_sharing(data):

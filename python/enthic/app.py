@@ -515,7 +515,7 @@ def compute_ape(real_ape, year = None, score = None):
             dict_scores[existing_score][year] = []
     else:
         for existing_score in dict_scores:
-            for possible_year in range(1980,2022):
+            for possible_year in range(2013,2022):
                 dict_scores[existing_score][possible_year] = []
     sql_request += ";"
 
@@ -530,7 +530,11 @@ def compute_ape(real_ape, year = None, score = None):
         return ErrorJSONResponse(error_msg)
 
     for score_line in sql_result:
-        dict_scores[score_line[0]][score_line[1]].append(score_line[2])
+        try :
+            dict_scores[score_line[0]][score_line[1]].append(score_line[2])
+        except KeyError as error: # Error because corresponding year was not intialized in 'statistics'
+            dict_scores[score_line[0]][score_line[1]] = []
+            dict_scores[score_line[0]][score_line[1]].append(score_line[2])
 
     new_data = []
     percentiles_needed = [10, 20, 30, 40, 50, 60, 70, 80, 90]

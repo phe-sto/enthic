@@ -14,9 +14,6 @@ Coding Rules:
 """
 
 import concurrent.futures
-import csv
-import io
-import codecs
 from json import loads, load
 from os.path import dirname, join
 import numpy
@@ -34,13 +31,15 @@ from enthic.company.siren_company import (
     AverageSirenCompany,
     AllSirenCompany
 )
+from enthic.csv.utils import get_financial_data_by_siren, convert_to_csv_stream, get_financial_data_by_ape
 from enthic.database.fetch import fetchall
 from enthic.decorator.insert_request import insert_request
 from enthic.ontology import ONTOLOGY, APE_CODE, SCORE_DESCRIPTION, CODE_MOTIF, CODE_CONFIDENTIALITE, INFO_TRAITEMENT
+from enthic.scoring.main import get_percentiles, compute_score, save_score_in_database
 from enthic.utils.error_json_response import ErrorJSONResponse
 from enthic.utils.ok_json_response import OKJSONResponse
 from enthic.utils.conversion import CON_APE, get_corresponding_ape_codes
-from enthic.scoring.main import get_percentiles, compute_score, save_score_in_database
+
 
 ################################################################################
 # FLASK INITIALISATION
@@ -499,8 +498,8 @@ def compute_ape(real_ape, year = None, score = None):
                 "score": score,
                 "year": year}
     sql_request = """SELECT stats_type, declaration, value
-                     FROM identity
-                     RIGHT JOIN annual_statistics ON annual_statistics.siren = identity.siren
+                     FROM `annual_statistics`
+                     INNER JOIN identity ON annual_statistics.siren = identity.siren
                      WHERE identity.ape IN %(ape_list)s"""
 
     if score:
@@ -569,9 +568,11 @@ def compute_ape(real_ape, year = None, score = None):
 
     return OKJSONResponse(new_data)
 
-@application.route("/csv/<int:siren>", methods=['GET'], strict_slashes=False)
+
+@application.route("/csv/company/<int:siren>", methods=['GET'], strict_slashes=False)
+@application.route("/csv/ape/<string:ape>", methods=['GET'], strict_slashes=False)
 @insert_request
-def serve_csv_file(siren):
+def serve_csv_file(siren=None, ape=None):
     """
     Get all data from the given company and returns it as csv file
 
@@ -579,29 +580,17 @@ def serve_csv_file(siren):
 
        :return: HTTP Response as csv file
     """
-
-    # Get data
-    sql_arguments = {"siren" : siren}
-    sql_query = "SELECT * FROM `bundle` WHERE siren = %(siren)s"
-    result = fetchall(sql_query, args=sql_arguments)
-
-    # Open bytes stream
-    stream = io.BytesIO()
-    stream_writer = codecs.getwriter('utf-8')
-    # Convert to String stream
-    buffer = stream_writer(stream)
-    # Write data
-    writer = csv.writer(buffer, delimiter=';')
-    writer.writerow(["siren", "annee", "type de comptabilite", "code compta", "valeur"])
-    writer.writerows(result)
-
-    # Send data to client
-    stream.seek(0)
+    if siren:
+        result = get_financial_data_by_siren(siren)
+    elif ape:
+        result = get_financial_data_by_ape(ape)
+    stream = convert_to_csv_stream(result)
     return send_file(
         stream,
         mimetype="text/csv",
         attachment_filename="export.csv",
     )
+
 
 @application.route('/<path:path>', strict_slashes=False)
 @insert_request

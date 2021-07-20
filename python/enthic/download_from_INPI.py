@@ -112,10 +112,10 @@ def explore_and_process_CQuest_mirror():
     Function that explore CQuest mirror to download every daily zip files
 
     """
-    for year in range(2017, 2021):
+    for year in range(2017, 2022):
         url = 'http://data.cquest.org/inpi_rncs/comptes/' + str(year) + '/'
-        for month in range(1, 12):
-            for day in range(1, 31):
+        for month in range(1, 13):
+            for day in range(1, 32):
                 date = str(year) + str(month).zfill(2) + str(day).zfill(2)
                 if date in IMPORT_HISTORIC :
                     continue

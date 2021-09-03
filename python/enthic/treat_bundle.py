@@ -51,13 +51,8 @@ def main():
         for rows in _reader:  # ITERATE EACH LINE
             if key is not None and key < rows[0:4]:  # KEY BREAK ON BUNDLE CODE
                 bundle_file.write(";".join((key[0], key[1], key[2], key[3],
-                                            str(bundle_sum), "\n"))
+                                            rows[4], "\n"))
                                   )
-            if key == rows[0:4]:  # SAME KEY, SUM THE BUNDLE AMOUNT
-                bundle_sum += int(rows[4])
-            else:
-                key = rows[0:4]  # NEW KEY INITIATE BUNDLE AMOUNT
-                bundle_sum = int(rows[4])
     bundle_file.close()
 
 

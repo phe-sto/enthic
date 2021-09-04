@@ -102,9 +102,7 @@ fabric.properties
 # Custom stuff manually added
 input
 python/build
-python/enthic/static/documentation/_static
 python/enthic.egg-info/
 python/dist/
-python/enthic/static/documentation/.buildinfo
-python/enthic/static/documentation/.nojekyll
+python/enthic/static/documentation/
 *.pyc

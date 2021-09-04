@@ -8,11 +8,12 @@
   "identityFile": "identity.tmp",
   "metadataFile": "metadata.csv",
   "debugLevel": "INFO",
+  "csvSeparator" : "\t",
   "mySQL": {
     "enthic": {
-      "host": "",
-      "user": "",
-      "password": ""
+      "host": "localhost",
+      "user": "read",
+      "password": "enthic"
     }
   },
   "flask": {

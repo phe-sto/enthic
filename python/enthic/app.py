@@ -14,7 +14,6 @@ Coding Rules:
 """
 
 import concurrent.futures
-import re
 from json import loads, load
 from os.path import dirname, join
 from math import isnan
@@ -38,6 +37,7 @@ from enthic.decorator.insert_request import insert_request
 from enthic.ontology import ONTOLOGY, APE_CODE
 from enthic.utils.error_json_response import ErrorJSONResponse
 from enthic.utils.ok_json_response import OKJSONResponse
+from enthic.utils.conversion import get_corresponding_ape_codes
 
 ################################################################################
 # FLASK INITIALISATION
@@ -180,27 +180,6 @@ def pre_cast_integer(probe):
     return str(probe) if probe.__class__ is int else probe if probe.isnumeric() is True else None
 
 
-def get_corresponding_ape_codes(ape_code):
-    """
-    APE codes are not saved in the original format.
-    This function returns codes that are in the database
-    and corresponds to the given APE code or it's sub-categories
-    It returns None if the given APE code does not exist
-
-        :param ape_code : the list of APE for the filter, comma separated
-
-        :return: list of corresponding APE_CODE in database
-    """
-    result = list()
-    for one_code in ape_code.split(","):
-        for i in APE_CODE:
-            if re.match(one_code, APE_CODE[i][0]):
-                result.append(i)
-    if not result:
-        return None
-    return result
-
-
 def result_array(probe, limit, ape_code=[], offset=0):
     """
     List the result of the search in the database.
@@ -214,13 +193,14 @@ def result_array(probe, limit, ape_code=[], offset=0):
     sql_query_count = "SELECT  COUNT(*) FROM identity"
 
     sql_query_probe_condition = '1'
+    sql_arguments = {}
     if probe:
-        sql_query_probe_condition = "denomination LIKE {} OR MATCH(denomination) AGAINST ({} IN NATURAL LANGUAGE MODE)".format(
-                                    "'{0}%'".format(probe),
-                                    "'{0}%'".format(probe))
+        sql_query_probe_condition = "denomination LIKE %(probe)s OR MATCH(denomination) AGAINST (%(probe)s IN NATURAL LANGUAGE MODE)"
+        sql_arguments['probe'] = str(probe) + '%'
         # If probe is an interger, it might be a siren number, so we add this condition to the query
         if pre_cast_integer(probe):
-            sql_query_probe_condition = "siren = {} OR ".format(pre_cast_integer(probe)) + sql_query_probe_condition
+            sql_query_probe_condition = "siren = %(siren)s OR " + sql_query_probe_condition
+            sql_arguments['siren'] = int(probe)
 
     sql_query_ape_code_condition = "1"
     if len(ape_code) > 1:
@@ -232,9 +212,10 @@ def result_array(probe, limit, ape_code=[], offset=0):
     sql_query_limit_and_offset = " LIMIT {} OFFSET {};".format(limit, offset)
 
     with application.app_context():
-        count = fetchall(sql_query_count + sql_query_condition)
-        companies = fetchall(sql_query_select_part + sql_query_condition + sql_query_limit_and_offset)
+        count = fetchall(sql_query_count + sql_query_condition, args=sql_arguments)
+        companies = fetchall(sql_query_select_part + sql_query_condition + sql_query_limit_and_offset, args=sql_arguments)
         return count[0][0], tuple(CompanyIdentity(*company).__dict__ for company in companies)
+
 
 def get_siren(first_letters):
     """
@@ -251,6 +232,7 @@ def get_siren(first_letters):
                         WHERE denomination LIKE %s LIMIT 1000000""", (first_letters,))
 
     return siren_list
+
 
 @application.route("/company/search", methods=['POST'], strict_slashes=False)
 @insert_request
@@ -381,6 +363,7 @@ def page_search():
                                                                      ape_arg_for_url)
 
     return OKJSONResponse(obj)
+
 
 @application.route("/compute/<string:first_letters>", methods=['GET'], strict_slashes=False)
 @insert_request

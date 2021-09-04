@@ -68,6 +68,7 @@ with open(CONFIG['accountOntologyCSV'], mode='r') as infile:
 basicConfig(level=CONFIG['debugLevel'],
             format="%(asctime)s [%(levelname)8s] %(message)s (%(filename)s:%(lineno)s)")
 
+
 def read_identity_data(identity_xml_item):
     acc_type, siren, denomination, year, ape, \
     postal_code, town, code_motif, \
@@ -129,6 +130,7 @@ def read_identity_data(identity_xml_item):
     return acc_type, siren, denomination, year, ape, postal_code, town, \
            code_motif, code_confidentialite, info_traitement
 
+
 def main():
     """
     Based on the configuration storing the input file path. All the xml are
@@ -178,9 +180,9 @@ def main():
                                                 (siren, denomination, str(ape),
                                                  postal_code, town, "\n")))
                                         identity_writen = True
-                                        metadata_file.write(
-                                            "\t".join(
-                                                (siren, year, code_motif, code_confidentialite, info_traitement, "\n")))
+                                        # metadata_file.write(
+                                        #    "\t".join(
+                                        #        (siren, year, code_motif, code_confidentialite, info_traitement, "\n")))
                                 ################################################
                                 # BUNDLE TAGS IN PAGES TO ITERATE WITH BUNDLE CODES
                                 # AND AMOUNT
@@ -198,16 +200,16 @@ def main():
                                                             if identity_writen is True:
                                                                 bundle_file.write(
                                                                     "\t".join((siren, year,
-                                                                              str(CON_ACC[acc_type]),
-                                                                              str(CON_BUN[CON_ACC[
-                                                                                  acc_type]][
-                                                                                      bundle.attrib[
-                                                                                          "code"]]),
-                                                                              str(int(
-                                                                                  bundle.attrib[
-                                                                                      amount_code]
-                                                                              )),
-                                                                              "\n")))
+                                                                               str(CON_ACC[acc_type]),
+                                                                               str(CON_BUN[CON_ACC[
+                                                                                   acc_type]][
+                                                                                       bundle.attrib[
+                                                                                           "code"]]),
+                                                                               str(int(
+                                                                                   bundle.attrib[
+                                                                                       amount_code]
+                                                                               )),
+                                                                               "\n")))
                                             except KeyError as key_error:
                                                 debug("{} in account {} bundle {}".format(
                                                     key_error,
@@ -224,6 +226,7 @@ def main():
     bundle_file.close()
     identity_file.close()
     metadata_file.close()
+
 
 if __name__ == '__main__':
     main()  # ONLY IF EXECUTED NOT WHEN IMPORTED

@@ -28,7 +28,6 @@ if isdir(CONFIG['outputPath']) is False:
         "Configuration output path {} does not exist".format(
             CONFIG['outputPath'])
     )
-
 ################################################################################
 # SET LOG LEVEL
 basicConfig(level=CONFIG['debugLevel'],
@@ -50,16 +49,17 @@ def main():
         key = None
         for row in _reader:  # ITERATE EACH LINE
             if key is not None and key < row[0:4]:  # KEY BREAK ON BUNDLE CODE
-                bundle_file.write("\t".join((key[0], key[1], key[2], key[3],
-                                            bundle, "\n"))
+                bundle_file.write(CONFIG['csvSeparator'].join((key[0], key[1],
+                                                               key[2], key[3],
+                                                               bundle, "\n"))
                                   )
             key = row[0:4]
             bundle = row[4]
         else:
             debug("Find two identical keys %s" % str(key))
         # WRITE THE LAST LINE
-        bundle_file.write(";".join((key[0], key[1], key[2], key[3],
-                                    bundle, "\n"))
+        bundle_file.write(CONFIG['csvSeparator'].join((key[0], key[1], key[2],
+                                                       key[3], bundle, "\n"))
                           )
     bundle_file.close()
 

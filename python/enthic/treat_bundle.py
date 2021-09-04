@@ -14,7 +14,7 @@ Coding Rules:
 """
 from csv import reader
 from json import load
-from logging import basicConfig
+from logging import basicConfig, debug
 from os.path import isdir, join, dirname
 
 ################################################################################
@@ -47,12 +47,20 @@ def main():
     # READ THE INPUT FILE AND bundle_file.write THE OUTPUT
     with open(join(CONFIG['outputPath'], CONFIG['sortTmpBundleFile']), mode='r') as infile:
         _reader = reader(infile, delimiter='\t')  # READER OF THE INPUT CSV FILE
-        key, bundle_sum, gain, distribution = (None,) * 4
-        for rows in _reader:  # ITERATE EACH LINE
-            if key is not None and key < rows[0:4]:  # KEY BREAK ON BUNDLE CODE
-                bundle_file.write(";".join((key[0], key[1], key[2], key[3],
-                                            rows[4], "\n"))
+        key = None
+        for row in _reader:  # ITERATE EACH LINE
+            if key is not None and key < row[0:4]:  # KEY BREAK ON BUNDLE CODE
+                bundle_file.write("\t".join((key[0], key[1], key[2], key[3],
+                                            bundle, "\n"))
                                   )
+            key = row[0:4]
+            bundle = row[4]
+        else:
+            debug("Find two identical keys %s" % str(key))
+        # WRITE THE LAST LINE
+        bundle_file.write(";".join((key[0], key[1], key[2], key[3],
+                                    bundle, "\n"))
+                          )
     bundle_file.close()
 
 

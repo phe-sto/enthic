@@ -40,7 +40,7 @@ fi
 mysql enthic < ${SQL_DIR}create-table-bundle.sql "$1";
 if [ $? != 0 ]
 then
-  echo "error when creating table request"
+  echo "error when creating bundle table"
 fi
 ################################################################################
 # 6) INSERT DATA INTO BUNDLE TABLE
@@ -57,9 +57,9 @@ mysql enthic < ${SQL_DIR}create-index-identity.sql "$1";
 mysql enthic < ${SQL_DIR}create-index-bundle.sql "$1";
 ################################################################################
 # 9) CREATE A TABLE OF THE METADATA INFORMATION
-mysql enthic < ${SQL_DIR}create-table-metadata.sql "$1";
+# mysql enthic < ${SQL_DIR}create-table-metadata.sql "$1";
 ################################################################################
 #10) INSERT DATA INTO METADATA TABLE
-mysql enthic < ${SQL_DIR}insert-metadata.sql "$1";
+# mysql enthic < ${SQL_DIR}insert-metadata.sql "$1";
 #11) CREATE A TABLE FOR SCORING COMPUTATION
 mysql enthic < ${SQL_DIR}create-table-statistics.sql "$1";

@@ -1,15 +1,9 @@
 {
-  "inputPath": "../input",
-  "outputPath": "../output/",
+  "inputPath": "../../input",
   "accountOntologyCSV": "../account-ontology.csv",
-  "tmpBundleFile": "bundle.tmp",
-  "sortTmpBundleFile": "sort-bundle.tmp",
-  "bundleFile": "bundle.csv",
-  "identityFile": "identity.tmp",
-  "metadataFile": "metadata.csv",
   "debugLevel": "INFO",
   "csvSeparator" : "\t",
-  "importHistoricFile" : "../input/importHistoric.txt",
+  "importHistoricFile" : "../../input/importHistoric.txt",
   "mySQL": {
     "enthic": {
       "host": "localhost",
@@ -25,5 +19,8 @@
     "debug": false,
     "host": "127.0.0.1",
     "port": 5000
+  },
+  "INSEE": {
+   "token" : "Bearer blablabla"
   }
 }

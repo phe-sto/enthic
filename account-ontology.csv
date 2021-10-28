@@ -131,7 +131,6 @@ Achats de matières premières et autres approvisionnements (y compris droits de
 Variation de stock (matières premières et approvisionnement);240;1;S
 Autres charges externes*;242;1;S
 Charge taxe professionnelle;243;1;S
-Charge de taxe professionnelle;243;1;S
 Impôts, taxes et versements assimilés;244;1;S
 Rémunérations du personnel;250;1;S
 Charges sociales;252;1;S
@@ -146,7 +145,6 @@ Produits exceptionnels;290;1;S
 Charges financières;294;1;S
 Charges exceptionnelles;300;1;S
 Impôts sur les bénéfices;306;1;S
-Impôts sur les bénéfices (compte annuel simplifié);306;1;S
 Bénéfice ou perte;310;1;S
 Rémunération et avantages personnels non déductibles;316;1;S
 Montant de la T.V.A. collectée;374;1;S

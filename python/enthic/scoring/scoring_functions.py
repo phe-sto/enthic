@@ -50,7 +50,7 @@ def compute_overall_wages_weight(data):
     salaires = data["salaires"]
     charges = data["charges"]
 
-    if isnan(charges) or (isnan(salaires) and isnan(cotisations_sociales)):
+    if isnan(charges) or charges == 0 or (isnan(salaires) and isnan(cotisations_sociales)):
         return float('nan')
 
     if isnan(salaires):

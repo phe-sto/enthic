@@ -27,9 +27,6 @@ def test_config(config):
     """
     assert config.__class__ is dict, "CONFIGURATION NOT A VALID DICTIONARY"
     assert config['inputPath'].__class__ is str, "INPUT PATH CONF NOT A STRING"
-    assert config['outputPath'].__class__ is str, "OUTPUT PATH CONF NOT A STRING"
-    assert config['bundleFile'].__class__ is str, "RESULT FILENAME CONF NOT A STRING"
-    assert config['identityFile'].__class__ is str, "IDENTITY FILENAME CONF NOT A STRING"
     assert config['accountOntologyCSV'].__class__ is str, "ONTOLOGY FILENAME CONF NOT A STRING"
     assert config["debugLevel"].__class__ is str, "DEBUG LEVEL NOT A STRING"
 
@@ -43,7 +40,7 @@ def extract_bundle_script():
 
        :return: A string made of the script path.
     """
-    return "./enthic/extract_bundle.py"
+    return "./enthic/scraping/extract_bundle.py"
 
 
 def test_execution_python(configuration_path, python_executable,

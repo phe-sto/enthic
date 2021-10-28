@@ -56,7 +56,7 @@ def clean_after_importing(file_path, date_processed):
 
     os.remove(file_path)
     IMPORT_HISTORIC.append(date_processed)
-    with open(CONFIG["importHistoricFile"], 'a') as import_historic_file:
+    with open(join(CONFIG['inputPath'], CONFIG["importHistoricFile"]), 'a') as import_historic_file:
         import_historic_file.write(date_processed + "\n")
 
 

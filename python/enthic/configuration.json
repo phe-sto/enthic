@@ -3,7 +3,7 @@
   "accountOntologyCSV": "../account-ontology.csv",
   "debugLevel": "INFO",
   "csvSeparator" : "\t",
-  "importHistoricFile" : "../../input/importHistoric.txt",
+  "importHistoricFile" : "importHistoric.txt",
   "mySQL": {
     "enthic": {
       "host": "localhost",

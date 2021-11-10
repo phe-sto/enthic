@@ -171,11 +171,11 @@ def main():
         FTP_MAX_VOLUME = args.quota * 1024 * 1024 * 1024
 
     try :
-        with open(CONFIG["importHistoricFile"], 'r') as import_historic_file:
+        with open(join(CONFIG['inputPath'], CONFIG["importHistoricFile"]), 'r') as import_historic_file:
             for line in import_historic_file:
                 IMPORT_HISTORIC.append(line.strip())
     except FileNotFoundError:
-        open(CONFIG["importHistoricFile"], 'x') # Create file
+        open(join(CONFIG['inputPath'], CONFIG["importHistoricFile"]), 'x') # Create file
 
     if args.source == "INPI":
         if not args.folder:

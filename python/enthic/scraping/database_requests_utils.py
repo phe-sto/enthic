@@ -133,12 +133,8 @@ def replace_metadata_ORM(metadata, metadata_to_replace):
         exit()
     else :
         for existing_metadata in existing_metadata_list:
-            if existing_metadata[0].date_cloture_exercice == metadata.date_cloture_exercice:
-                metadata_to_replace = existing_metadata[0]
-                break
-        if metadata_to_replace == None:
-            print("plusieurs metadata correspondent, lequel choisir?", existing_metadata_list)
-            exit()
+            SESSION.delete(existing_metadata[0])
+        metadata_to_replace = existing_metadata[0]
 
     metadata_to_replace.code_motif = metadata.code_motif
     metadata_to_replace.code_confidentialite = metadata.code_confidentialite

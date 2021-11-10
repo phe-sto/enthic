@@ -879,10 +879,10 @@ def process_xml_file(xml_stream, xml_name):
                                                                     bundle.attrib[
                                                                         amount_code]
                                                                 )))
-                                        if new_bundle in bundles_added_set:
+                                        if new_bundle[:4] in bundles_added_set:
                                             print("Bundle", new_bundle, "en double dans le fichier XML")
                                         else:
-                                            bundles_added_set.add(new_bundle)
+                                            bundles_added_set.add(new_bundle[:4])
                                             save_bundle_to_database(new_bundle[0], new_bundle[1], new_bundle[2], new_bundle[3], new_bundle[4])
                     except KeyError as key_error:
                         debug("{} in account {} bundle {}".format(

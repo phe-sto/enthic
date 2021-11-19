@@ -76,21 +76,6 @@ def company_siren_year(siren, year):
     return YearSirenCompany(siren, year)
 
 
-@application.route("/company/siren/<int:siren>/average", methods=['GET'], strict_slashes=False)
-@insert_request
-def company_siren_average(siren):
-    """
-    Retrieve company information by SIREN, calculation of the years average.
-    Path is /company/siren/<int:siren> GET method only and no strict slash.
-
-       :param siren: SIREN identification, must be an 9 character long,
-          numeric only.
-       :return: HTTP Response as application/json. Contain all known information
-          on that company of an error message if SIREN wrongly formatted.
-    """
-    return AverageSirenCompany(siren)
-
-
 @application.route("/company/siren/<int:siren>", methods=['GET'], strict_slashes=False)
 @insert_request
 def company_siren(siren):
@@ -106,48 +91,20 @@ def company_siren(siren):
     return AllSirenCompany(siren)
 
 
-@application.route("/company/denomination/<string:denomination>/average", methods=['GET'],
+@application.route("/exist/siren/<sirens>", methods=['GET'],
                    strict_slashes=False)
 @insert_request
-def company_denomination_average(denomination):
+def company_denomination_year(sirens):
     """
-    Retrieve company information by company denomination of the years average.
-    Path is /company/denomination/<string:denomination> GET method only and no strict
-    slash.
-
-       :param denomination: String, denomination of the company.
-       :return: HTTP Response as application/json. Contain all known information.
+    Return existing siren given as argument that exist in database.
+       :param sirenlist: list of siren we want to know if exist
+       :return: HTTP Response as application/json. Contain all existing siren.
     """
-    return AverageDenominationCompany(denomination)
-
-
-@application.route("/company/denomination/<string:denomination>", methods=['GET'],
-                   strict_slashes=False)
-@insert_request
-def company_denomination(denomination):
-    """
-    Retrieve company information by company denomination, calculation of all
-    years. Path is /company/denomination/<string:denomination> GET method only and no strict slash.
-
-       :param denomination: String, denomination of the company.
-       :return: HTTP Response as application/json. Contain all known information.
-    """
-    return AllDenominationCompany(denomination)
-
-
-@application.route("/company/denomination/<string:denomination>/<string:year>", methods=['GET'],
-                   strict_slashes=False)
-@insert_request
-def company_denomination_year(denomination, year):
-    """
-    Retrieve company information for a given year by company denomination. Path
-    is /company/denomination/<string:denomination> GET method only and no strict slash.
-
-       :param denomination: String, denomination of the company.
-       :param year: Year of results to return, default is None.
-       :return: HTTP Response as application/json. Contain all known information.
-    """
-    return YearDenominationCompany(denomination, year)
+    sirenlist = sirens.split(',')
+    sql_query = "SELECT siren FROM `identity` WHERE siren IN " + str(tuple(sirenlist)) + "; "
+    existing_siren = fetchall(sql_query)
+    result = [item[0] for item in existing_siren]
+    return OKJSONResponse(result)
 
 
 @application.route("/ontology/bundles", methods=['GET'], strict_slashes=False)
@@ -588,7 +545,7 @@ def serve_csv_file(siren=None, ape=None):
     return send_file(
         stream,
         mimetype="text/csv",
-        attachment_filename="export.csv",
+        download_name="export.csv",
     )
 
 

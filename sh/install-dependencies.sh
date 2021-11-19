@@ -9,7 +9,7 @@ apt-get -y install libxml2-utils mariadb-server tree libmariadbclient-dev python
 mysql_secure_installation
 ################################################################################
 # 3) INSTALL DISTANT PACKAGE
-python3 -m pip install pytest sphinx wheel setuptools numpy wget py7zr
+python3 -m pip install pytest sphinx wheel setuptools numpy wget py7zr sqlalchemy pymysql
 ################################################################################
 # 4) INSTALL ENTHIC PYTHON PACKAGE
 sh install-wheel.sh

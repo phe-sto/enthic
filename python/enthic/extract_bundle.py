@@ -179,24 +179,24 @@ def process_daily_zip_file(daily_zip_file_path):
                 zipped_xml = ZipFile(BytesIO(input_zip.read(zipped_xml_name)))
                 # SUPPOSED ONLY ONE XML BUT ITERATE TO BE SURE
                 for xml in zipped_xml.namelist():
-                    ####################################################
+                    ############################################################
                     # XML PARSER
                     tree = ElementTree.parse(BytesIO(zipped_xml.open(xml).read()))
                     root = tree.getroot()
-                    ####################################################
+                    ############################################################
                     # XML RELATED VARIABLES
                     acc_type, siren, year = (None,) * 3
                     identity_writen = False
-                    ####################################################
+                    ############################################################
                     # ITERATE ALL TAGS
                     for child in root[0]:
-                        ################################################
+                        ########################################################
                         # IDENTITY TAGS, SIREN AND TYPE OF ACCOUNTABILITY
                         if child.tag == "{fr:inpi:odrncs:bilansSaisisXML}identite":
                             acc_type, siren, denomination, year, ape, \
                             postal_code, town, code_motif, \
                             code_confidentialite, info_traitement = read_identity_data(child, zipped_xml_name)
-                            ############################################
+                            ####################################################
                             # WRITE IDENTITY FILE IF ACCOUNT TYPE IS
                             # KNOWN
                             if acc_type in ACC_ONT.keys():
@@ -209,40 +209,32 @@ def process_daily_zip_file(daily_zip_file_path):
                                     csv_separator.join(
                                         (str(siren), str(year), str(code_motif),
                                          str(code_confidentialite), str(info_traitement), "\n")))
-                        ################################################
+                        ########################################################
                         # BUNDLE TAGS IN PAGES TO ITERATE WITH BUNDLE CODES
                         # AND AMOUNT
                         elif child.tag == "{fr:inpi:odrncs:bilansSaisisXML}detail":
                             for page in child:
                                 for bundle in page:
-                                    try:
-                                        for bundle_code in \
-                                                ACC_ONT[acc_type]['bundleCodeAtt']:
-                                            if bundle.attrib["code"] in bundle_code.keys():
-                                                for amount_code in bundle_code[bundle.attrib["code"]]:
-                                                    amount_code = "m{0}".format(amount_code)
-                                                    ####################
-                                                    # WRITE RESULTS FILE
-                                                    if identity_writen is True:
-                                                        bundle_file.write(
-                                                            csv_separator.join((siren, year,
-                                                                                str(CON_ACC[acc_type]),
-                                                                                str(CON_BUN[CON_ACC[
-                                                                                    acc_type]][
-                                                                                        bundle.attrib[
-                                                                                            "code"]]),
-                                                                                str(int(
+                                    for bundle_code in \
+                                            ACC_ONT[acc_type]['bundleCodeAtt']:
+                                        if bundle.attrib.get("code") in bundle_code.keys():
+                                            for amount_code in bundle_code[bundle.attrib["code"]]:
+                                                amount_code = "m{0}".format(amount_code)
+                                                ################################
+                                                # WRITE RESULTS FILE
+                                                if identity_writen is True and bundle.attrib.get(amount_code):
+                                                    bundle_file.write(
+                                                        csv_separator.join((siren, year,
+                                                                            str(CON_ACC[acc_type]),
+                                                                            str(CON_BUN[CON_ACC[
+                                                                                acc_type]][
                                                                                     bundle.attrib[
-                                                                                        amount_code]
-                                                                                )),
-                                                                                "\n")))
-                                    except KeyError as key_error:
-                                        debug("{} in account {} bundle {}".format(
-                                            key_error,
-                                            acc_type,
-                                            bundle.attrib[
-                                                "code"]
-                                        ))
+                                                                                        "code"]]),
+                                                                            str(int(
+                                                                                bundle.attrib[
+                                                                                    amount_code]
+                                                                            )),
+                                                                            "\n")))
             except UnicodeDecodeError as error:
                 debug(error)
     except BadZipFile as error:  #  TODO REPORT ERROR TO INPI

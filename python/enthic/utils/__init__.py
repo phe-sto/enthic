@@ -2,11 +2,12 @@
 from json import load
 from logging import basicConfig
 from os.path import join, dirname
+from pathlib import Path
 
 ################################################################################
 # CHECKING THE INPUT AND OUTPUT AND DIRECTORY PATH
 # INPUT
-with open(join(dirname(__file__), "configuration.json")) as json_configuration_file:
+with open(join(Path(dirname(__file__)).parent.absolute(), "configuration.json")) as json_configuration_file:
     CONFIG = load(json_configuration_file)
 ################################################################################
 # SET LOG LEVEL

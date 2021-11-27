@@ -87,7 +87,6 @@ def read_address_data(address_xml_item, xml_file_name):
        :param address_xml_item: the identity's address XMl object
        :return: extracted data as a tuple
     """
-    postal_code, town = (ModifiedData.ABSENT.value,) * 2
     ####################################################################
     # PARSING THE 'adresse' FIELD, MANY DATA-CAPTURE ERROR.
     try:

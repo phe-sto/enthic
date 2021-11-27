@@ -12,7 +12,7 @@ Coding Rules:
 - Only argument is configuration file.
 - No output or bundle_file.write, just log and files.
 """
-from csv import reader
+from csv import reader, writer
 from json import load
 from logging import basicConfig, debug
 from os.path import isdir, join, dirname
@@ -42,25 +42,21 @@ def main():
     ############################################################################
     # RESULT FILE
     bundle_file = open(join(CONFIG['outputPath'], CONFIG['bundleFile']), "w")
+    bundle_writer = writer(bundle_file, delimiter=CONFIG['csvSeparator'])
     ############################################################################
     # READ THE INPUT FILE AND bundle_file.write THE OUTPUT
     with open(join(CONFIG['outputPath'], CONFIG['sortTmpBundleFile']), mode='r') as infile:
-        _reader = reader(infile, delimiter='\t')  # READER OF THE INPUT CSV FILE
+        _reader = reader(infile, delimiter=CONFIG['csvSeparator'])  # READER OF THE INPUT CSV FILE
         key = None
         for row in _reader:  # ITERATE EACH LINE
             if key is not None and key < row[0:4]:  # KEY BREAK ON BUNDLE CODE
-                bundle_file.write(CONFIG['csvSeparator'].join((key[0], key[1],
-                                                               key[2], key[3],
-                                                               bundle, "\n"))
-                                  )
+                bundle_writer.writerow((key[0], key[1], key[2], key[3], bundle))
             key = row[0:4]
             bundle = row[4]
         else:
             debug("Find two identical keys %s" % str(key))
         # WRITE THE LAST LINE
-        bundle_file.write(CONFIG['csvSeparator'].join((key[0], key[1], key[2],
-                                                       key[3], bundle, "\n"))
-                          )
+        bundle_writer.writerow((key[0], key[1], key[2], key[3], bundle))
     bundle_file.close()
 
 

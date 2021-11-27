@@ -13,7 +13,7 @@ Coding Rules:
 - No output or print, just log and files.
 """
 import xml.etree.ElementTree as ElementTree
-from csv import reader
+from csv import reader, writer
 from enum import Enum, auto
 from io import BytesIO
 from json import load
@@ -169,9 +169,11 @@ def process_daily_zip_file(daily_zip_file_path):
     # OPEN OUTPUT FILES TO APPEND NEW DATA
     bundle_file = open(join(CONFIG['outputPath'], CONFIG['tmpBundleFile']), "a")
     identity_file = open(join(CONFIG['outputPath'], CONFIG['identityFile']), "a")
-    metadata_file = open(join(CONFIG['outputPath'], CONFIG['metadataFile']), "a")
     csv_separator = CONFIG['csvSeparator']
-
+    ############################################################################
+    # Declare writers
+    bundle_writer = writer(bundle_file, delimiter=csv_separator)
+    identity_writer = writer(identity_file, delimiter=csv_separator)
     try:  # SOME BAD ZIP FILE ARE IN HE DATASET
         input_zip = ZipFile(daily_zip_file_path)
         for zipped_xml_name in input_zip.namelist():  # LIST ARCHIVES IN ZIP
@@ -200,15 +202,14 @@ def process_daily_zip_file(daily_zip_file_path):
                             # WRITE IDENTITY FILE IF ACCOUNT TYPE IS
                             # KNOWN
                             if acc_type in ACC_ONT.keys():
-                                identity_file.write(
-                                    csv_separator.join(
-                                        (str(siren), str(denomination), str(ape),
-                                         str(postal_code), str(town), "\n")))
+                                identity_writer.writerow(
+                                    (str(siren),
+                                     str(denomination),
+                                     str(ape),
+                                    str(postal_code),
+                                     str(town))
+                                )
                                 identity_writen = True
-                                metadata_file.write(
-                                    csv_separator.join(
-                                        (str(siren), str(year), str(code_motif),
-                                         str(code_confidentialite), str(info_traitement), "\n")))
                         ########################################################
                         # BUNDLE TAGS IN PAGES TO ITERATE WITH BUNDLE CODES
                         # AND AMOUNT
@@ -223,18 +224,16 @@ def process_daily_zip_file(daily_zip_file_path):
                                                 ################################
                                                 # WRITE RESULTS FILE
                                                 if identity_writen is True and bundle.attrib.get(amount_code):
-                                                    bundle_file.write(
-                                                        csv_separator.join((siren, year,
-                                                                            str(CON_ACC[acc_type]),
-                                                                            str(CON_BUN[CON_ACC[
-                                                                                acc_type]][
-                                                                                    bundle.attrib[
-                                                                                        "code"]]),
-                                                                            str(int(
-                                                                                bundle.attrib[
-                                                                                    amount_code]
-                                                                            )),
-                                                                            "\n")))
+                                                    bundle_writer.writerow(siren, year,
+                                                                           str(CON_ACC[acc_type]),
+                                                                           str(CON_BUN[CON_ACC[
+                                                                               acc_type]][
+                                                                                   bundle.attrib[
+                                                                                       "code"]]),
+                                                                           str(int(
+                                                                               bundle.attrib[
+                                                                                   amount_code]
+                                                                           )))
             except UnicodeDecodeError as error:
                 debug(error)
     except BadZipFile as error:  #  TODO REPORT ERROR TO INPI
@@ -244,7 +243,6 @@ def process_daily_zip_file(daily_zip_file_path):
     # CLOSES FILES
     bundle_file.close()
     identity_file.close()
-    metadata_file.close()
 
 
 def main():
@@ -256,8 +254,8 @@ def main():
     # CREATING A LIST OF THE BUNDLE XML CODES, ZIP ARE READ IN BtesIO, IN ORDER
     # TO BREAK FILE SYSTEM. TOO MUCH ZIP DISTURB THE FS.
     for file in listdir(CONFIG['inputPath']):  # LIST INPUT FILES
-        info("processing INPI daily zip file %s", file)
         if file.endswith(".zip"):  # ONLY PROCESS ZIP FILES
+            info("processing INPI daily zip file %s", file)
             process_daily_zip_file(join(CONFIG['inputPath'], file))
 
 

@@ -157,8 +157,8 @@ def read_identity_data(identity_xml_item):
 def process_daily_zip_file(daily_zip_file_path):
     ############################################################################
     # OPEN OUTPUT FILES TO APPEND NEW DATA
-    bundle_file = open(join(CONFIG['outputPath'], CONFIG['tmpBundleFile']), "a")
-    identity_file = open(join(CONFIG['outputPath'], CONFIG['identityFile']), "a")
+    bundle_file = open(join(CONFIG['outputPath'], CONFIG['bundleTmpFile']), "a")
+    identity_file = open(join(CONFIG['outputPath'], CONFIG['identityTmpFile']), "a")
     csv_separator = CONFIG['csvSeparator']
     ############################################################################
     # Declare writers
@@ -187,7 +187,7 @@ def process_daily_zip_file(daily_zip_file_path):
                         if child.tag == "{fr:inpi:odrncs:bilansSaisisXML}identite":
                             acc_type, siren, denomination, year, ape, \
                             postal_code, town, code_motif, \
-                            code_confidentialite, info_traitement = read_identity_data(child, zipped_xml_name)
+                            code_confidentialite, info_traitement = read_identity_data(child)
                             ####################################################
                             # WRITE IDENTITY FILE IF ACCOUNT TYPE IS
                             # KNOWN
@@ -214,16 +214,16 @@ def process_daily_zip_file(daily_zip_file_path):
                                                 ################################
                                                 # WRITE RESULTS FILE
                                                 if identity_writen is True and bundle.attrib.get(amount_code):
-                                                    bundle_writer.writerow(siren, year,
-                                                                           str(CON_ACC[acc_type]),
-                                                                           str(CON_BUN[CON_ACC[
-                                                                               acc_type]][
-                                                                                   bundle.attrib[
-                                                                                       "code"]]),
-                                                                           str(int(
-                                                                               bundle.attrib[
-                                                                                   amount_code]
-                                                                           )))
+                                                    bundle_writer.writerow((siren, year,
+                                                                            str(CON_ACC[acc_type]),
+                                                                            str(CON_BUN[CON_ACC[
+                                                                                acc_type]][
+                                                                                    bundle.attrib[
+                                                                                        "code"]]),
+                                                                            str(int(
+                                                                                bundle.attrib[
+                                                                                    amount_code]))
+                                                                            ))
             except UnicodeDecodeError as error:
                 debug(error)
     except BadZipFile as error:  #  TODO REPORT ERROR TO INPI

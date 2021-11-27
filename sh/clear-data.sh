@@ -3,7 +3,7 @@
 # PROGRAM BY PAPIT SASU, CLEAN AND UNZIP INPI DATA
 ################################################################################
 # CONSTANTS
-readonly DATA_DIR="../input";
+readonly DATA_DIR=$(jq -r .inputPath "../python/enthic/configuration.json");
 ################################################################################
 # VARIABLES
 step_count=0;
@@ -22,5 +22,5 @@ rm -rf ../output/*.tmp>/dev/null 2>&1;
 ################################################################################
 # CONSIDERED AS TWO STEPS
 step "PROCESSING INPI DAILY ZIP FILE IN ${DATA_DIR}";
-python3 ../python/enthic/extract_bundle.py -c ../configuration.json
+python3 ../python/enthic/extract_bundle.py
 rm -rf $DATA_DIR/*.zip>/dev/null 2>&1;         # DELETE THE UNZIPPED FILE

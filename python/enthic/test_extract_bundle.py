@@ -29,7 +29,7 @@ def test_config(config):
     assert config['inputPath'].__class__ is str, "INPUT PATH CONF NOT A STRING"
     assert config['outputPath'].__class__ is str, "OUTPUT PATH CONF NOT A STRING"
     assert config['bundleFile'].__class__ is str, "RESULT FILENAME CONF NOT A STRING"
-    assert config['identityFile'].__class__ is str, "IDENTITY FILENAME CONF NOT A STRING"
+    assert config['identityTmpFile'].__class__ is str, "IDENTITY FILENAME CONF NOT A STRING"
     assert config['accountOntologyCSV'].__class__ is str, "ONTOLOGY FILENAME CONF NOT A STRING"
     assert config["debugLevel"].__class__ is str, "DEBUG LEVEL NOT A STRING"
 
@@ -94,7 +94,7 @@ def identity_file(config):
        :param config: Fixture of the JSON configuration file.
        :return: The file object.
     """
-    return open(join(config['outputPath'], config['identityFile']), "r")
+    return open(join(config['outputPath'], config['identityTmpFile']), "r")
 
 
 def test_result_line_data(result_file):

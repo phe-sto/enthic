@@ -3,7 +3,7 @@
 # PROGRAM BY PAPIT SASU, VERIFY XML XSD CONFORMITY
 ################################################################################
 # CONSTANTS
-readonly DATA_DIR="../input/qualification/";
+readonly DATA_DIR=$(jq -r .inputPath "../python/enthic/configuration.json");
 readonly XSD="../bilans-saisis-v1.1.xsd";
 ################################################################################
 # PRINT A COMMAND DESCRIPTION

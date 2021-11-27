@@ -32,11 +32,11 @@ def main():
     """
     ############################################################################
     # RESULT FILE
-    bundle_file = open(join(CONFIG['outputPath'], CONFIG['bundleFile']), "w")
+    bundle_file = open(join(CONFIG['outputPath'], CONFIG['bundleCSV']), "w")
     bundle_writer = writer(bundle_file, delimiter=CONFIG['csvSeparator'])
     ############################################################################
     # READ THE INPUT FILE AND bundle_file.write THE OUTPUT
-    with open(join(CONFIG['outputPath'], CONFIG['sortTmpBundleFile']), mode='r') as infile:
+    with open(join(CONFIG['outputPath'], CONFIG['sortBundleTmpFile']), mode='r') as infile:
         _reader = reader(infile, delimiter=CONFIG['csvSeparator'])  # READER OF THE INPUT CSV FILE
         key = None
         for row in _reader:  # ITERATE EACH LINE

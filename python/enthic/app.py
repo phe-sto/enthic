@@ -14,11 +14,8 @@ Coding Rules:
 """
 
 import concurrent.futures
-from json import loads, load
-from os.path import dirname, join
+from json import loads
 from math import isnan
-from flask import Flask, request
-from flask_cors import CORS
 
 from enthic.company.company import CompanyIdentity
 from enthic.company.denomination_company import (
@@ -35,9 +32,12 @@ from enthic.compute_stats import compute_company_statistics
 from enthic.database.fetch import fetchall
 from enthic.decorator.insert_request import insert_request
 from enthic.ontology import ONTOLOGY, APE_CODE
+from enthic.utils import CONFIG
+from enthic.utils.conversion import get_corresponding_ape_codes
 from enthic.utils.error_json_response import ErrorJSONResponse
 from enthic.utils.ok_json_response import OKJSONResponse
-from enthic.utils.conversion import get_corresponding_ape_codes
+from flask import Flask, request
+from flask_cors import CORS
 
 ################################################################################
 # FLASK INITIALISATION
@@ -46,12 +46,10 @@ CORS(application, expose_headers='Authorization', max_age=600, methods=["POST", 
 
 ################################################################################
 # CONFIGURE APPLICATION
-with open(join(dirname(__file__), "configuration.json")) as json_configuration_file:
-    config = load(json_configuration_file)
 application._static_folder = "./static/"
-application.config['MYSQL_HOST'] = config["mySQL"]["enthic"]["host"]
-application.config['MYSQL_USER'] = config["mySQL"]["enthic"]["user"]
-application.config['MYSQL_PASSWORD'] = config["mySQL"]["enthic"]["password"]
+application.config['MYSQL_HOST'] = CONFIG["mySQL"]["enthic"]["host"]
+application.config['MYSQL_USER'] = CONFIG["mySQL"]["enthic"]["user"]
+application.config['MYSQL_PASSWORD'] = CONFIG["mySQL"]["enthic"]["password"]
 application.config['CACHE_TYPE'] = 'simple'
 application.config['MYSQL_DB'] = 'enthic'
 
@@ -213,7 +211,8 @@ def result_array(probe, limit, ape_code=[], offset=0):
 
     with application.app_context():
         count = fetchall(sql_query_count + sql_query_condition, args=sql_arguments)
-        companies = fetchall(sql_query_select_part + sql_query_condition + sql_query_limit_and_offset, args=sql_arguments)
+        companies = fetchall(sql_query_select_part + sql_query_condition + sql_query_limit_and_offset,
+                             args=sql_arguments)
         return count[0][0], tuple(CompanyIdentity(*company).__dict__ for company in companies)
 
 
@@ -320,7 +319,10 @@ def page_search():
         count, results = future_list.result()
 
     if count < page * per_page:
-        return ErrorJSONResponse("Page number {} exceed number of page given result per page is {} and result count is {}".format(page + 1, per_page, count))
+        return ErrorJSONResponse(
+            "Page number {} exceed number of page given result per page is {} and result count is {}".format(page + 1,
+                                                                                                             per_page,
+                                                                                                             count))
 
     last_page = (count / per_page) + 1
     ############################################################################
@@ -329,17 +331,17 @@ def page_search():
            "@id": request.url,
            "@type": "Collection",
            "totalItems": count, "view": {
-               "@id": request.full_path,
-               "@type": "PartialCollectionView",
-               "first": '%s?page=1&per_page=%d&probe=%s%s' % (request.path,
-                                                              per_page,
-                                                              probe,
-                                                              ape_arg_for_url),
-               "last": '%s?page=%d&per_page=%d&probe=%s%s' % (request.path,
-                                                              last_page,
-                                                              per_page,
-                                                              probe,
-                                                              ape_arg_for_url)},
+            "@id": request.full_path,
+            "@type": "PartialCollectionView",
+            "first": '%s?page=1&per_page=%d&probe=%s%s' % (request.path,
+                                                           per_page,
+                                                           probe,
+                                                           ape_arg_for_url),
+            "last": '%s?page=%d&per_page=%d&probe=%s%s' % (request.path,
+                                                           last_page,
+                                                           per_page,
+                                                           probe,
+                                                           ape_arg_for_url)},
            "member": results
            }
     ############################################################################
@@ -380,7 +382,7 @@ def compute(first_letters):
     for siren in get_siren(first_letters):
         company_data = company_siren(siren[0])
         scores = compute_company_statistics(company_data)
-        result_list.append({"siren" : siren[0], "scores" : scores})
+        result_list.append({"siren": siren[0], "scores": scores})
         for score in scores:
             if not isnan(score["share_score"]):
                 result.append((siren[0], score["year"], 1, score["share_score"]))
@@ -398,6 +400,7 @@ def compute(first_letters):
         mysql.connection.commit()
         cur.close()
     return OKJSONResponse(result)
+
 
 @application.route('/<path:path>', strict_slashes=False)
 @insert_request
@@ -454,9 +457,9 @@ def main():
     """
     ############################################################################
     # START APPLICATION
-    application.run(debug=config["flask"]["debug"],
-                    host=config["flask"]["host"],
-                    port=config["flask"]["port"])
+    application.run(debug=CONFIG["flask"]["debug"],
+                    host=CONFIG["flask"]["host"],
+                    port=CONFIG["flask"]["port"])
 
 
 if __name__ == "__main__":

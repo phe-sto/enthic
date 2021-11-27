@@ -13,16 +13,17 @@ Coding Rules:
 - No output or print, just log and files.
 """
 import xml.etree.ElementTree as ElementTree
-from csv import reader, writer
+from csv import writer, reader
 from enum import Enum, auto
 from io import BytesIO
-from json import load
-from logging import info, debug, basicConfig
+from logging import debug
+from logging import info
 from os import listdir
-from os.path import dirname, join, isdir
+from os.path import join, isdir
 from re import sub, compile
 from zipfile import ZipFile, BadZipFile
 
+from enthic.utils import CONFIG
 from enthic.utils.INPI_data_enhancer import decrypt_code_motif
 from enthic.utils.conversion import CON_APE, CON_ACC, CON_BUN
 
@@ -37,11 +38,6 @@ RE_DENOMINATION = compile(r'\s+|[\t\n]')  # NOT AN OBVIOUS PERFORMANCE GAIN...
 RE_POSTAL_CODE_TOWN = compile(r"([0-9]+)[ -]?¨?([a-zA-Z0-9`ÀéÉèÈîÎ_ \'\"-\.\(\)\-]+)")
 RE_TOWN = compile(r"([a-zA-Z0-9_ \'\"-\.\(\)\-]+)")
 RE_POSTAL_CODE = compile(r"([0-9]+)")
-
-################################################################################
-# READ CONFIGURATION
-with open(join(dirname(__file__), "configuration.json")) as json_configuration_file:
-    CONFIG = load(json_configuration_file)
 
 ################################################################################
 # CHECKING THE INPUT AND OUTPUT AND DIRECTORY PATH
@@ -72,22 +68,17 @@ with open(CONFIG['accountOntologyCSV'], mode='r') as infile:
         except KeyError:
             ACC_ONT[rows[3]] = {"bundleCodeAtt": []}
 
-################################################################################
-# SET LOG LEVEL
-basicConfig(level=CONFIG['debugLevel'],
-            format="%(asctime)s [%(levelname)8s] %(message)s (%(filename)s:%(lineno)s)")
-
 KNOWN_ADDRESS_ERRORS = ["0 | Durée de L'exercice précédentI"]
 
 
-def read_address_data(address_xml_item, xml_file_name):
+def read_address_data(address_xml_item):
     """
     Read the xml's identity's address item, to extract postal_code and town from it
 
        :param address_xml_item: the identity's address XMl object
        :return: extracted data as a tuple
     """
-    ####################################################################
+    ############################################################################
     # PARSING THE 'adresse' FIELD, MANY DATA-CAPTURE ERROR.
     try:
         regex_match = RE_POSTAL_CODE_TOWN.match(address_xml_item.text)
@@ -124,11 +115,11 @@ def read_address_data(address_xml_item, xml_file_name):
     return postal_code, town
 
 
-def read_identity_data(identity_xml_item, xml_file_name):
+def read_identity_data(identity_xml_item):
     """
     Read the xml's identity item, to extract useful data from it
 
-       :param identity_xml_item: the identity XMl object
+       :param identity_xml_item: The identity XMl object
        :return: extracted data as a tuple
     """
     acc_type, siren, denomination, year, ape, \
@@ -152,7 +143,7 @@ def read_identity_data(identity_xml_item, xml_file_name):
         elif identity.tag == '{fr:inpi:odrncs:bilansSaisisXML}date_cloture_exercice':
             year = identity.text[:4]
         elif identity.tag == '{fr:inpi:odrncs:bilansSaisisXML}adresse':
-            postal_code, town = read_address_data(identity, xml_file_name)
+            postal_code, town = read_address_data(identity)
         elif identity.tag == '{fr:inpi:odrncs:bilansSaisisXML}code_activite':
             try:
                 ape = str(CON_APE[identity.text])
@@ -205,7 +196,7 @@ def process_daily_zip_file(daily_zip_file_path):
                                     (str(siren),
                                      str(denomination),
                                      str(ape),
-                                    str(postal_code),
+                                     str(postal_code),
                                      str(town))
                                 )
                                 identity_writen = True

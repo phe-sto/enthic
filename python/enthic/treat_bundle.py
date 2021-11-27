@@ -12,26 +12,17 @@ Coding Rules:
 - Only argument is configuration file.
 - No output or bundle_file.write, just log and files.
 """
-from csv import reader, writer
-from json import load
-from logging import basicConfig, debug
-from os.path import isdir, join, dirname
+from os.path import join, isdir
+from enthic.utils import CONFIG
+from logging import debug
+from csv import writer, reader
 
-################################################################################
-# CHECKING THE INPUT AND OUTPUT AND DIRECTORY PATH
-# INPUT
-with open(join(dirname(__file__), "configuration.json")) as json_configuration_file:
-    CONFIG = load(json_configuration_file)
 # OUTPUT
 if isdir(CONFIG['outputPath']) is False:
     raise NotADirectoryError(
         "Configuration output path {} does not exist".format(
             CONFIG['outputPath'])
     )
-################################################################################
-# SET LOG LEVEL
-basicConfig(level=CONFIG['debugLevel'],
-            format="%(asctime)s [%(levelname)8s] %(message)s (%(filename)s:%(lineno)s)")
 
 
 def main():

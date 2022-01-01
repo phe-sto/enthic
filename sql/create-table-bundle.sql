@@ -4,5 +4,5 @@ CREATE TABLE IF NOT EXISTS bundle
     declaration YEAR(4) NOT NULL,
     accountability TINYINT NOT NULL,
     bundle TINYINT NOT NULL,
-    amount FLOAT NOT NULL
+    amount BIGINT NOT NULL
 );

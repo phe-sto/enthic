@@ -7,8 +7,8 @@ qui utilise ces mêmes données pour étudier l'économie Française. Merci à t
 ceux qui ont collaboré. N'hésitez pas à me christophe.brun@papit.fr pour toute
 question.
 
-**Project on hold pause**
-=========================
+**Project on hold**
+===================
 
 This projet is on hold due to a lack of time and energy. I am focusing on
 `IN FRANCE <https://www.in-france.fr>`_ project, a similar one, more complete,

@@ -1,3 +1,20 @@
+**Projet en pause**
+===================
+
+Ce projet est en pause faute de temps et d'énergie. Je me concentre maintenant
+sur un projet similaire, `IN FRANCE <https://www.in-france.fr>`_, plus complet
+qui utilise ces mêmes données pour étudier l'économie Française. Merci à tous
+ceux qui ont collaboré. N'hésitez pas à me christophe.brun@papit.fr pour toute
+question.
+
+**Project on hold pause**
+=========================
+
+This projet is on hold due to a lack of time and energy. I am focusing on
+`IN FRANCE <https://www.in-france.fr>`_ project, a similar one, more complete,
+studying the French economy. Thank you all contributor. Don't hesitate to
+contact me at christophe.brun@papit.fr.
+
 **French societies accountability extraction and treatment by PapIT**
 =====================================================================
 

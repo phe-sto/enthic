@@ -1,6 +1,6 @@
 **EOL, l'INPI supprime le FTP du RNCS et remplace tout par le RNE**
 ===================================================================
-L'INPI a communiqué cela le03/04/2023:
+L'INPI a communiqué cela le 03/04/2023:
 
 Madame, Monsieur,
 

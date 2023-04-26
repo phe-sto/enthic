@@ -1,3 +1,21 @@
+**EOL, l'INPI supprime le FTP du RNCS et remplace tout par le RNE**
+===================================================================
+L'INPI a communiqué cela le03/04/2023:
+
+Madame, Monsieur,
+
+ 
+
+En tant que licencié aux données du RNE nous vous informons de la fermeture des anciennes applications de diffusion des données du RNCS le 30 juin 2023. 
+
+Les API et le serveur FTP RNCS ne seront plus accessibles, les données étant désormais disponibles sur les nouvelles applications API et SFTP du RNE au format JSON et PDF.
+
+Nous vous rappelons par ailleurs que les quotas de téléchargement sont de 10 Go ou 10 000 appels par jour.
+
+Vous pouvez retrouver l’ensemble des documentations techniques dans l’onglet « espace open data » du portail DATA INPI.
+
+Qui est partant pour faire une version de Enthic avec le FTP du RNE?
+
 **Projet en pause**
 ===================
 
